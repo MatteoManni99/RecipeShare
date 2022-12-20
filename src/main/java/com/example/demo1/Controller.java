@@ -22,7 +22,7 @@ public class Controller {
     public void onLoginClick(ActionEvent actionEvent) throws IOException {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Loggato.fxml"));
             stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+            Scene scene = new Scene(fxmlLoader.load(), 330, 240);
             stage.setTitle("Hello!");
             stage.setScene(scene);
             stage.show();
