@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox alignment="TOP_CENTER" prefHeight="443.0" prefWidth="498.0" fx:controller="com.example.demo1.Ricerca_UtenteController" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <Label layoutX="262.0" layoutY="41.0" text="RECIPE SHARE" />
+            <Button onAction="#onLogoutClick" layoutX="522.0" layoutY="76.0" mnemonicParsing="false" text="LOGOUT" />
+            <Button layoutX="251.0" layoutY="122.0" mnemonicParsing="false" text="CERCA UTENTE" />
+            <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="TORNA INDIETRO" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
