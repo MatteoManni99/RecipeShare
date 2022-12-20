@@ -9,5 +9,8 @@
         <module name="RecipeShare" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="RecipeShareGit" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>
