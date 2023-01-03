@@ -55,7 +55,7 @@ public class LoginController {
         String password = insertedPassword.getText();
         String uri = "mongodb://localhost:27017";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("test");
+            MongoDatabase database = mongoClient.getDatabase("RecipeShare");
             MongoCollection<Document> collection = database.getCollection("author");
             Bson filter = Filters.and(
                     Filters.eq("authorName", name),
@@ -63,10 +63,18 @@ public class LoginController {
             MongoCursor<Document> cursor = collection.find(filter).iterator();
             if (cursor.hasNext()) {
                 System.out.println("TROVATO");
-                //mettere qui il cambio pagina
+                //cambio pagina
+                FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Loggato.fxml"));
+                stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+                Scene scene = new Scene(fxmlLoader.load(), 600, 500);
+                stage.setTitle("Hello "+ name);
+                stage.setScene(scene);
+                stage.show();
             }
             else System.out.println("NON ESISTE QUESTO AUTHOR");
 
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
