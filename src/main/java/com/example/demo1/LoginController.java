@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -21,9 +22,9 @@ import static com.mongodb.client.model.Updates.*;
 
 public class LoginController {
     @FXML
-    private PasswordField insertedName;
+    private TextField insertedName;
     @FXML
-    private PasswordField insertedPassword;
+    private TextField insertedPassword;
     private Stage stage;
 
     @FXML
@@ -38,7 +39,7 @@ public class LoginController {
 
     @FXML
     public void onRegisterClick(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Register.fxml"));
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 500, 500);
         stage.setTitle("Hello!");
@@ -55,7 +56,7 @@ public class LoginController {
         String password = insertedPassword.getText();
         String uri = "mongodb://localhost:27017";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("RecipeShare");
+            MongoDatabase database = mongoClient.getDatabase("RecipeShare"); //da scegliere il nome uguale per tutti
             MongoCollection<Document> collection = database.getCollection("author");
             Bson filter = Filters.and(
                     Filters.eq("authorName", name),
@@ -71,7 +72,7 @@ public class LoginController {
                 stage.setScene(scene);
                 stage.show();
             }
-            else System.out.println("NON ESISTE QUESTO AUTHOR");
+            else System.out.println("N");
 
         } catch (IOException e) {
             throw new RuntimeException(e);
