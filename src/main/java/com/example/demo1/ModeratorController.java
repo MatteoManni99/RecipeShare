@@ -33,7 +33,7 @@ public class ModeratorController implements Initializable {
     public void onLogoutClick(ActionEvent actionEvent) throws IOException {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
             stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-            scene = new Scene(fxmlLoader.load(), 320, 240);
+            scene = new Scene(fxmlLoader.load(), 500, 500);
             recipeText = (Label) scene.lookup("recipeText");
             reviewText = (Label) scene.lookup("reviewText");
             vbox = (VBox) scene.lookup("vbox");
