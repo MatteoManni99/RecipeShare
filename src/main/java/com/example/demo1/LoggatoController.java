@@ -28,7 +28,7 @@ public class LoggatoController {
     public void onCercaUtenteClick(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Ricerca_Utente.fxml"));
         stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Scene scene = new Scene(fxmlLoader.load(), 500, 500);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
