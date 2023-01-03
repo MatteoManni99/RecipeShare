@@ -15,7 +15,7 @@
             <Button alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="249.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="94.0" text="VIEW &#10;SUGGESTIONS" textAlignment="CENTER" />
             <Button onAction="#onLogoutClick" layoutX="522.0" layoutY="80.0" mnemonicParsing="false" text="LOGOUT" />
             <Button layoutX="510.0" layoutY="198.0" mnemonicParsing="false" text="SHOW &#10;FOLLOWED &#10;AUTHORS" textAlignment="CENTER" />
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="510.0" layoutY="266.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="81.0" text="VIEW &#10;ANALYTICS" textAlignment="CENTER" />
+            <Button onAction="#onAnalyticsClick" alignment="CENTER" contentDisplay="CENTER" layoutX="510.0" layoutY="266.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="81.0" text="VIEW &#10;ANALYTICS" textAlignment="CENTER" />
             <Label layoutX="207.0" layoutY="131.0" text="Qui puoi vedere la lista delle recipe" />
             <Label layoutX="262.0" layoutY="31.0" text="RECIPE SHARE" />
          </children>

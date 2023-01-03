@@ -33,4 +33,13 @@ public class LoggatoController {
         stage.setScene(scene);
         stage.show();
     }
+    @FXML
+    public void onAnalyticsClick(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("LoggatoAnalytics.fxml"));
+        stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(fxmlLoader.load(), 500, 500);
+        stage.setTitle("Hello!");
+        stage.setScene(scene);
+        stage.show();
+    }
 }

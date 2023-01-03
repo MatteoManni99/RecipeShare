@@ -5,14 +5,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.LoggatoAnalyticsController">
    <children>
       <AnchorPane prefHeight="366.0" prefWidth="600.0">
          <children>
             <Label layoutX="264.0" layoutY="29.0" prefHeight="18.0" prefWidth="114.0" text="AUTHOR ANALYTICS " />
-            <Button layoutX="14.0" layoutY="157.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="366.0" text="Top recipes for ranges of PreparationTime, ranked by rating" />
-            <Button layoutX="14.0" layoutY="123.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="366.0" text="Most used Ingredients for creating the recipes​" />
+            <Button layoutX="14.0" layoutY="183.0" mnemonicParsing="false" onAction="#onTopRecipesForRangesOfPreparationTimeClick" text="Top recipes for ranges of PreparationTime" />
+            <Button layoutX="14.0" layoutY="148.0" mnemonicParsing="false" text="Most used Ingredients" />
+            <Button layoutX="14.0" layoutY="113.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="175.0" text="Top recipes for each category" />
+            <Button layoutX="14.0" layoutY="77.0" mnemonicParsing="false" text="Recipes with highest rating" />
          </children>
       </AnchorPane>
    </children>
