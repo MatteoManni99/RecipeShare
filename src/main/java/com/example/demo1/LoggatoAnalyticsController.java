@@ -6,11 +6,12 @@ import com.mongodb.client.model.Projections;
 import javafx.event.ActionEvent;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-
+import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.MongoCollection;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
-import static com.mongodb.client.model.Accumulators.avg;
+import static com.mongodb.client.model.Accumulators.*;
 import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Projections.*;
@@ -21,17 +22,16 @@ public class LoggatoAnalyticsController {
         String uri = "mongodb://localhost:27017";
         System.out.println(StringToTime("PT1H24M"));
         try (MongoClient mongoClient = MongoClients.create(uri)) {
-            //gestione del total time
             String totalTime;
+
             MongoDatabase database = mongoClient.getDatabase("RecipeShare");
             MongoCollection<Document> collection = database.getCollection("recipe");
-            collection.aggregate(
-                    Arrays.asList(
-
-                            match(size("Reviews",5))
-                            //qui volendo altri Aggregates
-                    )
-            ).forEach(printDocuments());
+            Bson limit1 = limit(5);
+            Bson filter1 = new Document("Reviews.10",new Document("$exists",true));
+            Bson match1 = match(filter1);
+            Bson group1 = new Document("$group", new Document("_id", new Document("TotalTime","$TotalTime")))
+                    .append("RecipeId", new Document("$addToSet", "$RecipeId"));
+            collection.aggregate(Arrays.asList(match1)).forEach(printDocuments());
         }
     }
     private Integer StringToTime(String totalTimeString){
