@@ -4,6 +4,8 @@ import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Projections;
 import javafx.event.ActionEvent;
+import com.mongodb.client.model.Sorts;
+import javafx.fxml.FXMLLoader;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import com.mongodb.client.AggregateIterable;
@@ -51,5 +53,43 @@ public class LoggatoAnalyticsController {
 
     private static Consumer<Document> printDocuments() {
         return doc -> System.out.println(doc.toJson());
+    }
+
+    public void onRecipesWithHighestratingClick(ActionEvent actionEvent) {
+        String uri = "mongodb://localhost:27017";
+        try (MongoClient mongoClient = MongoClients.create(uri)) {
+            MongoDatabase database = mongoClient.getDatabase("RecipeShare");
+            MongoCollection<Document> collection = database.getCollection("recipe");
+            Bson filter1 = new Document("Reviews.4", new Document("$exists", true));
+            collection.find(filter1).sort(Sorts.descending("AggregatedRating")).limit(10).iterator().forEachRemaining(printDocuments());
+            /*MongoCursor<Document> cursor = collection.find(filter1).sort(Sorts.descending("AggregatedRating")).limit(10).iterator();
+            while (cursor.hasNext()) {
+                Document c = cursor.next();
+                System.out.println(c);
+                System.out.println(c.get("Name"));
+                System.out.println(c.get("RecipeId"));
+                System.out.println(c.get("AggregatedRating"));
+                System.out.println(c.get("Reviews"));
+                System.out.println("-----------------------");
+            }*/
+        }
+    }
+
+    public void onTopRecipesForEachCategory(ActionEvent actionEvent) {
+        String uri = "mongodb://localhost:27017";
+        try (MongoClient mongoClient = MongoClients.create(uri)) {
+            MongoDatabase database = mongoClient.getDatabase("RecipeShare");
+            MongoCollection<Document> collection = database.getCollection("recipe");
+            MongoCursor<Document> cursor = collection.find().sort(Sorts.descending("AggregateRating")).limit(10).iterator();
+            while (cursor.hasNext()) {
+                System.out.println(cursor.next().toJson());
+                FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("LoggatoAnalytics.fxml"));
+                /*stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+                Scene scene = new Scene(fxmlLoader.load(), 600, 500);
+                stage.setTitle("Hello "+ name);
+                stage.setScene(scene);
+                stage.show();*/
+            }
+        }
     }
 }
