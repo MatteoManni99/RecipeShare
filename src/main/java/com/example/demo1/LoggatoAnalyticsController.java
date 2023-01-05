@@ -16,39 +16,41 @@ import java.util.function.Consumer;
 import static com.mongodb.client.model.Accumulators.*;
 import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Indexes.descending;
 import static com.mongodb.client.model.Projections.*;
 
 public class LoggatoAnalyticsController {
 
     public void onTopRecipesForRangesOfPreparationTimeClick(ActionEvent actionEvent) {
         String uri = "mongodb://localhost:27017";
-        System.out.println(StringToTime("PT1H24M"));
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             String totalTime;
-
             MongoDatabase database = mongoClient.getDatabase("RecipeShare");
             MongoCollection<Document> collection = database.getCollection("recipe");
-            Bson limit1 = limit(5);
-            Bson filter1 = new Document("Reviews.10",new Document("$exists",true));
+            //at least n reviews
+            Bson filter = new Document("Reviews.20",new Document("$exists",true));
+            Bson match = match(filter);
+            //range 1 - 30 of TotalTime
+            Bson filter1 = new Document("TotalTime", new Document("$gt", 0).append("$lte", 30));
             Bson match1 = match(filter1);
-            Bson group1 = new Document("$group", new Document("_id", new Document("TotalTime","$TotalTime")))
-                    .append("RecipeId", new Document("$addToSet", "$RecipeId"));
-            collection.aggregate(Arrays.asList(match1)).forEach(printDocuments());
+            //range 31 - 90 of TotalTime
+            Bson filter2 = new Document("TotalTime", new Document("$gt", 30).append("$lte", 90));
+            Bson match2 = match(filter2);
+            //range 91 - * of TotalTime
+            Bson filter3 = new Document("TotalTime", new Document("$gt", 91));
+            Bson match3 = match(filter3);
+            //----
+            Bson group = new Document("$group", new Document("_id", new Document("TotalTime","$TotalTime")));
+            Bson sort = sort(descending("AggregatedRating"));
+            Bson limit = limit(3);
+            Bson project = project(include("RecipeId","Name","TotalTime","AggregatedRating"));
+            System.out.println("Top Recipes with TotalTime: 1-30");
+            collection.aggregate(Arrays.asList(match,match1,sort,limit,project)).forEach(printDocuments());
+            System.out.println("Top Recipes with TotalTime: 31-90");
+            collection.aggregate(Arrays.asList(match,match2,sort,limit,project)).forEach(printDocuments());
+            System.out.println("Top Recipes with TotalTime: 91-*");
+            collection.aggregate(Arrays.asList(match,match3,sort,limit,project)).forEach(printDocuments());
         }
-    }
-    private Integer StringToTime(String totalTimeString){
-        Integer totalTimeInteger = 0;
-        Integer indexOfH = totalTimeString.indexOf("H");
-        Integer indexOfM = totalTimeString.indexOf("M");
-        if (indexOfH>0 && indexOfM>0){
-            totalTimeInteger = (Integer.valueOf(totalTimeString.substring(2,indexOfH))*60) +
-                    Integer.valueOf(totalTimeString.substring(indexOfH+1,indexOfM));
-        }else if(indexOfH>0  && indexOfM<0){
-            totalTimeInteger = (Integer.valueOf(totalTimeString.substring(2,indexOfH))*60);
-        }else if(indexOfH<0 && indexOfM>0){
-            totalTimeInteger = (Integer.valueOf(totalTimeString.substring(2,indexOfM)));
-        }
-        return totalTimeInteger;
     }
 
     private static Consumer<Document> printDocuments() {
