@@ -20,41 +20,50 @@ import static com.mongodb.client.model.Indexes.descending;
 import static com.mongodb.client.model.Projections.*;
 
 public class LoggatoAnalyticsController {
+    private static Consumer<Document> printDocuments() {
+        return doc -> System.out.println(doc.toJson());
+    }
 
     public void onTopRecipesForRangesOfPreparationTimeClick(ActionEvent actionEvent) {
         String uri = "mongodb://localhost:27017";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
-            String totalTime;
             MongoDatabase database = mongoClient.getDatabase("RecipeShare");
             MongoCollection<Document> collection = database.getCollection("recipe");
-            //at least n reviews
-            Bson filter = new Document("Reviews.20",new Document("$exists",true));
-            Bson match = match(filter);
             //range 1 - 30 of TotalTime
-            Bson filter1 = new Document("TotalTime", new Document("$gt", 0).append("$lte", 30));
-            Bson match1 = match(filter1);
+            Bson match1 = match(new Document("TotalTime", new Document("$gt", 0).append("$lte", 30)));
             //range 31 - 90 of TotalTime
-            Bson filter2 = new Document("TotalTime", new Document("$gt", 30).append("$lte", 90));
-            Bson match2 = match(filter2);
+            Bson match2 = match(new Document("TotalTime", new Document("$gt", 30).append("$lte", 90)));
             //range 91 - * of TotalTime
-            Bson filter3 = new Document("TotalTime", new Document("$gt", 91));
-            Bson match3 = match(filter3);
-            //----
-            Bson group = new Document("$group", new Document("_id", new Document("TotalTime","$TotalTime")));
+            Bson match3 = match(new Document("TotalTime", new Document("$gt", 91)));
+            //Bson group = new Document("$group", new Document("_id","$TotalTime"));
+            Bson matchR = match(new Document("Reviews.19",new Document("$exists",true)));
             Bson sort = sort(descending("AggregatedRating"));
             Bson limit = limit(3);
             Bson project = project(include("RecipeId","Name","TotalTime","AggregatedRating"));
-            System.out.println("Top Recipes with TotalTime: 1-30");
-            collection.aggregate(Arrays.asList(match,match1,sort,limit,project)).forEach(printDocuments());
-            System.out.println("Top Recipes with TotalTime: 31-90");
-            collection.aggregate(Arrays.asList(match,match2,sort,limit,project)).forEach(printDocuments());
-            System.out.println("Top Recipes with TotalTime: 91-*");
-            collection.aggregate(Arrays.asList(match,match3,sort,limit,project)).forEach(printDocuments());
+            System.out.println("Top Recipes with TotalTime: 1-30:");
+            collection.aggregate(Arrays.asList(matchR,match1,sort,limit,project)).forEach(printDocuments());
+            System.out.println("Top Recipes with TotalTime: 31-90:");
+            collection.aggregate(Arrays.asList(matchR,match2,sort,limit,project)).forEach(printDocuments());
+            System.out.println("Top Recipes with TotalTime: 91-*:");
+            collection.aggregate(Arrays.asList(matchR,match3,sort,limit,project)).forEach(printDocuments());
         }
     }
 
-    private static Consumer<Document> printDocuments() {
-        return doc -> System.out.println(doc.toJson());
+    public void onMostUsedIngredientsClick(ActionEvent actionEvent) {
+        String uri = "mongodb://localhost:27017";
+        try (MongoClient mongoClient = MongoClients.create(uri)) {
+            MongoDatabase database = mongoClient.getDatabase("RecipeShare");
+            MongoCollection<Document> collection = database.getCollection("recipe");
+            Bson matchR = match(new Document("Reviews.19",new Document("$exists",true))); //questo non so se metterlo
+            Bson unwind = new Document("$unwind",new Document("path","$RecipeIngredientParts"));
+            Bson group = new Document("$group", new Document("_id", "$RecipeIngredientParts").
+                    append("count",new Document("$count",new Document())));
+            Bson project = project(include("RecipeIngredientParts"));
+            Bson limit = limit(10);
+            Bson sort = sort(descending("count"));
+            System.out.println("Most used Ingredients:");
+            collection.aggregate(Arrays.asList(project,unwind,group,sort,limit)).forEach(printDocuments());
+        }
     }
 
     public void onRecipesWithHighestratingClick(ActionEvent actionEvent) {
@@ -62,8 +71,13 @@ public class LoggatoAnalyticsController {
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             MongoDatabase database = mongoClient.getDatabase("RecipeShare");
             MongoCollection<Document> collection = database.getCollection("recipe");
-            Bson filter1 = new Document("Reviews.4", new Document("$exists", true));
-            collection.find(filter1).sort(Sorts.descending("AggregatedRating")).limit(10).iterator().forEachRemaining(printDocuments());
+            Bson matchR = match(new Document("Reviews.19", new Document("$exists", true)));
+            Bson limit = limit(10);
+            Bson sort = sort(descending("AggregatedRating"));
+            Bson project = project(include("RecipeId","Name","AggregatedRating"));
+            System.out.println("Top Recipes:");
+            collection.aggregate(Arrays.asList(matchR,sort,limit,project)).forEach(printDocuments());
+            //collection.find(filter1).sort(Sorts.descending("AggregatedRating")).limit(10).iterator().forEachRemaining(printDocuments());
             /*MongoCursor<Document> cursor = collection.find(filter1).sort(Sorts.descending("AggregatedRating")).limit(10).iterator();
             while (cursor.hasNext()) {
                 Document c = cursor.next();
@@ -84,8 +98,8 @@ public class LoggatoAnalyticsController {
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             MongoDatabase database = mongoClient.getDatabase("RecipeShare");
             MongoCollection<Document> collection = database.getCollection("recipe");
-            Bson filter1 = new Document("Reviews.4",new Document("$exists",true));
-            Bson match1 = match(filter1);
+            Bson filter = new Document("Reviews.19",new Document("$exists",true));
+            Bson match1 = match(filter);
             Bson sort = new Document("$sort", new Document("AggregatedRating",-1));
             Bson group = new Document("$group", new Document("_id", "$RecipeCategory")
                     .append("RecipeId",new Document("$first","$RecipeId"))
