@@ -75,21 +75,33 @@ public class LoggatoAnalyticsController {
         }
     }
 
+    //{$sort: {'color': 1, value: -1}},
+    //{$group: {_id: '$color', value: {$first: '$value'}}}
     public void onTopRecipesForEachCategory(ActionEvent actionEvent) {
         String uri = "mongodb://localhost:27017";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             MongoDatabase database = mongoClient.getDatabase("RecipeShare");
             MongoCollection<Document> collection = database.getCollection("recipe");
-            MongoCursor<Document> cursor = collection.find().sort(Sorts.descending("AggregateRating")).limit(10).iterator();
+            Bson filter1 = new Document("Reviews.4",new Document("$exists",true));
+            Bson match1 = match(filter1);
+            Bson sort = new Document("$sort", new Document("AggregatedRating",-1));
+            Bson group = new Document("$group", new Document("_id", "$RecipeCategory")
+                    .append("RecipeId",new Document("$first","$RecipeId"))
+                    .append("Name",new Document("$first","$Name"))
+                    .append("AggregatedRating",new Document("$first","$AggregatedRating"))
+                    .append("Images",new Document("$first","$Images")));
+            collection.aggregate(Arrays.asList(match1,sort,group)).forEach(printDocuments());
+
+            /*MongoCursor<Document> cursor = collection.find().sort(Sorts.descending("AggregateRating")).limit(10).iterator();
             while (cursor.hasNext()) {
                 System.out.println(cursor.next().toJson());
                 FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("LoggatoAnalytics.fxml"));
-                /*stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+                stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
                 Scene scene = new Scene(fxmlLoader.load(), 600, 500);
                 stage.setTitle("Hello "+ name);
                 stage.setScene(scene);
-                stage.show();*/
-            }
+                stage.show();
+            }*/
         }
     }
 }
