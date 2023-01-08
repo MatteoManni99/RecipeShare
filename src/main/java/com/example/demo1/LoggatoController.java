@@ -16,29 +16,26 @@ public class LoggatoController {
     private Stage stage;
     @FXML
     public void onLogoutClick(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 500, 500);
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
-        stage.show();
+        String nomeSchermata = "hello-view.fxml";
+        cambiaSchermata(actionEvent,nomeSchermata);
     }
 
     @FXML
     public void onCercaUtenteClick(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Ricerca_Utente.fxml"));
-        stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 500, 500);
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
-        stage.show();
+        String nomeSchermata = "Ricerca_Utente.fxml";
+        cambiaSchermata(actionEvent,nomeSchermata);
     }
+
     @FXML
     public void onAnalyticsClick(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("LoggatoAnalytics.fxml"));
+        String nomeSchermata = "LoggatoAnalytics.fxml";
+        cambiaSchermata(actionEvent,nomeSchermata);
+    }
+
+    public void cambiaSchermata(ActionEvent actionEvent,String nomeSchermata) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(nomeSchermata));
         stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 500, 500);
-        stage.setTitle("Hello!");
+        Scene scene = new Scene(fxmlLoader.load(), 600, 500);
         stage.setScene(scene);
         stage.show();
     }

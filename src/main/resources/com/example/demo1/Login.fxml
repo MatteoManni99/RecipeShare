@@ -15,7 +15,7 @@
             <Label layoutX="195.0" layoutY="113.0" text="Password" />
             <Button layoutX="274.0" layoutY="162.0" mnemonicParsing="false" onAction="#onLoginClick" text="LOGIN" />
             <Button layoutX="354.0" layoutY="200.0" mnemonicParsing="false" onAction="#onRegisterClick" text="REGISTER" />
-            <Label layoutX="165.0" layoutY="204.0" text="Non hai un'account? Registrati qui" />
+            <Label onMouseClicked="#onTextClick" layoutX="165.0" layoutY="204.0" text="Non hai un'account? Registrati qui" />
             <TextField fx:id="insertedName" layoutX="258.0" layoutY="69.0" />
             <TextField fx:id="insertedPassword" layoutX="258.0" layoutY="109.0" />
          </children>

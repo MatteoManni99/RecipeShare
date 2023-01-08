@@ -20,19 +20,19 @@ public class Controller {
     }
     @FXML
     public void onLoginClick(ActionEvent actionEvent) throws IOException {
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Login.fxml"));
-            stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(fxmlLoader.load(), 500, 500);
-            stage.setTitle("Hello!");
-            stage.setScene(scene);
-            stage.show();
+        String nomeSchermata = "Login.fxml";
+        cambiaSchermata(actionEvent,nomeSchermata);
     }
 
     public void onModeratorClick(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Moderator.fxml"));
+        String nomeSchermata = "Moderator.fxml";
+        cambiaSchermata(actionEvent,nomeSchermata);
+    }
+
+    public void cambiaSchermata(ActionEvent actionEvent,String nomeSchermata) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(nomeSchermata));
         stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 600, 500);
-        stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
     }

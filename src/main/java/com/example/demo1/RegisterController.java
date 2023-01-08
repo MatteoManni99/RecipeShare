@@ -67,15 +67,19 @@ public class RegisterController {
                     System.err.println("Unable to insert due to an error: " + me);
                 }
                 //visto che la registrazione è andata bene vado subito alla schermata di loggato
-                FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Loggato.fxml"));
-                stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-                Scene scene = new Scene(fxmlLoader.load(), 600, 500);
-                stage.setTitle("Hello "+ name);
-                stage.setScene(scene);
-                stage.show();
+                String nomeSchermata = "Loggato.fxml";
+                cambiaSchermata(actionEvent,nomeSchermata);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void cambiaSchermata(ActionEvent actionEvent,String nomeSchermata) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(nomeSchermata));
+        stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(fxmlLoader.load(), 600, 500);
+        stage.setScene(scene);
+        stage.show();
     }
 }
