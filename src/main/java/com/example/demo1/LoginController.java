@@ -53,21 +53,21 @@ public class LoginController {
             NAME = Carmen
             PASSWORD = 6czYhW4F
         */
-        String name = insertedName.getText();
-        String password = insertedPassword.getText();
         String uri = "mongodb://localhost:27017";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             MongoDatabase database = mongoClient.getDatabase("RecipeShare"); //da scegliere il nome uguale per tutti
             MongoCollection<Document> collectionAuthor = database.getCollection("author");
-            login(actionEvent, collectionAuthor, "authorName", name, password, "Loggato.fxml");
+            login(actionEvent, collectionAuthor, "authorName", "Loggato.fxml");
             MongoCollection<Document> collectionModerator = database.getCollection("moderator");
-            login(actionEvent, collectionModerator, "moderatorName", name, password, "Moderator.fxml");
+            login(actionEvent, collectionModerator, "moderatorName","Moderator.fxml");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void login(ActionEvent actionEvent, MongoCollection<Document> collection, String username, String name, String password, String fxml) throws IOException {
+    public void login(ActionEvent actionEvent, MongoCollection<Document> collection, String username, String fxml) throws IOException {
+        String name = insertedName.getText();
+        String password = insertedPassword.getText();
         Bson filterModerator = Filters.and(
                 Filters.eq(username, name),
                 Filters.eq("password", password));
