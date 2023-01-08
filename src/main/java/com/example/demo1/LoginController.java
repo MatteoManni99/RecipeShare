@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -57,42 +58,30 @@ public class LoginController {
         String uri = "mongodb://localhost:27017";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             MongoDatabase database = mongoClient.getDatabase("RecipeShare"); //da scegliere il nome uguale per tutti
-            MongoCollection<Document> collection = database.getCollection("author");
-            Bson filter = Filters.and(
-                    Filters.eq("authorName", name),
-                    Filters.eq("password", password));
-            MongoCursor<Document> cursor = collection.find(filter).iterator();
-            if (cursor.hasNext()) {
-                System.out.println("TROVATO");
-                //cambio pagina
-                FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Loggato.fxml"));
-                stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-                Scene scene = new Scene(fxmlLoader.load(), 600, 500);
-                stage.setTitle("Hello "+ name);
-                stage.setScene(scene);
-                stage.show();
-            }
-            else System.out.println("N");
-
+            MongoCollection<Document> collectionAuthor = database.getCollection("author");
+            login(actionEvent, collectionAuthor, "authorName", name, password, "Loggato.fxml");
             MongoCollection<Document> collectionModerator = database.getCollection("moderator");
-            Bson filterModerator = Filters.and(
-                    Filters.eq("moderatorName", name),
-                    Filters.eq("password", password));
-            MongoCursor<Document> cursorModerator = collectionModerator.find(filterModerator).iterator();
-            if (cursorModerator.hasNext()) {
-                System.out.println("OKAY MODERATOR");
-                //cambio pagina
-                FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Moderator.fxml"));
-                stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-                Scene scene = new Scene(fxmlLoader.load(), 600, 500);
-                stage.setTitle("Hello "+ name);
-                stage.setScene(scene);
-                stage.show();
-            }
-            else System.out.println("NO MODERATOR");
-
+            login(actionEvent, collectionModerator, "moderatorName", name, password, "Moderator.fxml");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void login(ActionEvent actionEvent, MongoCollection<Document> collection, String username, String name, String password, String fxml) throws IOException {
+        Bson filterModerator = Filters.and(
+                Filters.eq(username, name),
+                Filters.eq("password", password));
+        MongoCursor<Document> cursor = collection.find(filterModerator).iterator();
+        if (cursor.hasNext()) {
+            System.out.println("OKAY");
+            //cambio pagina
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(fxml));
+            stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(fxmlLoader.load(), 600, 500);
+            stage.setTitle("Hello "+ name);
+            stage.setScene(scene);
+            stage.show();
+        }
+        else System.out.println("NO");
     }
 }
