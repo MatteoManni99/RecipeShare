@@ -74,6 +74,23 @@ public class LoginController {
             }
             else System.out.println("N");
 
+            MongoCollection<Document> collectionModerator = database.getCollection("moderator");
+            Bson filterModerator = Filters.and(
+                    Filters.eq("moderatorName", name),
+                    Filters.eq("password", password));
+            MongoCursor<Document> cursorModerator = collectionModerator.find(filterModerator).iterator();
+            if (cursorModerator.hasNext()) {
+                System.out.println("OKAY MODERATOR");
+                //cambio pagina
+                FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Moderator.fxml"));
+                stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+                Scene scene = new Scene(fxmlLoader.load(), 600, 500);
+                stage.setTitle("Hello "+ name);
+                stage.setScene(scene);
+                stage.show();
+            }
+            else System.out.println("NO MODERATOR");
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
