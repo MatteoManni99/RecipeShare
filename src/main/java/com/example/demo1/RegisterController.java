@@ -43,7 +43,7 @@ public class RegisterController {
         warningText.setLayoutX(insertedPassword.getLayoutX() - 100);
         warningText.setLayoutY(insertedPassword.getLayoutY() + 100);
         try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("test"); //da scegliere il nome uguale per tutti
+            MongoDatabase database = mongoClient.getDatabase("RecipeShare"); //da scegliere il nome uguale per tutti
             MongoCollection<Document> collection = database.getCollection("author");
             Bson filter = Filters.eq("authorName", name);
             MongoCursor<Document> cursor = collection.find(filter).iterator();
