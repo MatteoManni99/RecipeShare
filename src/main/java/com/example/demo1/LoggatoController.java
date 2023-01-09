@@ -2,6 +2,8 @@ package com.example.demo1;
 
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +12,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -59,19 +63,22 @@ public class LoggatoController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         String uri = "mongodb://localhost:27017";
-        List<String> recipesIdList = new ArrayList<>();
+        ObservableList<String> recipesIdList = FXCollections.observableArrayList();
         Integer count = 0; //per fare debug (da togliere)
+        ImageView imageView = new ImageView();
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             MongoDatabase database = mongoClient.getDatabase("RecipeShare");
             MongoCollection<Document> collectionRecipe = database.getCollection("recipe");
-            Bson project = project(include("RecipeId","Name","AggregatedRating","Images")); //da rivedere i campi in base a quello che vogliamo far visualizzare
+            //Bson project = project(include("RecipeId","Name","AggregatedRating","Images")); //da rivedere i campi in base a quello che vogliamo far visualizzare
+            Bson project = project(new Document("Images",new Document("$first","$Images"))
+                    .append("Name",1).append("RecipeId",1));
             Bson limit = limit(10);
             for (Document document : collectionRecipe.aggregate(Arrays.asList(limit, project))) {
                 System.out.println(count); //per fare debug (da togliere)
-                count += 1;
-                recipesIdList.add(String.valueOf(document.get("RecipeId")));
+                count += 1; //per fare debug (da togliere)
+                recipesIdList.add(String.valueOf(document.getInteger("RecipeId")));
             }
-            RecipesListView.getItems().addAll(recipesIdList);
+            RecipesListView.setItems(recipesIdList);
         }
     }
 }
