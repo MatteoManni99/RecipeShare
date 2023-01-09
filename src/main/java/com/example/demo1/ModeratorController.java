@@ -88,7 +88,7 @@ public class ModeratorController implements Initializable {
         startingX = recipeText.getLayoutX();
 
         try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("test"); //da scegliere il nome uguale per tutti
+            MongoDatabase database = mongoClient.getDatabase("RecipeShare"); //da scegliere il nome uguale per tutti
             MongoCollection<Document> collection = database.getCollection("reportedRecipes");
 
             MongoCursor<Document> cursor = collection.find().iterator();
