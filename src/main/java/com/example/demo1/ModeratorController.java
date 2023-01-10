@@ -1,10 +1,6 @@
 package com.example.demo1;
 
-import com.mongodb.MongoException;
 import com.mongodb.client.*;
-import com.mongodb.client.model.Filters;
-import com.mongodb.internal.operation.MapReduceWithInlineResultsOperation;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,13 +13,17 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.mongodb.client.model.Aggregates.*;
+import static com.mongodb.client.model.Filters.gt;
+import static com.mongodb.client.model.Filters.gte;
+import static com.mongodb.client.model.Indexes.descending;
+import static com.mongodb.client.model.Projections.include;
 
 public class ModeratorController implements Initializable {
     @FXML
@@ -45,7 +45,35 @@ public class ModeratorController implements Initializable {
         cambiaSchermata(actionEvent,nomeSchermata);
     }
 
-    public void highestRatioQuery() {
+    public void onHighestRatioQueryClick() {
+        String uri = "mongodb://localhost:27017";
+        Map<String, Integer> map = new TreeMap<String, Integer>();
+        Map<String, Double> mapRatio = new TreeMap<String, Double>();
+        try (MongoClient mongoClient = MongoClients.create(uri)) {
+            MongoDatabase database = mongoClient.getDatabase("RecipeShare");
+            Bson group = new Document("$group", new Document("_id", "$AuthorName").
+                    append("count",new Document("$count",new Document())));
+            //Bson match = match(gt("count", 1));
+            Bson sort = sort(descending("_id"));
+
+            MongoCollection<Document> collectionRecipe = database.getCollection("recipe");
+            for (Document document : collectionRecipe.aggregate(Arrays.asList(group))) {
+                map.put(String.valueOf(document.getString("_id")),document.getInteger("count"));
+            }
+            //map.forEach((key, value) -> System.out.println(key + ":" + value));
+
+            MongoCollection<Document> collectionReportedRecipes = database.getCollection("reportedRecipes");
+            for (Document document : collectionReportedRecipes.aggregate(Arrays.asList(group))) {
+                String authorName = document.getString("_id");
+                Integer count = document.getInteger("count");
+                Integer recipeTot = map.get(authorName);
+                if (map.containsKey(authorName) && recipeTot>1){ //con questo tolgo quelli che hanno creato 1 ricetta (si può aumentare la soglia o togliere)
+                    mapRatio.put(authorName,((double)count)/map.get(authorName));
+                }
+            }
+            Map<String, Double> sortedMapRatioAsc = sortByValue(mapRatio,false);
+            sortedMapRatioAsc.forEach((key, value) -> System.out.println(key + ":" + value));
+        }
         /*PSEUDO CODICE
         String uri = "mongodb://localhost:27017";
         int numeroDiTopAutori = 5;
@@ -79,6 +107,18 @@ public class ModeratorController implements Initializable {
             throw new RuntimeException(e);
         }
         */
+    }
+    private static Map<String, Double> sortByValue(Map<String, Double> unsortMap, final boolean order)
+    {
+        List<Map.Entry<String, Double>> list = new LinkedList<>(unsortMap.entrySet());
+
+        // Sorting the list based on values
+        list.sort((o1, o2) -> order ? o1.getValue().compareTo(o2.getValue()) == 0
+                ? o1.getKey().compareTo(o2.getKey())
+                : o1.getValue().compareTo(o2.getValue()) : o2.getValue().compareTo(o1.getValue()) == 0
+                ? o2.getKey().compareTo(o1.getKey())
+                : o2.getValue().compareTo(o1.getValue()));
+        return list.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
     }
 
     @Override
