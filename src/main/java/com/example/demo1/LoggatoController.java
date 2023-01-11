@@ -52,6 +52,12 @@ public class LoggatoController implements Initializable{
         cambiaSchermata(actionEvent,nomeSchermata);
     }
 
+    @FXML
+    public void onProvaRecipe(ActionEvent actionEvent) throws IOException {
+        String nomeSchermata = "Recipe.fxml";
+        cambiaSchermata(actionEvent,nomeSchermata);
+    }
+
     public void cambiaSchermata(ActionEvent actionEvent,String nomeSchermata) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(nomeSchermata));
         stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
