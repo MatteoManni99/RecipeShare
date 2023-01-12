@@ -50,7 +50,7 @@ public class LoginController {
         String password = insertedPassword.getText();
         String uri = "mongodb://localhost:27017";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("RecipeShare"); //da scegliere il nome uguale per tutti
+            MongoDatabase database = mongoClient.getDatabase("test"); //da scegliere il nome uguale per tutti
             MongoCollection<Document> collectionAuthor = database.getCollection("author");
             MongoCollection<Document> collectionModerator = database.getCollection("moderator");
             Bson filterAuthor = Filters.and(

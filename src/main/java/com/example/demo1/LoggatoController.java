@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -30,6 +31,7 @@ import static com.mongodb.client.model.Aggregates.project;
 import static com.mongodb.client.model.Projections.include;
 
 public class LoggatoController implements Initializable{
+    public AnchorPane anchorPane;
     @FXML
     private Label welcomeText;
     private Stage stage;
@@ -63,7 +65,8 @@ public class LoggatoController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         String uri = "mongodb://localhost:27017";
-        ObservableList<String> recipesIdList = FXCollections.observableArrayList();
+        createTableView();
+        /*ObservableList<String> recipesIdList = FXCollections.observableArrayList();
         Integer count = 0; //per fare debug (da togliere)
         ImageView imageView = new ImageView();
         try (MongoClient mongoClient = MongoClients.create(uri)) {
@@ -79,6 +82,14 @@ public class LoggatoController implements Initializable{
                 recipesIdList.add(String.valueOf(document.getInteger("RecipeId")));
             }
             RecipesListView.setItems(recipesIdList);
-        }
+        }*/
+    }
+
+    public void createTableView() {
+        ClassFotTableView newTableViewObject = new ClassFotTableView();
+        newTableViewObject.initializeTableView();
+        newTableViewObject.setTabellaDB();
+        newTableViewObject.caricaElementiTableViewDB();
+        anchorPane.getChildren().add(newTableViewObject.getTabellaDB());
     }
 }

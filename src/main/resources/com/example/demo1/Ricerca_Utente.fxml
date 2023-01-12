@@ -8,13 +8,13 @@
 
 <VBox alignment="TOP_CENTER" prefHeight="443.0" prefWidth="498.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.Ricerca_UtenteController">
    <children>
-      <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
          <children>
             <Label layoutX="262.0" layoutY="41.0" text="RECIPE SHARE" />
             <Button layoutX="522.0" layoutY="76.0" mnemonicParsing="false" onAction="#onLogoutClick" text="LOGOUT" />
-            <Button fx:id="cercaUtenteButton" onAction="#onCercaUtenteClick" layoutX="164.0" layoutY="76.0" mnemonicParsing="false" text="CERCA UTENTE" />
+            <Button fx:id="cercaUtenteButton" layoutX="164.0" layoutY="76.0" mnemonicParsing="false" text="CERCA UTENTE" />
             <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="TORNA INDIETRO" />
-            <TextField fx:id="utenteCercato" layoutX="290.0" layoutY="76.0" />
+            <TextField layoutX="290.0" layoutY="76.0" />
          </children>
       </AnchorPane>
    </children>
