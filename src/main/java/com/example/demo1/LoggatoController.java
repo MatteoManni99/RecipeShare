@@ -94,8 +94,8 @@ public class LoggatoController implements Initializable{
     public void createTableView() {
         ClassFotTableView newTableViewObject = new ClassFotTableView();
         newTableViewObject.initializeTableView();
-        newTableViewObject.setTabellaDB();
         newTableViewObject.caricaElementiTableViewDB();
+        newTableViewObject.setTabellaDB();
         anchorPane.getChildren().add(newTableViewObject.getTabellaDB());
     }
 }

@@ -18,27 +18,27 @@ public class Recipe {
     private SimpleStringProperty authorNameTable;
     private ImageView imageLinkTable;
 
-    public Recipe(Object recipeId, Object recipeName, Object authorId, Object authorName, Object image) {
+    /*public Recipe(Object recipeId, Object recipeName, Object authorId, Object authorName, Object image) {
         this.recipeId = recipeId;
         this.recipeName = recipeName;
         this.authorId = authorId;
         this.authorName = authorName;
         this.imageLink = image;
         recipeImage = new ImageView((String) image);
-    }
+    }*/
 
-    public void RecipeSimpleProperty(SimpleIntegerProperty recipeId, SimpleStringProperty recipeName, SimpleIntegerProperty authorId, SimpleStringProperty authorName, SimpleStringProperty image) {
-        recipeIdTable = recipeId;
-        recipeNameTable = recipeName;
-        authorIdTable = authorId;
-        authorNameTable = authorName;
-        imageLinkTable = new ImageView(String.valueOf(image));
+    public Recipe(int recipeId, String name, int authorId, String authorName, ImageView image) {
+        recipeIdTable = new SimpleIntegerProperty(recipeId);
+        recipeNameTable = new SimpleStringProperty(name);
+        authorIdTable = new SimpleIntegerProperty(authorId);
+        authorNameTable = new SimpleStringProperty(authorName);
+        imageLinkTable = new ClassFotTableView.CustomImage(image).getImage();
     }
 
     public int getRecipeId() { return recipeIdTable.get(); }
-    public String getRecipeNameTable() { return recipeNameTable.get(); }
-    public int getAuthorIdTable() { return authorIdTable.get(); }
-    public String getAuthorNameTable() { return authorNameTable.get(); }
-    //public String getImageTable() { return imageLinkTable.get(); }
+    public String getName() { return recipeNameTable.get(); }
+    public int getAuthorId() { return authorIdTable.get(); }
+    public String getAuthorName() { return authorNameTable.get(); }
+    public ImageView getImage() { return imageLinkTable; }
 
 }
