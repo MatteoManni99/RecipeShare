@@ -12,7 +12,7 @@
             <Label layoutX="262.0" layoutY="25.0" text="RECIPE SHARE" />
             <Button layoutX="14.0" layoutY="75.0" mnemonicParsing="false" text="TROVA RECIPE" />
             <Button layoutX="522.0" layoutY="75.0" mnemonicParsing="false" onAction="#onLogoutClick" text="LOGOUT" />
-            <Button layoutX="509.0" layoutY="109.0" mnemonicParsing="false" text="VIEW &#10;ANALYTICS" textAlignment="CENTER" />
+            <Button layoutX="509.0" layoutY="109.0" mnemonicParsing="false" onAction="#onHighestRatioQueryClick" text="VIEW &#10;ANALYTICS" textAlignment="CENTER" />
             <Button layoutX="516.0" layoutY="157.0" mnemonicParsing="false" onAction="#onBrowseAuthorsClick" text="BROWSE &#10;AUTHORS" textAlignment="CENTER" />
             <Label fx:id="reviewText" layoutX="345.0" layoutY="134.0" text="Qui puoi vedere la lista &#10;delle Review reportate  " textAlignment="CENTER" />
             <Label fx:id="recipeText" layoutX="61.0" layoutY="134.0" text="Qui puoi vedere la lista &#10;delle Recipe reportate  " textAlignment="CENTER" />

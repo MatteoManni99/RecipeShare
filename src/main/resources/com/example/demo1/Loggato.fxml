@@ -20,6 +20,7 @@
             <Label layoutX="207.0" layoutY="131.0" text="Qui puoi vedere la lista delle recipe" />
             <Label layoutX="262.0" layoutY="31.0" text="RECIPE SHARE" />
             <ListView fx:id="RecipesListView" layoutX="157.0" layoutY="177.0" prefHeight="192.0" prefWidth="276.0" />
+            <Button layoutX="21.0" layoutY="177.0" mnemonicParsing="false" text="PROVARECIPE" onAction="#onProvaRecipe"/>
          </children>
       </AnchorPane>
    </children>
