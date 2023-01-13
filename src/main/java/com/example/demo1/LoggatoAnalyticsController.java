@@ -25,7 +25,7 @@ public class LoggatoAnalyticsController {
     }
 
     public void onTopRecipesForRangesOfPreparationTimeClick(ActionEvent actionEvent) {
-        String uri = "mongodb://localhost:27017";
+        String uri = Configuration.MONGODB_URL;
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             MongoDatabase database = mongoClient.getDatabase("RecipeShare");
             MongoCollection<Document> collection = database.getCollection("recipe");

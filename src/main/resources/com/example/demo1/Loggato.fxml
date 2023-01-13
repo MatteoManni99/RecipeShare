@@ -2,25 +2,25 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="TOP_CENTER" prefHeight="443.0" prefWidth="498.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.LoggatoController">
+<VBox alignment="TOP_CENTER" prefHeight="600" prefWidth="1000" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.LoggatoController">
    <children>
-      <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+      <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0">
          <children>
             <Button layoutX="14.0" layoutY="80.0" mnemonicParsing="false" onAction="#onCercaUtenteClick" text="CERCA UTENTE" />
             <Button layoutX="14.0" layoutY="114.0" mnemonicParsing="false" text="TROVA RECIPE" />
             <Button layoutX="14.0" layoutY="215.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="94.0" text="CREA RECIPE" />
             <Button alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="249.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="94.0" text="VIEW &#10;SUGGESTIONS" textAlignment="CENTER" />
-            <Button layoutX="522.0" layoutY="80.0" mnemonicParsing="false" onAction="#onLogoutClick" text="LOGOUT" />
-            <Button layoutX="510.0" layoutY="198.0" mnemonicParsing="false" text="SHOW &#10;FOLLOWED &#10;AUTHORS" textAlignment="CENTER" />
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="510.0" layoutY="266.0" mnemonicParsing="false" onAction="#onAnalyticsClick" prefHeight="47.0" prefWidth="81.0" text="VIEW &#10;ANALYTICS" textAlignment="CENTER" />
-            <Label layoutX="207.0" layoutY="131.0" text="Qui puoi vedere la lista delle recipe" />
+            <Button layoutX="814.0" layoutY="101.0" mnemonicParsing="false" onAction="#onLogoutClick" text="LOGOUT" />
+            <Button layoutX="807.0" layoutY="198.0" mnemonicParsing="false" text="SHOW&#10;FOLLOWED&#10;AUTHORS" textAlignment="CENTER" />
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="805.0" layoutY="272.0" mnemonicParsing="false" onAction="#onAnalyticsClick" prefHeight="47.0" prefWidth="81.0" text="VIEW &#10;ANALYTICS" textAlignment="CENTER" />
+            <Label layoutX="292.0" layoutY="105.0" text="Qui puoi vedere la lista delle recipe" />
             <Label layoutX="262.0" layoutY="31.0" text="RECIPE SHARE" />
-            <ListView fx:id="RecipesListView" layoutX="157.0" layoutY="177.0" prefHeight="192.0" prefWidth="276.0" />
-            <Button layoutX="21.0" layoutY="177.0" mnemonicParsing="false" text="PROVARECIPE" onAction="#onProvaRecipe"/>
+            <Button layoutX="15.0" layoutY="172.0" mnemonicParsing="false" onAction="#onProvaRecipe" text="PROVARECIPE" />
+            <Button layoutX="489.0" layoutY="101.0" mnemonicParsing="false" onAction="#onNextPageClick" text="Next page" />
+            <Button layoutX="191.0" layoutY="101.0" mnemonicParsing="false" onAction="#onPreviousPageClick" text="Previous page" />
          </children>
       </AnchorPane>
    </children>

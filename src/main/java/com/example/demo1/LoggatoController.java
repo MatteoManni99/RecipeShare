@@ -1,9 +1,5 @@
 package com.example.demo1;
 
-import com.mongodb.client.*;
-import com.mongodb.client.model.Filters;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,23 +7,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.bson.Document;
-import org.bson.conversions.Bson;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 
-import static com.mongodb.client.model.Aggregates.limit;
-import static com.mongodb.client.model.Aggregates.project;
 import static com.mongodb.client.model.Projections.include;
 
 public class LoggatoController implements Initializable{
@@ -35,7 +21,8 @@ public class LoggatoController implements Initializable{
     @FXML
     private Label welcomeText;
     private Stage stage;
-    public ListView<String> RecipesListView;
+    private ClassFotTableView TableViewObject = new ClassFotTableView();
+    private Integer pageNumber = 1;
     @FXML
     public void onLogoutClick(ActionEvent actionEvent) throws IOException {
         String nomeSchermata = "hello-view.fxml";
@@ -59,11 +46,23 @@ public class LoggatoController implements Initializable{
         String nomeSchermata = "Recipe.fxml";
         cambiaSchermata(actionEvent,nomeSchermata);
     }
+    @FXML
+    public void onNextPageClick(){
+        pageNumber = pageNumber + 1;
+        updateTableView(TableViewObject,pageNumber);
+    }
+    @FXML
+    public void onPreviousPageClick(){
+        if(pageNumber>=1){
+            pageNumber = pageNumber - 1;
+            updateTableView(TableViewObject,pageNumber);
+        }
+    }
 
     public void cambiaSchermata(ActionEvent actionEvent,String nomeSchermata) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(nomeSchermata));
         stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 600, 500);
+        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         stage.setScene(scene);
         stage.show();
     }
@@ -71,7 +70,7 @@ public class LoggatoController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         String uri = Configuration.MONGODB_URL;
-        createTableView();
+        createTableView(TableViewObject);
         /*ObservableList<String> recipesIdList = FXCollections.observableArrayList();
         Integer count = 0; //per fare debug (da togliere)
         ImageView imageView = new ImageView();
@@ -91,11 +90,13 @@ public class LoggatoController implements Initializable{
         }*/
     }
 
-    public void createTableView() {
-        ClassFotTableView newTableViewObject = new ClassFotTableView();
-        newTableViewObject.initializeTableView();
-        newTableViewObject.caricaElementiTableViewDB();
-        newTableViewObject.setTabellaDB();
-        anchorPane.getChildren().add(newTableViewObject.getTabellaDB());
+    public void createTableView (ClassFotTableView TableViewObject) {
+        TableViewObject.initializeTableView();
+        TableViewObject.caricaElementiTableViewDB();
+        TableViewObject.setTabellaDB();
+        anchorPane.getChildren().add(TableViewObject.getTabellaDB());
+    }
+    public void updateTableView(ClassFotTableView TableViewObject,Integer pageNumber){
+        TableViewObject.uploadNewElementsTableViewDB(pageNumber);
     }
 }

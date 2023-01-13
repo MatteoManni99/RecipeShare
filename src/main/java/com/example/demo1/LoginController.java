@@ -85,7 +85,7 @@ public class LoginController {
     public void cambiaSchermata(ActionEvent actionEvent,String nomeSchermata) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(nomeSchermata));
         stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 600, 500);
+        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         stage.setScene(scene);
         stage.show();
     }
