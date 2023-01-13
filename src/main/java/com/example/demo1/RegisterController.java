@@ -38,13 +38,13 @@ public class RegisterController {
         */
         String name = insertedName.getText();
         String password = insertedPassword.getText();
-        String uri = "mongodb://localhost:27017";
+        String uri = Configuration.MONGODB_URL;
         Label warningText = new Label();
         warningText.setLayoutX(insertedPassword.getLayoutX() - 100);
         warningText.setLayoutY(insertedPassword.getLayoutY() + 100);
         try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("RecipeShare"); //da scegliere il nome uguale per tutti
-            MongoCollection<Document> collection = database.getCollection("author");
+            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
+            MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_AUTHOR);
             Bson filter = Filters.eq("authorName", name);
             MongoCursor<Document> cursor = collection.find(filter).iterator();
             //finché non si trova un nickname valido si deve ritentare

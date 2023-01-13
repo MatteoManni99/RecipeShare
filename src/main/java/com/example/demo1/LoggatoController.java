@@ -70,7 +70,7 @@ public class LoggatoController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String uri = "mongodb://localhost:27017";
+        String uri = Configuration.MONGODB_URL;
         createTableView();
         /*ObservableList<String> recipesIdList = FXCollections.observableArrayList();
         Integer count = 0; //per fare debug (da togliere)

@@ -56,9 +56,9 @@ public class ClassFotTableView {
 
     public void caricaElementiTableViewDB() { //1
         ol = FXCollections.observableArrayList();
-        String uri = "mongodb://localhost:27017";
-        String nomeDatabase = "test";
-        String nomeCollection = "recipes";
+        String uri = Configuration.MONGODB_URL;
+        String nomeDatabase = Configuration.MONGODB_DB;
+        String nomeCollection = Configuration.MONGODB_RECIPE;
         List<Document> listaRecipes = new ArrayList<>();
 
         try (MongoClient mongoClient = MongoClients.create(uri)) {

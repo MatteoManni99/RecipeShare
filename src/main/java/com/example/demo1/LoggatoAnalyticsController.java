@@ -94,10 +94,10 @@ public class LoggatoAnalyticsController {
     //{$sort: {'color': 1, value: -1}},
     //{$group: {_id: '$color', value: {$first: '$value'}}}
     public void onTopRecipesForEachCategory(ActionEvent actionEvent) {
-        String uri = "mongodb://localhost:27017";
+        String uri = Configuration.MONGODB_URL;
         try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("RecipeShare");
-            MongoCollection<Document> collection = database.getCollection("recipe");
+            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
+            MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_RECIPE);
             Bson filter = new Document("Reviews.19",new Document("$exists",true));
             Bson match1 = match(filter);
             Bson sort = new Document("$sort", new Document("AggregatedRating",-1));

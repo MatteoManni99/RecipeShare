@@ -123,13 +123,13 @@ public class ModeratorController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String uri = "mongodb://localhost:27017";
+        String uri = Configuration.MONGODB_URL;
         List<Document> listaReportedRecipes = new ArrayList<>();
         startingX = recipeText.getLayoutX();
 
         try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("RecipeShare"); //da scegliere il nome uguale per tutti
-            MongoCollection<Document> collection = database.getCollection("reportedRecipes");
+            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
+            MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_REPORTED_RECIPE);
 
             MongoCursor<Document> cursor = collection.find().iterator();
             while (cursor.hasNext())

@@ -37,10 +37,10 @@ public class RecipeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Integer id_recipe = 38;
-        String uri = "mongodb://localhost:27017";
+        String uri = Configuration.MONGODB_URL;
         try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("RecipeShare");
-            MongoCollection<Document> collectionRecipe = database.getCollection("recipe");
+            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
+            MongoCollection<Document> collectionRecipe = database.getCollection(Configuration.MONGODB_RECIPE);
             Bson match = match(Filters.eq("RecipeId", id_recipe));
             Bson project = project(new Document("Images",new Document("$first","$Images"))
                     .append("Name",1).append("RecipeId",1));

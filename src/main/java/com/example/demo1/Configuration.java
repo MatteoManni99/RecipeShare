@@ -1,69 +1,26 @@
 package com.example.demo1;
-
-import com.thoughtworks.xstream.*;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.*;
+import java.util.Properties;
 
 public class Configuration {
-    public static String databaseIp;
-    public static int databasePort;
-    public static String databaseUser;
-    public static String databasePsw;
-    public static int classificaMaxLines;
-    public static int totalAliens;
-    public static int totalLives;
+    public static final String MONGODB_URL = load("MONGODB_URL");
+    public static final String MONGODB_DB = load("MONGODB_DB");
+    public static final String MONGODB_RECIPE = load("MONGODB_RECIPE");
+    public static final String MONGODB_REPORTED_RECIPE = load("MONGODB_REPORTED_RECIPE");
+    public static final String MONGODB_REVIEW = load("MONGODB_REVIEW");
+    public static final String MONGODB_AUTHOR = load("MONGODB_AUTHOR");
+    public static final String MONGODB_MODERATOR = load("MONGODB_MODERATOR");
     
-    public static void load() { //1
-        Configuration.validate();
-        
+    public static String load(String key) {
+        Properties prop = new Properties();
         try {
-            String configurationFileContent = new String(Files.readAllBytes(Paths.get("conf.xml"))); 
-            XStream xstream = new XStream();
-            xstream.alias("Configuration", SerializableConfiguration.class);
-            SerializableConfiguration confObj = (SerializableConfiguration)xstream.fromXML(configurationFileContent);
-            
-            Configuration.databaseIp = confObj.databaseIp;
-            Configuration.databasePort = confObj.databasePort;
-            Configuration.databaseUser = confObj.databaseUser;
-            Configuration.databasePsw = confObj.databasePsw;
-            Configuration.classificaMaxLines = confObj.classificaMaxLines;
-            Configuration.totalAliens = confObj.totalAliens;
-            Configuration.totalLives = confObj.totalLives;
+            String configFilePath = "src/main/resources/config.properties";
+            FileInputStream propsInput = new FileInputStream(configFilePath);
+            prop.load(propsInput);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
+        return prop.getProperty(key);
     }
-    
-    private static void validate() { //2
-        try {
-            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            Document document = documentBuilder.parse(new File("conf.xml"));
-            Schema schema = schemaFactory.newSchema(new StreamSource(new File("conf.xsd")));
-            schema.newValidator().validate(new DOMSource(document));
-        }
-        catch (SAXException ex) {
-            System.out.println("Validation error: " + ex.getMessage());
-        }
-        catch (ParserConfigurationException | IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-}
 
-//1: Preleva le informazioni dal file di configurazione locale
-//2: Valida il file di configurazione locale
+}

@@ -48,11 +48,11 @@ public class LoginController {
         String nomePagina = null;
         String name = insertedName.getText();
         String password = insertedPassword.getText();
-        String uri = "mongodb://localhost:27017";
+        String uri = Configuration.MONGODB_URL;
         try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("test"); //da scegliere il nome uguale per tutti
-            MongoCollection<Document> collectionAuthor = database.getCollection("author");
-            MongoCollection<Document> collectionModerator = database.getCollection("moderator");
+            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
+            MongoCollection<Document> collectionAuthor = database.getCollection(Configuration.MONGODB_AUTHOR);
+            MongoCollection<Document> collectionModerator = database.getCollection(Configuration.MONGODB_MODERATOR);
             Bson filterAuthor = Filters.and(
                     Filters.eq("authorName", name),
                     Filters.eq("password", password));

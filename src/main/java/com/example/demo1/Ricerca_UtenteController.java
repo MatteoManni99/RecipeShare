@@ -37,12 +37,12 @@ public class Ricerca_UtenteController implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String uri = "mongodb://localhost:27017";
+        String uri = Configuration.MONGODB_URL;
         List<Document> listaAuthors = new ArrayList<>();
 
         try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("test"); //da scegliere il nome uguale per tutti
-            MongoCollection<Document> collection = database.getCollection("author");
+            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
+            MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_AUTHOR);
 
             MongoCursor<Document> cursor = collection.find().iterator();
             while (cursor.hasNext())
@@ -75,12 +75,12 @@ public class Ricerca_UtenteController implements Initializable {
     }
 
     public void onCercaUtenteClick(ActionEvent actionEvent) {
-        String uri = "mongodb://localhost:27017";
+        String uri = Configuration.MONGODB_URL;
         List<Document> listaAuthors = new ArrayList<>();
         System.out.println(999);
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             MongoDatabase database = mongoClient.getDatabase("test"); //da scegliere il nome uguale per tutti
-            MongoCollection<Document> collectionAuthor = database.getCollection("author");
+            MongoCollection<Document> collectionAuthor = database.getCollection(Configuration.MONGODB_AUTHOR);
 
             Bson filterAuthor = Filters.regex("authorName", "^" + utenteCercato.getText());
             MongoCursor<Document> cursorAuthor = collectionAuthor.find(filterAuthor).iterator();
