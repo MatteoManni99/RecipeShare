@@ -22,7 +22,7 @@ public class LoggatoController implements Initializable{
     private Label welcomeText;
     private Stage stage;
     private ClassFotTableView TableViewObject = new ClassFotTableView();
-    private Integer pageNumber = 1;
+    private Integer pageNumber = 0;
     @FXML
     public void onLogoutClick(ActionEvent actionEvent) throws IOException {
         String nomeSchermata = "hello-view.fxml";
