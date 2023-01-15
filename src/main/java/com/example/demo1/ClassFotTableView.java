@@ -79,32 +79,6 @@ public class ClassFotTableView {
         return tabellaDB;
     }
 
-    public void caricaElementiTableViewDB() {
-        ol = FXCollections.observableArrayList();
-        String uri = Configuration.MONGODB_URL;
-        String nomeDatabase = Configuration.MONGODB_DB;
-        String nomeCollection = Configuration.MONGODB_RECIPE;
-        List<Document> listaRecipes = new ArrayList<>();
-
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase(nomeDatabase); //da scegliere il nome uguale per tutti
-            MongoCollection<Document> collection = database.getCollection(nomeCollection);
-
-            MongoCursor<Document> cursor = collection.find().iterator();
-
-            while (cursor.hasNext())
-                listaRecipes.add(cursor.next());
-
-            for (int i = 0; i < 10/*listaRecipes.size()*/; i++) {
-                Object prova = listaRecipes.get(i).get("Images", new Document("$first", "$Images"));
-                //System.out.println(prova);
-                ArrayList test = (ArrayList) prova;
-                ol.add(new Recipe(listaRecipes.get(i).getInteger(("RecipeId")), listaRecipes.get(i).getString("Name"),
-                        listaRecipes.get(i).getInteger(("AuthorId")), listaRecipes.get(i).getString("AuthorName"), new CustomImage(new ImageView(test.get(0).toString())).getImage()));
-            }
-        }
-        setEventForTableCells();
-    }
     public void uploadElementsTableViewDB(Integer pageNumber) {
         ol = FXCollections.observableArrayList();
         Document recipe;
@@ -132,7 +106,6 @@ public class ClassFotTableView {
             }
         }
     }
-
     public void setEventForTableCells() {
         tabellaDB.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il mouse clickato
                 TableCell cell = findCell(evt,tabellaDB);
