@@ -11,7 +11,7 @@ public class Configuration {
     public static final String MONGODB_AUTHOR = load("MONGODB_AUTHOR");
     public static final String MONGODB_MODERATOR = load("MONGODB_MODERATOR");
     
-    public static String load(String key) {
+    private static String load(String key) {
         Properties prop = new Properties();
         try {
             String configFilePath = "src/main/resources/config.properties";

@@ -3,7 +3,9 @@ package com.example.demo1;
 import com.mongodb.client.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -12,8 +14,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import org.bson.Document;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EventListener;
@@ -30,6 +34,8 @@ public class ClassFotTableView {
     private TableColumn authorIdCol;
     private TableColumn authorNameCol;
     private TableColumn imageCol;
+
+    private Stage stage;
 
     public void initializeTableView() {
         tabellaDB = new TableView<>();
@@ -113,10 +119,25 @@ public class ClassFotTableView {
 
     public void setEventForTableCells() {
         tabellaDB.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il mouse clickato
-
                 TableCell cell = findCell(evt,tabellaDB);
                 if (cell != null && !cell.isEmpty()) {
-                    System.out.println(cell.getText());
+                    if(cell.getTableColumn().getText().equals("Name")){
+                        System.out.println(cell.getText()); // Andare alla pagina relativa alla ricetta
+
+                        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Recipe.fxml"));
+                        stage = (Stage) ((Node)evt.getSource()).getScene().getWindow();
+                        Scene scene = null;
+                        try {
+                            scene = new Scene(fxmlLoader.load(), 1000, 600);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        stage.setScene(scene);
+                        stage.show();
+                    }
+                    if(cell.getTableColumn().getText().equals("AuthorName")){
+                        System.out.println(cell.getText()); // Andare alla pagina relativa all'autore
+                    }
                     evt.consume();
                 }
             }
