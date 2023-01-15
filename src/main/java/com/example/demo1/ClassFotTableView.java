@@ -3,8 +3,10 @@ package com.example.demo1;
 import com.mongodb.client.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -37,6 +39,12 @@ public class ClassFotTableView {
 
     private Stage stage;
 
+    private DataSingleton data = DataSingleton.getInstance();
+
+    //da rendere efficiente accorpando gli array o qualcosa del genere
+    private ArrayList<String> recipeNameArray = new ArrayList<String>();
+    private ArrayList<Integer> recipeIdArray = new ArrayList<Integer>();
+
     public void initializeTableView() {
         tabellaDB = new TableView<>();
 
@@ -62,6 +70,9 @@ public class ClassFotTableView {
     public void setTabellaDB() {
         tabellaDB.setItems(ol);
         tabellaDB.getColumns().addAll(recipeIdCol,nameCol, authorIdCol,authorNameCol, imageCol);
+    }
+    public void setItems(){
+        tabellaDB.setItems(ol);
     }
 
     public TableView<Recipe> getTabellaDB() {
@@ -94,11 +105,14 @@ public class ClassFotTableView {
         }
         setEventForTableCells();
     }
-    public void uploadNewElementsTableViewDB(Integer pageNumber) {
+    public void uploadElementsTableViewDB(Integer pageNumber) {
         ol = FXCollections.observableArrayList();
         Document recipe;
         ArrayList recipeImage;
 
+        //da rendere efficiente accorpando gli array o qualcosa del genere
+        recipeNameArray.clear();
+        recipeIdArray.clear();
         try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
             MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_RECIPE);
@@ -106,15 +120,17 @@ public class ClassFotTableView {
 
             while (cursor.hasNext()) {
                 recipe = cursor.next();
-                System.out.println(recipe.getInteger(("RecipeId")));
                 Object prova = recipe.get("Images", new Document("$first", "$Images"));
                 //System.out.println(prova);
                 ArrayList test = (ArrayList) prova;
                 ol.add(new Recipe(recipe.getInteger(("RecipeId")), recipe.getString("Name"),recipe.getInteger(("AuthorId")),
                         recipe.getString("AuthorName"),new CustomImage(new ImageView(test.get(0).toString())).getImage()));
+
+                //da rendere efficiente accorpando gli array o qualcosa del genere
+                recipeNameArray.add(recipe.getString("Name"));
+                recipeIdArray.add(recipe.getInteger(("RecipeId")));
             }
         }
-        tabellaDB.setItems(ol);
     }
 
     public void setEventForTableCells() {
@@ -123,17 +139,13 @@ public class ClassFotTableView {
                 if (cell != null && !cell.isEmpty()) {
                     if(cell.getTableColumn().getText().equals("Name")){
                         System.out.println(cell.getText()); // Andare alla pagina relativa alla ricetta
-
-                        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Recipe.fxml"));
-                        stage = (Stage) ((Node)evt.getSource()).getScene().getWindow();
-                        Scene scene = null;
                         try {
-                            scene = new Scene(fxmlLoader.load(), 1000, 600);
+                            Integer cellPosition = recipeNameArray.indexOf(cell.getText());
+                            data.setRecipeId(recipeIdArray.get(cellPosition));
+                            ChangeScene(evt,"Recipe.fxml");
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
-                        stage.setScene(scene);
-                        stage.show();
                     }
                     if(cell.getTableColumn().getText().equals("AuthorName")){
                         System.out.println(cell.getText()); // Andare alla pagina relativa all'autore
@@ -142,6 +154,15 @@ public class ClassFotTableView {
                 }
             }
         );
+    }
+    private void ChangeScene(MouseEvent evt, String fxmlFileName) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource(fxmlFileName));
+        Parent tableViewParent = fxmlLoader.load();
+        stage = (Stage) ((Node)evt.getSource()).getScene().getWindow();
+        Scene tableViewScene = new Scene(tableViewParent, 1000, 600);
+        stage.setScene(tableViewScene);
+        stage.show();
     }
 
     private static TableCell findCell(MouseEvent event, TableView table) { //metodo chiamato dall'evento

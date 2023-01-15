@@ -34,14 +34,17 @@ public class RecipeController implements Initializable {
     @FXML
     public ImageView image;
 
+    private Integer recipeId;
+    private DataSingleton data = DataSingleton.getInstance();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Integer id_recipe = 38;
+        recipeId = data.getRecipeId(); // !!!!! questa funziona se prima del cambio di scena modifico DataSingleton !!!!!!
         String uri = Configuration.MONGODB_URL;
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
             MongoCollection<Document> collectionRecipe = database.getCollection(Configuration.MONGODB_RECIPE);
-            Bson match = match(Filters.eq("RecipeId", id_recipe));
+            Bson match = match(Filters.eq("RecipeId", recipeId));
             Bson project = project(new Document("Images",new Document("$first","$Images"))
                     .append("Name",1).append("RecipeId",1));
             //MongoCursor<Document> cursor = collectionRecipe.find(match).iterator();

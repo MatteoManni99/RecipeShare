@@ -69,7 +69,7 @@ public class LoggatoController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String uri = Configuration.MONGODB_URL;
+        //String uri = Configuration.MONGODB_URL;
         createTableView(TableViewObject);
         /*ObservableList<String> recipesIdList = FXCollections.observableArrayList();
         Integer count = 0; //per fare debug (da togliere)
@@ -92,11 +92,13 @@ public class LoggatoController implements Initializable{
 
     public void createTableView (ClassFotTableView TableViewObject) {
         TableViewObject.initializeTableView();
-        TableViewObject.caricaElementiTableViewDB();
+        TableViewObject.uploadElementsTableViewDB(pageNumber);
+        TableViewObject.setEventForTableCells();
         TableViewObject.setTabellaDB();
         anchorPane.getChildren().add(TableViewObject.getTabellaDB());
     }
     public void updateTableView(ClassFotTableView TableViewObject,Integer pageNumber){
-        TableViewObject.uploadNewElementsTableViewDB(pageNumber);
+        TableViewObject.uploadElementsTableViewDB(pageNumber);
+        TableViewObject.setItems();
     }
 }
