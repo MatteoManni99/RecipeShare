@@ -10,7 +10,7 @@
       <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0">
          <children>
             <Button layoutX="14.0" layoutY="80.0" mnemonicParsing="false" onAction="#onCercaUtenteClick" text="CERCA UTENTE" />
-            <Button layoutX="14.0" layoutY="114.0" mnemonicParsing="false" text="TROVA RECIPE" />
+            <Button layoutX="14.0" layoutY="114.0" mnemonicParsing="false" onAction="#onTrovaRecipeClick" text="TROVA RECIPE" />
             <Button layoutX="14.0" layoutY="215.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="94.0" text="CREA RECIPE" />
             <Button alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="249.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="94.0" text="VIEW &#10;SUGGESTIONS" textAlignment="CENTER" />
             <Button layoutX="814.0" layoutY="101.0" mnemonicParsing="false" onAction="#onLogoutClick" text="LOGOUT" />

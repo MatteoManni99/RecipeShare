@@ -1,5 +1,7 @@
 package com.example.demo1;
 
+import com.mongodb.client.*;
+import com.mongodb.client.model.Filters;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,11 +11,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
+import static com.mongodb.client.model.Aggregates.match;
 import static com.mongodb.client.model.Projections.include;
 
 public class LoggatoController implements Initializable{
@@ -56,6 +65,25 @@ public class LoggatoController implements Initializable{
         if(pageNumber>=1){
             pageNumber = pageNumber - 1;
             updateTableView(TableViewObject,pageNumber);
+        }
+    }
+    @FXML
+    public void onTrovaRecipeClick(){
+        Document recipe;
+        try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
+            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
+            MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_RECIPE);
+
+            //Bson filterAuthor = Filters.regex("authorName", "^" + utenteCercato.getText());
+            //berry è per provare, andrà preso con una label
+            Bson filter = Filters.regex("Name", "^(?)" + "Berry");
+            Bson match = match(filter);
+            MongoCursor<Document> cursor = collection.aggregate(Arrays.asList(match)).iterator();
+
+            while (cursor.hasNext()){
+                recipe = cursor.next();
+                System.out.println(recipe.getString("Name"));
+            }
         }
     }
 
