@@ -9,6 +9,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.bson.Document;
@@ -22,8 +24,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-import static com.mongodb.client.model.Aggregates.match;
-import static com.mongodb.client.model.Projections.include;
+import static com.mongodb.client.model.Aggregates.*;
+import static com.mongodb.client.model.Projections.*;
 
 public class LoggatoController implements Initializable{
     public AnchorPane anchorPane;
@@ -31,6 +33,10 @@ public class LoggatoController implements Initializable{
     private Label welcomeText;
     private Stage stage;
     private ClassFotTableView TableViewObject = new ClassFotTableView();
+    @FXML
+    private TextField nameToSearchTextField;
+
+    private String nameToSearch = null;
     private Integer pageNumber = 0;
     @FXML
     public void onLogoutClick(ActionEvent actionEvent) throws IOException {
@@ -58,33 +64,58 @@ public class LoggatoController implements Initializable{
     @FXML
     public void onNextPageClick(){
         pageNumber = pageNumber + 1;
-        updateTableView(TableViewObject,pageNumber);
+        //updateTableView(TableViewObject,pageNumber);
+        searchInDBAndLoadInTableView(nameToSearch,pageNumber);
     }
     @FXML
     public void onPreviousPageClick(){
         if(pageNumber>=1){
             pageNumber = pageNumber - 1;
-            updateTableView(TableViewObject,pageNumber);
+            //updateTableView(TableViewObject,pageNumber);
+            searchInDBAndLoadInTableView(nameToSearch,pageNumber);
         }
     }
     @FXML
-    public void onTrovaRecipeClick(){
-        Document recipe;
+    public void onFindRecipeByNameClick(){
+        nameToSearch = nameToSearchTextField.getText();
+        if(nameToSearch.isBlank()) nameToSearch = null;
+        System.out.println(nameToSearch); //solo per debug sarà da togliere
+        pageNumber = 0;
+        searchInDBAndLoadInTableView(nameToSearch,pageNumber);
+    }
+    public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber){
+        Document recipeDoc;
         try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
-            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
+            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
             MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_RECIPE);
-
-            //Bson filterAuthor = Filters.regex("authorName", "^" + utenteCercato.getText());
-            //berry è per provare, andrà preso con una label
-            Bson filter = Filters.regex("Name", "^(?)" + "Berry");
+            MongoCursor<Document> cursor;
+            //filters
+            Bson filter = Filters.regex("Name", "^(?)" + nameToSearch);
             Bson match = match(filter);
-            MongoCursor<Document> cursor = collection.aggregate(Arrays.asList(match)).iterator();
+            Bson project = project(new Document("RecipeId",1).append("Name",1).append("AuthorId",1).append("AuthorName",1)
+                    .append("Images", new Document("$first","$Images")));
 
-            while (cursor.hasNext()){
-                recipe = cursor.next();
-                System.out.println(recipe.getString("Name"));
+            if(nameToSearch == null){
+                cursor = collection.aggregate(Arrays.asList(skip(10*pageNumber),limit(10),project)).iterator();
+                System.out.println("null");
+            }else{
+                cursor = collection.aggregate(Arrays.asList(match,skip(10*pageNumber),limit(10),project)).iterator();
+                System.out.println(nameToSearch);
             }
+            TableViewObject.resetObservableArrayList();
+            while (cursor.hasNext()){
+                recipeDoc = cursor.next();
+                Recipe recipe = new Recipe(recipeDoc.getInteger(("RecipeId")),recipeDoc.getString("Name"),recipeDoc.getInteger(("AuthorId")),
+                        recipeDoc.getString("AuthorName"),new ClassFotTableView.CustomImage(new ImageView(recipeDoc.getString("Images"))).getImage());
+                TableViewObject.addToObservableArrayList(recipe);
+            }
+            TableViewObject.setItems();
         }
+    }
+
+    //alla fine printDocuments sarà inutile, da togliere in ultimo
+    private static Consumer<Document> printDocuments() {
+        return doc -> System.out.println(doc.toJson());
     }
 
     public void cambiaSchermata(ActionEvent actionEvent,String nomeSchermata) throws IOException {
@@ -97,8 +128,8 @@ public class LoggatoController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //String uri = Configuration.MONGODB_URL;
         createTableView(TableViewObject);
+        //String uri = Configuration.MONGODB_URL;
         /*ObservableList<String> recipesIdList = FXCollections.observableArrayList();
         Integer count = 0; //per fare debug (da togliere)
         ImageView imageView = new ImageView();
@@ -120,13 +151,16 @@ public class LoggatoController implements Initializable{
 
     public void createTableView (ClassFotTableView TableViewObject) {
         TableViewObject.initializeTableView();
-        TableViewObject.uploadElementsTableViewDB(pageNumber);
+        searchInDBAndLoadInTableView(nameToSearch,pageNumber);
         TableViewObject.setEventForTableCells();
         TableViewObject.setTabellaDB();
         anchorPane.getChildren().add(TableViewObject.getTabellaDB());
     }
+
+    //vecchia versione di searchInDBAndLoadInTableView
+    /*
     public void updateTableView(ClassFotTableView TableViewObject,Integer pageNumber){
         TableViewObject.uploadElementsTableViewDB(pageNumber);
         TableViewObject.setItems();
-    }
+    }*/
 }

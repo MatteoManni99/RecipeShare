@@ -67,7 +67,7 @@ public class RecipeController implements Initializable {
     public void onBackClick(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("loggato.fxml"));
         stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 1000);
+        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         stage.setScene(scene);
         stage.show();
     }

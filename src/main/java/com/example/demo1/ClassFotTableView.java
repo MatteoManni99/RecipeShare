@@ -68,7 +68,7 @@ public class ClassFotTableView {
 
 
     public void setTabellaDB() {
-        tabellaDB.setItems(ol);
+        //tabellaDB.setItems(ol);
         tabellaDB.getColumns().addAll(recipeIdCol,nameCol, authorIdCol,authorNameCol, imageCol);
     }
     public void setItems(){
@@ -79,33 +79,42 @@ public class ClassFotTableView {
         return tabellaDB;
     }
 
+    /* vecchia versione di searchInDBAndLoadInTableView che è in LoggatoController
     public void uploadElementsTableViewDB(Integer pageNumber) {
-        ol = FXCollections.observableArrayList();
-        Document recipe;
+        Document recipeDoc;
         ArrayList recipeImage;
+        resetObservableArrayList();
 
-        //da rendere efficiente accorpando gli array o qualcosa del genere
-        recipeNameArray.clear();
-        recipeIdArray.clear();
         try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
             MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_RECIPE);
             MongoCursor<Document> cursor = collection.aggregate(Arrays.asList(skip(10*pageNumber),limit(10))).iterator();
 
             while (cursor.hasNext()) {
-                recipe = cursor.next();
-                Object prova = recipe.get("Images", new Document("$first", "$Images"));
+                recipeDoc = cursor.next();
+                Object prova = recipeDoc.get("Images", new Document("$first", "$Images"));
                 //System.out.println(prova);
                 ArrayList test = (ArrayList) prova;
-                ol.add(new Recipe(recipe.getInteger(("RecipeId")), recipe.getString("Name"),recipe.getInteger(("AuthorId")),
-                        recipe.getString("AuthorName"),new CustomImage(new ImageView(test.get(0).toString())).getImage()));
+                ol.add(new Recipe(recipeDoc.getInteger(("RecipeId")), recipeDoc.getString("Name"),recipeDoc.getInteger(("AuthorId")),
+                        recipeDoc.getString("AuthorName"),new CustomImage(new ImageView(test.get(0).toString())).getImage()));
 
                 //da rendere efficiente accorpando gli array o qualcosa del genere
-                recipeNameArray.add(recipe.getString("Name"));
-                recipeIdArray.add(recipe.getInteger(("RecipeId")));
+                recipeNameArray.add(recipeDoc.getString("Name"));
+                recipeIdArray.add(recipeDoc.getInteger(("RecipeId")));
             }
         }
+    }*/
+    public void resetObservableArrayList(){
+        ol = FXCollections.observableArrayList();
+        recipeNameArray.clear();
+        recipeIdArray.clear();
     }
+    public void addToObservableArrayList(Recipe recipe){
+        ol.add(recipe);
+        recipeNameArray.add(recipe.getName());
+        recipeIdArray.add(recipe.getRecipeId());
+    }
+
     public void setEventForTableCells() {
         tabellaDB.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il mouse clickato
                 TableCell cell = findCell(evt,tabellaDB);
