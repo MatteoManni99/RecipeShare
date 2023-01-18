@@ -165,7 +165,6 @@ public class ClassFotTableView {
         }
         public void setImage(ImageView value) {image = value;}
         public ImageView getImage() {return image;}
-
     }
     /*public void registraGiocatoreDB() { //2
         ol = FXCollections.observableArrayList();

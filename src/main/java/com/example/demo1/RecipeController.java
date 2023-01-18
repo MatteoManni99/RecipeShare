@@ -79,8 +79,9 @@ public class RecipeController implements Initializable {
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
             MongoCollection<Document> collectionRecipe = database.getCollection(Configuration.MONGODB_RECIPE);
             Bson match = match(Filters.eq("RecipeId", recipeId));
+            /*
             Bson project = project(new Document("Images",new Document("$first","$Images"))
-                    .append("Name",1).append("RecipeId",1));
+                    .append("Name",1).append("RecipeId",1)); */
             //MongoCursor<Document> cursor = collectionRecipe.find(match).iterator();
             for (Document doc : collectionRecipe.aggregate(Arrays.asList(match))) {
                 name.setText(doc.getString("Name"));
