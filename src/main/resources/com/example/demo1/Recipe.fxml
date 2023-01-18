@@ -13,7 +13,7 @@
       <AnchorPane fx:id="RecipeController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="729.0" prefWidth="1057.0">
          <children>
             <Button layoutX="797.0" layoutY="104.0" mnemonicParsing="false" text="SCRIVI RECENSIONE" />
-            <Button layoutX="802.0" layoutY="153.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="124.0" text="REPORT RECIPE" />
+            <Button layoutX="797.0" layoutY="152.0" mnemonicParsing="false" onAction="#onReportRecipeClick" prefHeight="26.0" prefWidth="124.0" text="REPORT RECIPE" />
             <Label layoutX="448.0" layoutY="29.0" text="RECIPE SHARE" />
             <ImageView fx:id="image" fitHeight="189.0" fitWidth="337.0" layoutX="37.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="name" layoutX="472.0" layoutY="55.0" text="Titolo" />
@@ -24,9 +24,9 @@
             <Label layoutX="476.0" layoutY="96.0" text="Keywords" />
             <Label layoutX="473.0" layoutY="223.0" text="Ingredients" />
             <Label layoutX="52.0" layoutY="471.0" text="Instructions" />
-            <Button layoutX="802.0" layoutY="34.0" mnemonicParsing="false" text="INDIETRO" onAction="#onBackClick"/>
-            <Button layoutX="251.0" layoutY="294.0" mnemonicParsing="false" text="Next" onAction="#onNextClick"/>
-            <Button layoutX="59.0" layoutY="294.0" mnemonicParsing="false" text="Previous" onAction="#onPreviousClick"/>
+            <Button layoutX="802.0" layoutY="34.0" mnemonicParsing="false" onAction="#onBackClick" text="INDIETRO" />
+            <Button layoutX="251.0" layoutY="294.0" mnemonicParsing="false" onAction="#onNextClick" text="Next" />
+            <Button layoutX="59.0" layoutY="294.0" mnemonicParsing="false" onAction="#onPreviousClick" text="Previous" />
          </children>
       </AnchorPane>
    </children>

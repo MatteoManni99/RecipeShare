@@ -34,6 +34,7 @@ public class LoginController {
         cambiaSchermata(actionEvent,nomeSchermata);
     }
 
+
     @FXML
     public void onRegisterClick(ActionEvent actionEvent) throws IOException {
         String nomeSchermata = "Register.fxml";
@@ -93,4 +94,5 @@ public class LoginController {
     public void onTextClick(MouseEvent mouseEvent) {
         System.out.println("TESTO CLICKATO");
     }
+
 }

@@ -125,24 +125,6 @@ public class LoggatoController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         createTableView(TableViewObject);
-        //String uri = Configuration.MONGODB_URL;
-        /*ObservableList<String> recipesIdList = FXCollections.observableArrayList();
-        Integer count = 0; //per fare debug (da togliere)
-        ImageView imageView = new ImageView();
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("RecipeShare");
-            MongoCollection<Document> collectionRecipe = database.getCollection("recipe");
-            //Bson project = project(include("RecipeId","Name","AggregatedRating","Images")); //da rivedere i campi in base a quello che vogliamo far visualizzare
-            Bson project = project(new Document("Images",new Document("$first","$Images"))
-                    .append("Name",1).append("RecipeId",1));
-            Bson limit = limit(10);
-            for (Document document : collectionRecipe.aggregate(Arrays.asList(limit, project))) {
-                System.out.println(count); //per fare debug (da togliere)
-                count += 1; //per fare debug (da togliere)
-                recipesIdList.add(String.valueOf(document.getInteger("RecipeId")));
-            }
-            RecipesListView.setItems(recipesIdList);
-        }*/
     }
 
     public void createTableView (ClassForTableView TableViewObject) {
@@ -153,10 +135,8 @@ public class LoggatoController implements Initializable{
         anchorPane.getChildren().add(TableViewObject.getTabellaDB());
     }
 
-    //vecchia versione di searchInDBAndLoadInTableView
-    /*
-    public void updateTableView(ClassFotTableView TableViewObject,Integer pageNumber){
-        TableViewObject.uploadElementsTableViewDB(pageNumber);
-        TableViewObject.setItems();
-    }*/
+    @FXML
+    public void onAddRecipeClick(ActionEvent actionEvent) throws IOException {
+        cambiaSchermata(actionEvent,"AddRecipe.fxml");
+    }
 }

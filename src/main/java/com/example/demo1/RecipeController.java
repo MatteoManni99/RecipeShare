@@ -46,6 +46,7 @@ public class RecipeController implements Initializable {
     private Integer indexImages=0;
     private List<String> images_list;
     private Stage stage;
+    private Integer recipeId;
 
 
     private void printImages(){
@@ -71,9 +72,15 @@ public class RecipeController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
+    @FXML
+    public void onReportRecipeClick(ActionEvent actionEvent){
+
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Integer recipeId = data.getRecipeId(); // !!!!! questa funziona se prima del cambio di scena modifico DataSingleton !!!!!!
+        recipeId = data.getRecipeId(); // !!!!! questa funziona se prima del cambio di scena modifico DataSingleton !!!!!!
         String uri = Configuration.MONGODB_URL;
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);

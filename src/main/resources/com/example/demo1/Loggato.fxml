@@ -12,7 +12,7 @@
          <children>
             <Button layoutX="14.0" layoutY="80.0" mnemonicParsing="false" onAction="#onCercaUtenteClick" text="CERCA UTENTE" />
             <Button layoutX="394.0" layoutY="67.0" mnemonicParsing="false" onAction="#onFindRecipeByNameClick" text="FIND RECIPE" />
-            <Button layoutX="14.0" layoutY="215.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="94.0" text="CREA RECIPE" />
+            <Button layoutX="14.0" layoutY="215.0" mnemonicParsing="false" onAction="#onAddRecipeClick" prefHeight="26.0" prefWidth="94.0" text="ADD A RECIPE" />
             <Button alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="249.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="94.0" text="VIEW &#10;SUGGESTIONS" textAlignment="CENTER" />
             <Button layoutX="814.0" layoutY="101.0" mnemonicParsing="false" onAction="#onLogoutClick" text="LOGOUT" />
             <Button layoutX="807.0" layoutY="198.0" mnemonicParsing="false" text="SHOW&#10;FOLLOWED&#10;AUTHORS" textAlignment="CENTER" />

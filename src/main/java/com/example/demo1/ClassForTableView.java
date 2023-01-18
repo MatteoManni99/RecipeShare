@@ -47,8 +47,8 @@ public class ClassForTableView {
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         authorIdCol.setCellValueFactory(new PropertyValueFactory<>("authorId"));
         authorNameCol.setCellValueFactory(new PropertyValueFactory<>("authorName"));
-        imageCol.setCellValueFactory(new PropertyValueFactory<CustomImage,ImageView>("image")); ////non cambiate i nomi o vi vengo a cercare a casa//////////////////
-        /////////
+        imageCol.setCellValueFactory(new PropertyValueFactory<CustomImage,ImageView>("image"));
+        /////////////non cambiate i nomi o vi vengo a cercare a casa//////////////////
         tabellaDB.setPrefHeight(400);
         tabellaDB.setPrefWidth(600);
         tabellaDB.setLayoutX(150);
@@ -58,7 +58,7 @@ public class ClassForTableView {
 
     public void setTabellaDB() {
         //tabellaDB.setItems(ol);
-        tabellaDB.getColumns().addAll(recipeIdCol,nameCol, authorIdCol,authorNameCol, imageCol);
+        tabellaDB.getColumns().addAll(imageCol, recipeIdCol, nameCol, authorIdCol,authorNameCol);
     }
     public void setItems(){
         tabellaDB.setItems(ol);
