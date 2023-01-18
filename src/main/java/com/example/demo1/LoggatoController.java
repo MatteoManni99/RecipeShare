@@ -1,7 +1,6 @@
 package com.example.demo1;
 
 import com.mongodb.client.*;
-import com.mongodb.client.model.Filters;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,21 +17,18 @@ import org.bson.conversions.Bson;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 import static com.mongodb.client.model.Aggregates.*;
-import static com.mongodb.client.model.Projections.*;
 
 public class LoggatoController implements Initializable{
     public AnchorPane anchorPane;
     @FXML
     private Label welcomeText;
     private Stage stage;
-    private ClassFotTableView TableViewObject = new ClassFotTableView();
+    private ClassForTableView TableViewObject = new ClassForTableView();
     @FXML
     private TextField nameToSearchTextField;
 
@@ -106,7 +102,7 @@ public class LoggatoController implements Initializable{
             while (cursor.hasNext()){
                 recipeDoc = cursor.next();
                 Recipe recipe = new Recipe(recipeDoc.getInteger(("RecipeId")),recipeDoc.getString("Name"),recipeDoc.getInteger(("AuthorId")),
-                        recipeDoc.getString("AuthorName"),new ClassFotTableView.CustomImage(new ImageView(recipeDoc.getString("Images"))).getImage());
+                        recipeDoc.getString("AuthorName"),new ClassForTableView.CustomImage(new ImageView(recipeDoc.getString("Images"))).getImage());
                 TableViewObject.addToObservableArrayList(recipe);
             }
             TableViewObject.setItems();
@@ -149,7 +145,7 @@ public class LoggatoController implements Initializable{
         }*/
     }
 
-    public void createTableView (ClassFotTableView TableViewObject) {
+    public void createTableView (ClassForTableView TableViewObject) {
         TableViewObject.initializeTableView();
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
         TableViewObject.setEventForTableCells();

@@ -32,7 +32,7 @@ public class Recipe {
         recipeNameTable = new SimpleStringProperty(name);
         authorIdTable = new SimpleIntegerProperty(authorId);
         authorNameTable = new SimpleStringProperty(authorName);
-        imageLinkTable = new ClassFotTableView.CustomImage(image).getImage();
+        imageLinkTable = new ClassForTableView.CustomImage(image).getImage();
     }
 
     public int getRecipeId() { return recipeIdTable.get(); }
