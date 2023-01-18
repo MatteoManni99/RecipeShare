@@ -124,7 +124,7 @@ public class ClassFotTableView {
                         try {
                             Integer cellPosition = recipeNameArray.indexOf(cell.getText());
                             data.setRecipeId(recipeIdArray.get(cellPosition));
-                            ChangeScene(evt,"Recipe.fxml");
+                            changeScene(evt,"Recipe.fxml");
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -137,12 +137,12 @@ public class ClassFotTableView {
             }
         );
     }
-    private void ChangeScene(MouseEvent evt, String fxmlFileName) throws IOException {
+    private void changeScene(MouseEvent evt, String fxmlFileName) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource(fxmlFileName));
         Parent tableViewParent = fxmlLoader.load();
         stage = (Stage) ((Node)evt.getSource()).getScene().getWindow();
-        Scene tableViewScene = new Scene(tableViewParent, 1000, 600);
+        Scene tableViewScene = new Scene(tableViewParent, 1000, 700);
         stage.setScene(tableViewScene);
         stage.show();
     }

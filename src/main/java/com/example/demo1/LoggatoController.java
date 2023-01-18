@@ -89,8 +89,8 @@ public class LoggatoController implements Initializable{
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
             MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_RECIPE);
             MongoCursor<Document> cursor;
-            //filters
-            Bson filter = Filters.regex("Name", "^(?)" + nameToSearch);
+            //Bson filter = Filters.regex("Name", "^(?)" + nameToSearch); //da togliere era il vecchio filtro
+            Bson filter = new Document("Name",new Document("$regex",nameToSearch).append("$options","i"));
             Bson match = match(filter);
             Bson project = project(new Document("RecipeId",1).append("Name",1).append("AuthorId",1).append("AuthorName",1)
                     .append("Images", new Document("$first","$Images")));
