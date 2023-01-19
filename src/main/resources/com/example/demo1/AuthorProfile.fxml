@@ -15,9 +15,9 @@
             <Label layoutX="266.0" layoutY="24.0" text="Recipe Share" />
             <MenuButton layoutX="318.0" layoutY="153.0" mnemonicParsing="false" text="Opzioni">
               <items>
-                <MenuItem onAction="#setParameterToAuthorName" fx:id="menuItemName" mnemonicParsing="false" text="Name" />
-                <MenuItem onAction="#setParameterToPassword" fx:id="menuItemPassword" mnemonicParsing="false" text="Password" />
-                  <MenuItem onAction="#setParameterToImage" fx:id="menuItemImmagine" mnemonicParsing="false" text="Immagine" />
+                <MenuItem fx:id="menuItemName" onAction="#setParameterToAuthorName" mnemonicParsing="false" text="Name" />
+                <MenuItem fx:id="menuItemPassword" onAction="#setParameterToPassword" mnemonicParsing="false" text="Password" />
+                  <MenuItem fx:id="menuItemImmagine" onAction="#setParameterToImage" mnemonicParsing="false" text="Immagine" />
               </items>
             </MenuButton>
             <TextField fx:id="authorNameField" layoutX="185.0" layoutY="54.0" />
@@ -28,6 +28,7 @@
             <Label layoutX="35.0" layoutY="157.0" prefHeight="18.0" prefWidth="273.0" text="Usa il menu qui accanto se vuoi cambiare qualcosa" />
             <TextField fx:id="parameterValueField" layoutX="35.0" layoutY="200.0" prefHeight="26.0" prefWidth="134.0" />
             <Button onAction="#changeProfileParameter" layoutX="173.0" layoutY="200.0" mnemonicParsing="false" text="Cambia Parametro" />
+            <Button onAction="#onBackClick" layoutX="14.0" layoutY="20.0" mnemonicParsing="false" text="Torna a Loggato" />
          </children>
       </AnchorPane>
    </children>

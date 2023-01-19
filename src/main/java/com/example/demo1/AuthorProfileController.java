@@ -58,13 +58,6 @@ public class AuthorProfileController implements Initializable {
     private TextField authorNameField;
     @FXML
     private TextField passwordField;
-    @FXML
-    private MenuItem menuItemName;
-    @FXML
-    private MenuItem menuItemPassword;
-    @FXML
-    private MenuItem menuItemImmagine;
-
     private String parameterToChange = null;
     private String nameToSearch = null;
     private Integer pageNumber = 0;
@@ -90,7 +83,7 @@ public class AuthorProfileController implements Initializable {
 
     @FXML
     public void onBackClick(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("loggato.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Loggato.fxml"));
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         stage.setScene(scene);
@@ -102,12 +95,6 @@ public class AuthorProfileController implements Initializable {
 
     }
 
-    public EventHandler<ActionEvent> setParameter(String s) {
-
-        parameterToChange = s;
-        return null;
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         authorName = data.getAuthorName();
@@ -116,10 +103,6 @@ public class AuthorProfileController implements Initializable {
         authorNameField.setEditable(false);
         passwordField.setText(password);
         passwordField.setEditable(false);
-        //System.out.println(authorName);
-        //menuItemName.setOnAction(setParameter("authorName"));
-        //menuItemPassword.setOnAction(setParameter("password"));
-        //menuItemImmagine.setOnAction(setParameter("image")); //da mettere nella collection il parametro image
         createTableView(TableViewObject);
     }
 
@@ -199,6 +182,9 @@ public class AuthorProfileController implements Initializable {
 
     public void setParameterToImage(ActionEvent actionEvent) {
         parameterToChange = "immagine"; //non è ancora nella collection
+    }
+
+    public void onGoBackClick(ActionEvent actionEvent) {
     }
 }
 
