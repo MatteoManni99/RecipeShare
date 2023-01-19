@@ -7,12 +7,18 @@ import com.mongodb.client.MongoDatabase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -21,13 +27,16 @@ import java.util.Collection;
 import java.util.ResourceBundle;
 
 public class AddRecipeController implements Initializable {
+    DataSingleton data = DataSingleton.getInstance();
+
+    private Stage stage;
 
     public TextField nameField;
     public TextField categoryField;
     public TextField servingsField;
     public TextField timeField;
     public TextField caloriesField;
-    public TextField descriptionField;
+    public TextArea descriptionField;
     public TextField keywordField;
     public ListView keywordListView;
     private ArrayList<String> keywordArrayList = new ArrayList<String>();
@@ -62,11 +71,13 @@ public class AddRecipeController implements Initializable {
             System.out.println("Insert a Name in the corresponding TextField");
         }else if(checkIfNameIsAvailable(name)) {
             System.out.println("Name is available");
+            data = DataSingleton.getInstance();
+
             Document recipeToAdd = new Document();
             recipeToAdd.append("RecipeId",null); ///FORSE SAREBBE DA TOGLIERE///
             recipeToAdd.append("Name",name);
             recipeToAdd.append("AuthorId",null); ///FORSE SAREBBE DA TOGLIERE///
-            recipeToAdd.append("AuthorName","prova"); //da cambiare
+            recipeToAdd.append("AuthorName",data.getAuthorName()); //da cambiare
             recipeToAdd.append("TotalTime",time);
             recipeToAdd.append("DatePublished", isoDate);
             recipeToAdd.append("Description",setNullIfEmpty(descriptionField.getText()));
@@ -111,9 +122,38 @@ public class AddRecipeController implements Initializable {
         else return string;
     }
 
-    //TODO
-    //pulsante per tornare indietro e la questione dell'author
+    public void onBackClick(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Loggato.fxml"));
+        stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
+        stage.setScene(scene);
+        stage.show();
+    }
+
     private void clearFields() {
+        nameField.clear();
+        categoryField.clear();
+        servingsField.clear();
+        timeField.clear();
+        caloriesField.clear();
+        descriptionField.clear();
+
+        keywordField.clear();
+        keywordArrayList.clear();
+        keywordListView.setItems(observableList = FXCollections.observableList(keywordArrayList));
+
+        ingredientField.clear();
+        ingredientArrayList.clear();
+        ingredientListView.setItems(observableList = FXCollections.observableList(ingredientArrayList));
+
+        imageField.clear();
+        imageArrayList.clear();
+        imageListView.setItems(observableList = FXCollections.observableList(imageArrayList));
+
+        instructionsField.clear();
+        instructionsArrayList.clear();
+        instructionsListView.setItems(observableList = FXCollections.observableList(instructionsArrayList));
+
     }
 
     public void onAddKeywordClick(ActionEvent actionEvent) {
