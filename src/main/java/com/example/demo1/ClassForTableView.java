@@ -34,7 +34,7 @@ public class ClassForTableView {
     private ArrayList<String> recipeNameArray = new ArrayList<String>();
     private ArrayList<Integer> recipeIdArray = new ArrayList<Integer>();
 
-    public void initializeTableView() {
+    public void initializeTableView(String classe) {
         tabellaDB = new TableView<>();
 
         recipeIdCol = new TableColumn("RecipeID");

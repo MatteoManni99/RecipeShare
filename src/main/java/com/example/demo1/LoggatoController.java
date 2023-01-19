@@ -128,7 +128,7 @@ public class LoggatoController implements Initializable{
     }
 
     public void createTableView (ClassForTableView TableViewObject) {
-        TableViewObject.initializeTableView();
+        TableViewObject.initializeTableView("Loggato");
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
         TableViewObject.setEventForTableCells();
         TableViewObject.setTabellaDB();
@@ -138,5 +138,9 @@ public class LoggatoController implements Initializable{
     @FXML
     public void onAddRecipeClick(ActionEvent actionEvent) throws IOException {
         cambiaSchermata(actionEvent,"AddRecipe.fxml");
+    }
+
+    public void onPersonalProfileClick(ActionEvent actionEvent) throws IOException {
+        cambiaSchermata(actionEvent,"AuthorProfile.fxml");
     }
 }

@@ -75,6 +75,9 @@ public class LoginController {
                 else System.out.println("NON TROVATO MODERATOR");
             }
             if (nomePagina != null) {
+                DataSingleton data = DataSingleton.getInstance();
+                data.setAuthorName(name);
+                data.setPassword(password);
                 cambiaSchermata(actionEvent,nomePagina);
             }
 
