@@ -1,5 +1,9 @@
 package com.example.demo1;
 import java.io.*;
+import javafx.scene.image.Image;
+import java.io.FileInputStream;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 public class Configuration {
@@ -10,7 +14,19 @@ public class Configuration {
     public static final String MONGODB_REVIEW = load("MONGODB_REVIEW");
     public static final String MONGODB_AUTHOR = load("MONGODB_AUTHOR");
     public static final String MONGODB_MODERATOR = load("MONGODB_MODERATOR");
-    
+    public static final List<Image> AVATAR;
+
+    static {
+        try {
+            AVATAR = Arrays.asList(new Image(new FileInputStream(load("AVATAR_1"))), new Image(new FileInputStream(load("AVATAR_2"))),
+                    new Image(new FileInputStream(load("AVATAR_3"))), new Image(new FileInputStream(load("AVATAR_4"))),
+                    new Image(new FileInputStream(load("AVATAR_5"))), new Image(new FileInputStream(load("AVATAR_6"))),
+                    new Image(new FileInputStream(load("AVATAR_7"))), new Image(new FileInputStream(load("AVATAR_8"))));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static String load(String key) {
         Properties prop = new Properties();
         try {

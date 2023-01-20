@@ -29,6 +29,7 @@ public class ClassForTableView {
     private Stage stage;
 
     private DataSingleton data = DataSingleton.getInstance();
+    private DataSingleton dataAuthor = DataSingleton.getInstance();
 
     //da rendere efficiente accorpando gli array o qualcosa del genere
     private ArrayList<String> recipeNameArray = new ArrayList<String>();
@@ -37,10 +38,10 @@ public class ClassForTableView {
     public void initializeTableView(String classe) {
         tabellaDB = new TableView<>();
 
-        recipeIdCol = new TableColumn("RecipeID");
-        nameCol = new TableColumn("Name");
-        authorIdCol = new TableColumn("AuthorID");
-        authorNameCol = new TableColumn("AuthorName");
+        recipeIdCol = new TableColumn<Recipe, String>("RecipeID");
+        nameCol = new TableColumn<Recipe, String>("Name");
+        authorIdCol = new TableColumn<Recipe, String>("AuthorID");
+        authorNameCol = new TableColumn<Recipe, String>("AuthorName");
         imageCol = new TableColumn<CustomImage, ImageView>("Image");
         /////////////non cambiate i nomi o vi vengo a cercare a casa//////////////////
         recipeIdCol.setCellValueFactory(new PropertyValueFactory<>("recipeId"));
@@ -126,6 +127,12 @@ public class ClassForTableView {
                     }
                     if(cell.getTableColumn().getText().equals("AuthorName")){
                         System.out.println(cell.getText()); // Andare alla pagina relativa all'autore
+                        try {
+                            data.setOtherAuthorName(cell.getText());
+                            changeScene(evt,"Author.fxml");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                     evt.consume();
                 }

@@ -8,6 +8,7 @@ public class DataSingleton {
     private Integer pageNumber;
     private String authorName;
     private String password;
+    private String otherAuthorName;
     private DataSingleton(){}
 
     public static DataSingleton getInstance(){
@@ -37,4 +38,8 @@ public class DataSingleton {
     public void setPageNumber(Integer pageNumber) {
         this.pageNumber = pageNumber;
     }
+
+    public String getOtherAuthorName() {return otherAuthorName;}
+
+    public void setOtherAuthorName(String otherAuthorName) {this.otherAuthorName = otherAuthorName;}
 }

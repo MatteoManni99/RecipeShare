@@ -61,7 +61,9 @@ public class RegisterController {
                     collection.insertOne(new Document()
                             .append("_id", new ObjectId())
                             .append("authorName", name)
-                            .append("password", password));
+                            .append("password", password)
+                            .append("promotion", 0) // DA CAMBIARE
+                            .append("image", 1)); // DA CAMBIARE
                 }
                 catch (MongoException me) {
                     System.err.println("Unable to insert due to an error: " + me);
