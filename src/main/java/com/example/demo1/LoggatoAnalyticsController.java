@@ -39,7 +39,7 @@ public class LoggatoAnalyticsController {
             Bson matchR = match(new Document("Reviews.19",new Document("$exists",true)));
             Bson sort = sort(descending("AggregatedRating"));
             Bson limit = limit(3);
-            Bson project = project(include("RecipeId","Name","TotalTime","AggregatedRating"));
+            Bson project = project(include("Name","TotalTime","AggregatedRating"));
             System.out.println("Top Recipes with TotalTime: 1-30:");
             collection.aggregate(Arrays.asList(matchR,match1,sort,limit,project)).forEach(printDocuments());
             System.out.println("Top Recipes with TotalTime: 31-90:");
@@ -74,7 +74,7 @@ public class LoggatoAnalyticsController {
             Bson matchR = match(new Document("Reviews.19", new Document("$exists", true)));
             Bson limit = limit(10);
             Bson sort = sort(descending("AggregatedRating"));
-            Bson project = project(include("RecipeId","Name","AggregatedRating"));
+            Bson project = project(include("Name","AggregatedRating"));
             System.out.println("Top Recipes:");
             collection.aggregate(Arrays.asList(matchR,sort,limit,project)).forEach(printDocuments());
             //collection.find(filter1).sort(Sorts.descending("AggregatedRating")).limit(10).iterator().forEachRemaining(printDocuments());
@@ -102,7 +102,6 @@ public class LoggatoAnalyticsController {
             Bson match1 = match(filter);
             Bson sort = new Document("$sort", new Document("AggregatedRating",-1));
             Bson group = new Document("$group", new Document("_id", "$RecipeCategory")
-                    .append("RecipeId",new Document("$first","$RecipeId"))
                     .append("Name",new Document("$first","$Name"))
                     .append("AggregatedRating",new Document("$first","$AggregatedRating"))
                     .append("Images",new Document("$first","$Images")));

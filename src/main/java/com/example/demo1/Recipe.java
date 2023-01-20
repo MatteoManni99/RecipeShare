@@ -5,16 +5,16 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.ImageView;
 
 public class Recipe {
-    private Object recipeId;
+    //private Object recipeId;
     private Object recipeName;
-    private Object authorId;
+    //private Object authorId;
     private Object authorName;
     private Object imageLink;
     private Object recipeImage;
 
-    private SimpleIntegerProperty recipeIdTable;
+    //private SimpleIntegerProperty recipeIdTable;
     private SimpleStringProperty recipeNameTable;
-    private SimpleIntegerProperty authorIdTable;
+    //private SimpleIntegerProperty authorIdTable;
     private SimpleStringProperty authorNameTable;
     private ImageView imageLinkTable;
 
@@ -27,17 +27,17 @@ public class Recipe {
         recipeImage = new ImageView((String) image);
     }*/
 
-    public Recipe(int recipeId, String name, int authorId, String authorName, ImageView image) {
-        recipeIdTable = new SimpleIntegerProperty(recipeId);
+    public Recipe(String name, String authorName, ImageView image) {
+        //recipeIdTable = new SimpleIntegerProperty(recipeId);
         recipeNameTable = new SimpleStringProperty(name);
-        authorIdTable = new SimpleIntegerProperty(authorId);
+        //authorIdTable = new SimpleIntegerProperty(authorId);
         authorNameTable = new SimpleStringProperty(authorName);
         imageLinkTable = new ClassForTableView.CustomImage(image).getImage();
     }
 
-    public int getRecipeId() { return recipeIdTable.get(); }
+    //public int getRecipeId() { return recipeIdTable.get(); }
     public String getName() { return recipeNameTable.get(); }
-    public int getAuthorId() { return authorIdTable.get(); }
+    //public int getAuthorId() { return authorIdTable.get(); }
     public String getAuthorName() { return authorNameTable.get(); }
     public ImageView getImage() { return imageLinkTable; }
 

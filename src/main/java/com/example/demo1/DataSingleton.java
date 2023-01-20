@@ -3,7 +3,6 @@ package com.example.demo1;
 public class DataSingleton {
     private static final DataSingleton instance = new DataSingleton();
 
-    private Integer recipeId;
     private String recipeName;
     private Integer pageNumber;
     private String authorName;
@@ -16,16 +15,13 @@ public class DataSingleton {
     }
 
     public Integer getPageNumber(){return pageNumber; }
-    public Integer getRecipeId(){return pageNumber; }
     public String getRecipeName(){return recipeName; }
     public String getPassword() {
         return password;
     }
     public String getAuthorName() {return authorName; }
+    public String getOtherAuthorName() {return otherAuthorName;}
 
-    public void setRecipeId(Integer recipeId) {
-        this.recipeId = recipeId;
-    }
     public void setPassword(String password) {
         this.password = password;
     }
@@ -38,8 +34,8 @@ public class DataSingleton {
     public void setPageNumber(Integer pageNumber) {
         this.pageNumber = pageNumber;
     }
-
-    public String getOtherAuthorName() {return otherAuthorName;}
-
     public void setOtherAuthorName(String otherAuthorName) {this.otherAuthorName = otherAuthorName;}
+
+
+
 }

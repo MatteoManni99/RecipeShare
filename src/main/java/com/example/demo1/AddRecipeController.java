@@ -74,9 +74,7 @@ public class AddRecipeController implements Initializable {
             data = DataSingleton.getInstance();
 
             Document recipeToAdd = new Document();
-            recipeToAdd.append("RecipeId",null); ///FORSE SAREBBE DA TOGLIERE///
             recipeToAdd.append("Name",name);
-            recipeToAdd.append("AuthorId",null); ///FORSE SAREBBE DA TOGLIERE///
             recipeToAdd.append("AuthorName",data.getAuthorName()); //da cambiare
             recipeToAdd.append("TotalTime",time);
             recipeToAdd.append("DatePublished", isoDate);

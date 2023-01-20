@@ -88,9 +88,8 @@ public class LoggatoController implements Initializable{
             //Bson filter = Filters.regex("Name", "^(?)" + nameToSearch); //da togliere era il vecchio filtro
             Bson filter = new Document("Name",new Document("$regex",nameToSearch).append("$options","i"));
             Bson match = match(filter);
-            Bson project = project(new Document("RecipeId",1).append("Name",1).append("AuthorId",1).append("AuthorName",1)
+            Bson project = project(new Document("Name",1).append("AuthorName",1)
                     .append("Images", new Document("$first","$Images")));
-
             if(nameToSearch == null){
                 cursor = collection.aggregate(Arrays.asList(skip(10*pageNumber),limit(10),project)).iterator();
                 System.out.println("null");
@@ -101,7 +100,7 @@ public class LoggatoController implements Initializable{
             TableViewObject.resetObservableArrayList();
             while (cursor.hasNext()){
                 recipeDoc = cursor.next();
-                Recipe recipe = new Recipe(recipeDoc.getInteger(("RecipeId")),recipeDoc.getString("Name"),recipeDoc.getInteger(("AuthorId")),
+                Recipe recipe = new Recipe(recipeDoc.getString("Name"),
                         recipeDoc.getString("AuthorName"),new ClassForTableView.CustomImage(new ImageView(recipeDoc.getString("Images"))).getImage());
                 TableViewObject.addToObservableArrayList(recipe);
             }

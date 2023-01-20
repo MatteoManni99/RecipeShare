@@ -20,36 +20,42 @@ import java.util.ArrayList;
 public class ClassForTableView {
     public TableView<Recipe> tabellaDB;
     private ObservableList<Recipe> ol;
-    private TableColumn recipeIdCol;
+    //private TableColumn recipeIdCol;
     private TableColumn nameCol;
-    private TableColumn authorIdCol;
+    //private TableColumn authorIdCol;
     private TableColumn authorNameCol;
     private TableColumn imageCol;
 
     private Stage stage;
 
     private DataSingleton data = DataSingleton.getInstance();
-    private DataSingleton dataAuthor = DataSingleton.getInstance();
+    //private DataSingleton dataAuthor = DataSingleton.getInstance();
 
     //da rendere efficiente accorpando gli array o qualcosa del genere
-    private ArrayList<String> recipeNameArray = new ArrayList<String>();
-    private ArrayList<Integer> recipeIdArray = new ArrayList<Integer>();
+    //private ArrayList<String> recipeNameArray = new ArrayList<String>();
+    //private ArrayList<Integer> recipeIdArray = new ArrayList<Integer>();
 
     public void initializeTableView(String classe) {
         tabellaDB = new TableView<>();
 
-        recipeIdCol = new TableColumn<Recipe, String>("RecipeID");
+        //recipeIdCol = new TableColumn<Recipe, String>("RecipeID");
         nameCol = new TableColumn<Recipe, String>("Name");
-        authorIdCol = new TableColumn<Recipe, String>("AuthorID");
+        //authorIdCol = new TableColumn<Recipe, String>("AuthorID");
         authorNameCol = new TableColumn<Recipe, String>("AuthorName");
+        //recipeIdCol = new TableColumn("RecipeID");
+        //nameCol = new TableColumn("Name");
+        //authorIdCol = new TableColumn("AuthorID");
+        //authorNameCol = new TableColumn("AuthorName");
         imageCol = new TableColumn<CustomImage, ImageView>("Image");
+
         /////////////non cambiate i nomi o vi vengo a cercare a casa//////////////////
-        recipeIdCol.setCellValueFactory(new PropertyValueFactory<>("recipeId"));
+        //recipeIdCol.setCellValueFactory(new PropertyValueFactory<>("recipeId"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        authorIdCol.setCellValueFactory(new PropertyValueFactory<>("authorId"));
+        //authorIdCol.setCellValueFactory(new PropertyValueFactory<>("authorId"));
         authorNameCol.setCellValueFactory(new PropertyValueFactory<>("authorName"));
         imageCol.setCellValueFactory(new PropertyValueFactory<CustomImage,ImageView>("image"));
         /////////////non cambiate i nomi o vi vengo a cercare a casa//////////////////
+
         tabellaDB.setPrefHeight(400);
         tabellaDB.setPrefWidth(600);
         tabellaDB.setLayoutX(150);
@@ -59,7 +65,7 @@ public class ClassForTableView {
 
     public void setTabellaDB() {
         //tabellaDB.setItems(ol);
-        tabellaDB.getColumns().addAll(imageCol, recipeIdCol, nameCol, authorIdCol,authorNameCol);
+        tabellaDB.getColumns().addAll(imageCol, nameCol, authorNameCol);
     }
     public void setItems(){
         tabellaDB.setItems(ol);
@@ -96,13 +102,13 @@ public class ClassForTableView {
     }*/
     public void resetObservableArrayList(){
         ol = FXCollections.observableArrayList();
-        recipeNameArray.clear();
-        recipeIdArray.clear();
+        //recipeNameArray.clear();
+        //recipeIdArray.clear();
     }
     public void addToObservableArrayList(Recipe recipe){
         ol.add(recipe);
-        recipeNameArray.add(recipe.getName());
-        recipeIdArray.add(recipe.getRecipeId());
+        //recipeNameArray.add(recipe.getName());
+        //recipeIdArray.add(recipe.getRecipeId());
     }
 
     public void setEventForTableCells() {

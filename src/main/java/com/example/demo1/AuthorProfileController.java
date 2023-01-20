@@ -116,7 +116,7 @@ public class AuthorProfileController implements Initializable {
             //Bson filter = Filters.regex("Name", "^(?)" + nameToSearch); //da togliere era il vecchio filtro
             Bson filter = new Document("AuthorName", new Document("$regex",/*nameToSearch*/"elly9812").append("$options", "i")); //ho messo elly9812 per avere dei risultati nella tabella, sarebbe da mettere nameToSearch
             Bson match = match(filter);
-            Bson project = project(new Document("RecipeId", 1).append("Name", 1).append("AuthorId", 1).append("AuthorName", 1)
+            Bson project = project(new Document("Name", 1).append("AuthorName", 1)
                     .append("Images", new Document("$first", "$Images")));
 
             if (nameToSearch == null) {
@@ -129,8 +129,8 @@ public class AuthorProfileController implements Initializable {
             TableViewObject.resetObservableArrayList();
             while (cursor.hasNext()) {
                 recipeDoc = cursor.next();
-                Recipe recipe = new Recipe(recipeDoc.getInteger(("RecipeId")), recipeDoc.getString("Name"), recipeDoc.getInteger(("AuthorId")),
-                        recipeDoc.getString("AuthorName"), new ClassForTableView.CustomImage(new ImageView(recipeDoc.getString("Images"))).getImage());
+                Recipe recipe = new Recipe( recipeDoc.getString("Name"), recipeDoc.getString("AuthorName"),
+                        new ClassForTableView.CustomImage(new ImageView(recipeDoc.getString("Images"))).getImage());
                 TableViewObject.addToObservableArrayList(recipe);
             }
             TableViewObject.setItems();
