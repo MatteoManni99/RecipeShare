@@ -92,7 +92,6 @@ public class LoggatoController implements Initializable{
                     .append("Images", new Document("$first","$Images")));
             if(nameToSearch == null){
                 cursor = collection.aggregate(Arrays.asList(skip(10*pageNumber),limit(10),project)).iterator();
-                System.out.println("null");
             }else{
                 cursor = collection.aggregate(Arrays.asList(match,skip(10*pageNumber),limit(10),project)).iterator();
                 System.out.println(nameToSearch);

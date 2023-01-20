@@ -27,6 +27,8 @@
             <Button layoutX="802.0" layoutY="34.0" mnemonicParsing="false" onAction="#onBackClick" text="INDIETRO" />
             <Button layoutX="251.0" layoutY="294.0" mnemonicParsing="false" onAction="#onNextClick" text="Next" />
             <Button layoutX="59.0" layoutY="294.0" mnemonicParsing="false" onAction="#onPreviousClick" text="Previous" />
+            <Label fx:id="authorName" layoutX="541.0" layoutY="78.0" text="Nome dell'autore" />
+            <Label layoutX="474.0" layoutY="78.0" text="created by:" />
          </children>
       </AnchorPane>
    </children>

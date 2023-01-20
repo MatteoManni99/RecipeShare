@@ -21,6 +21,8 @@ import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +34,7 @@ public class RecipeController implements Initializable {
 
     @FXML
     public Label name;
+    public Label authorName;
     @FXML
     public Text description;
     @FXML
@@ -47,6 +50,7 @@ public class RecipeController implements Initializable {
     private List<String> images_list;
     private Stage stage;
     private String recipeName;
+
 
 
     private void printImages(){
@@ -75,7 +79,33 @@ public class RecipeController implements Initializable {
 
     @FXML
     public void onReportRecipeClick(ActionEvent actionEvent){
+        LocalDate currentDate = LocalDate.now();
+        String isoDate = currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
 
+        Document recipeToReport = new Document();
+        recipeToReport.append("name",data.getRecipeName());
+        recipeToReport.append("authorName",authorName.getText());
+        recipeToReport.append("reporterName",data.getAuthorName());
+        recipeToReport.append("dateReporting", isoDate);
+        recipeToReport.append("Image",images_list.get(0));
+        addRecipeToReportedRecipe(recipeToReport);
+    }
+    private void addRecipeToReportedRecipe(Document recipeToAdd){
+        String uri = Configuration.MONGODB_URL;
+        try (MongoClient mongoClient = MongoClients.create(uri)) {
+            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
+            MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_REPORTED_RECIPE);
+            Bson filter = Filters.and(
+                    Filters.eq("name", recipeToAdd.getString("name")),
+                    Filters.eq("reporterName", recipeToAdd.getString("reporterName")));
+            if (collection.find(filter).cursor().hasNext()) {
+                System.out.println("Avevi già Reportato questa Recipe");
+            }else{
+                if(collection.insertOne(recipeToAdd).wasAcknowledged()){
+                    System.out.println("Recipe Reportata");
+                }
+            }
+        }
     }
 
     @Override
@@ -88,9 +118,9 @@ public class RecipeController implements Initializable {
             Bson match = match(Filters.eq("Name", recipeName));
             for (Document doc : collectionRecipe.aggregate(Arrays.asList(match))) {
                 name.setText(doc.getString("Name"));
+                authorName.setText(doc.getString("AuthorName"));
                 description.setText(doc.getString("Description"));
                 ObservableList<String> ingredients_list = FXCollections.observableArrayList(doc.getList("RecipeIngredientParts", String.class));
-                System.out.println(ingredients_list);
                 ingredients.setItems(ingredients_list);
                 ObservableList<String> keywords_list = FXCollections.observableArrayList(doc.getList("Keywords", String.class));
                 keywords.setItems(keywords_list);
