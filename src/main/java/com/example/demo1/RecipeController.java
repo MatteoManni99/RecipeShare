@@ -35,8 +35,13 @@ public class RecipeController implements Initializable {
     @FXML
     public Label name;
     public Label authorName;
+    public Label calories;
+    public Label servings;
+    public Label time;
+    public Label date;
+
     @FXML
-    public Text description;
+    public TextArea description;
     @FXML
     public ImageView image;
     @FXML
@@ -120,6 +125,10 @@ public class RecipeController implements Initializable {
                 name.setText(doc.getString("Name"));
                 authorName.setText(doc.getString("AuthorName"));
                 description.setText(doc.getString("Description"));
+                calories.setText(String.valueOf(doc.get("Calories")));
+                servings.setText(String.valueOf(doc.get("RecipeServings")));
+                time.setText(String.valueOf(doc.get("TotalTime")));
+                date.setText(doc.getString("DatePublished"));
                 ObservableList<String> ingredients_list = FXCollections.observableArrayList(doc.getList("RecipeIngredientParts", String.class));
                 ingredients.setItems(ingredients_list);
                 ObservableList<String> keywords_list = FXCollections.observableArrayList(doc.getList("Keywords", String.class));
