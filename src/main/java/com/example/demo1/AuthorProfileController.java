@@ -2,6 +2,7 @@ package com.example.demo1;
 
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
+import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.UpdateResult;
@@ -153,15 +154,24 @@ public class AuthorProfileController implements Initializable {
             System.out.println("Prima devi selezionare un' opzione dal menu a tendina sopra");
             return;
         }
-        System.out.println(parameterToChange);
+        String parameterNewValue = parameterValueField.getText();
 
         try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
             MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_AUTHOR);
-            String parameterNewValue = parameterValueField.getText();
+            if (parameterToChange.equals("authorName")) {
+                Bson filterAuthor = Filters.and(
+                        Filters.eq("authorName", parameterNewValue));
+                MongoCursor<Document> cursorAuthor = collection.find(filterAuthor).iterator();
+                if (cursorAuthor.hasNext()) {
+                    System.out.println("QUESTO NICKNAME ESISTE GIA, PROVANE UN ALTRO");
+                    return;
+                }
+            }
             Document query = new Document().append("authorName", authorName);
             Bson updates = Updates.combine(
-                    Updates.set(parameterToChange, parameterNewValue));
+                    Updates.set(parameterToChange, parameterNewValue)
+                    );
             UpdateOptions options = new UpdateOptions().upsert(true);
 
             try {
@@ -171,7 +181,36 @@ public class AuthorProfileController implements Initializable {
                 System.err.println("Unable to update due to an error: " + me);
             }
 
+            if (parameterToChange.equals("authorName") == false) {
+                System.out.println("PARAMETRO CAMBIATO");
+                if (parameterToChange.equals("password")) {
+                    passwordField.setText(parameterNewValue); //da fare anche per le immagini
+                    DataSingleton.getInstance().setPassword(parameterNewValue);
+                    authorName = data.getAuthorName();
+                    password = data.getPassword();
+                }
+                parameterToChange = null;
+                return;
+            }
+
+            MongoCollection<Document> collectionRecipe = database.getCollection(Configuration.MONGODB_RECIPE);
+            Document queryRecipe = new Document().append("AuthorName", authorName);
+            Bson updatesRecipe = Updates.combine(
+                    Updates.set("AuthorName", parameterNewValue));
+            UpdateOptions optionsRecipe = new UpdateOptions().upsert(true);
+
+            try {
+                UpdateResult result = collection.updateMany(queryRecipe, updatesRecipe, optionsRecipe);
+                System.out.println("Modified document count: " + result.getModifiedCount());
+            } catch (MongoException me) {
+                System.err.println("Unable to update due to an error: " + me);
+            }
+
             System.out.println("PARAMETRO CAMBIATO");
+            authorNameField.setText(parameterNewValue);
+            DataSingleton.getInstance().setAuthorName(parameterNewValue);
+            authorName = data.getAuthorName();
+            password = data.getPassword();
             parameterToChange = null;
         }
     }
