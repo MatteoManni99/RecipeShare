@@ -24,7 +24,11 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -47,6 +51,7 @@ public class AuthorProfileController implements Initializable {
     @FXML
     public ListView<String> instructions;
     public TextField parameterValueField;
+    public Label avatarLabel;
     private DataSingleton data = DataSingleton.getInstance();
     private ClassForTableView TableViewObject = new ClassForTableView();
     private Integer indexImages = 0;
@@ -55,6 +60,9 @@ public class AuthorProfileController implements Initializable {
     private Integer recipeId;
     private String authorName;
     private String password;
+    @FXML
+    private ImageView avatar;
+    private ArrayList avatarsAvailable;
     @FXML
     private TextField authorNameField;
     @FXML
@@ -91,19 +99,62 @@ public class AuthorProfileController implements Initializable {
         stage.show();
     }
 
-    @FXML
-    public void onReportRecipeClick(ActionEvent actionEvent) {
-
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         authorName = data.getAuthorName();
         password = data.getPassword();
+        avatar = DataSingleton.getInstance().getAvatar();
         authorNameField.setText(authorName);
         authorNameField.setEditable(false);
         passwordField.setText(password);
         passwordField.setEditable(false);
+        avatar.setX(avatarLabel.getLayoutX());
+        avatar.setY(avatarLabel.getLayoutY() + 20);
+        avatar.setFitHeight(100);
+        avatar.setFitWidth(100);
+        anchorPane.getChildren().add(avatar);
+        System.out.println(anchorPane.getChildren().indexOf(avatar));
+        avatarsAvailable = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            ImageView temp = new ImageView("C:\\Users\\HP\\IdeaProjects\\RecipeShareGit\\src\\main\\resources\\avatarImages\\avatar" + (i+1) + ".png");
+            temp.setId(String.valueOf(i+1));
+            temp.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
+                DataSingleton.getInstance().setAvatar(Integer.parseInt(temp.getId()));
+                int avatarIndex = anchorPane.getChildren().indexOf(avatar);
+                avatar = new ImageView("C:\\Users\\HP\\IdeaProjects\\RecipeShareGit\\src\\main\\resources\\avatarImages\\avatar" + Integer.parseInt(temp.getId()) + ".png");
+                avatar.setX(avatarLabel.getLayoutX());
+                avatar.setY(avatarLabel.getLayoutY() + 20);
+                avatar.setFitHeight(100);
+                avatar.setFitWidth(100);
+                anchorPane.getChildren().set(avatarIndex,avatar);
+                try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
+                    MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
+                    MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_AUTHOR);
+                    Document query = new Document().append("authorName", authorName);
+                    Bson updates = Updates.combine(
+                            Updates.set("image", Integer.parseInt(temp.getId()))
+                    );
+                    UpdateOptions options = new UpdateOptions().upsert(true);
+                    try {
+                        UpdateResult result = collection.updateOne(query, updates, options);
+                        System.out.println("Modified document count: " + result.getModifiedCount());
+                    } catch (MongoException me) {
+                        System.err.println("Unable to update due to an error: " + me);
+                    }
+                }
+            });
+            temp.setFitWidth(70);
+            temp.setFitHeight(70);
+            if (i >= 4) {
+                temp.setY(avatarLabel.getLayoutY() + 170);
+                temp.setX(avatarLabel.getLayoutX() - 50 + 55*(i-4));
+            }
+            else {
+                temp.setY(avatarLabel.getLayoutY() + 100);
+                temp.setX(avatarLabel.getLayoutX() - 50 + 55 * i);
+            }
+            avatarsAvailable.add(i,temp);
+        }
         createTableView(TableViewObject);
     }
 
@@ -145,7 +196,8 @@ public class AuthorProfileController implements Initializable {
         TableViewObject.setTabellaDB();
         TableViewObject.getTabellaDB().setLayoutX(20);
         TableViewObject.getTabellaDB().setLayoutY(240);
-        anchorPane.getChildren().add(TableViewObject.getTabellaDB());
+        anchorPane.getChildren().addAll(TableViewObject.getTabellaDB());
+        for (int i = 0; i < 8; i++) anchorPane.getChildren().add((Node) avatarsAvailable.get(i));
     }
 
     public void changeProfileParameter(ActionEvent actionEvent) {
@@ -200,7 +252,7 @@ public class AuthorProfileController implements Initializable {
             UpdateOptions optionsRecipe = new UpdateOptions().upsert(true);
 
             try {
-                UpdateResult result = collection.updateMany(queryRecipe, updatesRecipe, optionsRecipe);
+                UpdateResult result = collectionRecipe.updateMany(queryRecipe, updatesRecipe, optionsRecipe);
                 System.out.println("Modified document count: " + result.getModifiedCount());
             } catch (MongoException me) {
                 System.err.println("Unable to update due to an error: " + me);
@@ -216,12 +268,12 @@ public class AuthorProfileController implements Initializable {
     }
 
     public void setParameterToAuthorName(ActionEvent actionEvent) {parameterToChange = "authorName";}
-
     public void setParameterToPassword(ActionEvent actionEvent) {parameterToChange = "password";}
 
-    public void setParameterToImage(ActionEvent actionEvent) {
-        parameterToChange = "immagine"; //non è ancora nella collection
-    }
+    /*public void setParameterToImage(ActionEvent actionEvent) {
+        parameterToChange = "image";
+
+    }*/
 
     public void onGoBackClick(ActionEvent actionEvent) {
     }

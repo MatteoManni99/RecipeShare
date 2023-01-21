@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.image.ImageView?>
 <VBox alignment="TOP_CENTER" prefHeight="600" prefWidth="1000" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.AuthorProfileController">
    <children>
       <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
@@ -17,14 +18,14 @@
               <items>
                 <MenuItem fx:id="menuItemName" onAction="#setParameterToAuthorName" mnemonicParsing="false" text="Name" />
                 <MenuItem fx:id="menuItemPassword" onAction="#setParameterToPassword" mnemonicParsing="false" text="Password" />
-                  <MenuItem fx:id="menuItemImmagine" onAction="#setParameterToImage" mnemonicParsing="false" text="Immagine" />
               </items>
             </MenuButton>
             <TextField fx:id="authorNameField" layoutX="185.0" layoutY="54.0" />
             <Label layoutX="95.0" layoutY="58.0" prefHeight="18.0" prefWidth="78.0" text="Author Name" />
             <TextField fx:id="passwordField" layoutX="185.0" layoutY="95.0" />
             <Label layoutX="95.0" layoutY="98.0" prefHeight="18.0" prefWidth="78.0" text="Password" />
-            <Label layoutX="450.0" layoutY="45.0" text="Immagine profilo" />
+            <Label fx:id="avatarLabel" layoutX="500.0" layoutY="25.0" text="Immagine profilo" />
+            <ImageView fx:id="avatar" layoutX="500.0" layoutY="35.0" />
             <Label layoutX="35.0" layoutY="157.0" prefHeight="18.0" prefWidth="273.0" text="Usa il menu qui accanto se vuoi cambiare qualcosa" />
             <TextField fx:id="parameterValueField" layoutX="35.0" layoutY="200.0" prefHeight="26.0" prefWidth="134.0" />
             <Button onAction="#changeProfileParameter" layoutX="173.0" layoutY="200.0" mnemonicParsing="false" text="Cambia Parametro" />

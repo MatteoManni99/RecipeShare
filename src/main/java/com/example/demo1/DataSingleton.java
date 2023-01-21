@@ -1,5 +1,7 @@
 package com.example.demo1;
 
+import javafx.scene.image.ImageView;
+
 public class DataSingleton {
     private static final DataSingleton instance = new DataSingleton();
 
@@ -8,6 +10,7 @@ public class DataSingleton {
     private String authorName;
     private String password;
     private String otherAuthorName;
+    private ImageView avatar;
     private DataSingleton(){}
 
     public static DataSingleton getInstance(){
@@ -36,6 +39,6 @@ public class DataSingleton {
     }
     public void setOtherAuthorName(String otherAuthorName) {this.otherAuthorName = otherAuthorName;}
 
-
-
+    public void setAvatar(int index) {this.avatar = new ImageView("C:\\Users\\HP\\IdeaProjects\\RecipeShareGit\\src\\main\\resources\\avatarImages\\avatar" + index + ".png");}
+    public ImageView getAvatar() {return this.avatar;}
 }

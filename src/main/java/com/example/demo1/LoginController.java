@@ -63,6 +63,8 @@ public class LoginController {
                     Filters.eq("password", password));
             MongoCursor<Document> cursorModerator = collectionModerator.find(filterModerator).iterator();
             if (cursorAuthor.hasNext()) {
+                int avatarIndex = (int) cursorAuthor.next().get("image");
+                DataSingleton.getInstance().setAvatar(avatarIndex);
                 System.out.println("TROVATO AUTHOR");
                 nomePagina = "Loggato.fxml";
             }
