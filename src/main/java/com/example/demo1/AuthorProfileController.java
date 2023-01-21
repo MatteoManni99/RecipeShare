@@ -51,7 +51,7 @@ public class AuthorProfileController implements Initializable {
     @FXML
     public ListView<String> instructions;
     public TextField parameterValueField;
-    public Label avatarLabel;
+    public Label avatarLabel = new Label();
     private DataSingleton data = DataSingleton.getInstance();
     private ClassForTableView TableViewObject = new ClassForTableView();
     private Integer indexImages = 0;
@@ -72,6 +72,8 @@ public class AuthorProfileController implements Initializable {
     private Integer pageNumber = 0;
     @FXML
     private AnchorPane anchorPane;
+    @FXML
+    public ImageView imageNew;
 
 
     private void printImages() {
@@ -113,15 +115,18 @@ public class AuthorProfileController implements Initializable {
         avatar.setFitHeight(100);
         avatar.setFitWidth(100);
         anchorPane.getChildren().add(avatar);
+        System.out.println("QUIG");
         System.out.println(anchorPane.getChildren().indexOf(avatar));
         avatarsAvailable = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
-            ImageView temp = new ImageView("C:\\Users\\HP\\IdeaProjects\\RecipeShareGit\\src\\main\\resources\\avatarImages\\avatar" + (i+1) + ".png");
+            ImageView temp = new ImageView();
+            temp.setImage(Configuration.AVATAR.get(i));
             temp.setId(String.valueOf(i+1));
             temp.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
+                System.out.println(temp.getId());
                 DataSingleton.getInstance().setAvatar(Integer.parseInt(temp.getId()));
                 int avatarIndex = anchorPane.getChildren().indexOf(avatar);
-                avatar = new ImageView("C:\\Users\\HP\\IdeaProjects\\RecipeShareGit\\src\\main\\resources\\avatarImages\\avatar" + Integer.parseInt(temp.getId()) + ".png");
+                avatar.setImage(Configuration.AVATAR.get(avatarIndex));
                 avatar.setX(avatarLabel.getLayoutX());
                 avatar.setY(avatarLabel.getLayoutY() + 20);
                 avatar.setFitHeight(100);
@@ -165,7 +170,7 @@ public class AuthorProfileController implements Initializable {
             MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_RECIPE);
             MongoCursor<Document> cursor;
             //Bson filter = Filters.regex("Name", "^(?)" + nameToSearch); //da togliere era il vecchio filtro
-            Bson filter = new Document("AuthorName", new Document("$regex",/*nameToSearch*/"elly9812").append("$options", "i")); //ho messo elly9812 per avere dei risultati nella tabella, sarebbe da mettere nameToSearch
+            Bson filter = new Document("AuthorName", new Document("$regex",/*nameToSearch*/"Malarkey Test").append("$options", "i")); //ho messo elly9812 per avere dei risultati nella tabella, sarebbe da mettere nameToSearch
             Bson match = match(filter);
             Bson project = project(new Document("Name", 1).append("AuthorName", 1)
                     .append("Images", new Document("$first", "$Images")));
@@ -270,10 +275,9 @@ public class AuthorProfileController implements Initializable {
     public void setParameterToAuthorName(ActionEvent actionEvent) {parameterToChange = "authorName";}
     public void setParameterToPassword(ActionEvent actionEvent) {parameterToChange = "password";}
 
-    /*public void setParameterToImage(ActionEvent actionEvent) {
-        parameterToChange = "image";
+    public void setParameterToImage(ActionEvent actionEvent) {
 
-    }*/
+    }
 
     public void onGoBackClick(ActionEvent actionEvent) {
     }

@@ -132,6 +132,7 @@ public class RecipeController implements Initializable {
                 ObservableList<String> ingredients_list = FXCollections.observableArrayList(doc.getList("RecipeIngredientParts", String.class));
                 ingredients.setItems(ingredients_list);
                 ObservableList<String> keywords_list = FXCollections.observableArrayList(doc.getList("Keywords", String.class));
+                System.out.println(keywords_list);
                 keywords.setItems(keywords_list);
                 ObservableList<String> instructions_list = FXCollections.observableArrayList(doc.getList("RecipeInstructions", String.class));
                 instructions.setItems(instructions_list);

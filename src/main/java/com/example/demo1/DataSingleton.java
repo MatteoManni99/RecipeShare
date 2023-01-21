@@ -42,7 +42,7 @@ public class DataSingleton {
     }
     public void setOtherAuthorName(String otherAuthorName) {this.otherAuthorName = otherAuthorName;}
 
-    public void setAvatar(int index) {this.avatar = new ImageView("C:\\Users\\HP\\IdeaProjects\\RecipeShareGit\\src\\main\\resources\\avatarImages\\avatar" + index + ".png");}
+    public void setAvatar(int index) {this.avatar = new ImageView(Configuration.AVATAR.get(index));}
     public ImageView getAvatar() {return this.avatar;}
 
     public void setTypeOfUser(String tipo) {typeOfUser = tipo;}
