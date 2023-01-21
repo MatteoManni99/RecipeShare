@@ -122,6 +122,9 @@ public class LoggatoController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        if (DataSingleton.getInstance().getAuthorPromotion() == 1) {
+            System.out.println("Scegli se accettare o meno la promozione");
+        }
         createTableView(TableViewObject);
     }
 

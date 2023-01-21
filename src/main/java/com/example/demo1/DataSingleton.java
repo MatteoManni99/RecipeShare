@@ -5,8 +5,11 @@ import javafx.scene.image.ImageView;
 public class DataSingleton {
     private static final DataSingleton instance = new DataSingleton();
 
+    private String typeOfUser; //per distinguere tra author e moderatore dopo il login, lo uso per dare l'opzione
+                               //di promozione o meno nel fxml Ricerca_Utente
     private String recipeName;
     private Integer pageNumber;
+    private Integer authorPromotion = null;
     private String authorName;
     private String password;
     private String otherAuthorName;
@@ -41,4 +44,10 @@ public class DataSingleton {
 
     public void setAvatar(int index) {this.avatar = new ImageView("C:\\Users\\HP\\IdeaProjects\\RecipeShareGit\\src\\main\\resources\\avatarImages\\avatar" + index + ".png");}
     public ImageView getAvatar() {return this.avatar;}
+
+    public void setTypeOfUser(String tipo) {typeOfUser = tipo;}
+    public String getTypeOfUser() {return this.typeOfUser;}
+
+    public void setAuthorPromotion(int quanto) {authorPromotion = quanto;}
+    public int getAuthorPromotion() {return authorPromotion;}
 }

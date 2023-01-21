@@ -63,14 +63,18 @@ public class LoginController {
                     Filters.eq("password", password));
             MongoCursor<Document> cursorModerator = collectionModerator.find(filterModerator).iterator();
             if (cursorAuthor.hasNext()) {
-                int avatarIndex = (int) cursorAuthor.next().get("image");
+                Document currentAuthor = cursorAuthor.next();
+                int avatarIndex = (int) currentAuthor.get("image");
                 DataSingleton.getInstance().setAvatar(avatarIndex);
+                DataSingleton.getInstance().setAuthorPromotion((Integer) currentAuthor.get("promotion"));
+                DataSingleton.getInstance().setTypeOfUser("author");
                 System.out.println("TROVATO AUTHOR");
                 nomePagina = "Loggato.fxml";
             }
             else {
                 System.out.println("NON TROVATO AUTHOR");
                 if (cursorModerator.hasNext()) {
+                    DataSingleton.getInstance().setTypeOfUser("moderator");
                     System.out.println("TROVATO MODERATOR");
                     nomePagina = "Moderator.fxml";
                 }

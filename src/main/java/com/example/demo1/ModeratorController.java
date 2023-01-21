@@ -167,6 +167,7 @@ public class ModeratorController implements Initializable {
     }
     public void onBrowseAuthorsClick(ActionEvent actionEvent) throws IOException {
         String nomeSchermata = "Ricerca_Utente.fxml";
+        DataSingleton.getInstance().setTypeOfUser("moderator");
         cambiaSchermata(actionEvent,nomeSchermata);
     }
 

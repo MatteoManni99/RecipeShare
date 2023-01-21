@@ -1,7 +1,11 @@
 package com.example.demo1;
 
+import com.mongodb.MongoException;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.bson.Document;
@@ -28,6 +33,7 @@ public class Ricerca_UtenteController implements Initializable {
     @FXML
     private TextField utenteCercato;
     private Stage stage;
+    private String authorNameClicked; //qui ci salvo l'utente della tabella che è stato clickato e che quindi si vuole promuovere
     public AnchorPane anchorPane;
 
     @FXML
@@ -50,8 +56,33 @@ public class Ricerca_UtenteController implements Initializable {
         }
 
         for (int i = 0; i < listaAuthors.size() - 220000; i++)
-        {
             setAuthorLabels(listaAuthors,i);
+
+        //questa parte sotto è quella che setta il Button per la promozione
+        if (DataSingleton.getInstance().getTypeOfUser().equals("moderator")) {
+            Button promoteAuthorButton = new Button("PROMOTE AUTHOR");
+            promoteAuthorButton.setLayoutX(164);
+            promoteAuthorButton.setLayoutY(100);
+            promoteAuthorButton.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
+                authorNameClicked = "1"; //lo metto statico perché ancora non ho la tabella a disposizione
+                try (MongoClient mongoClient = MongoClients.create(uri)) {
+                    MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
+                    MongoCollection<Document> collectionAuthor = database.getCollection(Configuration.MONGODB_AUTHOR);
+                    Document query = new Document().append("authorName", authorNameClicked);
+                    Bson updates = Updates.combine(
+                            Updates.set("promotion",1)
+                    );
+                    UpdateOptions options = new UpdateOptions().upsert(true);
+                    try {
+                        UpdateResult result = collectionAuthor.updateOne(query, updates, options);
+                        System.out.println("Modified document count: " + result.getModifiedCount());
+                    } catch (MongoException me) {
+                        System.err.println("Unable to update due to an error: " + me);
+                    }
+                    authorNameClicked = null;
+                }
+            });
+            anchorPane.getChildren().add(promoteAuthorButton);
         }
     }
 
