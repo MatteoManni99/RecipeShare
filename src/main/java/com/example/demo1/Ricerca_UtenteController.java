@@ -62,7 +62,7 @@ public class Ricerca_UtenteController implements Initializable {
         if (DataSingleton.getInstance().getTypeOfUser().equals("moderator")) {
             Button promoteAuthorButton = new Button("PROMOTE AUTHOR");
             promoteAuthorButton.setLayoutX(164);
-            promoteAuthorButton.setLayoutY(100);
+            promoteAuthorButton.setLayoutY(120);
             promoteAuthorButton.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
                 authorNameClicked = "1"; //lo metto statico perché ancora non ho la tabella a disposizione
                 try (MongoClient mongoClient = MongoClients.create(uri)) {
