@@ -1,15 +1,21 @@
 package com.example.demo1;
 
+import com.mongodb.MongoException;
 import com.mongodb.client.*;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.bson.Document;
@@ -124,6 +130,49 @@ public class LoggatoController implements Initializable{
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if (DataSingleton.getInstance().getAuthorPromotion() == 1) {
             System.out.println("Scegli se accettare o meno la promozione");
+            Label notifyAuthor = new Label("Scegli con i pulsanti qui sotto se accettare o meno la promozione");
+            Button rejectPromotionButton = new Button("REJECT PROMOTION");
+            Button acceptPromotionButton = new Button("ACCEPT PROMOTION");
+            notifyAuthor.setLayoutX(780);
+            notifyAuthor.setLayoutY(320);
+            rejectPromotionButton.setLayoutX(750);
+            rejectPromotionButton.setLayoutY(340);
+            acceptPromotionButton.setLayoutX(870);
+            acceptPromotionButton.setLayoutY(340);
+            for (int i = 0; i < 2; i++) {
+                Button currentButton;
+                int promotion;
+                if (i == 0) {
+                    currentButton = rejectPromotionButton;
+                    promotion = 0;
+                }
+                else {
+                    currentButton = acceptPromotionButton;
+                    promotion = 2;
+                    //da mettere qui l'evento che fa inserire le credenziali all'autore come nuovo moderatore
+                }
+                currentButton.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
+                    try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
+                        MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
+                        MongoCollection<Document> collectionAuthor = database.getCollection(Configuration.MONGODB_AUTHOR);
+                        Document query = new Document().append("authorName", DataSingleton.getInstance().getAuthorName());
+                        Bson updates = Updates.combine(
+                                Updates.set("promotion", promotion)
+                        );
+                        UpdateOptions options = new UpdateOptions().upsert(true);
+                        try {
+                            UpdateResult result = collectionAuthor.updateOne(query, updates, options);
+                            System.out.println("Modified document count: " + result.getModifiedCount());
+                        } catch (MongoException me) {
+                            System.err.println("Unable to update due to an error: " + me);
+                        }
+                    }
+                    for (int j = 0;j < 3; j++) anchorPane.getChildren().remove(1); //questo for elimina i 2 Button e la Label della promozione
+                });
+            }
+            anchorPane.getChildren().add(1,notifyAuthor);
+            anchorPane.getChildren().add(2,rejectPromotionButton);
+            anchorPane.getChildren().add(3,acceptPromotionButton);
         }
         createTableView(TableViewObject);
     }
