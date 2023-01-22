@@ -30,7 +30,7 @@
             <TextField fx:id="parameterValueField" layoutX="35.0" layoutY="200.0" prefHeight="26.0" prefWidth="134.0" />
             <Button layoutX="173.0" layoutY="200.0" mnemonicParsing="false" onAction="#changeProfileParameter" text="Cambia Parametro" />
             <Button layoutX="14.0" layoutY="20.0" mnemonicParsing="false" onAction="#onBackClick" text="Torna a Loggato" />
-            <ImageView fx:id="imageNew" fitHeight="150.0" fitWidth="200.0" layoutX="396.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="imageNew" fitHeight="150.0" fitWidth="200.0" layoutX="386.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
    </children>

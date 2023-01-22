@@ -11,7 +11,7 @@
 
 <VBox alignment="TOP_CENTER" prefHeight="443.0" prefWidth="498.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.RecipeController">
    <children>
-      <AnchorPane fx:id="RecipeController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="729.0" prefWidth="1057.0">
+      <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="729.0" prefWidth="1057.0">
          <children>
             <Button layoutX="797.0" layoutY="104.0" mnemonicParsing="false" text="SCRIVI RECENSIONE" />
             <Button layoutX="797.0" layoutY="152.0" mnemonicParsing="false" onAction="#onReportRecipeClick" prefHeight="26.0" prefWidth="124.0" text="REPORT RECIPE" />
@@ -21,7 +21,7 @@
             <Text layoutX="59.0" layoutY="454.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" wrappingWidth="68.79999999999995" />
             <ListView fx:id="keywords" layoutX="474.0" layoutY="148.0" prefHeight="174.0" prefWidth="124.0" />
             <ListView fx:id="ingredients" layoutX="636.0" layoutY="148.0" prefHeight="174.0" prefWidth="124.0" />
-            <ListView fx:id="instructions" layoutX="59.0" layoutY="588.0" prefHeight="98.0" prefWidth="402.0" />
+            <ListView fx:id="instructions" layoutX="59.0" layoutY="588.0" prefHeight="98.0" prefWidth="920.0" />
             <Label layoutX="474.0" layoutY="130.0" text="Keywords" />
             <Label layoutX="636.0" layoutY="130.0" text="Ingredients" />
             <Label layoutX="58.0" layoutY="563.0" text="Instruction:" />
