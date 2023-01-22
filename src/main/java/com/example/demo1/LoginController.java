@@ -42,10 +42,6 @@ public class LoginController {
     }
 
     public void onLoginClick(ActionEvent actionEvent) {
-        /*dati di un utente che esiste nella collection se volete usarli per prova:
-            NAME = Carmen
-            PASSWORD = 6czYhW4F
-        */
         String nomePagina = null;
         String name = insertedName.getText();
         String password = insertedPassword.getText();
@@ -84,7 +80,9 @@ public class LoginController {
                 DataSingleton data = DataSingleton.getInstance();
                 data.setAuthorName(name);
                 data.setPassword(password);
-                cambiaSchermata(actionEvent,nomePagina);
+                if (DataSingleton.getInstance().getAuthorPromotion() == 1)
+                    cambiaSchermata(actionEvent,"PromotionOffer.fxml");
+                else cambiaSchermata(actionEvent,nomePagina);
             }
 
         } catch (IOException e) {

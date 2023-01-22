@@ -174,16 +174,4 @@ public class ClassForTableView {
         public void setImage(ImageView value) {image = value;}
         public ImageView getImage() {return image;}
     }
-    /*public void registraGiocatoreDB() { //2
-        ol = FXCollections.observableArrayList();
-        try (
-                Connection co = DriverManager.getConnection("jdbc:mysql://"+Configuration.databaseIp+":"+Configuration.databasePort+"/spaceinvaders",
-                        Configuration.databaseUser,Configuration.databasePsw);
-                PreparedStatement ps = co.prepareStatement("INSERT INTO classifica VALUES (?, ?)");
-        ) {
-            ps.setString(1,PlayerStatusLayout.playerName.getText()); ps.setInt(2,SpaceInvaders.score);
-            System.out.println("rows affected: " + ps.executeUpdate());
-        } catch (SQLException e) {System.err.println(e.getMessage());}
-    }*/
-
 }

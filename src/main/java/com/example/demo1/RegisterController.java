@@ -25,17 +25,11 @@ public class RegisterController {
     private TextField insertedName;
     @FXML
     private TextField insertedPassword;
+    @FXML
+    private Label registerText;
     private Stage stage;
 
     public void onRegisterClick(ActionEvent actionEvent) {
-        /*HO REGISTRATO 2 nuovi utenti con successo:
-            primo utente:
-                NAME = prova
-                PASSWORD = prova
-            secondo utente:
-                NAME = prova1
-                PASSWORD = prova1
-        */
         String name = insertedName.getText();
         String password = insertedPassword.getText();
         String uri = Configuration.MONGODB_URL;
@@ -44,8 +38,12 @@ public class RegisterController {
         warningText.setLayoutY(insertedPassword.getLayoutY() + 100);
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
-            MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_AUTHOR);
-            Bson filter = Filters.eq("authorName", name);
+            MongoCollection<Document> collection;
+            if (DataSingleton.getInstance().getTypeOfUser().equals("author")) collection = database.getCollection(Configuration.MONGODB_AUTHOR);
+            else {
+                collection = database.getCollection(Configuration.MONGODB_MODERATOR);
+            }
+            Bson filter = Filters.eq(DataSingleton.getInstance().getTypeOfUser() + "Name", name);
             MongoCursor<Document> cursor = collection.find(filter).iterator();
             //finché non si trova un nickname valido si deve ritentare
             if (cursor.hasNext()) {
@@ -57,22 +55,36 @@ public class RegisterController {
                 System.out.println("NICKNAME VALIDO");
                 warningText.setText("SUCCESSO: ti sei registrato correttamente");
                 anchorPane.getChildren().add(warningText);
-                try {
-                    collection.insertOne(new Document()
-                            .append("_id", new ObjectId())
-                            .append("authorName", name)
-                            .append("password", password)
-                            .append("promotion", 0) // DA CAMBIARE
-                            .append("image", 1)); // DA CAMBIARE
+                if (DataSingleton.getInstance().getTypeOfUser().equals("author")) {
+                    try {
+                        collection.insertOne(new Document()
+                                .append("_id", new ObjectId())
+                                .append("authorName", name)
+                                .append("password", password)
+                                .append("promotion", 0) // DA CAMBIARE
+                                .append("image", 1)); // DA CAMBIARE
+                    }
+                    catch (MongoException me) {
+                        System.err.println("Unable to insert due to an error: " + me);
+                    }
                 }
-                catch (MongoException me) {
-                    System.err.println("Unable to insert due to an error: " + me);
+                else {
+                    try {
+                        collection.insertOne(new Document()
+                                .append("_id", new ObjectId())
+                                .append("moderatorName", name)
+                                .append("password", password));
+                    }
+                    catch (MongoException me) {
+                        System.err.println("Unable to insert due to an error: " + me);
+                    }
                 }
                 //visto che la registrazione è andata bene vado subito alla schermata di loggato
-                String nomeSchermata = "Loggato.fxml";
-                cambiaSchermata(actionEvent,nomeSchermata);
+                if (DataSingleton.getInstance().getTypeOfUser().equals("author")) cambiaSchermata(actionEvent,"Loggato.fxml");
+                else cambiaSchermata(actionEvent,"Moderator.fxml");
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -84,4 +96,5 @@ public class RegisterController {
         stage.setScene(scene);
         stage.show();
     }
+
 }

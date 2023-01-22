@@ -28,9 +28,7 @@ import java.util.ResourceBundle;
 
 public class AddRecipeController implements Initializable {
     DataSingleton data = DataSingleton.getInstance();
-
     private Stage stage;
-
     public TextField nameField;
     public TextField categoryField;
     public TextField servingsField;

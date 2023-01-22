@@ -28,12 +28,10 @@ import static com.mongodb.client.model.Projections.include;
 public class ModeratorController implements Initializable {
     @FXML
     private Label recipeText;
-
     private double startingX;
     @FXML
     private Label reviewText;
     private Stage stage;
-    private Scene scene;
     @FXML
     private VBox vbox;
 
@@ -74,39 +72,6 @@ public class ModeratorController implements Initializable {
             Map<String, Double> sortedMapRatioAsc = sortByValue(mapRatio,false);
             sortedMapRatioAsc.forEach((key, value) -> System.out.println(key + ":" + value));
         }
-        /*PSEUDO CODICE
-        String uri = "mongodb://localhost:27017";
-        int numeroDiTopAutori = 5;
-        List<int> listaQuantitaRecensioniAggiuntePerAutore = new ArrayList<>();
-        List<int> listaQuantitaRecensioniReportatePerAutore = new ArrayList<>();
-
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("test"); //da scegliere il nome uguale per tutti
-            MongoCollection<Document> collection = database.getCollection("author");
-
-            MongoCursor<Document> cursor = collection.find().iterator();
-            while (cursor.hasNext())
-            {
-                int numeroDiRecipe = recipesAdded.size();
-                listaQuantitaRecensioniAggiuntePerAutore.append(numeroDiRecipe); //sfrutto la ridondanza
-            }
-
-            //ora ho il numero di recensione fatte da ogni autore nell'ordine con cui compaiono nel database
-
-            //ora calcolo con un' altra lista il numero di recensioni reportate per ogni autore, nello specifico
-              il numero reportato + 1 per impedire errori nelle divisioni con autori che avrebbero 0 recensioni reportate
-
-            //a questo punto creo una nuova lista di double in cui metto i risultati delle divisioni tra l'elemento 0 della prima
-              lista e l'elemento 0 della seconda lista, elemento 1 della prima e della seconda e così via
-
-            //creo un'ulteriore lista che è la copia della lista ottenuta prima, poi faccio il sort dei valori della lista così
-              da avere in testa i primi "numeroDiTopAutori" elementi, infine prendo i valori di questi primi elementi
-              e guardo a che indice si trovano nella lista copia e così so il loro Id e posso prendere i documenti interi
-              dal database
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        */
     }
     private static Map<String, Double> sortByValue(Map<String, Double> unsortMap, final boolean order)
     {

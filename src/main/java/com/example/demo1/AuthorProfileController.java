@@ -122,11 +122,11 @@ public class AuthorProfileController implements Initializable {
             ImageView temp = new ImageView();
             temp.setImage(Configuration.AVATAR.get(i));
             temp.setId(String.valueOf(i+1));
-            temp.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
+            temp.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il click sull'immagine
                 System.out.println(temp.getId());
-                DataSingleton.getInstance().setAvatar(Integer.parseInt(temp.getId()));
+                DataSingleton.getInstance().setAvatar(Integer.parseInt(temp.getId()) - 1);
                 int avatarIndex = anchorPane.getChildren().indexOf(avatar);
-                avatar.setImage(Configuration.AVATAR.get(avatarIndex));
+                avatar.setImage(Configuration.AVATAR.get(Integer.parseInt(temp.getId()) - 1));
                 avatar.setX(avatarLabel.getLayoutX());
                 avatar.setY(avatarLabel.getLayoutY() + 20);
                 avatar.setFitHeight(100);
@@ -274,12 +274,5 @@ public class AuthorProfileController implements Initializable {
 
     public void setParameterToAuthorName(ActionEvent actionEvent) {parameterToChange = "authorName";}
     public void setParameterToPassword(ActionEvent actionEvent) {parameterToChange = "password";}
-
-    public void setParameterToImage(ActionEvent actionEvent) {
-
-    }
-
-    public void onGoBackClick(ActionEvent actionEvent) {
-    }
 }
 
