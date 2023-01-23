@@ -32,11 +32,15 @@ public class ClassTableAuthor {
         tabellaDB.setPrefHeight(400);
         tabellaDB.setPrefWidth(300);
         tabellaDB.setLayoutX(150);
-        tabellaDB.setLayoutY(250);
+        tabellaDB.setLayoutY(200);
     }
 
     public void setTabellaDB() {
         tabellaDB.getColumns().addAll(imageCol, authorNameCol, promotionCol);
+    }
+
+    public void setTableDB() {
+        tabellaDB.getColumns().addAll(imageCol, authorNameCol);
     }
     public void setItems(){
         tabellaDB.setItems(ol);
