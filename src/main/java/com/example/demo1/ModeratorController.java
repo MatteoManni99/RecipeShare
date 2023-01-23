@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -34,13 +35,27 @@ public class ModeratorController implements Initializable {
     private Stage stage;
     @FXML
     private VBox vbox;
-
+    private Integer pageNumber = 0;
+    private String authorName;
     @FXML
     private AnchorPane anchorPane;
+    private ClassTableAuthor tableAuthor = new ClassTableAuthor();
     @FXML
     public void onLogoutClick(ActionEvent actionEvent) throws IOException {
         String nomeSchermata = "hello-view.fxml";
         cambiaSchermata(actionEvent,nomeSchermata);
+    }
+
+    public void onNextPageClick(){
+        pageNumber = pageNumber + 1;
+        searchInDBAndLoadInTableView(authorName,pageNumber);
+    }
+    @FXML
+    public void onPreviousPageClick(){
+        if(pageNumber>=1){
+            pageNumber = pageNumber - 1;
+            searchInDBAndLoadInTableView(authorName,pageNumber);
+        }
     }
 
     public void onHighestRatioQueryClick() {
@@ -105,7 +120,45 @@ public class ModeratorController implements Initializable {
         {
             setReportedLabels(listaReportedRecipes,i);
         }
+
+        createTableView(tableAuthor);
     }
+
+    public void createTableView (ClassTableAuthor TableViewObject) {
+        TableViewObject.initializeTableView();
+        searchInDBAndLoadInTableView(authorName,pageNumber);
+        TableViewObject.setTabellaDB();
+        anchorPane.getChildren().add(TableViewObject.getTabellaDB());
+    }
+
+    public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber){
+        Document authorDoc;
+        try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
+            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
+            MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_AUTHOR);
+            MongoCursor<Document> cursor;
+            //Bson filter = Filters.regex("Name", "^(?)" + nameToSearch); //da togliere era il vecchio filtro
+            Bson filter = new Document("Name",new Document("$regex",nameToSearch).append("$options","i"));
+            Bson match = match(filter);
+            Bson project = project(new Document("authorName",1).append("promotion",1).append("image", 1));
+            if(nameToSearch == null){
+                cursor = collection.aggregate(Arrays.asList(skip(10*pageNumber),limit(10),project)).iterator();
+            }else{
+                cursor = collection.aggregate(Arrays.asList(match, skip(10*pageNumber),limit(10),project)).iterator();
+                System.out.println(nameToSearch);
+            }
+            tableAuthor.resetObservableArrayList();
+            while (cursor.hasNext()){
+                authorDoc = cursor.next();
+                Author author = new Author(authorDoc.getString("authorName"),
+                        authorDoc.getInteger("promotion"),
+                        new ClassTableAuthor.CustomImageAuthor(new ImageView(Configuration.AVATAR.get(authorDoc.getInteger("image") - 1))).getImage());
+                tableAuthor.addToObservableArrayList(author);
+            }
+            tableAuthor.setItems();
+        }
+    }
+
 
     public void setReportedLabels(List<Document> listaReportedRecipes,int i) {
         int documentSize = listaReportedRecipes.get(0).size() - 1;
