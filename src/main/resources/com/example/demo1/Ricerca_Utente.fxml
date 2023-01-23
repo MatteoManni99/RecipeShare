@@ -15,6 +15,8 @@
             <Button fx:id="cercaUtenteButton" layoutX="164.0" layoutY="76.0" mnemonicParsing="false" text="CERCA UTENTE" />
             <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="TORNA INDIETRO" />
             <TextField layoutX="290.0" layoutY="76.0" />
+            <Button layoutX="315.0" layoutY="114.0" mnemonicParsing="false" onAction="#onNextPageClick" text="Next" />
+            <Button layoutX="164.0" layoutY="115.0" mnemonicParsing="false" onAction="#onPreviousPageClick" text="Previous" />
          </children>
       </AnchorPane>
    </children>
