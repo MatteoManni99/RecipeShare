@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -40,6 +41,7 @@ public class RecipeController implements Initializable {
 
     @FXML
     public TextArea description;
+    public TextArea reviewTextArea;
     @FXML
     public ImageView image;
     @FXML
@@ -58,6 +60,7 @@ public class RecipeController implements Initializable {
     @FXML
     private AnchorPane anchorPane;
 
+    private ArrayList<String> reviewers = new ArrayList<String>();
 
 
     private void printImages(){
@@ -83,6 +86,7 @@ public class RecipeController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
 
     @FXML
     public void onReportRecipeClick(ActionEvent actionEvent){
@@ -114,6 +118,35 @@ public class RecipeController implements Initializable {
             }
         }
     }
+    public void onLeaveAReviewClick(ActionEvent actionEvent){
+        String reviewer = data.getAuthorName();
+        if(reviewers.contains(reviewer)){
+            System.out.println(data.getAuthorName() + " avevi già recensito questa ricetta");
+        } else if (reviewer == authorName.getText()) {
+            System.out.println(data.getAuthorName() + " questa ricetta è tua non puoi recensirla");
+        } else {
+            Integer rating = 3; //da cambiare
+            String review = reviewTextArea.getText();
+            String uri = Configuration.MONGODB_URL;
+            try (MongoClient mongoClient = MongoClients.create(uri)) {
+                MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
+                MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_RECIPE);
+                Bson match = new Document("Name",recipeName);
+                Bson updates = new Document("$push",new Document("Reviews",new Document("AuthorName",reviewer)
+                        .append("Rating",rating).append("Review",review)));
+                collection.updateOne(match,updates);
+
+                //cambio pagina con la stessa pagina per fare il refresh delle review
+                FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("recipe.fxml"));
+                stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+                Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -126,44 +159,46 @@ public class RecipeController implements Initializable {
 
             tableViewReview.initializeTableView();
 
-            for (Document doc : collectionRecipe.aggregate(Arrays.asList(match))) {
-                name.setText(doc.getString("Name"));
-                authorName.setText(doc.getString("AuthorName"));
-                description.setText(doc.getString("Description"));
-                calories.setText(String.valueOf(doc.get("Calories")));
-                servings.setText(String.valueOf(doc.get("RecipeServings")));
-                time.setText(String.valueOf(doc.get("TotalTime")));
-                date.setText(doc.getString("DatePublished"));
-                try {
-                    ObservableList<String> ingredients_list = FXCollections.observableArrayList(doc.getList("RecipeIngredientParts", String.class));
-                    ingredients.setItems(ingredients_list);
-                }catch (NullPointerException e){
-                    ingredients.setItems(null);
-                }
-                try {
-                    ObservableList<String> keywords_list = FXCollections.observableArrayList(doc.getList("Keywords", String.class));
-                    keywords.setItems(keywords_list);
-                }catch (NullPointerException e){
-                    keywords.setItems(null);
-                }
-                try {
-                    ObservableList<String> instructions_list = FXCollections.observableArrayList(doc.getList("RecipeInstructions", String.class));
-                    instructions.setItems(instructions_list);
-                }catch (NullPointerException e){
-                    keywords.setItems(null);
-                }
-                images_list = doc.getList("Images", String.class);
-                printImages();
-
-                tableViewReview.resetObservableArrayList();
-                List<Document> reviews_list = doc.getList("Reviews", Document.class);
-                for (Document reviewDoc : reviews_list) {
-                    Review review = new Review(reviewDoc.getString("AuthorName"), reviewDoc.getInteger("Rating"), reviewDoc.getString("Review"));
-                    tableViewReview.addToObservableArrayList(review);
-                }
-                tableViewReview.setItems();
+            Document doc = collectionRecipe.aggregate(Arrays.asList(match)).first();
+            name.setText(doc.getString("Name"));
+            authorName.setText(doc.getString("AuthorName"));
+            description.setText(doc.getString("Description"));
+            calories.setText(String.valueOf(doc.get("Calories")));
+            servings.setText(String.valueOf(doc.get("RecipeServings")));
+            time.setText(String.valueOf(doc.get("TotalTime")));
+            date.setText(doc.getString("DatePublished"));
+            try {
+                ObservableList<String> ingredients_list = FXCollections.observableArrayList(doc.getList("RecipeIngredientParts", String.class));
+                ingredients.setItems(ingredients_list);
+            }catch (NullPointerException e){
+                ingredients.setItems(null);
             }
+            try {
+                ObservableList<String> keywords_list = FXCollections.observableArrayList(doc.getList("Keywords", String.class));
+                keywords.setItems(keywords_list);
+            }catch (NullPointerException e){
+                keywords.setItems(null);
+            }
+            try {
+                ObservableList<String> instructions_list = FXCollections.observableArrayList(doc.getList("RecipeInstructions", String.class));
+                instructions.setItems(instructions_list);
+            }catch (NullPointerException e){
+                keywords.setItems(null);
+            }
+            images_list = doc.getList("Images", String.class);
+            printImages();
+
+            tableViewReview.resetObservableArrayList();
+            List<Document> reviews_list = doc.getList("Reviews", Document.class);
+            for (Document reviewDoc : reviews_list) {
+                String reviewer = reviewDoc.getString("AuthorName");
+                reviewers.add(reviewer);
+                Review review = new Review(reviewer, reviewDoc.getInteger("Rating"), reviewDoc.getString("Review"));
+                tableViewReview.addToObservableArrayList(review);
+            }
+            tableViewReview.setItems();
         }
+
         tableViewReview.setTableDB();
         anchorPane.getChildren().add(tableViewReview.getTableDB());
     }
