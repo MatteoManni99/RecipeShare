@@ -18,7 +18,6 @@
               <items>
                 <MenuItem fx:id="menuItemName" mnemonicParsing="false" onAction="#setParameterToAuthorName" text="Name" />
                 <MenuItem fx:id="menuItemPassword" mnemonicParsing="false" onAction="#setParameterToPassword" text="Password" />
-                  <MenuItem fx:id="menuItemImmagine" mnemonicParsing="false" onAction="#setParameterToImage" text="Immagine" />
               </items>
             </MenuButton>
             <TextField fx:id="authorNameField" layoutX="185.0" layoutY="54.0" />
