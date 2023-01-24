@@ -76,16 +76,14 @@ public class LoginController {
                 }
                 else System.out.println("NON TROVATO MODERATOR");
             }
-            if (nomePagina.equals("Loggato.fxml")) {
+            if (nomePagina != null) {
                 DataSingleton data = DataSingleton.getInstance();
                 data.setAuthorName(name);
                 data.setPassword(password);
-                if (DataSingleton.getInstance().getAuthorPromotion() == 1)
+                if (nomePagina.equals("Loggato.fxml") && DataSingleton.getInstance().getAuthorPromotion() == 1)
                     cambiaSchermata(actionEvent,"PromotionOffer.fxml");
                 else cambiaSchermata(actionEvent,nomePagina);
             }
-            cambiaSchermata(actionEvent,nomePagina);
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
