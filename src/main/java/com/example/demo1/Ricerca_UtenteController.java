@@ -41,9 +41,12 @@ public class Ricerca_UtenteController implements Initializable {
     private String authorNameClicked; //qui ci salvo l'utente della tabella che è stato clickato e che quindi si vuole promuovere
     public AnchorPane anchorPane;
     private Integer pageNumber = 0;
-    private String authorName;
+    private String nameToSearch = null;
 
     private ClassTableAuthor tableAuthor = new ClassTableAuthor();
+
+    @FXML
+    private TextField authorToSearchTextField;
 
     @FXML
     public void onLogoutClick(ActionEvent actionEvent) throws IOException {
@@ -53,14 +56,23 @@ public class Ricerca_UtenteController implements Initializable {
     @FXML
     public void onNextPageClick(){
         pageNumber = pageNumber + 1;
-        searchInDBAndLoadInTableView(authorName,pageNumber);
+        searchInDBAndLoadInTableView(nameToSearch,pageNumber);
     }
     @FXML
     public void onPreviousPageClick(){
         if(pageNumber>=1){
             pageNumber = pageNumber - 1;
-            searchInDBAndLoadInTableView(authorName,pageNumber);
+            searchInDBAndLoadInTableView(nameToSearch,pageNumber);
         }
+    }
+
+    @FXML
+    public void onBackClick(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("loggato.fxml"));
+        stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -111,7 +123,7 @@ public class Ricerca_UtenteController implements Initializable {
 
     public void createTableView (ClassTableAuthor TableViewObject, Boolean showPromotion) {
         TableViewObject.initializeTableView();
-        searchInDBAndLoadInTableView(authorName,pageNumber);
+        searchInDBAndLoadInTableView(nameToSearch,pageNumber);
         if(showPromotion)
             TableViewObject.setTabellaDB();
         else
@@ -126,7 +138,7 @@ public class Ricerca_UtenteController implements Initializable {
             MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_AUTHOR);
             MongoCursor<Document> cursor;
             //Bson filter = Filters.regex("Name", "^(?)" + nameToSearch); //da togliere era il vecchio filtro
-            Bson filter = new Document("Name",new Document("$regex",nameToSearch).append("$options","i"));
+            Bson filter = new Document("authorName",new Document("$regex",nameToSearch).append("$options","i"));
             Bson match = match(filter);
             Bson project = project(new Document("authorName",1).append("promotion",1).append("image", 1));
             if(nameToSearch == null){
@@ -167,8 +179,16 @@ public class Ricerca_UtenteController implements Initializable {
         }
     }
 
+    @FXML
     public void onCercaUtenteClick(ActionEvent actionEvent) {
-        String uri = Configuration.MONGODB_URL;
+
+        nameToSearch = authorToSearchTextField.getText();
+        if(nameToSearch.isBlank()) nameToSearch = null;
+        System.out.println(nameToSearch); //solo per debug sarà da togliere
+        pageNumber = 0;
+        searchInDBAndLoadInTableView(nameToSearch,pageNumber);
+
+        /*String uri = Configuration.MONGODB_URL;
         List<Document> listaAuthors = new ArrayList<>();
         System.out.println(999);
         try (MongoClient mongoClient = MongoClients.create(uri)) {
@@ -184,7 +204,7 @@ public class Ricerca_UtenteController implements Initializable {
             for (int i = 0; i < listaAuthors.size(); i++) {
                 setReportedLabels(listaAuthors, i);
             }
-        }
+        }*/
     }
 
     public void setReportedLabels(List<Document> listaAuthors,int i) {
