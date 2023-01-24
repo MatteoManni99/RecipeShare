@@ -5,6 +5,7 @@ import com.mongodb.client.model.Filters;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,10 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static com.mongodb.client.model.Aggregates.*;
 
@@ -38,6 +36,8 @@ public class RecipeController implements Initializable {
     public Label servings;
     public Label time;
     public Label date;
+    public ChoiceBox<Integer> ratingChoiceBox;
+    public Button reportRecipeButton;
 
     @FXML
     public TextArea description;
@@ -82,11 +82,10 @@ public class RecipeController implements Initializable {
     public void onBackClick(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("loggato.fxml"));
         stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
+        Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
         stage.setScene(scene);
         stage.show();
     }
-
 
     @FXML
     public void onReportRecipeClick(ActionEvent actionEvent){
@@ -121,11 +120,13 @@ public class RecipeController implements Initializable {
     public void onLeaveAReviewClick(ActionEvent actionEvent){
         String reviewer = data.getAuthorName();
         if(reviewers.contains(reviewer)){
-            System.out.println(data.getAuthorName() + " avevi già recensito questa ricetta");
-        } else if (reviewer == authorName.getText()) {
-            System.out.println(data.getAuthorName() + " questa ricetta è tua non puoi recensirla");
+            reviewTextArea.setText("Avevi già recensito questa ricetta");
+            reviewTextArea.setStyle("-fx-text-fill: #dc143c");
+        } else if (reviewer.equals(authorName.getText())) {
+            reviewTextArea.setText("Questa ricetta è tua non puoi recensirla");
+            reviewTextArea.setStyle("-fx-text-fill: #dc143c");
         } else {
-            Integer rating = 3; //da cambiare
+            Integer rating = ratingChoiceBox.getValue();
             String review = reviewTextArea.getText();
             String uri = Configuration.MONGODB_URL;
             try (MongoClient mongoClient = MongoClients.create(uri)) {
@@ -135,21 +136,49 @@ public class RecipeController implements Initializable {
                 Bson updates = new Document("$push",new Document("Reviews",new Document("AuthorName",reviewer)
                         .append("Rating",rating).append("Review",review)));
                 collection.updateOne(match,updates);
-
                 //cambio pagina con la stessa pagina per fare il refresh delle review
-                FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("recipe.fxml"));
-                stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-                Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
-                stage.setScene(scene);
-                stage.show();
+                changeScene(actionEvent,"Recipe.fxml");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
     }
+    private void changeScene(ActionEvent actionEvent, String sceneFXML) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(sceneFXML));
+        stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void addDeleteButtonAndRemoveReportButton(){
+        anchorPane.getChildren().remove(reportRecipeButton);
+
+        Button deleteRecipe = new Button();
+        deleteRecipe.setText("Delete this Recipe");
+        deleteRecipe.setLayoutX(750);
+        deleteRecipe.setLayoutY(34);
+        EventHandler<ActionEvent> eventHandler = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
+                    MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
+                    MongoCollection<Document> collectionRecipe = database.getCollection(Configuration.MONGODB_RECIPE);
+                    Bson match = new Document("Name", recipeName);
+                    collectionRecipe.deleteOne(match);
+                    changeScene(actionEvent,"Loggato.fxml");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+        deleteRecipe.setOnAction(eventHandler);
+        anchorPane.getChildren().add(deleteRecipe);
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        ratingChoiceBox.setItems(FXCollections.observableArrayList(1,2,3,4,5));
         recipeName = data.getRecipeName(); //!!!!! questa funziona se prima del cambio di scena modifico DataSingleton !!!!!!
         String uri = Configuration.MONGODB_URL;
         try (MongoClient mongoClient = MongoClients.create(uri)) {
@@ -201,7 +230,9 @@ public class RecipeController implements Initializable {
 
         tableViewReview.setTableDB();
         anchorPane.getChildren().add(tableViewReview.getTableDB());
+
+        if(data.getAuthorName().equals(authorName.getText())){
+            addDeleteButtonAndRemoveReportButton();
+        }
     }
-
-
 }

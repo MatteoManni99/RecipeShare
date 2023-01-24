@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
@@ -13,8 +14,8 @@
    <children>
       <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="729.0" prefWidth="1057.0">
          <children>
-            <Button fx:id="leaveReviewButton" layoutX="815.0" layoutY="325.0" mnemonicParsing="false" onAction="#onLeaveAReviewClick" text="LEAVE A REVIEW" />
-            <Button layoutX="725.0" layoutY="33.0" mnemonicParsing="false" onAction="#onReportRecipeClick" prefHeight="26.0" prefWidth="124.0" text="REPORT RECIPE" />
+            <Button fx:id="leaveReviewButton" layoutX="824.0" layoutY="325.0" mnemonicParsing="false" onAction="#onLeaveAReviewClick" text="Leave a Review" />
+            <Button fx:id="reportRecipeButton" layoutX="725.0" layoutY="33.0" mnemonicParsing="false" onAction="#onReportRecipeClick" prefHeight="26.0" prefWidth="124.0" text="REPORT RECIPE" />
             <Label layoutX="448.0" layoutY="29.0" text="RECIPE SHARE" />
             <ImageView fx:id="image" fitHeight="189.0" fitWidth="337.0" layoutX="37.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="name" layoutX="560.0" layoutY="51.0" prefHeight="18.0" prefWidth="200.0" text="Name" />
@@ -42,6 +43,8 @@
             <Label fx:id="calories" layoutX="118.0" layoutY="365.0" text="calories" />
             <Label fx:id="servings" layoutX="117.0" layoutY="391.0" text="servings" />
             <TextArea fx:id="reviewTextArea" layoutX="720.0" layoutY="148.0" prefHeight="174.0" prefWidth="200.0" text="Write a Review here..." />
+            <ChoiceBox fx:id="ratingChoiceBox" layoutX="785.0" layoutY="325.0" prefHeight="26.0" prefWidth="34.0" />
+            <Label layoutX="740.0" layoutY="329.0" text="Rating" />
          </children>
       </AnchorPane>
    </children>

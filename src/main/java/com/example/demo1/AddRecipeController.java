@@ -67,6 +67,8 @@ public class AddRecipeController implements Initializable {
 
         if(name.isBlank() || name.isEmpty()){
             System.out.println("Insert a Name in the corresponding TextField");
+        }else if(imageArrayList.isEmpty()){
+            System.out.println("Insert at least one Image");
         }else if(checkIfNameIsAvailable(name)) {
             System.out.println("Name is available");
             data = DataSingleton.getInstance();
