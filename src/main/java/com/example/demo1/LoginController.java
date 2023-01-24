@@ -3,20 +3,29 @@ package com.example.demo1;
 import com.mongodb.*;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Updates.*;
@@ -34,10 +43,10 @@ public class LoginController {
         cambiaSchermata(actionEvent,nomeSchermata);
     }
 
-
     @FXML
     public void onRegisterClick(ActionEvent actionEvent) throws IOException {
         String nomeSchermata = "Register.fxml";
+        DataSingleton.getInstance().setTypeOfUser("author");
         cambiaSchermata(actionEvent,nomeSchermata);
     }
 

@@ -11,10 +11,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -47,6 +46,8 @@ public class Ricerca_UtenteController implements Initializable {
 
     @FXML
     private TextField authorToSearchTextField;
+
+    private ClassTableAuthor tabella;
 
     @FXML
     public void onLogoutClick(ActionEvent actionEvent) throws IOException {
@@ -95,9 +96,8 @@ public class Ricerca_UtenteController implements Initializable {
         if (DataSingleton.getInstance().getTypeOfUser().equals("moderator")) {
             Button promoteAuthorButton = new Button("PROMOTE AUTHOR");
             promoteAuthorButton.setLayoutX(164);
-            promoteAuthorButton.setLayoutY(120);
+            promoteAuthorButton.setLayoutY(140);
             promoteAuthorButton.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
-                authorNameClicked = "1"; //lo metto statico perché ancora non ho la tabella a disposizione
                 try (MongoClient mongoClient = MongoClients.create(uri)) {
                     MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
                     MongoCollection<Document> collectionAuthor = database.getCollection(Configuration.MONGODB_AUTHOR);
@@ -128,6 +128,9 @@ public class Ricerca_UtenteController implements Initializable {
             TableViewObject.setTabellaDB();
         else
             TableViewObject.setTableDB();
+
+        tabella = TableViewObject;
+        setEventForTableCells();
         anchorPane.getChildren().add(TableViewObject.getTabellaDB());
     }
 
@@ -184,7 +187,6 @@ public class Ricerca_UtenteController implements Initializable {
 
         nameToSearch = authorToSearchTextField.getText();
         if(nameToSearch.isBlank()) nameToSearch = null;
-        System.out.println(nameToSearch); //solo per debug sarà da togliere
         pageNumber = 0;
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
 
@@ -207,23 +209,25 @@ public class Ricerca_UtenteController implements Initializable {
         }*/
     }
 
-    public void setReportedLabels(List<Document> listaAuthors,int i) {
-        int documentSize = listaAuthors.get(0).size() - 2;
-        List<String> listaLabelNames = new ArrayList<>();
-        listaLabelNames.add("authorId");
-        listaLabelNames.add("authorName");
-
-        double copiaStartingX = cercaUtenteButton.getLayoutX();
-        for (int j = 0;j < documentSize; j++) {
-            Label currentLabel = new Label();
-            Object valore = listaAuthors.get(i).get(listaLabelNames.get(j));
-            currentLabel.setText((String.valueOf(valore)));
-            currentLabel.setLayoutX(copiaStartingX + j*10);
-            currentLabel.setLayoutY(cercaUtenteButton.getLayoutY() + 50 + i * 10);
-            currentLabel.setMaxWidth(50);
-            copiaStartingX += currentLabel.getMaxWidth();
-            anchorPane.getChildren().add(currentLabel);
+    public void setEventForTableCells() {
+        tabella.getTabellaDB().addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il mouse clickato
+                    TableCell cell = findCell(evt,tabella.getTabellaDB());
+                    if (cell != null && !cell.isEmpty()) {
+                        if(cell.getTableColumn().getText().equals("Name")){
+                            authorNameClicked = cell.getText();
+                        }
+                        evt.consume();
+                    }
+                }
+        );
+    }
+    private static TableCell findCell(MouseEvent event, TableView table) { //metodo chiamato dall'evento
+        Node node = event.getPickResult().getIntersectedNode();
+        // go up in node hierarchy until a cell is found or we can be sure no cell was clicked
+        while (node != table && !(node instanceof TableCell)) {
+            node = node.getParent();
         }
+        return node instanceof TableCell ? (TableCell) node : null;
     }
 
     public void cambiaSchermata(ActionEvent actionEvent,String nomeSchermata) throws IOException {

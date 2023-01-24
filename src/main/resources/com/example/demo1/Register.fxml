@@ -14,5 +14,6 @@
       <TextField fx:id="insertedName" layoutX="248.0" layoutY="93.0" />
       <TextField fx:id="insertedPassword" layoutX="248.0" layoutY="133.0" />
       <Button layoutX="216.0" layoutY="187.0" mnemonicParsing="false" onAction="#onRegisterClick" text="REGISTRATI A RECIPE SHARE" />
+      <Label fx:id="avatarLabel" layoutX="455.0" layoutY="38.0" text="Immagine Profilo" />
    </children>
 </AnchorPane>

@@ -1,14 +1,22 @@
 package com.example.demo1;
 
+import com.mongodb.MongoException;
 import com.mongodb.client.*;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -37,6 +45,10 @@ public class ModeratorController implements Initializable {
     private VBox vbox;
     private Integer pageNumber = 0;
     private String authorName;
+
+    private String authorNameClicked;
+
+    private ClassTableAuthor tabella;
     @FXML
     private AnchorPane anchorPane;
     private ClassTableAuthor tableAuthor = new ClassTableAuthor();
@@ -121,6 +133,31 @@ public class ModeratorController implements Initializable {
             setReportedLabels(listaReportedRecipes,i);
         }
 
+        //questa parte sotto è quella che setta il Button per la promozione
+        if (DataSingleton.getInstance().getTypeOfUser().equals("moderator")) {
+            Button promoteAuthorButton = new Button("PROMOTE AUTHOR");
+            promoteAuthorButton.setLayoutX(64);
+            promoteAuthorButton.setLayoutY(120);
+            promoteAuthorButton.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
+                try (MongoClient mongoClient = MongoClients.create(uri)) {
+                    MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
+                    MongoCollection<Document> collectionAuthor = database.getCollection(Configuration.MONGODB_AUTHOR);
+                    Document query = new Document().append("authorName", authorNameClicked);
+                    Bson updates = Updates.combine(
+                            Updates.set("promotion",1)
+                    );
+                    UpdateOptions options = new UpdateOptions().upsert(true);
+                    try {
+                        UpdateResult result = collectionAuthor.updateOne(query, updates, options);
+                        System.out.println("Modified document count: " + result.getModifiedCount());
+                    } catch (MongoException me) {
+                        System.err.println("Unable to update due to an error: " + me);
+                    }
+                    authorNameClicked = null;
+                }
+            });
+            anchorPane.getChildren().add(promoteAuthorButton);
+        }
         createTableView(tableAuthor);
     }
 
@@ -128,7 +165,29 @@ public class ModeratorController implements Initializable {
         TableViewObject.initializeTableView();
         searchInDBAndLoadInTableView(authorName,pageNumber);
         TableViewObject.setTabellaDB();
+        setEventForTableCells();
         anchorPane.getChildren().add(TableViewObject.getTabellaDB());
+    }
+
+    public void setEventForTableCells() {
+        tableAuthor.getTabellaDB().addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il mouse clickato
+                    TableCell cell = findCell(evt,tableAuthor.getTabellaDB());
+                    if (cell != null && !cell.isEmpty()) {
+                        if(cell.getTableColumn().getText().equals("Name")){
+                            authorNameClicked = cell.getText();
+                        }
+                        evt.consume();
+                    }
+                }
+        );
+    }
+    private static TableCell findCell(MouseEvent event, TableView table) { //metodo chiamato dall'evento
+        Node node = event.getPickResult().getIntersectedNode();
+        // go up in node hierarchy until a cell is found or we can be sure no cell was clicked
+        while (node != table && !(node instanceof TableCell)) {
+            node = node.getParent();
+        }
+        return node instanceof TableCell ? (TableCell) node : null;
     }
 
     public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber){

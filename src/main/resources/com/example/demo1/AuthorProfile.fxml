@@ -24,7 +24,7 @@
             <Label layoutX="95.0" layoutY="58.0" prefHeight="18.0" prefWidth="78.0" text="Author Name" />
             <TextField fx:id="passwordField" layoutX="185.0" layoutY="95.0" />
             <Label layoutX="95.0" layoutY="98.0" prefHeight="18.0" prefWidth="78.0" text="Password" />
-            <Label layoutX="450.0" layoutY="45.0" text="Immagine profilo" />
+            <Label fx:id="avatarLabel" layoutX="450.0" layoutY="45.0" text="Immagine profilo" />
             <Label layoutX="35.0" layoutY="157.0" prefHeight="18.0" prefWidth="273.0" text="Usa il menu qui accanto se vuoi cambiare qualcosa" />
             <TextField fx:id="parameterValueField" layoutX="35.0" layoutY="200.0" prefHeight="26.0" prefWidth="134.0" />
             <Button layoutX="173.0" layoutY="200.0" mnemonicParsing="false" onAction="#changeProfileParameter" text="Cambia Parametro" />

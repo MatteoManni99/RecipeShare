@@ -115,7 +115,6 @@ public class AuthorProfileController implements Initializable {
         avatar.setFitHeight(100);
         avatar.setFitWidth(100);
         anchorPane.getChildren().add(avatar);
-        System.out.println("QUIG");
         System.out.println(anchorPane.getChildren().indexOf(avatar));
         avatarsAvailable = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
