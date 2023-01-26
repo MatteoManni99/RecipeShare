@@ -105,7 +105,7 @@ public class AddRecipeController implements Initializable {
             }
         }
     }
-    private void addToDB(Document recipeToAdd){
+    private void addToDB(Document recipeToAdd){ //fatto questo in RECIPEDAO
         try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
             MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_RECIPE);

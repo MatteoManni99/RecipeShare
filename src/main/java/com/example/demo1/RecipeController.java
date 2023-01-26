@@ -129,7 +129,7 @@ public class RecipeController implements Initializable {
             Integer rating = ratingChoiceBox.getValue();
             String review = reviewTextArea.getText();
             String uri = Configuration.MONGODB_URL;
-            try (MongoClient mongoClient = MongoClients.create(uri)) {
+            try (MongoClient mongoClient = MongoClients.create(uri)) { //fatto in RECIPEDAO
                 MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
                 MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_RECIPE);
                 Bson match = new Document("Name",recipeName);
@@ -160,7 +160,7 @@ public class RecipeController implements Initializable {
         deleteRecipe.setLayoutY(34);
         EventHandler<ActionEvent> eventHandler = new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent actionEvent) {
+            public void handle(ActionEvent actionEvent) { //fatto in RECIPEDAO
                 try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
                     MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
                     MongoCollection<Document> collectionRecipe = database.getCollection(Configuration.MONGODB_RECIPE);
@@ -181,7 +181,7 @@ public class RecipeController implements Initializable {
         ratingChoiceBox.setItems(FXCollections.observableArrayList(1,2,3,4,5));
         recipeName = data.getRecipeName(); //!!!!! questa funziona se prima del cambio di scena modifico DataSingleton !!!!!!
         String uri = Configuration.MONGODB_URL;
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
+        try (MongoClient mongoClient = MongoClients.create(uri)) { //fatto in RECIPEDAO
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
             MongoCollection<Document> collectionRecipe = database.getCollection(Configuration.MONGODB_RECIPE);
             Bson match = match(Filters.eq("Name", recipeName));
