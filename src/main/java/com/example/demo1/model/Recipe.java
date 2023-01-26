@@ -18,8 +18,23 @@ public class Recipe {
     private ArrayList<String> recipeInstructions;
     private ArrayList<Review> reviews;
 
-    Recipe(String name){
-        this.name= name;
+    Recipe(String name, String authorName,Integer totalTime, String datePublished, String description, ArrayList<String> images,
+           String recipeCategory, ArrayList<String> keywords, ArrayList<String> recipeIngredientParts, Double aggregatedRating,
+           Double calories, Double recipeServings, ArrayList<String> recipeInstructions, ArrayList<Review> reviews){
+        this.name = name;
+        this.authorName = authorName;
+        this.totalTime = totalTime ;
+        this.datePublished = datePublished;
+        this.description = description;
+        this.images = images;
+        this.recipeCategory = recipeCategory;
+        this.keywords = keywords;
+        this.recipeIngredientParts = recipeIngredientParts;
+        this.aggregatedRating = aggregatedRating;
+        this.calories = calories;
+        this.recipeServings = recipeServings;
+        this.recipeInstructions = recipeInstructions;
+        this.reviews = reviews;
     }
 
     public String getName() {
