@@ -1,144 +1,162 @@
 package com.example.demo1.dao;
 
 import com.example.demo1.Configuration;
-import com.example.demo1.DataSingleton;
+
+import com.example.demo1.model.Author;
 import com.example.demo1.persistence.MongoDBDriver;
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
-import com.mongodb.client.model.Filters;
+
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.UpdateResult;
+
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
+import static com.mongodb.client.model.Aggregates.*;
+import static com.mongodb.client.model.Aggregates.limit;
 import static com.mongodb.client.model.Filters.eq;
 
 public class AuthorDAO {
 
-    public boolean checkAuthorName(String name) {
-        try (MongoCursor<Document> cursorAuthor = MongoDBDriver.getDriver().
-                getCollection(Configuration.MONGODB_AUTHOR).find(eq("authorName", name)).iterator()) {
-            if (cursorAuthor.hasNext()) return true;
-            else return false;
-        }
-    }
-
-    public void tryLogin(String name,String password) {
+    public boolean tryLogin(String name,String password) {
         try (MongoCursor<Document> cursorAuthor = MongoDBDriver.getDriver().
                 getCollection(Configuration.MONGODB_AUTHOR).find(eq("authorName", name)).iterator()) {
             if (cursorAuthor.hasNext()) {
                 Document currentAuthor = cursorAuthor.next();
                 if (currentAuthor.get("password").equals(password)) {
-                    int avatarIndex = (int) currentAuthor.get("image");
-                    DataSingleton.getInstance().setAvatar(avatarIndex);
-                    DataSingleton.getInstance().setAuthorPromotion((Integer) currentAuthor.get("promotion"));
-                    DataSingleton.getInstance().setTypeOfUser("author");
                     System.out.println("TROVATO AUTHOR");
-                    //nomePagina = "Loggato.fxml";
+                    return true;
                 }
             }
-            else
+            else{
                 System.out.println("NON TROVATO AUTHOR");
+            }
+            return false;
+        }catch (MongoException me){
+            return false;
         }
     }
 
-    public void checkRegistration(String name,String password,int image) {
-        try (MongoCursor<Document> cursorAuthor = MongoDBDriver.getDriver().
-                getCollection(Configuration.MONGODB_AUTHOR).find(eq("authorName", name)).iterator()) {
-
-            MongoCollection authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
-            if (cursorAuthor.hasNext())
-                System.out.println("NICKNAME GIA USATO");
-
-            else {
-                System.out.println("NICKNAME VALIDO");
-                if (DataSingleton.getInstance().getTypeOfUser().equals("author")) {
-                    try {
-                        authorCollection.insertOne(new Document()
-                                .append("_id", new ObjectId())
-                                .append("authorName", name)
-                                .append("password", password)
-                                .append("promotion", 0)
-                                .append("image", image));
-                    }
-                    catch (MongoException me) {
-                        System.err.println("Unable to insert due to an error: " + me);
-                    }
-                }
-                DataSingleton.getInstance().setAuthorName(name);
-                DataSingleton.getInstance().setPassword(password);
+    public boolean registration(String authorName, String password, int image, int standardPromotionValue) {
+        MongoCollection authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
+        if (getAuthor(authorName) != null){
+            return false;
+        } else {
+            System.out.println("NICKNAME VALIDO");
+            try {
+                authorCollection.insertOne(new Document()
+                        .append("_id", new ObjectId())
+                        .append("authorName", authorName)
+                        .append("password", password)
+                        .append("promotion", standardPromotionValue)
+                        .append("image", image));
+                return true;
+            } catch (MongoException me) {
+                System.err.println("Unable to insert due to an error: " + me);
+                return false;
             }
         }
     }
 
-    public void updateImage(int index,String name) {
-        try (MongoCursor<Document> cursorAuthor = MongoDBDriver.getDriver().
-                getCollection(Configuration.MONGODB_AUTHOR).find(eq("authorName", name)).iterator()) {
-            MongoCollection authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
-            Document query = new Document().append("authorName", name);
-            Bson updates = Updates.combine(
-                    Updates.set("image", index)
-            );
-            UpdateOptions options = new UpdateOptions().upsert(true);
+    public boolean updateImage(String authorName, int newImageIndex) {
+        MongoCollection authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
+        Document query = new Document().append("authorName", authorName);
+        Bson updates = Updates.combine(Updates.set("image", newImageIndex));
+        try {
+            UpdateResult result = authorCollection.updateOne(query, updates);
+            System.out.println("Modified document count: " + result.getModifiedCount());
+            return true;
+        } catch (MongoException me) {
+            System.err.println("Unable to update due to an error: " + me);
+            return false;
+        }
+    }
+    public boolean updatePromotion(String authorName, int newPromotionValue) {
+        MongoCollection authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
+        Document query = new Document().append("authorName", authorName);
+        Bson updates = Updates.combine(Updates.set("promotion",newPromotionValue));
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        try {
+            authorCollection.updateOne(query, updates, options);
+            System.out.println("Promotion updated");
+            return true;
+        } catch (MongoException me) {
+            System.err.println("Unable to update due to an error: " + me);
+            return false;
+        }
+    }
+
+    public boolean changeAuthorName(String newAuthorName, Author authorName) {
+        MongoCollection authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
+        MongoCollection recipeCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);
+
+        if (getAuthor(newAuthorName) != null){
+            return false;
+        }else {
+            Document query = new Document("authorName", authorName);
+            Bson updates = Updates.combine(Updates.set("authorName", newAuthorName));
+            Document queryRecipe = new Document("AuthorName", authorName);
+            Bson updatesRecipe = Updates.combine(Updates.set("AuthorName", newAuthorName));
             try {
-                UpdateResult result = authorCollection.updateOne(query, updates, options);
-                System.out.println("Modified document count: " + result.getModifiedCount());
+                authorCollection.updateOne(query, updates);
+                recipeCollection.updateMany(queryRecipe, updatesRecipe);
+                System.out.println("PARAMETRO CAMBIATO");
+                return true;
             } catch (MongoException me) {
                 System.err.println("Unable to update due to an error: " + me);
+                return false;
             }
         }
     }
-
-    public void changeParameter(String parameterToChange,String parameterNewValue,String name) {
-        try (MongoCursor<Document> cursorAuthor = MongoDBDriver.getDriver().
-                getCollection(Configuration.MONGODB_AUTHOR).find(eq("authorName", name)).iterator()) {
-            MongoCollection authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
-            if (parameterToChange.equals("authorName")) {
-                if (checkAuthorName(parameterNewValue) == true) return; //esiste già il nome
-                Document query = new Document().append("authorName", name);
-                Bson updates = Updates.combine(
-                        Updates.set(parameterToChange, parameterNewValue)
-                );
-
-                try {
-                    UpdateResult result = authorCollection.updateOne(query, updates);
-                    System.out.println("Modified document count: " + result.getModifiedCount());
-                } catch (MongoException me) {
-                    System.err.println("Unable to update due to an error: " + me);
-                }
-                System.out.println("PARAMETRO CAMBIATO");
-                MongoCollection recipeCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);
-                Document queryRecipe = new Document().append("AuthorName", name);
-                Bson updatesRecipe = Updates.combine(
-                        Updates.set("AuthorName", parameterNewValue));
-
-                try {
-                    UpdateResult result = recipeCollection.updateMany(queryRecipe, updatesRecipe);
-                    System.out.println("Modified document count: " + result.getModifiedCount());
-                } catch (MongoException me) {
-                    System.err.println("Unable to update due to an error: " + me);
-                }
-            }
-            else {
-                Document query = new Document().append("authorName", name);
-                Bson updates = Updates.combine(
-                        Updates.set(parameterToChange, parameterNewValue)
-                );
-                UpdateOptions options = new UpdateOptions().upsert(true);
-
-                try {
-                    UpdateResult result = authorCollection.updateOne(query, updates, options);
-                    System.out.println("Modified document count: " + result.getModifiedCount());
-                } catch (MongoException me) {
-                    System.err.println("Unable to update due to an error: " + me);
-                }
-                System.out.println("PARAMETRO CAMBIATO");
-            }
+    public boolean changePassword(String newPassword, Author author) {
+        MongoCollection authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
+        Document query = new Document().append("authorName", author.getName());
+        Bson updates = Updates.combine(Updates.set("password", newPassword));
+        try {
+            authorCollection.updateOne(query, updates);
+            System.out.println("PARAMETRO CAMBIATO");
+            return true;
+        } catch (MongoException me) {
+            System.err.println("Unable to update due to an error: " + me);
+            return false;
         }
+    }
+    public Author getAuthor(String authorName) {
+        try (MongoCursor<Document> cursor = MongoDBDriver.getDriver().
+                getCollection(Configuration.MONGODB_AUTHOR).find(eq("authorName", authorName)).iterator()) {
+            if (cursor.hasNext()) {
+                Document doc = cursor.next();
+                return new Author(doc.getString("authorName"),doc.getString("password"),
+                        doc.getInteger("image"),doc.getInteger("promotion"));
+            } else return null;
+        }
+    }
+
+    public ArrayList<Author> searchAuthors(String nameToSearch, int elementsToSkip, int elementsToLimit){
+        ArrayList<Author> authors = new ArrayList<Author>();
+        MongoCollection collection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
+        MongoCursor<Document> cursor;
+        Bson filter = new Document("Name",new Document("$regex",nameToSearch).append("$options","i"));
+        Bson match = match(filter);
+        Bson project = project(new Document("authorName",1).append("promotion",1).append("image", 1));
+        if(nameToSearch == null) {
+            cursor = collection.aggregate(Arrays.asList(skip(elementsToSkip),limit(elementsToLimit),project)).iterator();
+        }else {
+            cursor = collection.aggregate(Arrays.asList(match, skip(elementsToSkip),limit(elementsToLimit),project)).iterator();
+        }
+        while(cursor.hasNext()){
+            Document authorDoc = cursor.next();
+            Author author = new Author(authorDoc.getString("name"),null,
+                    authorDoc.getInteger("image"), authorDoc.getInteger("promotion"));
+            authors.add(author);
+        }
+        return authors;
     }
 }
 

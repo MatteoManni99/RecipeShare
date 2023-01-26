@@ -6,11 +6,11 @@ public class Author {
     private int promotion;
     private int image;
 
-    public Author (String name,String password,int image) {
+    public Author(String name, String password, int image, int promotion){
         this.name = name;
         this.password = password;
-        promotion = 0;
         this.image = image;
+        this.promotion = promotion;
     }
 
     public String getName() {
