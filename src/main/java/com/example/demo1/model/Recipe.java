@@ -1,5 +1,7 @@
 package com.example.demo1.model;
 
+import org.bson.Document;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +19,11 @@ public class Recipe {
     private Double calories;
     private Double recipeServings;
     private List<String> recipeInstructions;
-    private List<Review> reviews;
+    private List<Document> reviews;
 
     public Recipe(String name, String authorName,Integer totalTime, String datePublished, String description, List<String> images,
            String recipeCategory, List<String> keywords, List<String> recipeIngredientParts, Double aggregatedRating,
-           Double calories, Double recipeServings, List<String> recipeInstructions, List<Review> reviews){
+           Double calories, Double recipeServings, List<String> recipeInstructions, List<Document> reviews){
         this.name = name;
         this.authorName = authorName;
         this.totalTime = totalTime ;
@@ -142,11 +144,11 @@ public class Recipe {
         this.recipeInstructions = recipeInstructions;
     }
 
-    public List<Review> getReviews() {
+    public List<Document> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<Review> reviews) {
+    public void setReviews(List<Document> reviews) {
         this.reviews = reviews;
     }
 }
