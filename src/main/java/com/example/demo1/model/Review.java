@@ -1,11 +1,16 @@
 package com.example.demo1.model;
 
+import org.bson.Document;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Review {
     private String authorName;
-    private String rating;
+    private Integer rating;
     private String review;
 
-    public Review( String authorName, String rating, String review){
+    public Review( String authorName, Integer rating, String review){
         this.authorName = authorName;
         this.rating = rating;
         this.review = review;
@@ -19,11 +24,11 @@ public class Review {
         this.authorName = authorName;
     }
 
-    public String getRating() {
+    public Integer getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
     }
 

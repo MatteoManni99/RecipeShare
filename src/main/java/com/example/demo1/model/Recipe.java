@@ -19,11 +19,11 @@ public class Recipe {
     private Double calories;
     private Double recipeServings;
     private List<String> recipeInstructions;
-    private List<Document> reviews;
+    private List<Review> reviews;
 
     public Recipe(String name, String authorName,Integer totalTime, String datePublished, String description, List<String> images,
            String recipeCategory, List<String> keywords, List<String> recipeIngredientParts, Double aggregatedRating,
-           Double calories, Double recipeServings, List<String> recipeInstructions, List<Document> reviews){
+           Double calories, Double recipeServings, List<String> recipeInstructions, List<Review> reviews){
         this.name = name;
         this.authorName = authorName;
         this.totalTime = totalTime ;
@@ -144,11 +144,11 @@ public class Recipe {
         this.recipeInstructions = recipeInstructions;
     }
 
-    public List<Document> getReviews() {
+    public List<Review> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<Document> reviews) {
+    public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
 }

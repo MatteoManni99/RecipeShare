@@ -43,7 +43,7 @@ public class AuthorDAO {
         }
     }
 
-    public boolean registration(String authorName, String password, int image, int standardPromotionValue) {
+    public boolean registration(String authorName, String password, Integer image, Integer standardPromotionValue) {
         MongoCollection authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
         if (getAuthor(authorName) != null){
             return false;
@@ -64,8 +64,8 @@ public class AuthorDAO {
         }
     }
 
-    public boolean updateImage(String authorName, int newImageIndex) {
-        MongoCollection authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
+    public boolean updateImage(String authorName, Integer newImageIndex) {
+        MongoCollection<Document> authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
         Document query = new Document().append("authorName", authorName);
         Bson updates = Updates.combine(Updates.set("image", newImageIndex));
         try {
@@ -77,7 +77,7 @@ public class AuthorDAO {
             return false;
         }
     }
-    public boolean updatePromotion(String authorName, int newPromotionValue) {
+    public boolean updatePromotion(String authorName, Integer newPromotionValue) {
         MongoCollection authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
         Document query = new Document().append("authorName", authorName);
         Bson updates = Updates.combine(Updates.set("promotion",newPromotionValue));
@@ -93,8 +93,8 @@ public class AuthorDAO {
     }
 
     public boolean changeAuthorName(String newAuthorName, Author authorName) {
-        MongoCollection authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
-        MongoCollection recipeCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);
+        MongoCollection<Document> authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
+        MongoCollection<Document> recipeCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);
 
         if (getAuthor(newAuthorName) != null){
             return false;
@@ -115,7 +115,7 @@ public class AuthorDAO {
         }
     }
     public boolean changePassword(String newPassword, Author author) {
-        MongoCollection authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
+        MongoCollection<Document> authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
         Document query = new Document().append("authorName", author.getName());
         Bson updates = Updates.combine(Updates.set("password", newPassword));
         try {
@@ -140,7 +140,7 @@ public class AuthorDAO {
 
     public ArrayList<Author> searchAuthors(String nameToSearch, int elementsToSkip, int elementsToLimit){
         ArrayList<Author> authors = new ArrayList<Author>();
-        MongoCollection collection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
+        MongoCollection<Document> collection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
         MongoCursor<Document> cursor;
         Bson filter = new Document("Name",new Document("$regex",nameToSearch).append("$options","i"));
         Bson match = match(filter);
