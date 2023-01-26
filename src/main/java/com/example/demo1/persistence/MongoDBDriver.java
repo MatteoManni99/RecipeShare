@@ -7,13 +7,11 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
-import java.util.Collections;
-
 public class MongoDBDriver {
 
     private static final MongoDBDriver driver = new MongoDBDriver();
-    private MongoClient mongoClient;
-    private MongoDatabase database;
+    private final MongoClient mongoClient;
+    private final MongoDatabase database;
 
     private MongoDBDriver() {
         mongoClient = MongoClients.create(Configuration.MONGODB_URL);

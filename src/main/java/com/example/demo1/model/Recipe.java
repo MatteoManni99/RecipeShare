@@ -151,4 +151,14 @@ public class Recipe {
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
+
+    @Override
+    public String toString(){
+        return "Name: " + name + "\nAuthorName: " + authorName + "\nTotalTime " + totalTime
+                + "\ndatePublished " + datePublished + "\ndescription "+ description + "\nimages"+ images
+                + "\nrecipeCategory " + recipeCategory + "\nkeywords " + keywords + "\nrecipeIngredientParts " + recipeIngredientParts
+                + "\naggregatedRating " + aggregatedRating + "\ncalories " + calories
+                + "\nrecipeServings " + recipeServings + "\nrecipeInstructions " + recipeInstructions
+                + "\nreviews " + reviews + "\n";
+    }
 }

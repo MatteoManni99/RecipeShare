@@ -3,6 +3,7 @@ package com.example.demo1;
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
 import com.mongodb.client.model.UpdateOptions;
+import com.example.demo1.dao.*;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.UpdateResult;
 import javafx.event.ActionEvent;
@@ -24,6 +25,8 @@ import org.bson.conversions.Bson;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
@@ -127,6 +130,15 @@ public class LoggatoController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //solo per testing da togliere//
+        RecipeDAO recipeDAO = new RecipeDAO();
+        List<com.example.demo1.model.Recipe> recipes =
+                recipeDAO.findTopRecipesForEachCategory(19);
+
+        HashMap<String,Integer> ingredients = recipeDAO.findMostUsedIngredients(10,10);
+        System.out.println(ingredients.toString());
+
+        /////////////////////////////////
         createTableView(TableViewObject);
     }
 
