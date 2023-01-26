@@ -1,6 +1,7 @@
 package com.example.demo1.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Recipe {
     private String name;
@@ -8,19 +9,19 @@ public class Recipe {
     private Integer totalTime;
     private String datePublished;
     private String description;
-    private ArrayList<String> images;
+    private List<String> images;
     private String recipeCategory;
-    private ArrayList<String> keywords;
-    private ArrayList<String> recipeIngredientParts;
+    private List<String> keywords;
+    private List<String> recipeIngredientParts;
     private Double aggregatedRating;
     private Double calories;
     private Double recipeServings;
-    private ArrayList<String> recipeInstructions;
-    private ArrayList<Review> reviews;
+    private List<String> recipeInstructions;
+    private List<Review> reviews;
 
-    Recipe(String name, String authorName,Integer totalTime, String datePublished, String description, ArrayList<String> images,
-           String recipeCategory, ArrayList<String> keywords, ArrayList<String> recipeIngredientParts, Double aggregatedRating,
-           Double calories, Double recipeServings, ArrayList<String> recipeInstructions, ArrayList<Review> reviews){
+    public Recipe(String name, String authorName,Integer totalTime, String datePublished, String description, List<String> images,
+           String recipeCategory, List<String> keywords, List<String> recipeIngredientParts, Double aggregatedRating,
+           Double calories, Double recipeServings, List<String> recipeInstructions, List<Review> reviews){
         this.name = name;
         this.authorName = authorName;
         this.totalTime = totalTime ;
@@ -77,11 +78,11 @@ public class Recipe {
         this.description = description;
     }
 
-    public ArrayList<String> getImages() {
+    public List<String> getImages() {
         return images;
     }
 
-    public void setImages(ArrayList<String> images) {
+    public void setImages(List<String> images) {
         this.images = images;
     }
 
@@ -93,7 +94,7 @@ public class Recipe {
         this.recipeCategory = recipeCategory;
     }
 
-    public ArrayList<String> getKeywords() {
+    public List<String> getKeywords() {
         return keywords;
     }
 
@@ -101,11 +102,11 @@ public class Recipe {
         this.keywords = keywords;
     }
 
-    public ArrayList<String> getRecipeIngredientParts() {
+    public List<String> getRecipeIngredientParts() {
         return recipeIngredientParts;
     }
 
-    public void setRecipeIngredientParts(ArrayList<String> recipeIngredientParts) {
+    public void setRecipeIngredientParts(List<String> recipeIngredientParts) {
         this.recipeIngredientParts = recipeIngredientParts;
     }
 
@@ -133,19 +134,19 @@ public class Recipe {
         this.recipeServings = recipeServings;
     }
 
-    public ArrayList<String> getRecipeInstructions() {
+    public List<String> getRecipeInstructions() {
         return recipeInstructions;
     }
 
-    public void setRecipeInstructions(ArrayList<String> recipeInstructions) {
+    public void setRecipeInstructions(List<String> recipeInstructions) {
         this.recipeInstructions = recipeInstructions;
     }
 
-    public ArrayList<Review> getReviews() {
+    public List<Review> getReviews() {
         return reviews;
     }
 
-    public void setReviews(ArrayList<Review> reviews) {
+    public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
 }

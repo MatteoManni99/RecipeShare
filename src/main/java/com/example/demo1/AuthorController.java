@@ -93,7 +93,7 @@ public class AuthorController implements Initializable {
         anchorPane.getChildren().add(TableViewObject.getTabellaDB());
     }
 
-    public void searchInDBAndLoadInTableView(String nameToSearch, int pageNumber) {
+    public void searchInDBAndLoadInTableView(String nameToSearch, int pageNumber) { // getRecipeFromAuthor DAO
         Document recipeDoc;
         try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);

@@ -3,10 +3,10 @@ package com.example.demo1.model;
 public class Author {
     private String name;
     private String password;
-    private int promotion;
-    private int image;
+    private Integer promotion;
+    private Integer image;
 
-    public Author(String name, String password, int image, int promotion){
+    public Author(String name, String password, Integer image, Integer promotion){
         this.name = name;
         this.password = password;
         this.image = image;

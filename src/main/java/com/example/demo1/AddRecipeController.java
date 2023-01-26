@@ -93,7 +93,7 @@ public class AddRecipeController implements Initializable {
             System.out.println("Name isn't available");
         }
     }
-    private boolean checkIfNameIsAvailable(String name){
+    private boolean checkIfNameIsAvailable(String name){ //fatto questo in RECIPEDAO
         try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
             MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_RECIPE);
