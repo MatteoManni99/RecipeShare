@@ -53,21 +53,21 @@ public class AuthorMongoDAO {
         }
     }
 
-    public void updateImage(String authorName, Integer newImageIndex) throws MongoException{
+    public static void updateImage(String authorName, Integer newImageIndex) throws MongoException{
         MongoCollection<Document> authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
         Document query = new Document().append("authorName", authorName);
         Bson updates = Updates.combine(Updates.set("image", newImageIndex));
-        UpdateResult result = authorCollection.updateOne(query, updates);
+        authorCollection.updateOne(query, updates);
     }
 
-    public void updatePromotion(String authorName, Integer newPromotionValue) throws MongoException{
+    public static void updatePromotion(String authorName, Integer newPromotionValue) throws MongoException{
         Document query = new Document().append("authorName", authorName);
         Bson updates = Updates.combine(Updates.set("promotion",newPromotionValue));
         UpdateOptions options = new UpdateOptions().upsert(true);
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR).updateOne(query, updates, options);
     }
 
-    public boolean changeAuthorName(String newAuthorName, Author authorName) throws MongoException{
+    public static boolean changeAuthorName(String newAuthorName, Author authorName) throws MongoException{
         MongoCollection<Document> authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
         MongoCollection<Document> recipeCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);
 
@@ -85,7 +85,7 @@ public class AuthorMongoDAO {
             return true;
         }
     }
-    public void changePassword(String newPassword, Author author)  throws MongoException{
+    public static void changePassword(String newPassword, Author author)  throws MongoException{
         Document query = new Document().append("authorName", author.getName());
         Bson updates = Updates.combine(Updates.set("password", newPassword));
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR).updateOne(query, updates);
@@ -102,7 +102,7 @@ public class AuthorMongoDAO {
         } else return null;
     }
 
-    public ArrayList<Author> searchAuthors(String nameToSearch, int elementsToSkip, int elementsToLimit) throws MongoException{
+    public static ArrayList<Author> searchAuthors(String nameToSearch, Integer elementsToSkip, Integer elementsToLimit) throws MongoException{
         ArrayList<Author> authors = new ArrayList<Author>();
         MongoCollection<Document> collection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
         MongoCursor<Document> cursor;
@@ -116,9 +116,8 @@ public class AuthorMongoDAO {
         }
         while(cursor.hasNext()){
             Document authorDoc = cursor.next();
-            Author author = new Author(authorDoc.getString("name"),null,
-                    authorDoc.getInteger("image"), authorDoc.getInteger("promotion"));
-            authors.add(author);
+            authors.add(new Author(authorDoc.getString("name"),null,
+                    authorDoc.getInteger("image"), authorDoc.getInteger("promotion")));
         }
         return authors;
     }
