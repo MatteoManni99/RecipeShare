@@ -92,7 +92,6 @@ public class RecipeController implements Initializable {
     public void onReportRecipeClick(ActionEvent actionEvent){
         LocalDate currentDate = LocalDate.now();
         String isoDate = currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
-
         Document recipeToReport = new Document();
         recipeToReport.append("name",data.getRecipeName());
         recipeToReport.append("authorName",authorName.getText());

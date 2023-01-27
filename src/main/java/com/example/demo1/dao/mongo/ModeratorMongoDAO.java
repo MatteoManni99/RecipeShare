@@ -1,4 +1,4 @@
-package com.example.demo1.dao;
+package com.example.demo1.dao.mongo;
 
 import com.example.demo1.Configuration;
 
@@ -12,7 +12,7 @@ import org.bson.types.ObjectId;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public class ModeratorDAO {
+public class ModeratorMongoDAO {
 
     public boolean checkModeratorName(String name) throws MongoException{
         return MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_MODERATOR)

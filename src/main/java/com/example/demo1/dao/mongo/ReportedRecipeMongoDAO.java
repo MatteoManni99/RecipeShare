@@ -1,4 +1,4 @@
-package com.example.demo1.dao;
+package com.example.demo1.dao.mongo;
 
 import com.example.demo1.Configuration;
 import com.example.demo1.model.ReportedRecipe;
@@ -14,7 +14,7 @@ import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public class ReportedRecipeDAO {
+public class ReportedRecipeMongoDAO {
 
     public boolean addRecipeToReportedRecipe(ReportedRecipe reportedRecipe) throws MongoException {
         MongoCollection<Document> reportedCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_REPORTED_RECIPE);

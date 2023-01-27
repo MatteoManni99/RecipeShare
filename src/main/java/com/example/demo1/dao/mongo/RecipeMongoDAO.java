@@ -1,4 +1,4 @@
-package com.example.demo1.dao;
+package com.example.demo1.dao.mongo;
 
 import com.example.demo1.Configuration;
 import com.example.demo1.model.Recipe;
@@ -7,7 +7,6 @@ import com.example.demo1.model.Review;
 import com.example.demo1.persistence.MongoDBDriver;
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
-import javafx.event.ActionEvent;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -18,7 +17,7 @@ import static com.mongodb.client.model.Aggregates.limit;
 import static com.mongodb.client.model.Indexes.descending;
 import static com.mongodb.client.model.Projections.include;
 
-public class RecipeDAO {
+public class RecipeMongoDAO {
 
     public void deleteRecipe(Recipe recipe) throws MongoException{
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE).deleteOne(new Document("Name", recipe.getName()));
@@ -50,7 +49,7 @@ public class RecipeDAO {
 
     public boolean checkIfNameIsAvailable(String name) throws MongoException{
         MongoCollection<Document> collectionRecipe = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);
-            return !collectionRecipe.find(new Document("Name",name)).cursor().hasNext();
+        return !collectionRecipe.find(new Document("Name",name)).cursor().hasNext();
     }
 
     public List<RecipeReducted> getRecipeFromAuthor(String authorName, Integer elementToSkip, Integer elementsToLimit) throws MongoException{

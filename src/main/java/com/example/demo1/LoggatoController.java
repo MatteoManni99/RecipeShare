@@ -1,22 +1,16 @@
 package com.example.demo1;
 
-import com.mongodb.MongoException;
+import com.example.demo1.dao.mongo.RecipeMongoDAO;
 import com.mongodb.client.*;
-import com.mongodb.client.model.UpdateOptions;
-import com.example.demo1.dao.*;
-import com.mongodb.client.model.Updates;
-import com.mongodb.client.result.UpdateResult;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.bson.Document;
@@ -131,7 +125,7 @@ public class LoggatoController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //solo per testing da togliere//
-        RecipeDAO recipeDAO = new RecipeDAO();
+        RecipeMongoDAO recipeDAO = new RecipeMongoDAO();
         List<com.example.demo1.model.Recipe> recipes =
                 recipeDAO.findTopRecipesForEachCategory(19);
 

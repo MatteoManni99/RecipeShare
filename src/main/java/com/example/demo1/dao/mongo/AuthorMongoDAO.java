@@ -1,4 +1,4 @@
-package com.example.demo1.dao;
+package com.example.demo1.dao.mongo;
 
 import com.example.demo1.Configuration;
 
@@ -22,9 +22,9 @@ import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Aggregates.limit;
 import static com.mongodb.client.model.Filters.eq;
 
-public class AuthorDAO {
+public class AuthorMongoDAO {
 
-    public boolean tryLogin(String name, String password) throws MongoException{
+    public static boolean tryLogin(String name, String password) throws MongoException{
         MongoCursor<Document> cursorAuthor = MongoDBDriver.getDriver().
                 getCollection(Configuration.MONGODB_AUTHOR).find(eq("authorName", name)).iterator();
         if (cursorAuthor.hasNext()) {
@@ -41,7 +41,7 @@ public class AuthorDAO {
         }
     }
 
-    public boolean registration(String authorName, String password, Integer image, Integer standardPromotionValue) throws MongoException {
+    public static boolean registration(String authorName, String password, Integer image, Integer standardPromotionValue) throws MongoException {
         MongoCollection<Document> authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
         if (getAuthor(authorName) != null){
             return false;
@@ -92,7 +92,7 @@ public class AuthorDAO {
         System.out.println("Pass CAMBIATa");
     }
 
-    public Author getAuthor(String authorName)  throws MongoException{
+    public static Author getAuthor(String authorName)  throws MongoException{
         MongoCursor<Document> cursor = MongoDBDriver.getDriver().
                 getCollection(Configuration.MONGODB_AUTHOR).find(eq("authorName", authorName)).iterator();
         if (cursor.hasNext()) {
