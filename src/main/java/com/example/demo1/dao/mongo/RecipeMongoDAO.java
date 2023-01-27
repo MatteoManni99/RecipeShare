@@ -76,7 +76,7 @@ public class RecipeMongoDAO {
 
     private static Recipe transformDocToRec(Document doc) throws MongoException{
         return new Recipe(doc.getString("Name"), doc.getString("AuthorName"), safeExecutionInteger(doc, "TotalTime"),
-                safeExecutionString(doc, "DatePublished"), safeExecutionString(doc, "DatePublished"), safeExecutionList(doc, "Images"),
+                safeExecutionString(doc, "DatePublished"), safeExecutionString(doc, "Description"), safeExecutionList(doc, "Images"),
                 safeExecutionString(doc, "RecipeCategory"), safeExecutionList(doc,"Keywords"), safeExecutionList(doc, "RecipeIngredientParts"),
                 safeExecutionDouble(doc, "AggregatedRating"), safeExecutionDouble(doc, "Calories"),
                 safeExecutionDouble(doc, "RecipeServings"), safeExecutionList(doc, "RecipeInstructions"),

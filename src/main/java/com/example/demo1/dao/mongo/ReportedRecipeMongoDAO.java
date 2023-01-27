@@ -16,7 +16,7 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class ReportedRecipeMongoDAO {
 
-    public boolean addRecipeToReportedRecipe(ReportedRecipe reportedRecipe) throws MongoException {
+    public static boolean addReportedRecipe(ReportedRecipe reportedRecipe) throws MongoException {
         MongoCollection<Document> reportedCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_REPORTED_RECIPE);
         Bson filter = Filters.and(
                 Filters.eq("name", reportedRecipe.getName()),
@@ -32,17 +32,17 @@ public class ReportedRecipeMongoDAO {
         }
         return false;
     }
-    private Document fromReportedRecipeToDocument(ReportedRecipe reportedRecipe){
+    private static Document fromReportedRecipeToDocument(ReportedRecipe reportedRecipe){
         return new Document("name",reportedRecipe.getName()).append("authorName",reportedRecipe.getAuthorName())
                 .append("reporterName",reportedRecipe.getReporterName()).append("dateReporting",reportedRecipe.getDateReporting())
                 .append("image",reportedRecipe.getImage());
     }
-    private ReportedRecipe fromDocToReportedRecipe(Document doc){
+    private static ReportedRecipe fromDocToReportedRecipe(Document doc){
         return new ReportedRecipe(doc.getString("name"),doc.getString("authorName"),
                 doc.getString("reporterName"),doc.getString("dateReporting"), doc.getString("image"));
     }
 
-    public List<ReportedRecipe> getListReportedRecipes() throws MongoException {
+    public static List<ReportedRecipe> getListReportedRecipes() throws MongoException {
         List<ReportedRecipe> listaReportedRecipes = new ArrayList<>();
         MongoCollection<Document> reportedCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_REPORTED_RECIPE);
         for (Document document : reportedCollection.find())

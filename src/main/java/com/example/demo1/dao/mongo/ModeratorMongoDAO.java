@@ -14,12 +14,12 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class ModeratorMongoDAO {
 
-    public boolean checkModeratorName(String name) throws MongoException{
+    public static boolean checkModeratorName(String name) throws MongoException{
         return MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_MODERATOR)
                 .find(eq("moderatorName", name)).iterator().hasNext();
     }
 
-    public boolean tryLogin(Moderator moderator) throws MongoException{
+    public static boolean tryLogin(Moderator moderator) throws MongoException{
         MongoCursor<Document> cursorModerator = MongoDBDriver.getDriver().
                 getCollection(Configuration.MONGODB_MODERATOR).find(eq("moderatorName", moderator.getName())).iterator();
         if (cursorModerator.hasNext()) {
@@ -35,7 +35,7 @@ public class ModeratorMongoDAO {
         }
     }
 
-    public void checkRegistration(Moderator moderator) throws MongoException{
+    public static void checkRegistration(Moderator moderator) throws MongoException{
         MongoCursor<Document> cursorModerator = MongoDBDriver.getDriver().
                 getCollection(Configuration.MONGODB_MODERATOR).find(eq("moderatorName", moderator.getName())).iterator();
         MongoCollection<Document> authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_MODERATOR);
