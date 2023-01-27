@@ -75,18 +75,42 @@ public class RecipeMongoDAO {
     }
 
     private static Recipe transformDocToRec(Document doc) throws MongoException{
-        return new Recipe(doc.getString("Name"), doc.getString("AuthorName"), doc.getInteger("TotalTime"),
-                doc.getString("DatePublished"), doc.getString("Description"), doc.getList("Images", String.class),
-                doc.getString("RecipeCategory"), doc.getList("Keywords", String.class), doc.getList("RecipeIngredientParts", String.class),
-                Double.valueOf(String.valueOf(doc.get("AggregatedRating"))), Double.valueOf(String.valueOf(doc.get("Calories"))),
-                Double.valueOf(String.valueOf(doc.get("RecipeServings"))), doc.getList("RecipeInstructions", String.class),
-                fromDocListToRevList(doc.getList("Reviews", Document.class)));
+        return new Recipe(doc.getString("Name"), doc.getString("AuthorName"), safeExecutionInteger(doc, "TotalTime"),
+                safeExecutionString(doc, "DatePublished"), safeExecutionString(doc, "DatePublished"), safeExecutionList(doc, "Images"),
+                safeExecutionString(doc, "RecipeCategory"), safeExecutionList(doc,"Keywords"), safeExecutionList(doc, "RecipeIngredientParts"),
+                safeExecutionDouble(doc, "AggregatedRating"), safeExecutionDouble(doc, "Calories"),
+                safeExecutionDouble(doc, "RecipeServings"), safeExecutionList(doc, "RecipeInstructions"),
+                fromDocListToRevList(safeExecutionListDocument(doc, "Reviews")));
+    }
+
+    private static String safeExecutionString(Document doc, String string){
+        try{return doc.getString(string);}catch(NumberFormatException e){return null;}
+    }
+
+    private static Double safeExecutionDouble(Document doc, String string){
+        try{return Double.valueOf(String.valueOf(doc.get(string)));}catch(NumberFormatException e){return null;}
+    }
+
+    private static Integer safeExecutionInteger(Document doc, String string){
+        try{return doc.getInteger(string);}catch(NumberFormatException e){return null;}
+    }
+
+    private static List<String> safeExecutionList(Document doc, String string){
+        try{return doc.getList(string, String.class);}catch(NullPointerException e){return null;}
+    }
+
+    private static List<Document> safeExecutionListDocument(Document doc, String string){
+        try{return doc.getList(string, Document.class);}catch(NullPointerException e){return null;}
     }
 
     private static List<Review> fromDocListToRevList(List<Document> listDoc) throws MongoException{
-        List<Review> listReview = new ArrayList<>();
-        listDoc.forEach(document -> listReview.add(transformDocToRev(document)));
-        return listReview;
+        if(listDoc == null)
+            return null;
+        else{
+            List<Review> listReview = new ArrayList<>();
+            listDoc.forEach(document -> listReview.add(transformDocToRev(document)));
+            return listReview;
+        }
     }
 
     /// methods for analytics ///
