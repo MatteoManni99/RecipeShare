@@ -5,10 +5,6 @@ import com.example.demo1.model.ReportedRecipe;
 import com.example.demo1.model.Review;
 import com.example.demo1.service.RecipeService;
 import com.example.demo1.service.ReportedRecipeService;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,8 +19,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.bson.Document;
-import org.bson.conversions.Bson;
 
 import java.io.IOException;
 import java.net.URL;
@@ -97,11 +91,8 @@ public class RecipeController implements Initializable {
 
     @FXML
     public void onReportRecipeClick(ActionEvent actionEvent){
-        LocalDate currentDate = LocalDate.now();
-        String isoDate = currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
-        ReportedRecipe recipeToReport = new ReportedRecipe(recipe.getName(),recipe.getAuthorName(),
-                data.getAuthorName(),isoDate,recipe.getImages().get(0));
-        ReportedRecipeService.addReportedRecipe(recipeToReport);
+        ReportedRecipeService.addReportedRecipe(new ReportedRecipe(recipe.getName(),recipe.getAuthorName(),
+                data.getAuthorName(),LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),recipe.getImages().get(0)));
     }
     public void onLeaveAReviewClick(ActionEvent actionEvent){
         String reviewer = data.getAuthorName();
@@ -112,7 +103,12 @@ public class RecipeController implements Initializable {
             reviewTextArea.setText("Questa ricetta è tua non puoi recensirla");
             reviewTextArea.setStyle("-fx-text-fill: #dc143c");
         } else {
-            Integer rating = ratingChoiceBox.getValue();
+
+            RecipeService.addReview(recipeName, reviewer, ratingChoiceBox.getValue(), reviewTextArea.getText());
+            try {changeScene(actionEvent,"Recipe.fxml");}
+            catch (IOException e) {throw new RuntimeException(e);}
+
+            /*Integer rating = ratingChoiceBox.getValue();
             String review = reviewTextArea.getText();
             String uri = Configuration.MONGODB_URL;
             try (MongoClient mongoClient = MongoClients.create(uri)) { //fatto in RECIPEDAO
@@ -126,7 +122,7 @@ public class RecipeController implements Initializable {
                 changeScene(actionEvent,"Recipe.fxml");
             } catch (IOException e) {
                 throw new RuntimeException(e);
-            }
+            }*/
         }
     }
     private void changeScene(ActionEvent actionEvent, String sceneFXML) throws IOException {
@@ -198,8 +194,8 @@ public class RecipeController implements Initializable {
         recipe = RecipeService.getRecipeByName(data.getRecipeName());
         setLablesAndLists(recipe);
 
-        if(data.getAuthorName().equals(recipe.getAuthorName())){
+        if(data.getAuthorName().equals(recipe.getAuthorName()))
             addDeleteButtonAndRemoveReportButton();
-        }
+
     }
 }
