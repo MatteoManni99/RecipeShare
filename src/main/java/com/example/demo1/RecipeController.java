@@ -3,6 +3,8 @@ package com.example.demo1;
 import com.example.demo1.dao.mongo.RecipeMongoDAO;
 import com.example.demo1.model.Recipe;
 import com.example.demo1.model.ReportedRecipe;
+import com.example.demo1.model.Review;
+import com.example.demo1.service.RecipeService;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import javafx.collections.FXCollections;
@@ -180,61 +182,56 @@ public class RecipeController implements Initializable {
         anchorPane.getChildren().add(deleteRecipe);
     }
 
+    private void setLablesAndLists(Recipe recipe){
+        name.setText(recipe.getName());
+        authorName.setText(recipe.getAuthorName());
+        description.setText(recipe.getDescription());
+        calories.setText(String.valueOf(recipe.getCalories()));
+        servings.setText(String.valueOf(recipe.getRecipeServings()));
+        time.setText(String.valueOf(recipe.getTotalTime()));
+        date.setText(recipe.getDatePublished());
+        try {
+            ObservableList<String> ingredients_list = FXCollections.observableArrayList(recipe.getRecipeIngredientParts());
+            ingredients.setItems(ingredients_list);
+        }catch (NullPointerException e){
+            ingredients.setItems(null);
+        }
+        try {
+            ObservableList<String> keywords_list = FXCollections.observableArrayList(recipe.getKeywords());
+            keywords.setItems(keywords_list);
+        }catch (NullPointerException e){
+            keywords.setItems(null);
+        }
+        try {
+            ObservableList<String> instructions_list = FXCollections.observableArrayList(recipe.getRecipeInstructions());
+            instructions.setItems(instructions_list);
+        }catch (NullPointerException e){
+            keywords.setItems(null);
+        }
+        images_list = recipe.getImages();
+        printImages();
+
+        tableViewReview.initializeTableView();
+        tableViewReview.resetObservableArrayList();
+        List<Review> reviews_list = recipe.getReviews();
+        for (Review review : reviews_list) {
+            String reviewer = review.getAuthorName();
+            reviewers.add(reviewer);
+            ReviewTableView reviewT = new ReviewTableView(reviewer, review.getRating(), review.getReview());
+            tableViewReview.addToObservableArrayList(reviewT);
+        }
+        tableViewReview.setItems();
+        tableViewReview.setTableDB();
+        anchorPane.getChildren().add(tableViewReview.getTableDB());
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ratingChoiceBox.setItems(FXCollections.observableArrayList(1,2,3,4,5));
         recipeName = data.getRecipeName(); //!!!!! questa funziona se prima del cambio di scena modifico DataSingleton !!!!!!
-        String uri = Configuration.MONGODB_URL;
-        try (MongoClient mongoClient = MongoClients.create(uri)) { //fatto in RECIPEDAO
-            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
-            MongoCollection<Document> collectionRecipe = database.getCollection(Configuration.MONGODB_RECIPE);
-            Bson match = match(Filters.eq("Name", recipeName));
 
-            tableViewReview.initializeTableView();
-            Recipe recipe = RecipeMongoDAO.getRecipeByName(data.getRecipeName());
-
-            Document doc = collectionRecipe.aggregate(Arrays.asList(match)).first();
-            name.setText(doc.getString("Name"));
-            authorName.setText(doc.getString("AuthorName"));
-            description.setText(doc.getString("Description"));
-            calories.setText(String.valueOf(doc.get("Calories")));
-            servings.setText(String.valueOf(doc.get("RecipeServings")));
-            time.setText(String.valueOf(doc.get("TotalTime")));
-            date.setText(doc.getString("DatePublished"));
-            try {
-                ObservableList<String> ingredients_list = FXCollections.observableArrayList(doc.getList("RecipeIngredientParts", String.class));
-                ingredients.setItems(ingredients_list);
-            }catch (NullPointerException e){
-                ingredients.setItems(null);
-            }
-            try {
-                ObservableList<String> keywords_list = FXCollections.observableArrayList(doc.getList("Keywords", String.class));
-                keywords.setItems(keywords_list);
-            }catch (NullPointerException e){
-                keywords.setItems(null);
-            }
-            try {
-                ObservableList<String> instructions_list = FXCollections.observableArrayList(doc.getList("RecipeInstructions", String.class));
-                instructions.setItems(instructions_list);
-            }catch (NullPointerException e){
-                keywords.setItems(null);
-            }
-            images_list = doc.getList("Images", String.class);
-            printImages();
-
-            tableViewReview.resetObservableArrayList();
-            List<Document> reviews_list = doc.getList("Reviews", Document.class);
-            for (Document reviewDoc : reviews_list) {
-                String reviewer = reviewDoc.getString("AuthorName");
-                reviewers.add(reviewer);
-                ReviewTableView review = new ReviewTableView(reviewer, reviewDoc.getInteger("Rating"), reviewDoc.getString("Review"));
-                tableViewReview.addToObservableArrayList(review);
-            }
-            tableViewReview.setItems();
-        }
-
-        tableViewReview.setTableDB();
-        anchorPane.getChildren().add(tableViewReview.getTableDB());
+        Recipe recipe = RecipeService.getRecipeByName(data.getRecipeName());
+        setLablesAndLists(recipe);
 
         if(data.getAuthorName().equals(authorName.getText())){
             addDeleteButtonAndRemoveReportButton();

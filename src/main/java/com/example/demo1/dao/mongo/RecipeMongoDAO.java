@@ -25,7 +25,7 @@ public class RecipeMongoDAO {
 
     public static Recipe getRecipeByName(String name) throws MongoException{
         return transformDocToRec(Objects.requireNonNull(MongoDBDriver.getDriver().
-                getCollection(Configuration.MONGODB_RECIPE).aggregate(List.of(new Document("Name", name))).first()));
+                getCollection(Configuration.MONGODB_RECIPE).find(new Document("Name", name)).first()));
     }
 
     public static void addReview(String name,String reviewer,Integer rating,String review) throws MongoException {
@@ -78,15 +78,13 @@ public class RecipeMongoDAO {
         return new Recipe(doc.getString("Name"), doc.getString("AuthorName"), doc.getInteger("TotalTime"),
                 doc.getString("DatePublished"), doc.getString("Description"), doc.getList("Images", String.class),
                 doc.getString("RecipeCategory"), doc.getList("Keywords", String.class), doc.getList("RecipeIngredientParts", String.class),
-                doc.getDouble("AggregatedRating"), doc.getDouble("Calories"), doc.getDouble("RecipeServings"),
-                doc.getList("RecipeInstructions", String.class), fromDocListToRevList(doc.getList("Reviews", Document.class)));
+                Double.valueOf(String.valueOf(doc.get("AggregatedRating"))), Double.valueOf(String.valueOf(doc.get("Calories"))),
+                Double.valueOf(String.valueOf(doc.get("RecipeServings"))), doc.getList("RecipeInstructions", String.class),
+                fromDocListToRevList(doc.getList("Reviews", Document.class)));
     }
 
     private static List<Review> fromDocListToRevList(List<Document> listDoc) throws MongoException{
         List<Review> listReview = new ArrayList<>();
-        /* for(Document doc: listDoc)
-            listReview.add(transformDocToRev(doc));
-         */
         listDoc.forEach(document -> listReview.add(transformDocToRev(document)));
         return listReview;
     }
