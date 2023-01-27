@@ -1,10 +1,9 @@
 package com.example.demo1;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.ImageView;
 
-public class Recipe {
+public class RecipeTableView {
     //private Object recipeId;
     private Object recipeName;
     //private Object authorId;
@@ -27,7 +26,7 @@ public class Recipe {
         recipeImage = new ImageView((String) image);
     }*/
 
-    public Recipe(String name, String authorName, ImageView image) {
+    public RecipeTableView(String name, String authorName, ImageView image) {
         //recipeIdTable = new SimpleIntegerProperty(recipeId);
         recipeNameTable = new SimpleStringProperty(name);
         //authorIdTable = new SimpleIntegerProperty(authorId);

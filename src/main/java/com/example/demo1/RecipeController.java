@@ -227,7 +227,7 @@ public class RecipeController implements Initializable {
             for (Document reviewDoc : reviews_list) {
                 String reviewer = reviewDoc.getString("AuthorName");
                 reviewers.add(reviewer);
-                Review review = new Review(reviewer, reviewDoc.getInteger("Rating"), reviewDoc.getString("Review"));
+                ReviewTableView review = new ReviewTableView(reviewer, reviewDoc.getInteger("Rating"), reviewDoc.getString("Review"));
                 tableViewReview.addToObservableArrayList(review);
             }
             tableViewReview.setItems();

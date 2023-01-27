@@ -101,7 +101,7 @@ public class LoggatoController implements Initializable{
             TableViewObject.resetObservableArrayList();
             while (cursor.hasNext()){
                 recipeDoc = cursor.next();
-                Recipe recipe = new Recipe(recipeDoc.getString("Name"),
+                RecipeTableView recipe = new RecipeTableView(recipeDoc.getString("Name"),
                         recipeDoc.getString("AuthorName"),new ClassForTableView.CustomImage(new ImageView(recipeDoc.getString("Images"))).getImage());
                 TableViewObject.addToObservableArrayList(recipe);
             }

@@ -10,8 +10,8 @@ import javafx.stage.Stage;
 
 public class ClassTableAuthor {
 
-    public TableView<Author> tabellaDB;
-    private ObservableList<Author> ol;
+    public TableView<AuthorTableView> tabellaDB;
+    private ObservableList<AuthorTableView> ol;
     private TableColumn promotionCol;
     private TableColumn authorNameCol;
     private TableColumn imageCol;
@@ -21,8 +21,8 @@ public class ClassTableAuthor {
     public void initializeTableView() {
         tabellaDB = new TableView<>();
 
-        authorNameCol = new TableColumn<Author, String>("Name");
-        promotionCol = new TableColumn<Author, Integer>("Promotion");
+        authorNameCol = new TableColumn<AuthorTableView, String>("Name");
+        promotionCol = new TableColumn<AuthorTableView, Integer>("Promotion");
         imageCol = new TableColumn<ClassForTableView.CustomImage, ImageView>("Image");
 
         promotionCol.setCellValueFactory(new PropertyValueFactory<>("promotion"));
@@ -46,14 +46,14 @@ public class ClassTableAuthor {
         tabellaDB.setItems(ol);
     }
 
-    public TableView<Author> getTabellaDB() {
+    public TableView<AuthorTableView> getTabellaDB() {
         return tabellaDB;
     }
 
     public void resetObservableArrayList(){
         ol = FXCollections.observableArrayList();
     }
-    public void addToObservableArrayList(Author author){
+    public void addToObservableArrayList(AuthorTableView author){
         ol.add(author);
     }
 

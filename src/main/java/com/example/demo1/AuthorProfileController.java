@@ -7,7 +7,6 @@ import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.UpdateResult;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -24,10 +23,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -184,7 +180,7 @@ public class AuthorProfileController implements Initializable {
             TableViewObject.resetObservableArrayList();
             while (cursor.hasNext()) {
                 recipeDoc = cursor.next();
-                Recipe recipe = new Recipe( recipeDoc.getString("Name"), recipeDoc.getString("AuthorName"),
+                RecipeTableView recipe = new RecipeTableView( recipeDoc.getString("Name"), recipeDoc.getString("AuthorName"),
                         new ClassForTableView.CustomImage(new ImageView(recipeDoc.getString("Images"))).getImage());
                 TableViewObject.addToObservableArrayList(recipe);
             }

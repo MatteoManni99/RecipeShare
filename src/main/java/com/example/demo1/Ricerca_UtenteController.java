@@ -2,7 +2,6 @@ package com.example.demo1;
 
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
-import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.UpdateResult;
@@ -11,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -153,7 +151,7 @@ public class Ricerca_UtenteController implements Initializable {
             tableAuthor.resetObservableArrayList();
             while (cursor.hasNext()){
                 authorDoc = cursor.next();
-                Author author = new Author(authorDoc.getString("authorName"),
+                AuthorTableView author = new AuthorTableView(authorDoc.getString("authorName"),
                         authorDoc.getInteger("promotion"),
                         new ClassTableAuthor.CustomImageAuthor(new ImageView(Configuration.AVATAR.get(authorDoc.getInteger("image") - 1))).getImage());
                 tableAuthor.addToObservableArrayList(author);

@@ -8,8 +8,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 public class TableViewReview {
-    public TableView<Review> table;
-    private ObservableList<Review> reviews;
+    public TableView<ReviewTableView> table;
+    private ObservableList<ReviewTableView> reviews;
     private TableColumn descriptionCol;
     private TableColumn authorNameCol;
     private TableColumn ratingCol;
@@ -18,9 +18,9 @@ public class TableViewReview {
 
     public void initializeTableView() {
         table = new TableView<>();
-        descriptionCol = new TableColumn<Recipe, String>("Review");
-        authorNameCol = new TableColumn<Recipe, String>("AuthorName");
-        ratingCol = new TableColumn<Recipe, String>("Rating");
+        descriptionCol = new TableColumn<RecipeTableView, String>("Review");
+        authorNameCol = new TableColumn<RecipeTableView, String>("AuthorName");
+        ratingCol = new TableColumn<RecipeTableView, String>("Rating");
 
         descriptionCol.setCellValueFactory(new PropertyValueFactory<>("review"));
         authorNameCol.setCellValueFactory(new PropertyValueFactory<>("authorName"));
@@ -42,7 +42,7 @@ public class TableViewReview {
         table.setItems(reviews);
     }
 
-    public TableView<Review> getTableDB() {
+    public TableView<ReviewTableView> getTableDB() {
         return table;
     }
 
@@ -50,7 +50,7 @@ public class TableViewReview {
         reviews = FXCollections.observableArrayList();
     }
 
-    public void addToObservableArrayList(Review review){
+    public void addToObservableArrayList(ReviewTableView review){
         reviews.add(review);
     }
 }

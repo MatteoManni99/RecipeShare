@@ -15,11 +15,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class ClassForTableView {
-    public TableView<Recipe> tabellaDB;
-    private ObservableList<Recipe> ol;
+    public TableView<RecipeTableView> tabellaDB;
+    private ObservableList<RecipeTableView> ol;
     //private TableColumn recipeIdCol;
     private TableColumn nameCol;
     //private TableColumn authorIdCol;
@@ -39,9 +38,9 @@ public class ClassForTableView {
         tabellaDB = new TableView<>();
 
         //recipeIdCol = new TableColumn<Recipe, String>("RecipeID");
-        nameCol = new TableColumn<Recipe, String>("Name");
+        nameCol = new TableColumn<RecipeTableView, String>("Name");
         //authorIdCol = new TableColumn<Recipe, String>("AuthorID");
-        authorNameCol = new TableColumn<Recipe, String>("AuthorName");
+        authorNameCol = new TableColumn<RecipeTableView, String>("AuthorName");
         //recipeIdCol = new TableColumn("RecipeID");
         //nameCol = new TableColumn("Name");
         //authorIdCol = new TableColumn("AuthorID");
@@ -71,7 +70,7 @@ public class ClassForTableView {
         tabellaDB.setItems(ol);
     }
 
-    public TableView<Recipe> getTabellaDB() {
+    public TableView<RecipeTableView> getTabellaDB() {
         return tabellaDB;
     }
 
@@ -105,7 +104,7 @@ public class ClassForTableView {
         //recipeNameArray.clear();
         //recipeIdArray.clear();
     }
-    public void addToObservableArrayList(Recipe recipe){
+    public void addToObservableArrayList(RecipeTableView recipe){
         ol.add(recipe);
         //recipeNameArray.add(recipe.getName());
         //recipeIdArray.add(recipe.getRecipeId());

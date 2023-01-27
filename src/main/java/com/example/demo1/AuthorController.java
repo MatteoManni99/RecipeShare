@@ -1,6 +1,9 @@
 package com.example.demo1;
 
+import com.example.demo1.dao.mongo.AuthorMongoDAO;
+import com.example.demo1.service.RecipeService;
 import com.mongodb.client.*;
+import com.example.demo1.model.Author;
 import com.mongodb.client.model.Filters;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -68,18 +71,9 @@ public class AuthorController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         authorName = data.getOtherAuthorName();
         System.out.println(authorName);
-        try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
-            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
-            MongoCollection<Document> collectionAuthor = database.getCollection(Configuration.MONGODB_AUTHOR);
-            Bson match = match(Filters.eq("authorName", authorName));
-            for (Document doc : collectionAuthor.aggregate(List.of(match))) {
-                System.out.println("QUI");
-                name.setText(doc.getString("authorName"));
-                System.out.println(doc.getInteger("image"));
-                System.out.println(Configuration.AVATAR.get(doc.getInteger("image") - 1));
-                image.setImage(Configuration.AVATAR.get(doc.getInteger("image") - 1));
-            }
-        }
+        Author author = AuthorMongoDAO.getAuthor(authorName);
+        name.setText(author.getName());
+        image.setImage(Configuration.AVATAR.get(author.getImage() - 1));
         createTableView(TableViewObject);
     }
 
@@ -94,31 +88,8 @@ public class AuthorController implements Initializable {
     }
 
     public void searchInDBAndLoadInTableView(String nameToSearch, int pageNumber) { // getRecipeFromAuthor DAO
-        Document recipeDoc;
-        try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
-            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
-            MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_RECIPE);
-            MongoCursor<Document> cursor;
-            Bson filter = new Document("AuthorName", new Document("$regex",nameToSearch).append("$options", "i"));
-            Bson match = match(filter);
-            Bson project = project(new Document("Name", 1).append("AuthorName", 1)
-                    .append("Images", new Document("$first", "$Images")));
-
-            if (nameToSearch == null) {
-                cursor = collection.aggregate(Arrays.asList(skip(10 * pageNumber), limit(10), project)).iterator();
-                System.out.println("null");
-            } else {
-                cursor = collection.aggregate(Arrays.asList(match, skip(10 * pageNumber), limit(10), project)).iterator();
-                System.out.println(nameToSearch);
-            }
             TableViewObject.resetObservableArrayList();
-            while (cursor.hasNext()) {
-                recipeDoc = cursor.next();
-                Recipe recipe = new Recipe( recipeDoc.getString("Name"), recipeDoc.getString("AuthorName"),
-                        new ClassForTableView.CustomImage(new ImageView(recipeDoc.getString("Images"))).getImage());
-                TableViewObject.addToObservableArrayList(recipe);
-            }
+            // TableViewObject.addToObservableArrayList(RecipeService.getRecipeFromAuthor(nameToSearch, pageNumber, 10));
             TableViewObject.setItems();
-        }
     }
 }

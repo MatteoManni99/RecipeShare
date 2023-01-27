@@ -29,8 +29,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.mongodb.client.model.Aggregates.*;
-import static com.mongodb.client.model.Filters.gt;
-import static com.mongodb.client.model.Filters.gte;
 import static com.mongodb.client.model.Indexes.descending;
 import static com.mongodb.client.model.Projections.include;
 
@@ -209,7 +207,7 @@ public class ModeratorController implements Initializable {
             tableAuthor.resetObservableArrayList();
             while (cursor.hasNext()){
                 authorDoc = cursor.next();
-                Author author = new Author(authorDoc.getString("authorName"),
+                AuthorTableView author = new AuthorTableView(authorDoc.getString("authorName"),
                         authorDoc.getInteger("promotion"),
                         new ClassTableAuthor.CustomImageAuthor(new ImageView(Configuration.AVATAR.get(authorDoc.getInteger("image") - 1))).getImage());
                 tableAuthor.addToObservableArrayList(author);

@@ -3,7 +3,7 @@ package com.example.demo1;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Review {
+public class ReviewTableView {
     private Object authorName;
     private Object rating;
     private Object review;
@@ -12,7 +12,7 @@ public class Review {
     private SimpleIntegerProperty ratingTable;
     private SimpleStringProperty reviewTable;
 
-    public Review(String authorName, Integer rating, String review) {
+    public ReviewTableView(String authorName, Integer rating, String review) {
         authorNameTable = new SimpleStringProperty(authorName);
         ratingTable = new SimpleIntegerProperty(rating);
         reviewTable = new SimpleStringProperty(review);
