@@ -20,7 +20,7 @@ public class Reported_RecipeDAO {
         MongoCollection reportedCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_REPORTED_RECIPE);
         Bson filter = Filters.and(
                 Filters.eq("name", reportedRecipe.getName()),
-                Filters.eq("reporterName", reportedRecipe.getReporterName());
+                Filters.eq("reporterName", reportedRecipe.getReporterName()));
         if (reportedCollection.find(filter).cursor().hasNext()) {
             System.out.println("Avevi già Reportato questa Recipe");
             return false;
