@@ -1,5 +1,6 @@
 package com.example.demo1;
 
+import com.example.demo1.model.ReportedRecipe;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import javafx.collections.FXCollections;
@@ -100,7 +101,9 @@ public class RecipeController implements Initializable {
         recipeToReport.append("Image",images_list.get(0));
         addRecipeToReportedRecipe(recipeToReport);
     }
-    private void addRecipeToReportedRecipe(Document recipeToAdd){
+    private void addRecipeToReportedRecipe(Document recipeToAdd){ //fatto in DAO
+        ReportedRecipe reportedRecipe = new ReportedRecipe(recipeToAdd.getString("name"),recipeToAdd.getString("authorName"),
+                recipeToAdd.getString("reporterName"),recipeToAdd.getString("dateReporting"),recipeToAdd.getString("image"));
         String uri = Configuration.MONGODB_URL;
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);

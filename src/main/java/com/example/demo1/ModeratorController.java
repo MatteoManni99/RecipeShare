@@ -119,7 +119,7 @@ public class ModeratorController implements Initializable {
         List<Document> listaReportedRecipes = new ArrayList<>();
         startingX = recipeText.getLayoutX();
 
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
+        try (MongoClient mongoClient = MongoClients.create(uri)) { //fatto in DAO
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
             MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_REPORTED_RECIPE);
 
