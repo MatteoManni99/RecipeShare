@@ -2,9 +2,7 @@ package com.example.demo1;
 
 import com.example.demo1.dao.mongo.AuthorMongoDAO;
 import com.example.demo1.service.RecipeService;
-import com.mongodb.client.*;
 import com.example.demo1.model.Author;
-import com.mongodb.client.model.Filters;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,16 +13,12 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.bson.Document;
-import org.bson.conversions.Bson;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
-
-import static com.mongodb.client.model.Aggregates.*;
-import static com.mongodb.client.model.Aggregates.limit;
 
 public class AuthorController implements Initializable {
     @FXML
@@ -72,7 +66,7 @@ public class AuthorController implements Initializable {
         authorName = data.getOtherAuthorName();
         System.out.println(authorName);
         Author author = AuthorMongoDAO.getAuthor(authorName);
-        name.setText(author.getName());
+        name.setText(Objects.requireNonNull(author).getName());
         image.setImage(Configuration.AVATAR.get(author.getImage() - 1));
         createTableView(TableViewObject);
     }
@@ -87,9 +81,13 @@ public class AuthorController implements Initializable {
         anchorPane.getChildren().add(TableViewObject.getTabellaDB());
     }
 
-    public void searchInDBAndLoadInTableView(String nameToSearch, int pageNumber) { // getRecipeFromAuthor DAO
-            TableViewObject.resetObservableArrayList();
-            // TableViewObject.addToObservableArrayList(RecipeService.getRecipeFromAuthor(nameToSearch, pageNumber, 10));
-            TableViewObject.setItems();
+    public void searchInDBAndLoadInTableView(String nameToSearch, int pageNumber) {
+        TableViewObject.resetObservableArrayList();
+        List<RecipeTableView> listRecipeTable = new ArrayList<>();
+        RecipeService.getRecipeFromAuthor(nameToSearch, pageNumber, 10)
+                .forEach(recipeReducted -> listRecipeTable.add(
+                        new RecipeTableView(recipeReducted.getName(), recipeReducted.getAuthorName(), new ImageView(recipeReducted.getImage()))));
+        TableViewObject.setObservableArrayList(listRecipeTable);
+        TableViewObject.setItems();
     }
 }

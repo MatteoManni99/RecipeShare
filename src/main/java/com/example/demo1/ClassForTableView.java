@@ -15,6 +15,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClassForTableView {
     public TableView<RecipeTableView> tabellaDB;
@@ -101,6 +103,12 @@ public class ClassForTableView {
     }*/
     public void resetObservableArrayList(){
         ol = FXCollections.observableArrayList();
+        //recipeNameArray.clear();
+        //recipeIdArray.clear();
+    }
+
+    public void setObservableArrayList(List<RecipeTableView> list){
+        ol = FXCollections.observableList(list);
         //recipeNameArray.clear();
         //recipeIdArray.clear();
     }
