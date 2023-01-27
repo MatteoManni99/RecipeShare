@@ -19,16 +19,16 @@ import static com.mongodb.client.model.Projections.include;
 
 public class RecipeMongoDAO {
 
-    public void deleteRecipe(Recipe recipe) throws MongoException{
+    public static void deleteRecipe(Recipe recipe) throws MongoException{
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE).deleteOne(new Document("Name", recipe.getName()));
     }
 
-    public Recipe getRecipeByName(String name) throws MongoException{
+    public static Recipe getRecipeByName(String name) throws MongoException{
         MongoCollection<Document> collectionRecipe = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);
         return transformDocToRec(Objects.requireNonNull(collectionRecipe.aggregate(List.of(new Document("Name", name))).first()));
     }
 
-    public void addReview(String name,String reviewer,Integer rating,String review) throws MongoException {
+    public static void addReview(String name,String reviewer,Integer rating,String review) throws MongoException {
         Bson match = new Document("Name", name);
         Bson updates = new Document("$push", new Document("Reviews", new Document("AuthorName", reviewer)
                 .append("Rating", rating).append("Review", review)));
@@ -36,7 +36,7 @@ public class RecipeMongoDAO {
         collectionRecipe.updateOne(match, updates);
     }
 
-    public void addRecipe(Recipe recipe) throws MongoException {
+    public static void addRecipe(Recipe recipe) throws MongoException {
         Document recipeToAdd = new Document().append("Name", recipe.getName()).append("AuthorName",recipe.getAuthorName())
                 .append("TotalTime",recipe.getTotalTime()).append("DatePublished", recipe.getDatePublished())
                 .append("Description",recipe.getDescription()).append("Images",recipe.getImages())
@@ -47,12 +47,12 @@ public class RecipeMongoDAO {
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE).insertOne(recipeToAdd);
     }
 
-    public boolean checkIfNameIsAvailable(String name) throws MongoException{
+    public static boolean checkIfNameIsAvailable(String name) throws MongoException{
         MongoCollection<Document> collectionRecipe = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);
         return !collectionRecipe.find(new Document("Name",name)).cursor().hasNext();
     }
 
-    public List<RecipeReducted> getRecipeFromAuthor(String authorName, Integer elementToSkip, Integer elementsToLimit) throws MongoException{
+    public static List<RecipeReducted> getRecipeFromAuthor(String authorName, Integer elementToSkip, Integer elementsToLimit) throws MongoException{
         List<RecipeReducted> recipeReducted = new ArrayList<RecipeReducted>();
         MongoCollection<Document> collection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);
         Bson match = match(new Document("AuthorName", new Document("$regex", authorName).append("$options", "i")));
@@ -72,11 +72,11 @@ public class RecipeMongoDAO {
         return recipeReducted;
     }
 
-    public Review transformDocToRev(Document doc) throws MongoException{
+    public static Review transformDocToRev(Document doc) throws MongoException{
         return new Review(doc.getString("AuthorName"), doc.getInteger("Rating"), doc.getString("Review"));
     }
 
-    public Recipe transformDocToRec(Document doc) throws MongoException{
+    public static Recipe transformDocToRec(Document doc) throws MongoException{
         return new Recipe(doc.getString("Name"), doc.getString("AuthorName"), doc.getInteger("TotalTime"),
                 doc.getString("DatePublished"), doc.getString("Description"), doc.getList("Images", String.class),
                 doc.getString("RecipeCategory"), doc.getList("Keywords", String.class), doc.getList("RecipeIngredientParts", String.class),
@@ -84,7 +84,7 @@ public class RecipeMongoDAO {
                 doc.getList("RecipeInstructions", String.class), fromDocListToRevList(doc.getList("Reviews", Document.class)));
     }
 
-    public List<Review> fromDocListToRevList(List<Document> listDoc) throws MongoException{
+    public static List<Review> fromDocListToRevList(List<Document> listDoc) throws MongoException{
         List<Review> listReview = new ArrayList<>();
         for(Document doc: listDoc)
             listReview.add(transformDocToRev(doc));
@@ -92,7 +92,7 @@ public class RecipeMongoDAO {
     }
 
     /// methods for analytics ///
-    public List<Recipe> findTopRecipesForRangesOfPreparationTime(Integer lowerLimit, Integer upperLimit, Integer minNumeberReviews,
+    public static List<Recipe> findTopRecipesForRangesOfPreparationTime(Integer lowerLimit, Integer upperLimit, Integer minNumeberReviews,
                                                                  Integer limitRecipes) throws MongoException{
         List<Recipe> listRecipe = new ArrayList<>();
         Bson match = match(new Document("TotalTime", new Document("$gt",lowerLimit).append("$lte", upperLimit)));
@@ -110,7 +110,7 @@ public class RecipeMongoDAO {
         }
         return listRecipe;
     }
-    public HashMap<String,Integer> findMostUsedIngredients(Integer limitIngredients, Integer minNumeberReviews) throws MongoException{
+    public static HashMap<String,Integer> findMostUsedIngredients(Integer limitIngredients, Integer minNumeberReviews) throws MongoException{
         Bson matchR = match(new Document("Reviews." + minNumeberReviews, new Document("$exists",true)));
         Bson unwind = new Document("$unwind",new Document("path","$RecipeIngredientParts"));
         Bson group = new Document("$group", new Document("_id", "$RecipeIngredientParts").
@@ -125,7 +125,7 @@ public class RecipeMongoDAO {
         }
         return mapIngredient;
     }
-    public List<Recipe> findRecipesWithHighestRating(Integer limitRecipes, Integer minNumeberReviews) throws MongoException{
+    public static List<Recipe> findRecipesWithHighestRating(Integer limitRecipes, Integer minNumeberReviews) throws MongoException{
         Bson matchR = match(new Document("Reviews." + minNumeberReviews, new Document("$exists", true)));
         Bson limit = limit(limitRecipes);
         Bson sort = sort(descending("AggregatedRating"));
@@ -141,7 +141,7 @@ public class RecipeMongoDAO {
         }
         return listRecipe;
     }
-    public List<Recipe> findTopRecipesForEachCategory(Integer minNumeberReviews) throws MongoException{
+    public static List<Recipe> findTopRecipesForEachCategory(Integer minNumeberReviews) throws MongoException{
         List<Recipe> listRecipe = new ArrayList<>();
         Bson match = match(new Document("Reviews." + minNumeberReviews, new Document("$exists", true)));
         Bson sort = new Document("$sort", new Document("AggregatedRating", -1));

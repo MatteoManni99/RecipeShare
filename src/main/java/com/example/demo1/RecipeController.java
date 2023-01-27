@@ -1,5 +1,7 @@
 package com.example.demo1;
 
+import com.example.demo1.dao.mongo.RecipeMongoDAO;
+import com.example.demo1.model.Recipe;
 import com.example.demo1.model.ReportedRecipe;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
@@ -189,6 +191,7 @@ public class RecipeController implements Initializable {
             Bson match = match(Filters.eq("Name", recipeName));
 
             tableViewReview.initializeTableView();
+            Recipe recipe = RecipeMongoDAO.getRecipeByName(data.getRecipeName());
 
             Document doc = collectionRecipe.aggregate(Arrays.asList(match)).first();
             name.setText(doc.getString("Name"));
