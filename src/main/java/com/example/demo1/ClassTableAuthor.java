@@ -6,28 +6,26 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 
 public class ClassTableAuthor {
 
     public TableView<AuthorTableView> tabellaDB;
     private ObservableList<AuthorTableView> ol;
-    private TableColumn promotionCol;
-    private TableColumn authorNameCol;
+    private TableColumn<AuthorTableView, Integer> promotionCol;
+    private TableColumn<AuthorTableView, String> authorNameCol;
     private TableColumn imageCol;
 
-    private Stage stage;
 
     public void initializeTableView() {
         tabellaDB = new TableView<>();
 
-        authorNameCol = new TableColumn<AuthorTableView, String>("Name");
-        promotionCol = new TableColumn<AuthorTableView, Integer>("Promotion");
+        authorNameCol = new TableColumn<>("Name");
+        promotionCol = new TableColumn<>("Promotion");
         imageCol = new TableColumn<ClassForTableView.CustomImage, ImageView>("Image");
 
         promotionCol.setCellValueFactory(new PropertyValueFactory<>("promotion"));
         authorNameCol.setCellValueFactory(new PropertyValueFactory<>("authorName"));
-        imageCol.setCellValueFactory(new PropertyValueFactory<ClassForTableView.CustomImage,ImageView>("image"));
+        imageCol.setCellValueFactory(new PropertyValueFactory<>("image"));
 
         tabellaDB.setPrefHeight(400);
         tabellaDB.setPrefWidth(300);
@@ -35,16 +33,10 @@ public class ClassTableAuthor {
         tabellaDB.setLayoutY(200);
     }
 
-    public void setTabellaDB() {
-        tabellaDB.getColumns().addAll(imageCol, authorNameCol, promotionCol);
-    }
+    public void setTabellaDB() {tabellaDB.getColumns().addAll(imageCol, authorNameCol, promotionCol);}
 
-    public void setTableDB() {
-        tabellaDB.getColumns().addAll(imageCol, authorNameCol);
-    }
-    public void setItems(){
-        tabellaDB.setItems(ol);
-    }
+    public void setTableDB() {tabellaDB.getColumns().addAll(imageCol, authorNameCol);}
+    public void setItems(){tabellaDB.setItems(ol);}
 
     public TableView<AuthorTableView> getTabellaDB() {
         return tabellaDB;

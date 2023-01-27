@@ -27,14 +27,12 @@ public class AuthorController implements Initializable {
     @FXML
     public Label name;
 
-    private Stage stage;
-
     private Integer pageNumber = 0;
 
-    private DataSingleton data = DataSingleton.getInstance();
+    private final DataSingleton data = DataSingleton.getInstance();
     private String authorName;
 
-    private ClassForTableView TableViewObject = new ClassForTableView();
+    private final ClassForTableView TableViewObject = new ClassForTableView();
 
     @FXML
     private AnchorPane anchorPane;
@@ -42,7 +40,7 @@ public class AuthorController implements Initializable {
     @FXML
     public void onBackClick(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("loggato.fxml"));
-        stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         stage.setScene(scene);
         stage.show();
