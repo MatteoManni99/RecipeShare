@@ -8,9 +8,9 @@ public class ReviewTableView {
     private Object rating;
     private Object review;
 
-    private SimpleStringProperty authorNameTable;
-    private SimpleIntegerProperty ratingTable;
-    private SimpleStringProperty reviewTable;
+    private final SimpleStringProperty authorNameTable;
+    private final SimpleIntegerProperty ratingTable;
+    private final SimpleStringProperty reviewTable;
 
     public ReviewTableView(String authorName, Integer rating, String review) {
         authorNameTable = new SimpleStringProperty(authorName);

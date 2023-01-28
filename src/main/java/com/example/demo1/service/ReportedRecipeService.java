@@ -10,6 +10,7 @@ import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ReportedRecipeService {
     public static boolean addReportedRecipe(ReportedRecipe reportedRecipe) {
@@ -19,4 +20,9 @@ public class ReportedRecipeService {
     public static List<ReportedRecipe> getListReportedRecipes() {
         return ReportedRecipeMongoDAO.getListReportedRecipes();
     }
+
+    public static Map<String, Double> onHighestRatioQueryClick(){
+        return ReportedRecipeMongoDAO.onHighestRatioQueryClick();
+    }
+
 }
