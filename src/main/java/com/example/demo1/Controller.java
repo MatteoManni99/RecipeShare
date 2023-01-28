@@ -21,8 +21,7 @@ public class Controller {
     }
     @FXML
     public void onLoginClick(ActionEvent actionEvent) throws IOException {
-        String nomeSchermata = "Login.fxml";
-        Utils.changeScene(actionEvent,"Moderator.fxml");
+        Utils.changeScene(actionEvent,"Login.fxml");
     }
 
     public void onModeratorClick(ActionEvent actionEvent) throws IOException {
