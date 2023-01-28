@@ -137,7 +137,9 @@ public class RecipeMongoDAO {
     public static List<Recipe> findTopRecipesForRangesOfPreparationTime(Integer lowerLimit, Integer upperLimit, Integer minNumberReviews,
                                                                  Integer limitRecipes) throws MongoException{
         List<Recipe> listRecipe = new ArrayList<>();
-        Bson match = match(new Document("TotalTime", new Document("$gt",lowerLimit).append("$lte", upperLimit)));
+        Bson match;
+        if (upperLimit != -1) match = match(new Document("TotalTime", new Document("$gt",lowerLimit).append("$lte", upperLimit)));
+        else match = match(new Document("TotalTime", new Document("$gt",lowerLimit))); //terzo range
         Bson matchR = match(new Document("Reviews." + minNumberReviews, new Document("$exists",true)));
         Bson sort = sort(descending("AggregatedRating"));
         Bson limit = limit(limitRecipes);
