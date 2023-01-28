@@ -1,5 +1,8 @@
 package com.example.demo1;
 
+import com.example.demo1.dao.mongo.RecipeMongoDAO;
+import com.example.demo1.model.Recipe;
+import com.example.demo1.service.RecipeService;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -58,22 +61,22 @@ public class AddRecipeController implements Initializable {
         String name = nameField.getText();
         Integer time;
         Double calories;
-        Integer servings;
+        Double servings;
         try {time = Integer.valueOf(timeField.getText());} catch (NumberFormatException e) {time = null;}
         try {calories = Double.valueOf(caloriesField.getText());} catch (NumberFormatException e) {calories = null;}
-        try {servings = Integer.valueOf(servingsField.getText());} catch (NumberFormatException e) {servings = null;}
-        LocalDate currentDate = LocalDate.now();
-        String isoDate = currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+        try {servings = Double.valueOf(servingsField.getText());} catch (NumberFormatException e) {servings = null;}
+        /*LocalDate currentDate = LocalDate.now();
+        String isoDate = currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE);*/
 
         if(name.isBlank() || name.isEmpty()){
             System.out.println("Insert a Name in the corresponding TextField");
         }else if(imageArrayList.isEmpty()){
             System.out.println("Insert at least one Image");
-        }else if(checkIfNameIsAvailable(name)) {
+        }else if(RecipeService.checkIfNameIsAvailable(name)) {
             System.out.println("Name is available");
             data = DataSingleton.getInstance();
 
-            Document recipeToAdd = new Document();
+            /*Document recipeToAdd = new Document();
             recipeToAdd.append("Name",name);
             recipeToAdd.append("AuthorName",data.getAuthorName()); //da cambiare
             recipeToAdd.append("TotalTime",time);
@@ -88,24 +91,19 @@ public class AddRecipeController implements Initializable {
             recipeToAdd.append("RecipeServings",servings);
             recipeToAdd.append("RecipeInstructions",instructionsArrayList);
             recipeToAdd.append("Reviews",new ArrayList<String>());
-            addToDB(recipeToAdd);
+            addToDB(recipeToAdd);*/
+
+            RecipeService.addRecipe( new Recipe(name, data.getOtherAuthorName(), time, LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),
+                    setNullIfEmpty(descriptionField.getText()), imageArrayList, setNullIfEmpty(categoryField.getText()),
+                    keywordArrayList, ingredientArrayList, null, calories, servings, instructionsArrayList,
+                    null));
+
         }else{
             System.out.println("Name isn't available");
         }
     }
-    private boolean checkIfNameIsAvailable(String name){ //fatto questo in RECIPEDAO
-        try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
-            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
-            MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_RECIPE);
-            Bson filter = new Document("Name",name);
-            if(collection.find(filter).cursor().hasNext()){
-                return false;
-            }else{
-                return true;
-            }
-        }
-    }
-    private void addToDB(Document recipeToAdd){ //fatto questo in RECIPEDAO
+
+    /*private void addToDB(Document recipeToAdd){ //fatto questo in RECIPEDAO
         try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
             MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_RECIPE);
@@ -114,7 +112,8 @@ public class AddRecipeController implements Initializable {
                 clearFields();
             }else System.out.println("Recipe was not added for some reason...");
         }
-    }
+    }*/
+
     private String setNullIfEmpty(String string){
         if(string.isEmpty() || string.isBlank()) return null;
         else return string;

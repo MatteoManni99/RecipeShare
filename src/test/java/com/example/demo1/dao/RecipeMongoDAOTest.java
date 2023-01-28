@@ -35,6 +35,11 @@ public class RecipeMongoDAOTest {
     }
 
     @Test
+    void getRecipeFromName(){
+
+    }
+
+    @Test
     void checkIfNameIsAvailableTest(){
         RecipeMongoDAO.addRecipe(recipe);
         assertFalse(RecipeMongoDAO.checkIfNameIsAvailable("Test"));

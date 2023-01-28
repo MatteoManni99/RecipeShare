@@ -41,7 +41,7 @@ public class RecipeMongoDAO {
                 .append("RecipeCategory",recipe.getRecipeCategory()).append("Keywords",recipe.getKeywords())
                 .append("RecipeIngredientParts",recipe.getRecipeIngredientParts()).append("AggregatedRating",recipe.getAggregatedRating())
                 .append("Calories",recipe.getCalories()).append("RecipeServings",recipe.getRecipeServings())
-                .append("RecipeInstructions",recipe.getReviews()).append("Reviews",new ArrayList<String>());
+                .append("RecipeInstructions",recipe.getReviews()).append("Reviews",new ArrayList<Document>());
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE).insertOne(recipeToAdd);
     }
 
