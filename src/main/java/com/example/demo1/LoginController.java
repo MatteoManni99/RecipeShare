@@ -1,46 +1,24 @@
 package com.example.demo1;
 
-import com.example.demo1.dao.mongo.AuthorMongoDAO;
 import com.example.demo1.model.Author;
-import com.example.demo1.model.Moderator;
 import com.example.demo1.service.AuthorService;
 import com.example.demo1.service.ModeratorService;
-import com.mongodb.*;
-import com.mongodb.client.*;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.UpdateOptions;
-import com.mongodb.client.model.Updates;
-import com.mongodb.client.result.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.bson.Document;
-import org.bson.conversions.Bson;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-
-import static com.mongodb.client.model.Filters.*;
-import static com.mongodb.client.model.Updates.*;
 
 public class LoginController {
     @FXML
     private TextField insertedName;
     @FXML
     private TextField insertedPassword;
-    private Stage stage;
 
     @FXML
     public void onLogoutClick(ActionEvent actionEvent) throws IOException {
@@ -60,9 +38,8 @@ public class LoginController {
         String name = insertedName.getText();
         String password = insertedPassword.getText();
         boolean existAuthor = AuthorService.login(name,password);
-        Moderator currentModerator = new Moderator(name,password);
-        boolean existModerator = ModeratorService.tryLogin(currentModerator);
-        if (existAuthor == true) {
+        boolean existModerator = ModeratorService.tryLogin(name, password);
+        if (existAuthor) {
             Author currentAuthor = AuthorService.getAuthor(name);
             int avatarIndex = currentAuthor.getImage();
             DataSingleton.getInstance().setAvatar(avatarIndex);
@@ -71,7 +48,7 @@ public class LoginController {
             DataSingleton.getInstance().setTypeOfUser("author");
             nomePagina = "Loggato.fxml";
         }
-        else if (existModerator == true){
+        else if (existModerator){
             DataSingleton.getInstance().setTypeOfUser("moderator");
             nomePagina = "Moderator.fxml";
         }
@@ -131,7 +108,7 @@ public class LoginController {
 
     public void cambiaSchermata(ActionEvent actionEvent,String nomeSchermata) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(nomeSchermata));
-        stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         stage.setScene(scene);
         stage.show();

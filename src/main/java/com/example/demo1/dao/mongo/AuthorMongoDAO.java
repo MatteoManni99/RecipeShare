@@ -33,12 +33,11 @@ public class AuthorMongoDAO {
                 System.out.println("TROVATO AUTHOR");
                 return true;
             }
-            return false;
         }
         else{
             System.out.println("NON TROVATO AUTHOR");
-            return false;
         }
+        return false;
     }
 
     public static boolean registration(String authorName, String password, Integer image, Integer standardPromotionValue) throws MongoException {
