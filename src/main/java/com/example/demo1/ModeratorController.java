@@ -52,7 +52,7 @@ public class ModeratorController implements Initializable {
     private ClassTableAuthor tableAuthor = new ClassTableAuthor();
     @FXML
     public void onLogoutClick(ActionEvent actionEvent) throws IOException {
-        Utils.changeScene(actionEvent,"hello-view.fxml");
+        Utils.changeScene(actionEvent,"Login.fxml");
     }
 
     public void onNextPageClick(){

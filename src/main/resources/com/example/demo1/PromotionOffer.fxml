@@ -8,7 +8,7 @@
 
 <VBox xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.PromotionOfferController">
    <children>
-      <AnchorPane fx:id="anchorPane" prefHeight="400.0" prefWidth="600.0">
+      <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0">
          <children>
             <Label layoutX="262.0" layoutY="14.0" text="RECIPE SHARE" />
             <Button fx:id="rejectPromotion" layoutX="134.0" layoutY="111.0" mnemonicParsing="false" onAction="#onRejectPromotionClick" text="REJECT PROMOTION" />

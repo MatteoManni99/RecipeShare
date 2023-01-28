@@ -26,7 +26,8 @@ public class Utils {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(nameScene));
             Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(fxmlLoader.load());
+            Scene scene = new Scene(fxmlLoader.load(),1000,600);
+            stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {throw new RuntimeException(e);}

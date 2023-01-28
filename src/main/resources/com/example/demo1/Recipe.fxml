@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="TOP_CENTER" prefHeight="443.0" prefWidth="498.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.RecipeController">
+<VBox alignment="TOP_CENTER" prefHeight="600" prefWidth="1000" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.RecipeController">
    <children>
-      <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="729.0" prefWidth="1057.0">
+      <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0">
          <children>
             <Button fx:id="leaveReviewButton" layoutX="824.0" layoutY="325.0" mnemonicParsing="false" onAction="#onLeaveAReviewClick" text="Leave a Review" />
             <Button fx:id="reportRecipeButton" layoutX="725.0" layoutY="33.0" mnemonicParsing="false" onAction="#onReportRecipeClick" prefHeight="26.0" prefWidth="124.0" text="REPORT RECIPE" />

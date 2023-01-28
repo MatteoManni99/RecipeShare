@@ -30,7 +30,7 @@ public class LoggatoController implements Initializable{
     private Integer pageNumber = 0;
     @FXML
     public void onLogoutClick(ActionEvent actionEvent){
-        Utils.changeScene(actionEvent,"hello-view.fxml");
+        Utils.changeScene(actionEvent,"Login.fxml");
     }
 
     @FXML

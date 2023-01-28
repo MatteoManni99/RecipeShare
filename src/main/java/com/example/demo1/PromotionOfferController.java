@@ -35,61 +35,18 @@ public class PromotionOfferController implements Initializable {
 
     public AnchorPane anchorPane;
 
-    public void onLogoutClick(ActionEvent actionEvent) throws IOException {
-        String nomeSchermata = "hello-view.fxml";
-        cambiaSchermata(actionEvent, nomeSchermata);
-    }
-
-    public void cambiaSchermata(ActionEvent actionEvent, String nomeSchermata) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(nomeSchermata));
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
-        stage.setScene(scene);
-        stage.show();
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
     }
 
     public void onRejectPromotionClick(ActionEvent actionEvent) {
         AuthorService.updatePromotion(DataSingleton.getInstance().getAuthorName(),0);
-        /*try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
-            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
-            MongoCollection<Document> collectionAuthor = database.getCollection(Configuration.MONGODB_AUTHOR);
-            Document query = new Document().append("authorName", DataSingleton.getInstance().getAuthorName());
-            Bson updates = Updates.combine(
-                    Updates.set("promotion", 0)
-            );
-            UpdateOptions options = new UpdateOptions().upsert(true);
-            try {
-                UpdateResult result = collectionAuthor.updateOne(query, updates, options);
-                System.out.println("Modified document count: " + result.getModifiedCount());
-            } catch (MongoException me) {
-                System.err.println("Unable to update due to an error: " + me);
-            }*/
         DataSingleton.getInstance().setTypeOfUser("author");
         Utils.changeScene(actionEvent,"Loggato.fxml");
     }
 
     public void onAcceptPromotionClick(ActionEvent actionEvent) {
         AuthorService.updatePromotion(DataSingleton.getInstance().getAuthorName(), 2);
-        /*try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
-            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
-            MongoCollection<Document> collectionAuthor = database.getCollection(Configuration.MONGODB_AUTHOR);
-            Document query = new Document().append("authorName", DataSingleton.getInstance().getAuthorName());
-            Bson updates = Updates.combine(
-                    Updates.set("promotion", 2)
-            );
-            UpdateOptions options = new UpdateOptions().upsert(true);
-            try {
-                UpdateResult result = collectionAuthor.updateOne(query, updates, options);
-                System.out.println("Modified document count: " + result.getModifiedCount());
-            } catch (MongoException me) {
-                System.err.println("Unable to update due to an error: " + me);
-            }
-        }*/
         DataSingleton.getInstance().setTypeOfUser("moderator");
         Utils.changeScene(actionEvent,"Register.fxml");
     }

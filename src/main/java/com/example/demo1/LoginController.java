@@ -27,7 +27,7 @@ public class LoginController {
         Utils.changeScene(actionEvent,"Register.fxml");
     }
 
-    public void onLoginClick(ActionEvent actionEvent) throws IOException {
+    public void onLoginClick(ActionEvent actionEvent){
         String nomePagina = null;
         String name = insertedName.getText();
         String password = insertedPassword.getText();
@@ -54,54 +54,5 @@ public class LoginController {
                 Utils.changeScene(actionEvent,"PromotionOffer.fxml");
             else Utils.changeScene(actionEvent,nomePagina);
         }
-        /*
-        String uri = Configuration.MONGODB_URL;
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
-            MongoCollection<Document> collectionAuthor = database.getCollection(Configuration.MONGODB_AUTHOR);
-            MongoCollection<Document> collectionModerator = database.getCollection(Configuration.MONGODB_MODERATOR);
-            Bson filterAuthor = Filters.and(
-                    Filters.eq("authorName", name),
-                    Filters.eq("password", password));
-            MongoCursor<Document> cursorAuthor = collectionAuthor.find(filterAuthor).iterator();
-            Bson filterModerator = Filters.and(
-                    Filters.eq("moderatorName", name),
-                    Filters.eq("password", password));
-            MongoCursor<Document> cursorModerator = collectionModerator.find(filterModerator).iterator();
-            if (cursorAuthor.hasNext()) {
-                Document currentAuthor = cursorAuthor.next();
-                int avatarIndex = (int) currentAuthor.get("image");
-                DataSingleton.getInstance().setAvatar(avatarIndex);
-                DataSingleton.getInstance().setAvatarIndex(avatarIndex);
-                DataSingleton.getInstance().setAuthorPromotion((Integer) currentAuthor.get("promotion"));
-                DataSingleton.getInstance().setTypeOfUser("author");
-                System.out.println("TROVATO AUTHOR");
-                nomePagina = "Loggato.fxml";
-            }
-            else {
-                System.out.println("NON TROVATO AUTHOR");
-                if (cursorModerator.hasNext()) {
-                    DataSingleton.getInstance().setTypeOfUser("moderator");
-                    System.out.println("TROVATO MODERATOR");
-                    nomePagina = "Moderator.fxml";
-                }
-                else System.out.println("NON TROVATO MODERATOR");
-            }
-            if (nomePagina != null) {
-                DataSingleton data = DataSingleton.getInstance();
-                data.setAuthorName(name);
-                data.setPassword(password);
-                if (nomePagina.equals("Loggato.fxml") && DataSingleton.getInstance().getAuthorPromotion() == 1)
-                    cambiaSchermata(actionEvent,"PromotionOffer.fxml");
-                else cambiaSchermata(actionEvent,nomePagina);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }*/
     }
-
-    public void onTextClick(MouseEvent mouseEvent) {
-        System.out.println("TESTO CLICKATO");
-    }
-
 }

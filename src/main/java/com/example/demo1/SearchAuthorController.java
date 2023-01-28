@@ -34,9 +34,8 @@ public class SearchAuthorController implements Initializable {
     private ClassTableAuthor tabella;
 
     @FXML
-    public void onLogoutClick(ActionEvent actionEvent) throws IOException {
-        String nomeSchermata = "hello-view.fxml";
-        cambiaSchermata(actionEvent,nomeSchermata);
+    public void onLogoutClick(ActionEvent actionEvent){
+        Utils.changeScene(actionEvent,"Login.fxml");
     }
     @FXML
     public void onNextPageClick(){
@@ -161,13 +160,5 @@ public class SearchAuthorController implements Initializable {
             node = node.getParent();
         }
         return node instanceof TableCell ? (TableCell) node : null;
-    }
-
-    public void cambiaSchermata(ActionEvent actionEvent,String nomeSchermata) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(nomeSchermata));
-        stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 600, 500);
-        stage.setScene(scene);
-        stage.show();
     }
 }
