@@ -13,6 +13,7 @@ public class DataSingleton {
     private String password;
     private String otherAuthorName;
     private ImageView avatar;
+    private Integer avatarIndex;
     private DataSingleton(){}
 
     public static DataSingleton getInstance(){
@@ -38,8 +39,10 @@ public class DataSingleton {
         this.pageNumber = pageNumber;
     }
     public void setOtherAuthorName(String otherAuthorName) {this.otherAuthorName = otherAuthorName;}
-    public void setAvatar(int index) {this.avatar = new ImageView(Configuration.AVATAR.get(index));}
+    public void setAvatar(int index) {this.avatar = new ImageView(Configuration.AVATAR.get(index - 1));}
     public ImageView getAvatar() {return this.avatar;}
+    public void setAvatarIndex(int index) {this.avatarIndex = index;}
+    public Integer getAvatarIndex() {return this.avatarIndex;}
     public void setTypeOfUser(String tipo) {typeOfUser = tipo;}
     public String getTypeOfUser() {return this.typeOfUser;}
     public void setAuthorPromotion(int quanto) {authorPromotion = quanto;}

@@ -1,5 +1,12 @@
 package com.example.demo1;
 
+import com.example.demo1.dao.mongo.AuthorMongoDAO;
+import com.example.demo1.dao.mongo.RecipeMongoDAO;
+import com.example.demo1.model.Author;
+import com.example.demo1.model.Recipe;
+import com.example.demo1.model.RecipeReducted;
+import com.example.demo1.service.AuthorService;
+import com.example.demo1.service.RecipeService;
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
@@ -127,7 +134,8 @@ public class AuthorProfileController implements Initializable {
                 avatar.setFitHeight(100);
                 avatar.setFitWidth(100);
                 anchorPane.getChildren().set(avatarIndex,avatar);
-                try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
+                AuthorService.updateImage(DataSingleton.getInstance().getAuthorName(),Integer.parseInt(temp.getId())); //chiamata a DAO
+                /*try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
                     MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
                     MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_AUTHOR);
                     Document query = new Document().append("authorName", authorName);
@@ -141,7 +149,7 @@ public class AuthorProfileController implements Initializable {
                     } catch (MongoException me) {
                         System.err.println("Unable to update due to an error: " + me);
                     }
-                }
+                }*/
             });
             temp.setFitWidth(70);
             temp.setFitHeight(70);
@@ -158,14 +166,22 @@ public class AuthorProfileController implements Initializable {
         createTableView(TableViewObject);
     }
 
-    public void searchInDBAndLoadInTableView(String nameToSearch, int pageNumber) {
-        Document recipeDoc;
+    public void searchInDBAndLoadInTableView(String nameToSearch, int pageNumber) { //chiamata a DAO
+        List<RecipeReducted> recipeReductedList = RecipeService.getRecipeFromAuthor(DataSingleton.getInstance().getAuthorName(),10 * pageNumber,10);
+        TableViewObject.resetObservableArrayList();
+        for (RecipeReducted recipeReducted : recipeReductedList) {
+            RecipeTableView recipe = new RecipeTableView( recipeReducted.getName(), recipeReducted.getAuthorName(),
+                    new ClassForTableView.CustomImage(new ImageView(recipeReducted.getImage())).getImage());
+            TableViewObject.addToObservableArrayList(recipe);
+        }
+        TableViewObject.setItems();
+        /*Document recipeDoc;
         try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
             MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_RECIPE);
             MongoCursor<Document> cursor;
             //Bson filter = Filters.regex("Name", "^(?)" + nameToSearch); //da togliere era il vecchio filtro
-            Bson filter = new Document("AuthorName", new Document("$regex",/*nameToSearch*/"Malarkey Test").append("$options", "i")); //ho messo elly9812 per avere dei risultati nella tabella, sarebbe da mettere nameToSearch
+            Bson filter = new Document("AuthorName", new Document("$regex",/*nameToSearch"Malarkey Test").append("$options", "i")); //ho messo elly9812 per avere dei risultati nella tabella, sarebbe da mettere nameToSearch
             Bson match = match(filter);
             Bson project = project(new Document("Name", 1).append("AuthorName", 1)
                     .append("Images", new Document("$first", "$Images")));
@@ -185,7 +201,7 @@ public class AuthorProfileController implements Initializable {
                 TableViewObject.addToObservableArrayList(recipe);
             }
             TableViewObject.setItems();
-        }
+        }*/
     }
 
     public void createTableView(ClassForTableView TableViewObject) {
@@ -208,7 +224,7 @@ public class AuthorProfileController implements Initializable {
         }
         String parameterNewValue = parameterValueField.getText();
 
-        try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
+        /*try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
             MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_AUTHOR);
             if (parameterToChange.equals("authorName")) {
@@ -232,24 +248,27 @@ public class AuthorProfileController implements Initializable {
             } catch (MongoException me) {
                 System.err.println("Unable to update due to an error: " + me);
             }
-
-            if (parameterToChange.equals("authorName") == false) {
-                System.out.println("PARAMETRO CAMBIATO");
-                if (parameterToChange.equals("password")) {
-                    passwordField.setText(parameterNewValue); //da fare anche per le immagini
-                    DataSingleton.getInstance().setPassword(parameterNewValue);
-                    authorName = data.getAuthorName();
-                    password = data.getPassword();
-                }
-                parameterToChange = null;
-                return;
+        */
+        Author currentAuthor = new Author(DataSingleton.getInstance().getAuthorName(),DataSingleton.getInstance().getPassword(),
+                DataSingleton.getInstance().getAvatarIndex(),DataSingleton.getInstance().getAuthorPromotion());
+        if (parameterToChange.equals("authorName") == false) {
+            //System.out.println("PARAMETRO CAMBIATO");
+            AuthorService.changePassword(parameterNewValue,currentAuthor); //chiamata a DAO
+            if (parameterToChange.equals("password")) {
+                passwordField.setText(parameterNewValue);
+                DataSingleton.getInstance().setPassword(parameterNewValue);
+                authorName = data.getAuthorName();
+                password = data.getPassword();
             }
+            parameterToChange = null;
+            return;
+        }
 
-            MongoCollection<Document> collectionRecipe = database.getCollection(Configuration.MONGODB_RECIPE);
-            Document queryRecipe = new Document().append("AuthorName", authorName);
-            Bson updatesRecipe = Updates.combine(
-                    Updates.set("AuthorName", parameterNewValue));
-            UpdateOptions optionsRecipe = new UpdateOptions().upsert(true);
+        /*MongoCollection<Document> collectionRecipe = database.getCollection(Configuration.MONGODB_RECIPE);
+        Document queryRecipe = new Document().append("AuthorName", authorName);
+        Bson updatesRecipe = Updates.combine(
+                Updates.set("AuthorName", parameterNewValue));
+        UpdateOptions optionsRecipe = new UpdateOptions().upsert(true);
 
             try {
                 UpdateResult result = collectionRecipe.updateMany(queryRecipe, updatesRecipe, optionsRecipe);
@@ -257,14 +276,19 @@ public class AuthorProfileController implements Initializable {
             } catch (MongoException me) {
                 System.err.println("Unable to update due to an error: " + me);
             }
-
-            System.out.println("PARAMETRO CAMBIATO");
-            authorNameField.setText(parameterNewValue);
-            DataSingleton.getInstance().setAuthorName(parameterNewValue);
-            authorName = data.getAuthorName();
-            password = data.getPassword();
+        */
+        //System.out.println(parameterNewValue);
+        if (AuthorService.changeAuthorName(parameterNewValue,currentAuthor) == false) { //chiamata a DAO
             parameterToChange = null;
+            return;
         }
+        //System.out.println("PARAMETRO CAMBIATO");
+        authorNameField.setText(parameterNewValue);
+        DataSingleton.getInstance().setAuthorName(parameterNewValue);
+        authorName = data.getAuthorName();
+        password = data.getPassword();
+        parameterToChange = null;
+        //}
     }
 
     public void setParameterToAuthorName(ActionEvent actionEvent) {parameterToChange = "authorName";}

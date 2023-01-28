@@ -71,6 +71,7 @@ public class LoginController {
                 Document currentAuthor = cursorAuthor.next();
                 int avatarIndex = (int) currentAuthor.get("image");
                 DataSingleton.getInstance().setAvatar(avatarIndex);
+                DataSingleton.getInstance().setAvatarIndex(avatarIndex);
                 DataSingleton.getInstance().setAuthorPromotion((Integer) currentAuthor.get("promotion"));
                 DataSingleton.getInstance().setTypeOfUser("author");
                 System.out.println("TROVATO AUTHOR");

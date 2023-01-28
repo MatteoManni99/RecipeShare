@@ -67,17 +67,18 @@ public class AuthorMongoDAO {
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR).updateOne(query, updates, options);
     }
 
-    public static boolean changeAuthorName(String newAuthorName, Author authorName) throws MongoException{
+    public static boolean changeAuthorName(String newAuthorName, Author currentAuthor) throws MongoException{
         MongoCollection<Document> authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
         MongoCollection<Document> recipeCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);
 
         if (getAuthor(newAuthorName) != null){
+            System.out.println("ESISTE GIA IL NICK");
             return false;
         }else {
             ///DA FARE IL CAMBIO ANCHE DELLE REVIEW/// in teoria quindi forse meglio non far fare il cambio dell'author name?
-            Document query = new Document("authorName", authorName);
+            Document query = new Document("authorName", currentAuthor.getName());
             Bson updates = Updates.combine(Updates.set("authorName", newAuthorName));
-            Document queryRecipe = new Document("AuthorName", authorName);
+            Document queryRecipe = new Document("AuthorName", currentAuthor.getName());
             Bson updatesRecipe = Updates.combine(Updates.set("AuthorName", newAuthorName));
             authorCollection.updateOne(query, updates);
             recipeCollection.updateMany(queryRecipe, updatesRecipe);
@@ -89,7 +90,7 @@ public class AuthorMongoDAO {
         Document query = new Document().append("authorName", author.getName());
         Bson updates = Updates.combine(Updates.set("password", newPassword));
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR).updateOne(query, updates);
-        System.out.println("Pass CAMBIATa");
+        System.out.println("Pass CAMBIATA");
     }
 
     public static Author getAuthor(String authorName)  throws MongoException{
