@@ -53,7 +53,7 @@ public class RecipeMongoDAO {
     public static List<RecipeReducted> getRecipeFromAuthor(String authorName, Integer elementToSkip, Integer elementsToLimit) throws MongoException{
         List<RecipeReducted> recipeReducted = new ArrayList<>();
         MongoCollection<Document> collection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);
-        Bson match = match(new Document("AuthorName", new Document("$regex", authorName).append("$options", "i")));
+        Bson match = match(new Document("AuthorName", authorName));
         Bson project = project(new Document("Name", 1).append("AuthorName", 1)
                 .append("Images", new Document("$first", "$Images")));
         MongoCursor<Document> cursor;

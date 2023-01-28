@@ -61,7 +61,7 @@ public class RecipeMongoDAOTest {
     @Test
     void deleteRecipeTest(){
         RecipeMongoDAO.addRecipe(recipe);
-        RecipeMongoDAO.deleteRecipe(recipe); // NON LA CANCELLA DA MONGO COMPASS
+        RecipeMongoDAO.deleteRecipe(recipe);
         assertTrue(RecipeMongoDAO.checkIfNameIsAvailable("Test"));
     }
 
