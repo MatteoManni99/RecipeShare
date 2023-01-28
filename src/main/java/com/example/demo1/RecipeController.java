@@ -1,10 +1,12 @@
 package com.example.demo1;
 
+import com.example.demo1.gui.Utils;
 import com.example.demo1.model.Recipe;
 import com.example.demo1.model.ReportedRecipe;
 import com.example.demo1.model.Review;
 import com.example.demo1.service.RecipeService;
 import com.example.demo1.service.ReportedRecipeService;
+import com.mongodb.internal.connection.tlschannel.util.Util;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -75,7 +77,7 @@ public class RecipeController implements Initializable {
 
     @FXML
     public void onBackClick(ActionEvent actionEvent) throws IOException {
-        changeScene(actionEvent,"loggato.fxml");
+        Utils.changeScene(actionEvent,"loggato.fxml");
     }
 
     @FXML
@@ -93,15 +95,8 @@ public class RecipeController implements Initializable {
             reviewTextArea.setText("Select a rating");
         }else{
             RecipeService.addReview(recipeName, reviewer, ratingChoiceBox.getValue(), reviewTextArea.getText());
-            changeScene(actionEvent,"Recipe.fxml");
+            Utils.changeScene(actionEvent, "Recipe.fxml");
         }
-    }
-    private void changeScene(ActionEvent actionEvent, String sceneFXML) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(sceneFXML));
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-        stage.setScene(scene);
-        stage.show();
     }
 
     //this method is called when the recipe's author correspond to the recipe visualizer
@@ -113,7 +108,7 @@ public class RecipeController implements Initializable {
         deleteRecipe.setLayoutY(34);
         EventHandler<ActionEvent> eventHandler = actionEvent -> {
             RecipeService.deleteRecipe(recipe);
-            try {changeScene(actionEvent,"Loggato.fxml");} catch (IOException e) {throw new RuntimeException(e);}
+            Utils.changeScene(actionEvent,"Loggato.fxml");
         };
         deleteRecipe.setOnAction(eventHandler);
         anchorPane.getChildren().add(deleteRecipe);

@@ -1,4 +1,5 @@
 package com.example.demo1;
+import com.example.demo1.gui.Utils;
 import com.example.demo1.model.Recipe;
 import com.example.demo1.service.RecipeService;
 
@@ -82,11 +83,7 @@ public class AddRecipeController implements Initializable {
     }
 
     public void onBackClick(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Loggato.fxml"));
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
-        stage.setScene(scene);
-        stage.show();
+        Utils.changeScene(actionEvent,"Loggato.fxml");
     }
 
     private void clearFields() {

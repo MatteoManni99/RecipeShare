@@ -2,6 +2,7 @@ package com.example.demo1;
 
 import com.example.demo1.dao.mongo.AuthorMongoDAO;
 import com.example.demo1.dao.mongo.ReportedRecipeMongoDAO;
+import com.example.demo1.gui.Utils;
 import com.example.demo1.model.Author;
 import com.example.demo1.model.ReportedRecipe;
 import com.example.demo1.service.AuthorService;
@@ -58,8 +59,7 @@ public class ModeratorController implements Initializable {
     private ClassTableAuthor tableAuthor = new ClassTableAuthor();
     @FXML
     public void onLogoutClick(ActionEvent actionEvent) throws IOException {
-        String nomeSchermata = "hello-view.fxml";
-        cambiaSchermata(actionEvent,nomeSchermata);
+        Utils.changeScene(actionEvent,"hello-view.fxml");
     }
 
     public void onNextPageClick(){
@@ -258,16 +258,7 @@ public class ModeratorController implements Initializable {
         }*/
     }
     public void onBrowseAuthorsClick(ActionEvent actionEvent) throws IOException {
-        String nomeSchermata = "Ricerca_Utente.fxml";
         DataSingleton.getInstance().setTypeOfUser("moderator");
-        cambiaSchermata(actionEvent,nomeSchermata);
-    }
-
-    public void cambiaSchermata(ActionEvent actionEvent,String nomeSchermata) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(nomeSchermata));
-        stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 600, 500);
-        stage.setScene(scene);
-        stage.show();
+        Utils.changeScene(actionEvent,"Ricerca_Utente.fxml");
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo1;
 
+import com.example.demo1.gui.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,19 +22,10 @@ public class Controller {
     @FXML
     public void onLoginClick(ActionEvent actionEvent) throws IOException {
         String nomeSchermata = "Login.fxml";
-        cambiaSchermata(actionEvent,nomeSchermata);
+        Utils.changeScene(actionEvent,"Moderator.fxml");
     }
 
     public void onModeratorClick(ActionEvent actionEvent) throws IOException {
-        String nomeSchermata = "Moderator.fxml";
-        cambiaSchermata(actionEvent,nomeSchermata);
-    }
-
-    public void cambiaSchermata(ActionEvent actionEvent,String nomeSchermata) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(nomeSchermata));
-        stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 600, 500);
-        stage.setScene(scene);
-        stage.show();
+        Utils.changeScene(actionEvent,"Moderator.fxml");
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo1;
 
+import com.example.demo1.gui.Utils;
 import com.example.demo1.model.Author;
 import com.example.demo1.service.AuthorService;
 import com.example.demo1.service.ModeratorService;
@@ -21,16 +22,9 @@ public class LoginController {
     private TextField insertedPassword;
 
     @FXML
-    public void onLogoutClick(ActionEvent actionEvent) throws IOException {
-        String nomeSchermata = "hello-view.fxml";
-        cambiaSchermata(actionEvent,nomeSchermata);
-    }
-
-    @FXML
     public void onRegisterClick(ActionEvent actionEvent) throws IOException {
-        String nomeSchermata = "Register.fxml";
         DataSingleton.getInstance().setTypeOfUser("author");
-        cambiaSchermata(actionEvent,nomeSchermata);
+        Utils.changeScene(actionEvent,"Register.fxml");
     }
 
     public void onLoginClick(ActionEvent actionEvent) throws IOException {
@@ -57,8 +51,8 @@ public class LoginController {
             data.setAuthorName(name);
             data.setPassword(password);
             if (nomePagina.equals("Loggato.fxml") && DataSingleton.getInstance().getAuthorPromotion() == 1)
-                cambiaSchermata(actionEvent,"PromotionOffer.fxml");
-            else cambiaSchermata(actionEvent,nomePagina);
+                Utils.changeScene(actionEvent,"PromotionOffer.fxml");
+            else Utils.changeScene(actionEvent,nomePagina);
         }
         /*
         String uri = Configuration.MONGODB_URL;
@@ -104,14 +98,6 @@ public class LoginController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }*/
-    }
-
-    public void cambiaSchermata(ActionEvent actionEvent,String nomeSchermata) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(nomeSchermata));
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
-        stage.setScene(scene);
-        stage.show();
     }
 
     public void onTextClick(MouseEvent mouseEvent) {

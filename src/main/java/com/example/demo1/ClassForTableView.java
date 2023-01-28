@@ -1,5 +1,6 @@
 package com.example.demo1;
 
+import com.example.demo1.gui.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -114,12 +115,8 @@ public class ClassForTableView {
                 if (cell != null && !cell.isEmpty()) {
                     if(cell.getTableColumn().getText().equals("Name")){
                         //System.out.println(cell.getText()); // Andare alla pagina relativa alla ricetta
-                        try {
-                            data.setRecipeName(cell.getText());
-                            changeScene(evt,"Recipe.fxml");
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                        data.setRecipeName(cell.getText());
+                        Utils.changeScene(evt,"Recipe.fxml");
                         /*try {
                             Integer cellPosition = recipeNameArray.indexOf(cell.getText());
                             data.setRecipeId(recipeIdArray.get(cellPosition));
@@ -130,26 +127,13 @@ public class ClassForTableView {
                     }
                     if(cell.getTableColumn().getText().equals("AuthorName")){
                         System.out.println(cell.getText()); // Andare alla pagina relativa all'autore
-                        try {
-                            data.setOtherAuthorName(cell.getText());
-                            changeScene(evt,"Author.fxml");
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                        data.setOtherAuthorName(cell.getText());
+                        Utils.changeScene(evt,"Author.fxml");
                     }
                     evt.consume();
                 }
             }
         );
-    }
-    private void changeScene(MouseEvent evt, String fxmlFileName) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource(fxmlFileName));
-        Parent tableViewParent = fxmlLoader.load();
-        stage = (Stage) ((Node)evt.getSource()).getScene().getWindow();
-        Scene tableViewScene = new Scene(tableViewParent, 1000, 700);
-        stage.setScene(tableViewScene);
-        stage.show();
     }
 
     private static TableCell findCell(MouseEvent event, TableView table) { //metodo chiamato dall'evento
