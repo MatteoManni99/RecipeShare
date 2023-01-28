@@ -1,5 +1,6 @@
 package com.example.demo1;
 
+import com.example.demo1.gui.Utils;
 import com.example.demo1.service.AuthorService;
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
@@ -68,12 +69,8 @@ public class PromotionOfferController implements Initializable {
             } catch (MongoException me) {
                 System.err.println("Unable to update due to an error: " + me);
             }*/
-        try {
-            DataSingleton.getInstance().setTypeOfUser("author");
-            cambiaSchermata(actionEvent, "Loggato.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        DataSingleton.getInstance().setTypeOfUser("author");
+        Utils.changeScene(actionEvent,"Loggato.fxml");
     }
 
     public void onAcceptPromotionClick(ActionEvent actionEvent) {
@@ -93,12 +90,8 @@ public class PromotionOfferController implements Initializable {
                 System.err.println("Unable to update due to an error: " + me);
             }
         }*/
-        try {
-            DataSingleton.getInstance().setTypeOfUser("moderator");
-            cambiaSchermata(actionEvent, "Register.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        DataSingleton.getInstance().setTypeOfUser("moderator");
+        Utils.changeScene(actionEvent,"Register.fxml");
     }
 }
 

@@ -1,6 +1,8 @@
 package com.example.demo1;
 
+import com.example.demo1.gui.Utils;
 import com.example.demo1.service.RecipeService;
+import com.mongodb.internal.connection.tlschannel.util.Util;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,27 +29,23 @@ public class LoggatoController implements Initializable{
     private String nameToSearch = null;
     private Integer pageNumber = 0;
     @FXML
-    public void onLogoutClick(ActionEvent actionEvent) throws IOException {
-        String nomeSchermata = "hello-view.fxml";
-        cambiaSchermata(actionEvent,nomeSchermata);
+    public void onLogoutClick(ActionEvent actionEvent){
+        Utils.changeScene(actionEvent,"hello-view.fxml");
     }
 
     @FXML
-    public void onCercaUtenteClick(ActionEvent actionEvent) throws IOException {
-        String nomeSchermata = "Ricerca_Utente.fxml";
-        cambiaSchermata(actionEvent,nomeSchermata);
+    public void onCercaUtenteClick(ActionEvent actionEvent){
+        Utils.changeScene(actionEvent,"Ricerca_Utente.fxml");
     }
 
     @FXML
-    public void onAnalyticsClick(ActionEvent actionEvent) throws IOException {
-        String nomeSchermata = "LoggatoAnalytics.fxml";
-        cambiaSchermata(actionEvent,nomeSchermata);
+    public void onAnalyticsClick(ActionEvent actionEvent){
+        Utils.changeScene(actionEvent,"LoggatoAnalytics.fxml");
     }
 
     @FXML
-    public void onProvaRecipe(ActionEvent actionEvent) throws IOException {
-        String nomeSchermata = "Recipe.fxml";
-        cambiaSchermata(actionEvent,nomeSchermata);
+    public void onProvaRecipe(ActionEvent actionEvent){
+        Utils.changeScene(actionEvent,"Recipe.fxml");
     }
     @FXML
     public void onNextPageClick(){
@@ -79,15 +77,6 @@ public class LoggatoController implements Initializable{
         TableViewObject.setItems();
     }
 
-
-    public void cambiaSchermata(ActionEvent actionEvent, String nomeSchermata) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(nomeSchermata));
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
-        stage.setScene(scene);
-        stage.show();
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         TableViewObject.initializeTableView("Loggato");
@@ -99,9 +88,9 @@ public class LoggatoController implements Initializable{
 
     @FXML
     public void onAddRecipeClick(ActionEvent actionEvent) throws IOException {
-        cambiaSchermata(actionEvent,"AddRecipe.fxml");
+        Utils.changeScene(actionEvent,"AddRecipe.fxml");
     }
     public void onPersonalProfileClick(ActionEvent actionEvent) throws IOException {
-        cambiaSchermata(actionEvent,"AuthorProfile.fxml");
+        Utils.changeScene(actionEvent,"AuthorProfile.fxml");
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo1;
 
+import com.example.demo1.gui.Utils;
 import com.example.demo1.service.AuthorService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -51,12 +52,8 @@ public class SearchAuthorController implements Initializable {
     }
 
     @FXML
-    public void onBackClick(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("loggato.fxml"));
-        stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
-        stage.setScene(scene);
-        stage.show();
+    public void onBackClick(ActionEvent actionEvent){
+        Utils.changeScene(actionEvent,"loggato.fxml");
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {

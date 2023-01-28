@@ -1,5 +1,6 @@
 package com.example.demo1;
 
+import com.example.demo1.gui.Utils;
 import com.example.demo1.model.Author;
 import com.example.demo1.model.RecipeReducted;
 import com.example.demo1.service.AuthorService;
@@ -83,11 +84,7 @@ public class AuthorProfileController implements Initializable {
 
     @FXML
     public void onBackClick(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Loggato.fxml"));
-        stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
-        stage.setScene(scene);
-        stage.show();
+        Utils.changeScene(actionEvent,"Loggato.fxml");
     }
 
     @Override

@@ -68,9 +68,6 @@ public class RegisterController implements Initializable {
         Utils.changeScene(actionEvent,"Login.fxml");
     }
 
-    public void cambiaSchermata(ActionEvent actionEvent,String nomeSchermata) throws IOException {
-
-    }
     private void setSelectedImage(Integer imageNumber){
         selectedImageNumber = imageNumber;
         selectedImage.setImage(Configuration.AVATAR.get(imageNumber-1));
