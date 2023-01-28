@@ -1,5 +1,10 @@
 package com.example.demo1;
 
+import com.example.demo1.dao.mongo.AuthorMongoDAO;
+import com.example.demo1.model.Author;
+import com.example.demo1.model.Moderator;
+import com.example.demo1.service.AuthorService;
+import com.example.demo1.service.ModeratorService;
 import com.mongodb.*;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
@@ -50,10 +55,35 @@ public class LoginController {
         cambiaSchermata(actionEvent,nomeSchermata);
     }
 
-    public void onLoginClick(ActionEvent actionEvent) {
+    public void onLoginClick(ActionEvent actionEvent) throws IOException {
         String nomePagina = null;
         String name = insertedName.getText();
         String password = insertedPassword.getText();
+        boolean existAuthor = AuthorService.login(name,password);
+        Moderator currentModerator = new Moderator(name,password);
+        boolean existModerator = ModeratorService.tryLogin(currentModerator);
+        if (existAuthor == true) {
+            Author currentAuthor = AuthorService.getAuthor(name);
+            int avatarIndex = currentAuthor.getImage();
+            DataSingleton.getInstance().setAvatar(avatarIndex);
+            DataSingleton.getInstance().setAvatarIndex(avatarIndex);
+            DataSingleton.getInstance().setAuthorPromotion(currentAuthor.getPromotion());
+            DataSingleton.getInstance().setTypeOfUser("author");
+            nomePagina = "Loggato.fxml";
+        }
+        else if (existModerator == true){
+            DataSingleton.getInstance().setTypeOfUser("moderator");
+            nomePagina = "Moderator.fxml";
+        }
+        if (nomePagina != null) {
+            DataSingleton data = DataSingleton.getInstance();
+            data.setAuthorName(name);
+            data.setPassword(password);
+            if (nomePagina.equals("Loggato.fxml") && DataSingleton.getInstance().getAuthorPromotion() == 1)
+                cambiaSchermata(actionEvent,"PromotionOffer.fxml");
+            else cambiaSchermata(actionEvent,nomePagina);
+        }
+        /*
         String uri = Configuration.MONGODB_URL;
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
@@ -96,7 +126,7 @@ public class LoginController {
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
     public void cambiaSchermata(ActionEvent actionEvent,String nomeSchermata) throws IOException {

@@ -28,8 +28,8 @@ public class AuthorService {
         AuthorMongoDAO.updatePromotion(authorName, newPromotionValue);
     }
 
-    public static boolean changeAuthorName(String newAuthorName, Author authorName){
-        return AuthorMongoDAO.changeAuthorName(newAuthorName, authorName);
+    public static boolean changeAuthorName(String newAuthorName, Author currentAuthor){
+        return AuthorMongoDAO.changeAuthorName(newAuthorName, currentAuthor);
     }
     public static void changePassword(String newPassword, Author author){
         AuthorMongoDAO.changePassword(newPassword, author);

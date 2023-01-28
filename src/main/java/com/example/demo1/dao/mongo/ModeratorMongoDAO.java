@@ -35,16 +35,20 @@ public class ModeratorMongoDAO {
         }
     }
 
-    public static void checkRegistration(Moderator moderator) throws MongoException{
+    public static boolean checkRegistration(Moderator moderator) throws MongoException{
         MongoCursor<Document> cursorModerator = MongoDBDriver.getDriver().
                 getCollection(Configuration.MONGODB_MODERATOR).find(eq("moderatorName", moderator.getName())).iterator();
-        MongoCollection<Document> authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_MODERATOR);
-        if (cursorModerator.hasNext())
+        MongoCollection<Document> moderatorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_MODERATOR);
+        if (cursorModerator.hasNext()) {
             System.out.println("NICKNAME GIA USATO");
+            return false;
+        }
         else {
             System.out.println("NICKNAME VALIDO");
-            authorCollection.insertOne(new Document("_id", new ObjectId()).append("moderatorName", moderator.getName())
+            moderatorCollection.insertOne(new Document("_id", new ObjectId()).append("moderatorName", moderator.getName())
                     .append("password", moderator.getPassword()));
+
+            return true;
         }
     }
 
