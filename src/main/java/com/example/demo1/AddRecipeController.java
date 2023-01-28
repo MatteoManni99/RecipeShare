@@ -1,6 +1,5 @@
 package com.example.demo1;
 import com.example.demo1.model.Recipe;
-import com.example.demo1.model.Review;
 import com.example.demo1.service.RecipeService;
 
 import javafx.collections.FXCollections;
@@ -32,16 +31,16 @@ public class AddRecipeController implements Initializable {
     public TextField caloriesField;
     public TextArea descriptionField;
     public TextField keywordField;
-    public ListView keywordListView;
+    public ListView<String> keywordListView;
     private final ArrayList<String> keywordArrayList = new ArrayList<String>();
     public TextField ingredientField;
-    public ListView ingredientListView;
+    public ListView<String> ingredientListView;
     private final ArrayList<String> ingredientArrayList = new ArrayList<String>();
     public TextField imageField;
-    public ListView imageListView;
+    public ListView<String> imageListView;
     private final ArrayList<String> imageArrayList = new ArrayList<String>();
     public TextField instructionsField;
-    public ListView instructionsListView;
+    public ListView<String> instructionsListView;
     private final ArrayList<String> instructionsArrayList = new ArrayList<String>();
     ObservableList<String> observableList;
 

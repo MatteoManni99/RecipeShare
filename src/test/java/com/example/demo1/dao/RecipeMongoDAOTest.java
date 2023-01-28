@@ -36,7 +36,6 @@ public class RecipeMongoDAOTest {
 
     @Test
     void getRecipeFromName(){
-
     }
 
     @Test

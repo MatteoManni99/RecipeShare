@@ -18,12 +18,12 @@ public class ModeratorService {
         return ModeratorMongoDAO.checkModeratorName(name);
     }
 
-    public static boolean tryLogin(Moderator moderator) throws MongoException{
-        return ModeratorMongoDAO.tryLogin(moderator);
+    public static boolean tryLogin(String name, String password) throws MongoException{
+        return ModeratorMongoDAO.tryLogin(name, password);
     }
 
-    public static boolean checkRegistration(Moderator moderator) throws MongoException{
-        return ModeratorMongoDAO.checkRegistration(moderator);
+    public static boolean checkRegistration(String name, String password) throws MongoException{
+        return ModeratorMongoDAO.checkRegistration(name, password);
     }
 
 }
