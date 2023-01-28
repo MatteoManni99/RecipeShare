@@ -6,10 +6,6 @@ import com.example.demo1.model.Author;
 import com.example.demo1.model.ReportedRecipe;
 import com.example.demo1.service.AuthorService;
 import com.example.demo1.service.ReportedRecipeService;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -69,38 +65,8 @@ public class ModeratorController implements Initializable {
 
     // IMPLEMENTATO IN REPORTED RECIPE DAO
     public void onHighestRatioQueryClick() {
-        /*String uri = "mongodb://localhost:27017";
-        Map<String, Integer> map = new TreeMap<String, Integer>();
-        Map<String, Double> mapRatio = new TreeMap<String, Double>();
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("RecipeShare");
-            Bson group = new Document("$group", new Document("_id", "$AuthorName").
-                    append("count",new Document("$count",new Document())));
-            //Bson match = match(gt("count", 1));
-            Bson sort = sort(descending("_id"));
-
-            MongoCollection<Document> collectionRecipe = database.getCollection("recipe");
-            for (Document document : collectionRecipe.aggregate(Arrays.asList(group))) {
-                map.put(String.valueOf(document.getString("_id")),document.getInteger("count"));
-            }
-            //map.forEach((key, value) -> System.out.println(key + ":" + value));
-
-            MongoCollection<Document> collectionReportedRecipes = database.getCollection("reportedRecipes");
-            for (Document document : collectionReportedRecipes.aggregate(Arrays.asList(group))) {
-                String authorName = document.getString("_id");
-                Integer count = document.getInteger("count");
-                Integer recipeTot = map.get(authorName);
-                if (map.containsKey(authorName) && recipeTot>1){ //con questo tolgo quelli che hanno creato 1 ricetta (si può aumentare la soglia o togliere)
-                    mapRatio.put(authorName,((double)count)/map.get(authorName));
-                }
-            }
-            Map<String, Double> sortedMapRatioAsc = sortByValue(mapRatio,false);
-            sortedMapRatioAsc.forEach((key, value) -> System.out.println(key + ":" + value));
-        }*/
         ReportedRecipeService.onHighestRatioQueryClick().forEach((key, value) -> System.out.println(key + ":" + value));
     }
-
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
