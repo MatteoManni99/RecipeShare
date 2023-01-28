@@ -75,7 +75,8 @@ public class AuthorMongoDAO {
             System.out.println("ESISTE GIA IL NICK");
             return false;
         }else {
-            ///DA FARE IL CAMBIO ANCHE DELLE REVIEW/// in teoria quindi forse meglio non far fare il cambio dell'author name?
+            ///DA FARE IL CAMBIO ANCHE DELLE REVIEW/// quindi forse è meglio non permettere il cambio dell'author name?
+            //perchè tanto costoso
             Document query = new Document("authorName", currentAuthor.getName());
             Bson updates = Updates.combine(Updates.set("authorName", newAuthorName));
             Document queryRecipe = new Document("AuthorName", currentAuthor.getName());
@@ -107,7 +108,7 @@ public class AuthorMongoDAO {
         ArrayList<Author> authors = new ArrayList<Author>();
         MongoCollection<Document> collection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
         MongoCursor<Document> cursor;
-        Bson filter = new Document("Name",new Document("$regex",nameToSearch).append("$options","i"));
+        Bson filter = new Document("authorName",new Document("$regex",nameToSearch).append("$options","i"));
         Bson match = match(filter);
         Bson project = project(new Document("authorName",1).append("promotion",1).append("image", 1));
         if(nameToSearch == null) {
@@ -117,7 +118,7 @@ public class AuthorMongoDAO {
         }
         while(cursor.hasNext()){
             Document authorDoc = cursor.next();
-            authors.add(new Author(authorDoc.getString("name"),null,
+            authors.add(new Author(authorDoc.getString("authorName"),null,
                     authorDoc.getInteger("image"), authorDoc.getInteger("promotion")));
         }
         return authors;

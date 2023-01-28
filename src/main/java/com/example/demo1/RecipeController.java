@@ -138,8 +138,7 @@ public class RecipeController implements Initializable {
         images_list = recipe.getImages();
         printImages();
 
-        List<Review> reviews_list = recipe.getReviews();
-        reviews_list.forEach(review -> {
+        recipe.getReviews().forEach(review -> {
             String reviewer = review.getAuthorName();
             reviewers.add(reviewer);
             ReviewTableView reviewT = new ReviewTableView(reviewer, review.getRating(), review.getReview());
