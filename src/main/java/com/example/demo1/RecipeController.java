@@ -31,6 +31,7 @@ import java.util.ResourceBundle;
 public class RecipeController implements Initializable {
 
     @FXML
+    private AnchorPane anchorPane;
     public Label name;
     public Label authorName;
     public Label calories;
@@ -39,31 +40,23 @@ public class RecipeController implements Initializable {
     public Label date;
     public ChoiceBox<Integer> ratingChoiceBox;
     public Button reportRecipeButton;
-
-    @FXML
     public TextArea description;
     public TextArea reviewTextArea;
-    @FXML
     public ImageView image;
-    @FXML
     public ListView<String> ingredients;
-    @FXML
     public ListView<String> keywords;
-    @FXML
     public ListView<String> instructions;
-    private DataSingleton data = DataSingleton.getInstance();
+
+    private final DataSingleton data = DataSingleton.getInstance();
     private Integer indexImages=0;
     private List<String> images_list;
-    private Stage stage;
     private String recipeName;
     private Recipe recipe;
 
     private TableViewReview tableViewReview = new TableViewReview();
-    @FXML
-    private AnchorPane anchorPane;
 
-    private ArrayList<String> reviewers = new ArrayList<String>();
 
+    private ArrayList<String> reviewers = new ArrayList<>();
 
     private void printImages(){
         image.setImage(new Image(images_list.get(indexImages)));
@@ -76,17 +69,13 @@ public class RecipeController implements Initializable {
 
     @FXML
     public void onNextClick(ActionEvent actionEvent) throws IOException {
-        indexImages += indexImages<images_list.size()-1 ? 1 : 0;
+        indexImages += indexImages < images_list.size()-1 ? 1 : 0;
         printImages();
     }
 
     @FXML
     public void onBackClick(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("loggato.fxml"));
-        stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-        stage.setScene(scene);
-        stage.show();
+        changeScene(actionEvent,"loggato.fxml");
     }
 
     @FXML
@@ -94,68 +83,45 @@ public class RecipeController implements Initializable {
         ReportedRecipeService.addReportedRecipe(new ReportedRecipe(recipe.getName(),recipe.getAuthorName(),
                 data.getAuthorName(),LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),recipe.getImages().get(0)));
     }
-    public void onLeaveAReviewClick(ActionEvent actionEvent){
+    public void onLeaveAReviewClick(ActionEvent actionEvent) throws IOException {
         String reviewer = data.getAuthorName();
         if(reviewers.contains(reviewer)){
             reviewTextArea.setText("Avevi già recensito questa ricetta");
-            reviewTextArea.setStyle("-fx-text-fill: #dc143c");
         } else if (reviewer.equals(authorName.getText())) {
             reviewTextArea.setText("Questa ricetta è tua non puoi recensirla");
-            reviewTextArea.setStyle("-fx-text-fill: #dc143c");
-        } else {
-
+        } else if (ratingChoiceBox.getValue() == null){
+            reviewTextArea.setText("Select a rating");
+        }else{
             RecipeService.addReview(recipeName, reviewer, ratingChoiceBox.getValue(), reviewTextArea.getText());
-            try {changeScene(actionEvent,"Recipe.fxml");}
-            catch (IOException e) {throw new RuntimeException(e);}
-
-            /*Integer rating = ratingChoiceBox.getValue();
-            String review = reviewTextArea.getText();
-            String uri = Configuration.MONGODB_URL;
-            try (MongoClient mongoClient = MongoClients.create(uri)) { //fatto in RECIPEDAO
-                MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
-                MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_RECIPE);
-                Bson match = new Document("Name",recipeName);
-                Bson updates = new Document("$push",new Document("Reviews",new Document("AuthorName",reviewer)
-                        .append("Rating",rating).append("Review",review)));
-                collection.updateOne(match,updates);
-                //cambio pagina con la stessa pagina per fare il refresh delle review
-                changeScene(actionEvent,"Recipe.fxml");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }*/
+            changeScene(actionEvent,"Recipe.fxml");
         }
     }
     private void changeScene(ActionEvent actionEvent, String sceneFXML) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(sceneFXML));
-        stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
         stage.setScene(scene);
         stage.show();
     }
 
+    //this method is called when the recipe's author correspond to the recipe visualizer
     public void addDeleteButtonAndRemoveReportButton(){
         anchorPane.getChildren().remove(reportRecipeButton);
         Button deleteRecipe = new Button();
         deleteRecipe.setText("Delete this Recipe");
         deleteRecipe.setLayoutX(750);
         deleteRecipe.setLayoutY(34);
-        EventHandler<ActionEvent> eventHandler = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                RecipeService.deleteRecipe(recipe);
-                try {changeScene(actionEvent,"Loggato.fxml");} catch (IOException e) {throw new RuntimeException(e);}
-            }
+        EventHandler<ActionEvent> eventHandler = actionEvent -> {
+            RecipeService.deleteRecipe(recipe);
+            try {changeScene(actionEvent,"Loggato.fxml");} catch (IOException e) {throw new RuntimeException(e);}
         };
         deleteRecipe.setOnAction(eventHandler);
         anchorPane.getChildren().add(deleteRecipe);
     }
 
     private ObservableList<String> safeCastToObservableList(List<String> list){
-        try {
-            return FXCollections.observableArrayList(list);
-        }catch (NullPointerException e){
-            return null;
-        }
+        try {return FXCollections.observableArrayList(list);}
+        catch (NullPointerException e){return null;}
     }
 
     private void setLablesAndLists(Recipe recipe){
@@ -169,33 +135,33 @@ public class RecipeController implements Initializable {
         keywords.setItems(safeCastToObservableList(recipe.getKeywords()));
         ingredients.setItems(safeCastToObservableList(recipe.getRecipeIngredientParts()));
         instructions.setItems(safeCastToObservableList(recipe.getRecipeInstructions()));
-
         images_list = recipe.getImages();
         printImages();
 
-        tableViewReview.initializeTableView();
-        tableViewReview.resetObservableArrayList();
         List<Review> reviews_list = recipe.getReviews();
-        for (Review review : reviews_list) {
+        reviews_list.forEach(review -> {
             String reviewer = review.getAuthorName();
             reviewers.add(reviewer);
             ReviewTableView reviewT = new ReviewTableView(reviewer, review.getRating(), review.getReview());
             tableViewReview.addToObservableArrayList(reviewT);
-        }
+        });
         tableViewReview.setItems();
+    }
+    public void initializeTableViewReview(){
+        tableViewReview.initializeTableView();
+        tableViewReview.resetObservableArrayList();
         tableViewReview.setTableDB();
         anchorPane.getChildren().add(tableViewReview.getTableDB());
     }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ratingChoiceBox.setItems(FXCollections.observableArrayList(1,2,3,4,5));
         recipeName = data.getRecipeName();
+        initializeTableViewReview();
         recipe = RecipeService.getRecipeByName(data.getRecipeName());
         setLablesAndLists(recipe);
 
         if(data.getAuthorName().equals(recipe.getAuthorName()))
             addDeleteButtonAndRemoveReportButton();
-
     }
 }
