@@ -2,27 +2,12 @@ package com.example.demo1;
 
 import com.example.demo1.model.Recipe;
 import com.example.demo1.service.RecipeService;
-import com.mongodb.client.*;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Projections;
 import javafx.event.ActionEvent;
-import com.mongodb.client.model.Sorts;
-import javafx.fxml.FXMLLoader;
 import org.bson.Document;
-import org.bson.conversions.Bson;
-import com.mongodb.client.AggregateIterable;
-import com.mongodb.client.MongoCollection;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-
-import static com.mongodb.client.model.Accumulators.*;
-import static com.mongodb.client.model.Aggregates.*;
-import static com.mongodb.client.model.Filters.*;
-import static com.mongodb.client.model.Indexes.descending;
-import static com.mongodb.client.model.Projections.*;
 
 public class LoggatoAnalyticsController {
     private static Consumer<Document> printDocuments() {

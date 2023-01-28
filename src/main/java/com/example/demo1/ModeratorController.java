@@ -1,17 +1,15 @@
 package com.example.demo1;
 
-import com.example.demo1.dao.mongo.AuthorMongoDAO;
 import com.example.demo1.dao.mongo.ReportedRecipeMongoDAO;
 import com.example.demo1.gui.Utils;
 import com.example.demo1.model.Author;
 import com.example.demo1.model.ReportedRecipe;
 import com.example.demo1.service.AuthorService;
 import com.example.demo1.service.ReportedRecipeService;
-import com.mongodb.MongoException;
-import com.mongodb.client.*;
-import com.mongodb.client.model.UpdateOptions;
-import com.mongodb.client.model.Updates;
-import com.mongodb.client.result.UpdateResult;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,11 +31,6 @@ import org.bson.conversions.Bson;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static com.mongodb.client.model.Aggregates.*;
-import static com.mongodb.client.model.Indexes.descending;
-import static com.mongodb.client.model.Projections.include;
 
 public class ModeratorController implements Initializable {
     @FXML
@@ -74,8 +67,9 @@ public class ModeratorController implements Initializable {
         }
     }
 
+    // IMPLEMENTATO IN REPORTED RECIPE DAO
     public void onHighestRatioQueryClick() {
-        String uri = "mongodb://localhost:27017";
+        /*String uri = "mongodb://localhost:27017";
         Map<String, Integer> map = new TreeMap<String, Integer>();
         Map<String, Double> mapRatio = new TreeMap<String, Double>();
         try (MongoClient mongoClient = MongoClients.create(uri)) {
@@ -102,26 +96,15 @@ public class ModeratorController implements Initializable {
             }
             Map<String, Double> sortedMapRatioAsc = sortByValue(mapRatio,false);
             sortedMapRatioAsc.forEach((key, value) -> System.out.println(key + ":" + value));
-        }
+        }*/
+        ReportedRecipeService.onHighestRatioQueryClick().forEach((key, value) -> System.out.println(key + ":" + value));
     }
-    private static Map<String, Double> sortByValue(Map<String, Double> unsortMap, final boolean order)
-    {
-        List<Map.Entry<String, Double>> list = new LinkedList<>(unsortMap.entrySet());
 
-        // Sorting the list based on values
-        list.sort((o1, o2) -> order ? o1.getValue().compareTo(o2.getValue()) == 0
-                ? o1.getKey().compareTo(o2.getKey())
-                : o1.getValue().compareTo(o2.getValue()) : o2.getValue().compareTo(o1.getValue()) == 0
-                ? o2.getKey().compareTo(o1.getKey())
-                : o2.getValue().compareTo(o1.getValue()));
-        return list.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
-    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //String uri = Configuration.MONGODB_URL;
-        List<ReportedRecipe> listaReportedRecipes = new ArrayList<>();
-        listaReportedRecipes = ReportedRecipeMongoDAO.getListReportedRecipes();
+        List<ReportedRecipe> listaReportedRecipes = ReportedRecipeMongoDAO.getListReportedRecipes();
         startingX = recipeText.getLayoutX();
 
         /*try (MongoClient mongoClient = MongoClients.create(uri)) { //fatto in DAO
@@ -198,12 +181,10 @@ public class ModeratorController implements Initializable {
     public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber){
         List<Author> listAuthorsSearched = AuthorService.searchAuthors(nameToSearch,10*pageNumber,10);
         tableAuthor.resetObservableArrayList();
-        /*for (Author author : listAuthorsSearched) {
-            AuthorTableView authorTableView = new AuthorTableView(author.getName(),
-                    author.getPromotion(),
-                    new ClassTableAuthor.CustomImageAuthor(author.getImage());
-            tableAuthor.addToObservableArrayList(authorTableView);
-        }*/
+        listAuthorsSearched.forEach(author ->
+                tableAuthor.addToObservableArrayList(
+                        new AuthorTableView(author.getName(), author.getPromotion(),
+                                new ImageView(Configuration.AVATAR.get(author.getImage()-1)))));
         tableAuthor.setItems();
         /*Document authorDoc;
         try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
