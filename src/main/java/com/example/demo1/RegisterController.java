@@ -1,5 +1,7 @@
 package com.example.demo1;
 
+import com.example.demo1.gui.Utils;
+import com.example.demo1.service.AuthorService;
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
@@ -11,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -27,127 +30,73 @@ import java.util.ResourceBundle;
 public class RegisterController implements Initializable {
 
     public AnchorPane anchorPane;
-    @FXML
-    private TextField insertedName;
-    @FXML
-    private TextField insertedPassword;
-    @FXML
-    private Label registerText;
-    @FXML
-    private Label avatarLabel;
-    private ImageView avatar;
-    private ArrayList avatarsAvailable;
-    private int avatarIndexForDatabase = 1;
-    private Stage stage;
+    public ImageView image1;
+    public ImageView image2;
+    public ImageView image3;
+    public ImageView image4;
+    public ImageView image5;
+    public ImageView image6;
+    public ImageView image7;
+    public ImageView image8;
+    public ImageView selectedImage;
+    public TextField password;
+    public TextField name;
+    public Label warningLabel;
 
+    private Integer selectedImageNumber;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        avatarsAvailable = new ArrayList<>();
-        avatar = new ImageView();
-        avatar.setImage(Configuration.AVATAR.get(0));
-        avatar.setX(avatarLabel.getLayoutX());
-        avatar.setY(avatarLabel.getLayoutY() + 20);
-        avatar.setFitHeight(100);
-        avatar.setFitWidth(100);
-        anchorPane.getChildren().add(avatar);
-        for (int i = 0; i < 8; i++) {
-            ImageView temp = new ImageView();
-            temp.setImage(Configuration.AVATAR.get(i));
-            temp.setId(String.valueOf(i+1));
-            temp.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il click sull'immagine
-                System.out.println(temp.getId());
-                DataSingleton.getInstance().setAvatar(Integer.parseInt(temp.getId()) - 1);
-                avatarIndexForDatabase = Integer.parseInt(temp.getId()) - 1;
-                int avatarIndex = anchorPane.getChildren().indexOf(avatar);
-                avatar.setImage(Configuration.AVATAR.get(Integer.parseInt(temp.getId()) - 1));
-                avatar.setX(avatarLabel.getLayoutX());
-                avatar.setY(avatarLabel.getLayoutY() + 20);
-                avatar.setFitHeight(100);
-                avatar.setFitWidth(100);
-                anchorPane.getChildren().set(avatarIndex,avatar);
-            });
-            temp.setFitWidth(70);
-            temp.setFitHeight(70);
-            if (i >= 4) {
-                temp.setY(avatarLabel.getLayoutY() + 170);
-                temp.setX(avatarLabel.getLayoutX() - 50 + 55*(i-4));
-            }
-            else {
-                temp.setY(avatarLabel.getLayoutY() + 100);
-                temp.setX(avatarLabel.getLayoutX() - 50 + 55 * i);
-            }
-            avatarsAvailable.add(i,temp);
-        }
-        anchorPane.getChildren().addAll(avatarsAvailable);
+        warningLabel.setText("");
+        selectedImageNumber = null;
+    }
+    private boolean checkIfEmpty(String string){
+        return (string.isEmpty() || string.isBlank());
     }
     public void onRegisterClick(ActionEvent actionEvent) {
-        String name = insertedName.getText();
-        String password = insertedPassword.getText();
-        String uri = Configuration.MONGODB_URL;
-        Label warningText = new Label();
-        warningText.setLayoutX(insertedPassword.getLayoutX() - 100);
-        warningText.setLayoutY(insertedPassword.getLayoutY() + 100);
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
-            MongoCollection<Document> collection;
-            if (DataSingleton.getInstance().getTypeOfUser().equals("author")) collection = database.getCollection(Configuration.MONGODB_AUTHOR);
-            else {
-                collection = database.getCollection(Configuration.MONGODB_MODERATOR);
-            }
-            Bson filter = Filters.eq(DataSingleton.getInstance().getTypeOfUser() + "Name", name);
-            MongoCursor<Document> cursor = collection.find(filter).iterator();
-            //finché non si trova un nickname valido si deve ritentare
-            if (cursor.hasNext()) {
-                System.out.println("NICKNAME GIA USATO");
-                warningText.setText("ERRORE: Username già in uso, cambia Username per registrarti");
-                anchorPane.getChildren().add(warningText);
-            }
-            else {
-                System.out.println("NICKNAME VALIDO");
-                warningText.setText("SUCCESSO: ti sei registrato correttamente");
-                anchorPane.getChildren().add(warningText);
-                if (DataSingleton.getInstance().getTypeOfUser().equals("author")) {
-                    try {
-                        collection.insertOne(new Document()
-                                .append("_id", new ObjectId())
-                                .append("authorName", name)
-                                .append("password", password)
-                                .append("promotion", 0)
-                                .append("image", avatarIndexForDatabase));
-                    }
-                    catch (MongoException me) {
-                        System.err.println("Unable to insert due to an error: " + me);
-                    }
-                }
-                else {
-                    try {
-                        collection.insertOne(new Document()
-                                .append("_id", new ObjectId())
-                                .append("moderatorName", name)
-                                .append("password", password));
-                    }
-                    catch (MongoException me) {
-                        System.err.println("Unable to insert due to an error: " + me);
-                    }
-                }
-                DataSingleton.getInstance().setAuthorName(name);
-                DataSingleton.getInstance().setPassword(password);
-                //visto che la registrazione è andata bene vado subito alla schermata di loggato
-                if (DataSingleton.getInstance().getTypeOfUser().equals("author")) cambiaSchermata(actionEvent,"Loggato.fxml");
-                else cambiaSchermata(actionEvent,"Moderator.fxml");
-            }
+        if(selectedImageNumber == null){
+            warningLabel.setText("Select an Avatar to register...");
+        } else if (checkIfEmpty(name.getText()) || checkIfEmpty(password.getText())) {
+            warningLabel.setText("Insert valid Username and Password...");
+        } else {
+            if (AuthorService.register(name.getText(), password.getText(), selectedImageNumber-1, 0)){
+                warningLabel.setText("Successfully Registered");
+            }else
+                warningLabel.setText("Username not Available");
         }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    }
+    public void onBackToLoginClick(ActionEvent actionEvent) {
+        Utils.changeScene(actionEvent,"Login.fxml");
     }
 
     public void cambiaSchermata(ActionEvent actionEvent,String nomeSchermata) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(nomeSchermata));
-        stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 600, 500);
-        stage.setScene(scene);
-        stage.show();
-    }
 
+    }
+    private void setSelectedImage(Integer imageNumber){
+        selectedImageNumber = imageNumber;
+        selectedImage.setImage(Configuration.AVATAR.get(imageNumber-1));
+    }
+    public void onMouseClickImage1(MouseEvent mouseEvent) {
+        setSelectedImage(1);
+    }
+    public void onMouseClickImage2(MouseEvent mouseEvent) {
+        setSelectedImage(2);
+    }
+    public void onMouseClickImage3(MouseEvent mouseEvent) {
+        setSelectedImage(3);
+    }
+    public void onMouseClickImage4(MouseEvent mouseEvent) {
+        setSelectedImage(4);
+    }
+    public void onMouseClickImage5(MouseEvent mouseEvent) {
+        setSelectedImage(5);
+    }
+    public void onMouseClickImage6(MouseEvent mouseEvent) {
+        setSelectedImage(6);
+    }
+    public void onMouseClickImage7(MouseEvent mouseEvent) {
+        setSelectedImage(7);
+    }
+    public void onMouseClickImage8(MouseEvent mouseEvent) {
+        setSelectedImage(8);
+    }
 }

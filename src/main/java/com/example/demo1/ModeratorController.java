@@ -198,12 +198,12 @@ public class ModeratorController implements Initializable {
     public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber){
         List<Author> listAuthorsSearched = AuthorService.searchAuthors(nameToSearch,10*pageNumber,10);
         tableAuthor.resetObservableArrayList();
-        for (Author author : listAuthorsSearched) {
+        /*for (Author author : listAuthorsSearched) {
             AuthorTableView authorTableView = new AuthorTableView(author.getName(),
                     author.getPromotion(),
                     new ClassTableAuthor.CustomImageAuthor(author.getImage());
             tableAuthor.addToObservableArrayList(authorTableView);
-        }
+        }*/
         tableAuthor.setItems();
         /*Document authorDoc;
         try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
@@ -234,8 +234,8 @@ public class ModeratorController implements Initializable {
 
 
     public void setReportedLabels(List<ReportedRecipe> listaReportedRecipes, int i) {
-        listaReportedRecipes = ReportedRecipeMongoDAO.f
-        int documentSize = listaReportedRecipes.get(0).size() - 1;
+        //listaReportedRecipes = ReportedRecipeMongoDAO.f
+        //int documentSize = listaReportedRecipes.get(0).size() - 1;
         List<String> listaLabelNames = new ArrayList<>();
         listaLabelNames.add("RecipeId");
         listaLabelNames.add("RecipeName");
@@ -244,7 +244,7 @@ public class ModeratorController implements Initializable {
         listaLabelNames.add("AuthorName");
         listaLabelNames.add("ReporterId");
         listaLabelNames.add("ReporterName");
-
+        /*
         double copiaStartingX = startingX - 200;
         for (int j = 0;j < documentSize; j++) {
             Label currentLabel = new Label();
@@ -255,7 +255,7 @@ public class ModeratorController implements Initializable {
             currentLabel.setMaxWidth(50);
             copiaStartingX += currentLabel.getMaxWidth();
             anchorPane.getChildren().add(currentLabel);
-        }
+        }*/
     }
     public void onBrowseAuthorsClick(ActionEvent actionEvent) throws IOException {
         String nomeSchermata = "Ricerca_Utente.fxml";
