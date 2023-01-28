@@ -33,9 +33,9 @@ public class ClassTableAuthor {
         tabellaDB.setLayoutY(200);
     }
 
-    public void setTabellaDB() {tabellaDB.getColumns().addAll(imageCol, authorNameCol, promotionCol);}
+    public void setTableWithPromotion() {tabellaDB.getColumns().addAll(imageCol, authorNameCol, promotionCol);}
 
-    public void setTableDB() {tabellaDB.getColumns().addAll(imageCol, authorNameCol);}
+    public void setTableWithoutPromotion() {tabellaDB.getColumns().addAll(imageCol, authorNameCol);}
     public void setItems(){tabellaDB.setItems(ol);}
 
     public TableView<AuthorTableView> getTabellaDB() {

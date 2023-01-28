@@ -1,10 +1,6 @@
 package com.example.demo1;
 
-import com.mongodb.MongoException;
-import com.mongodb.client.*;
-import com.mongodb.client.model.UpdateOptions;
-import com.mongodb.client.model.Updates;
-import com.mongodb.client.result.UpdateResult;
+import com.example.demo1.service.AuthorService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,34 +12,23 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.bson.Document;
-import org.bson.conversions.Bson;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 
-import static com.mongodb.client.model.Aggregates.*;
-import static com.mongodb.client.model.Aggregates.limit;
-
-public class Ricerca_UtenteController implements Initializable {
+public class SearchAuthorController implements Initializable {
     @FXML
-    private Button cercaUtenteButton;
-    @FXML
-    private TextField utenteCercato;
+    public Button cercaUtenteButton;
+    public TextField authorToSearchTextField;
     private Stage stage;
     private String authorNameClicked; //qui ci salvo l'utente della tabella che è stato clickato e che quindi si vuole promuovere
     public AnchorPane anchorPane;
     private Integer pageNumber = 0;
     private String nameToSearch = null;
 
-    private ClassTableAuthor tableAuthor = new ClassTableAuthor();
 
-    @FXML
-    private TextField authorToSearchTextField;
+    private ClassTableAuthor tableViewAuthor = new ClassTableAuthor();
 
     private ClassTableAuthor tabella;
 
@@ -75,6 +60,18 @@ public class Ricerca_UtenteController implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        if (DataSingleton.getInstance().getTypeOfUser().equals("moderator")) {
+            Button promoteAuthorButton = new Button("PROMOTE AUTHOR");
+            promoteAuthorButton.setLayoutX(164);
+            promoteAuthorButton.setLayoutY(140);
+            promoteAuthorButton.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
+                AuthorService.updatePromotion(authorNameClicked,1);
+                authorNameClicked = null;
+            });
+            anchorPane.getChildren().add(promoteAuthorButton);
+        }
+        createTableView(tableViewAuthor, DataSingleton.getInstance().getTypeOfUser().equals("moderator"));
+        /*
         String uri = Configuration.MONGODB_URL;
         List<Document> listaAuthors = new ArrayList<>();
 
@@ -89,43 +86,19 @@ public class Ricerca_UtenteController implements Initializable {
 
         for (int i = 0; i < listaAuthors.size() - 220000; i++)
             setAuthorLabels(listaAuthors,i);
+        */
 
         //questa parte sotto è quella che setta il Button per la promozione
-        if (DataSingleton.getInstance().getTypeOfUser().equals("moderator")) {
-            Button promoteAuthorButton = new Button("PROMOTE AUTHOR");
-            promoteAuthorButton.setLayoutX(164);
-            promoteAuthorButton.setLayoutY(140);
-            promoteAuthorButton.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
-                try (MongoClient mongoClient = MongoClients.create(uri)) {
-                    MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
-                    MongoCollection<Document> collectionAuthor = database.getCollection(Configuration.MONGODB_AUTHOR);
-                    Document query = new Document().append("authorName", authorNameClicked);
-                    Bson updates = Updates.combine(
-                            Updates.set("promotion",1)
-                    );
-                    UpdateOptions options = new UpdateOptions().upsert(true);
-                    try {
-                        UpdateResult result = collectionAuthor.updateOne(query, updates, options);
-                        System.out.println("Modified document count: " + result.getModifiedCount());
-                    } catch (MongoException me) {
-                        System.err.println("Unable to update due to an error: " + me);
-                    }
-                    authorNameClicked = null;
-                }
-            });
-            anchorPane.getChildren().add(promoteAuthorButton);
-        }
 
-        createTableView(tableAuthor, DataSingleton.getInstance().getTypeOfUser().equals("moderator"));
     }
 
     public void createTableView (ClassTableAuthor TableViewObject, Boolean showPromotion) {
         TableViewObject.initializeTableView();
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
         if(showPromotion)
-            TableViewObject.setTabellaDB();
+            TableViewObject.setTableWithPromotion();
         else
-            TableViewObject.setTableDB();
+            TableViewObject.setTableWithoutPromotion();
 
         tabella = TableViewObject;
         setEventForTableCells();
@@ -133,34 +106,16 @@ public class Ricerca_UtenteController implements Initializable {
     }
 
     public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber){
-        Document authorDoc;
-        try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
-            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
-            MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_AUTHOR);
-            MongoCursor<Document> cursor;
-            //Bson filter = Filters.regex("Name", "^(?)" + nameToSearch); //da togliere era il vecchio filtro
-            Bson filter = new Document("authorName",new Document("$regex",nameToSearch).append("$options","i"));
-            Bson match = match(filter);
-            Bson project = project(new Document("authorName",1).append("promotion",1).append("image", 1));
-            if(nameToSearch == null){
-                cursor = collection.aggregate(Arrays.asList(skip(10*pageNumber),limit(10),project)).iterator();
-            }else{
-                cursor = collection.aggregate(Arrays.asList(match, skip(10*pageNumber),limit(10),project)).iterator();
-                System.out.println(nameToSearch);
-            }
-            tableAuthor.resetObservableArrayList();
-            while (cursor.hasNext()){
-                authorDoc = cursor.next();
-                AuthorTableView author = new AuthorTableView(authorDoc.getString("authorName"),
-                        authorDoc.getInteger("promotion"),
-                        new ClassTableAuthor.CustomImageAuthor(new ImageView(Configuration.AVATAR.get(authorDoc.getInteger("image") - 1))).getImage());
-                tableAuthor.addToObservableArrayList(author);
-            }
-            tableAuthor.setItems();
-        }
+        tableViewAuthor.resetObservableArrayList();
+        AuthorService.searchAuthors(nameToSearch,pageNumber*10,10).forEach( author -> {
+            AuthorTableView authorTableView = new AuthorTableView(author.getName(), author.getPromotion(),
+                    new ClassTableAuthor.CustomImageAuthor(new ImageView(Configuration.AVATAR.get(author.getImage() - 1))).getImage());
+            tableViewAuthor.addToObservableArrayList(authorTableView);
+        });
+        tableViewAuthor.setItems();
     }
 
-
+    /*
     public void setAuthorLabels(List<Document> listaAuthors,int i) {
         int documentSize = listaAuthors.get(0).size() - 2;
         List<String> listaLabelNames = new ArrayList<>();
@@ -179,6 +134,7 @@ public class Ricerca_UtenteController implements Initializable {
             anchorPane.getChildren().add(currentLabel);
         }
     }
+    */
 
     @FXML
     public void onCercaUtenteClick(ActionEvent actionEvent) {
@@ -187,24 +143,6 @@ public class Ricerca_UtenteController implements Initializable {
         if(nameToSearch.isBlank()) nameToSearch = null;
         pageNumber = 0;
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
-
-        /*String uri = Configuration.MONGODB_URL;
-        List<Document> listaAuthors = new ArrayList<>();
-        System.out.println(999);
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
-            MongoCollection<Document> collectionAuthor = database.getCollection(Configuration.MONGODB_AUTHOR);
-
-            Bson filterAuthor = Filters.regex("authorName", "^" + utenteCercato.getText());
-            MongoCursor<Document> cursorAuthor = collectionAuthor.find(filterAuthor).iterator();
-
-            while (cursorAuthor.hasNext())
-                listaAuthors.add(cursorAuthor.next());
-
-            for (int i = 0; i < listaAuthors.size(); i++) {
-                setReportedLabels(listaAuthors, i);
-            }
-        }*/
     }
 
     public void setEventForTableCells() {

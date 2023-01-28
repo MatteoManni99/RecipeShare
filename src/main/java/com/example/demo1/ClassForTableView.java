@@ -32,10 +32,6 @@ public class ClassForTableView {
     private DataSingleton data = DataSingleton.getInstance();
     //private DataSingleton dataAuthor = DataSingleton.getInstance();
 
-    //da rendere efficiente accorpando gli array o qualcosa del genere
-    //private ArrayList<String> recipeNameArray = new ArrayList<String>();
-    //private ArrayList<Integer> recipeIdArray = new ArrayList<Integer>();
-
     public void initializeTableView(String classe) {
         tabellaDB = new TableView<>();
 
@@ -103,19 +99,13 @@ public class ClassForTableView {
     }*/
     public void resetObservableArrayList(){
         ol = FXCollections.observableArrayList();
-        //recipeNameArray.clear();
-        //recipeIdArray.clear();
     }
 
     public void setObservableArrayList(List<RecipeTableView> list){
         ol = FXCollections.observableList(list);
-        //recipeNameArray.clear();
-        //recipeIdArray.clear();
     }
     public void addToObservableArrayList(RecipeTableView recipe){
         ol.add(recipe);
-        //recipeNameArray.add(recipe.getName());
-        //recipeIdArray.add(recipe.getRecipeId());
     }
 
     public void setEventForTableCells() {

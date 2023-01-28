@@ -162,7 +162,7 @@ public class ModeratorController implements Initializable {
     public void createTableView (ClassTableAuthor TableViewObject) {
         TableViewObject.initializeTableView();
         searchInDBAndLoadInTableView(authorName,pageNumber);
-        TableViewObject.setTabellaDB();
+        TableViewObject.setTableWithPromotion();
         setEventForTableCells();
         anchorPane.getChildren().add(TableViewObject.getTabellaDB());
     }

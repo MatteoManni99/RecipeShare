@@ -107,7 +107,7 @@ public class AuthorMongoDAO {
         ArrayList<Author> authors = new ArrayList<Author>();
         MongoCollection<Document> collection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
         MongoCursor<Document> cursor;
-        Bson filter = new Document("Name",new Document("$regex",nameToSearch).append("$options","i"));
+        Bson filter = new Document("authorName",new Document("$regex",nameToSearch).append("$options","i"));
         Bson match = match(filter);
         Bson project = project(new Document("authorName",1).append("promotion",1).append("image", 1));
         if(nameToSearch == null) {
@@ -117,7 +117,7 @@ public class AuthorMongoDAO {
         }
         while(cursor.hasNext()){
             Document authorDoc = cursor.next();
-            authors.add(new Author(authorDoc.getString("name"),null,
+            authors.add(new Author(authorDoc.getString("authorName"),null,
                     authorDoc.getInteger("image"), authorDoc.getInteger("promotion")));
         }
         return authors;
