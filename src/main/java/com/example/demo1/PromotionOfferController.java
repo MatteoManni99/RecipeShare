@@ -1,5 +1,6 @@
 package com.example.demo1;
 
+import com.example.demo1.service.AuthorService;
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
 import com.mongodb.client.model.UpdateOptions;
@@ -53,7 +54,8 @@ public class PromotionOfferController implements Initializable {
     }
 
     public void onRejectPromotionClick(ActionEvent actionEvent) {
-        try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
+        AuthorService.updatePromotion(DataSingleton.getInstance().getAuthorName(),0);
+        /*try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
             MongoCollection<Document> collectionAuthor = database.getCollection(Configuration.MONGODB_AUTHOR);
             Document query = new Document().append("authorName", DataSingleton.getInstance().getAuthorName());
@@ -66,18 +68,18 @@ public class PromotionOfferController implements Initializable {
                 System.out.println("Modified document count: " + result.getModifiedCount());
             } catch (MongoException me) {
                 System.err.println("Unable to update due to an error: " + me);
-            }
-            try {
-                DataSingleton.getInstance().setTypeOfUser("author");
-                cambiaSchermata(actionEvent, "Loggato.fxml");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            }*/
+        try {
+            DataSingleton.getInstance().setTypeOfUser("author");
+            cambiaSchermata(actionEvent, "Loggato.fxml");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     public void onAcceptPromotionClick(ActionEvent actionEvent) {
-        try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
+        AuthorService.updatePromotion(DataSingleton.getInstance().getAuthorName(), 2);
+        /*try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
             MongoCollection<Document> collectionAuthor = database.getCollection(Configuration.MONGODB_AUTHOR);
             Document query = new Document().append("authorName", DataSingleton.getInstance().getAuthorName());
@@ -91,7 +93,7 @@ public class PromotionOfferController implements Initializable {
             } catch (MongoException me) {
                 System.err.println("Unable to update due to an error: " + me);
             }
-        }
+        }*/
         try {
             DataSingleton.getInstance().setTypeOfUser("moderator");
             cambiaSchermata(actionEvent, "Register.fxml");
