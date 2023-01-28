@@ -33,6 +33,10 @@ public class RecipeService {
         return RecipeMongoDAO.getRecipeFromAuthor(authorName, elementToSkip, elementsToLimit);
     }
 
+    public static List<RecipeReducted> getRecipeFromName(String authorName, Integer elementToSkip, Integer elementsToLimit){
+        return RecipeMongoDAO.getRecipeFromName(authorName, elementToSkip, elementsToLimit);
+    }
+
     public static List<Recipe> findTopRecipesForRangesOfPreparationTime(Integer lowerLimit, Integer upperLimit,
                                                                         Integer minNumberReviews, Integer limitRecipes){
         return RecipeMongoDAO.findTopRecipesForRangesOfPreparationTime(lowerLimit, upperLimit, minNumberReviews, limitRecipes);

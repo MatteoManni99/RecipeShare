@@ -1,6 +1,5 @@
 package com.example.demo1;
 
-import com.example.demo1.dao.mongo.RecipeMongoDAO;
 import com.example.demo1.service.RecipeService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,13 +12,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.bson.Document;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.function.Consumer;
-
 
 public class LoggatoController implements Initializable{
     public AnchorPane anchorPane;
@@ -55,13 +51,13 @@ public class LoggatoController implements Initializable{
     }
     @FXML
     public void onNextPageClick(){
-        pageNumber = pageNumber + 1;
+        pageNumber += 1;
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
     }
     @FXML
     public void onPreviousPageClick(){
         if(pageNumber>=1){
-            pageNumber = pageNumber - 1;
+            pageNumber -= 1;
             searchInDBAndLoadInTableView(nameToSearch,pageNumber);
         }
     }
@@ -73,22 +69,16 @@ public class LoggatoController implements Initializable{
         pageNumber = 0;
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
     }
-
     public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber){
         TableViewObject.resetObservableArrayList();
         List<RecipeTableView> listRecipeTable = new ArrayList<>();
-        RecipeService.getRecipeFromAuthor(nameToSearch, pageNumber*10, 10)
+        RecipeService.getRecipeFromName(nameToSearch, pageNumber*10, 10)
                 .forEach(recipeReducted -> listRecipeTable.add(
                         new RecipeTableView(recipeReducted.getName(), recipeReducted.getAuthorName(), new ImageView(recipeReducted.getImage()))));
         TableViewObject.setObservableArrayList(listRecipeTable);
         TableViewObject.setItems();
-
     }
 
-    //alla fine printDocuments sarà inutile, da togliere in ultimo
-    /*private static Consumer<Document> printDocuments() {
-        return doc -> System.out.println(doc.toJson());
-    }*/
 
     public void cambiaSchermata(ActionEvent actionEvent, String nomeSchermata) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(nomeSchermata));
@@ -100,17 +90,6 @@ public class LoggatoController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        /*solo per testing da togliere
-        RecipeMongoDAO recipeDAO = new RecipeMongoDAO();
-        List<com.example.demo1.model.Recipe> recipes =
-                recipeDAO.findTopRecipesForEachCategory(19);
-
-        HashMap<String,Integer> ingredients = recipeDAO.findMostUsedIngredients(10,10);
-        System.out.println(ingredients.toString());*/
-        createTableView(TableViewObject);
-    }
-
-    public void createTableView (ClassForTableView TableViewObject) {
         TableViewObject.initializeTableView("Loggato");
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
         TableViewObject.setEventForTableCells();
@@ -122,7 +101,6 @@ public class LoggatoController implements Initializable{
     public void onAddRecipeClick(ActionEvent actionEvent) throws IOException {
         cambiaSchermata(actionEvent,"AddRecipe.fxml");
     }
-
     public void onPersonalProfileClick(ActionEvent actionEvent) throws IOException {
         cambiaSchermata(actionEvent,"AuthorProfile.fxml");
     }
