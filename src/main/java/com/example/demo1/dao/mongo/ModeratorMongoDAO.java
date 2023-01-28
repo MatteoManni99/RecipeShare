@@ -19,12 +19,12 @@ public class ModeratorMongoDAO {
                 .find(eq("moderatorName", name)).iterator().hasNext();
     }
 
-    public static boolean tryLogin(Moderator moderator) throws MongoException{
+    public static boolean tryLogin(String name, String password) throws MongoException{
         MongoCursor<Document> cursorModerator = MongoDBDriver.getDriver().
-                getCollection(Configuration.MONGODB_MODERATOR).find(eq("moderatorName", moderator.getName())).iterator();
+                getCollection(Configuration.MONGODB_MODERATOR).find(eq("moderatorName", name)).iterator();
         if (cursorModerator.hasNext()) {
             Document currentModerator = cursorModerator.next();
-            if (currentModerator.get("password").equals(moderator.getPassword())) {
+            if (currentModerator.get("password").equals(password)) {
                 System.out.println("TROVATO MOD");
                 return true;
             }

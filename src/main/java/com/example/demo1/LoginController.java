@@ -60,9 +60,8 @@ public class LoginController {
         String name = insertedName.getText();
         String password = insertedPassword.getText();
         boolean existAuthor = AuthorService.login(name,password);
-        Moderator currentModerator = new Moderator(name,password);
-        boolean existModerator = ModeratorService.tryLogin(currentModerator);
-        if (existAuthor == true) {
+        boolean existModerator = ModeratorService.tryLogin(name,password);
+        if (existAuthor) {
             Author currentAuthor = AuthorService.getAuthor(name);
             int avatarIndex = currentAuthor.getImage();
             DataSingleton.getInstance().setAvatar(avatarIndex);
@@ -71,7 +70,7 @@ public class LoginController {
             DataSingleton.getInstance().setTypeOfUser("author");
             nomePagina = "Loggato.fxml";
         }
-        else if (existModerator == true){
+        else if (existModerator){
             DataSingleton.getInstance().setTypeOfUser("moderator");
             nomePagina = "Moderator.fxml";
         }
