@@ -79,10 +79,10 @@ public class AuthorController implements Initializable {
         anchorPane.getChildren().add(TableViewObject.getTabellaDB());
     }
 
-    public void searchInDBAndLoadInTableView(String nameToSearch, int pageNumber) {
+    public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber) {
         TableViewObject.resetObservableArrayList();
         List<RecipeTableView> listRecipeTable = new ArrayList<>();
-        RecipeService.getRecipeFromAuthor(nameToSearch, pageNumber, 10)
+        RecipeService.getRecipeFromAuthor(nameToSearch, pageNumber*10, 10)
                 .forEach(recipeReducted -> listRecipeTable.add(
                         new RecipeTableView(recipeReducted.getName(), recipeReducted.getAuthorName(), new ImageView(recipeReducted.getImage()))));
         TableViewObject.setObservableArrayList(listRecipeTable);

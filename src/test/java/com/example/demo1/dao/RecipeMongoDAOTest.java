@@ -3,15 +3,10 @@ package com.example.demo1.dao;
 import com.example.demo1.dao.mongo.RecipeMongoDAO;
 import com.example.demo1.model.Recipe;
 import com.example.demo1.model.RecipeReducted;
-import org.junit.Rule;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.rules.Timeout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

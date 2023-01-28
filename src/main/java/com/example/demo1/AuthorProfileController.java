@@ -1,18 +1,9 @@
 package com.example.demo1;
 
-import com.example.demo1.dao.mongo.AuthorMongoDAO;
-import com.example.demo1.dao.mongo.RecipeMongoDAO;
 import com.example.demo1.model.Author;
-import com.example.demo1.model.Recipe;
 import com.example.demo1.model.RecipeReducted;
 import com.example.demo1.service.AuthorService;
 import com.example.demo1.service.RecipeService;
-import com.mongodb.MongoException;
-import com.mongodb.client.*;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.UpdateOptions;
-import com.mongodb.client.model.Updates;
-import com.mongodb.client.result.UpdateResult;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,18 +17,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import org.bson.Document;
-import org.bson.conversions.Bson;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static com.mongodb.client.model.Aggregates.*;
-import static com.mongodb.client.model.Aggregates.limit;
 
 public class AuthorProfileController implements Initializable {
 
@@ -251,7 +237,7 @@ public class AuthorProfileController implements Initializable {
         */
         Author currentAuthor = new Author(DataSingleton.getInstance().getAuthorName(),DataSingleton.getInstance().getPassword(),
                 DataSingleton.getInstance().getAvatarIndex(),DataSingleton.getInstance().getAuthorPromotion());
-        if (parameterToChange.equals("authorName") == false) {
+        if (!parameterToChange.equals("authorName")) {
             //System.out.println("PARAMETRO CAMBIATO");
             AuthorService.changePassword(parameterNewValue,currentAuthor); //chiamata a DAO
             if (parameterToChange.equals("password")) {
@@ -278,7 +264,7 @@ public class AuthorProfileController implements Initializable {
             }
         */
         //System.out.println(parameterNewValue);
-        if (AuthorService.changeAuthorName(parameterNewValue,currentAuthor) == false) { //chiamata a DAO
+        if (!AuthorService.changeAuthorName(parameterNewValue, currentAuthor)) { //chiamata a DAO
             parameterToChange = null;
             return;
         }

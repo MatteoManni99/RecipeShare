@@ -1,7 +1,7 @@
 package com.example.demo1;
 
 import com.example.demo1.dao.mongo.RecipeMongoDAO;
-import com.mongodb.client.*;
+import com.example.demo1.service.RecipeService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,24 +14,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.function.Consumer;
 
-import static com.mongodb.client.model.Aggregates.*;
 
 public class LoggatoController implements Initializable{
     public AnchorPane anchorPane;
     @FXML
     private Label welcomeText;
-    private Stage stage;
-    private ClassForTableView TableViewObject = new ClassForTableView();
+    private final ClassForTableView TableViewObject = new ClassForTableView();
     @FXML
     private TextField nameToSearchTextField;
     private String nameToSearch = null;
@@ -62,14 +56,12 @@ public class LoggatoController implements Initializable{
     @FXML
     public void onNextPageClick(){
         pageNumber = pageNumber + 1;
-        //updateTableView(TableViewObject,pageNumber);
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
     }
     @FXML
     public void onPreviousPageClick(){
         if(pageNumber>=1){
             pageNumber = pageNumber - 1;
-            //updateTableView(TableViewObject,pageNumber);
             searchInDBAndLoadInTableView(nameToSearch,pageNumber);
         }
     }
@@ -81,42 +73,26 @@ public class LoggatoController implements Initializable{
         pageNumber = 0;
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
     }
+
     public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber){
-        Document recipeDoc;
-        try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
-            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
-            MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_RECIPE);
-            MongoCursor<Document> cursor;
-            //Bson filter = Filters.regex("Name", "^(?)" + nameToSearch); //da togliere era il vecchio filtro
-            Bson filter = new Document("Name",new Document("$regex",nameToSearch).append("$options","i"));
-            Bson match = match(filter);
-            Bson project = project(new Document("Name",1).append("AuthorName",1)
-                    .append("Images", new Document("$first","$Images")));
-            if(nameToSearch == null){
-                cursor = collection.aggregate(Arrays.asList(skip(10*pageNumber),limit(10),project)).iterator();
-            }else{
-                cursor = collection.aggregate(Arrays.asList(match,skip(10*pageNumber),limit(10),project)).iterator();
-                System.out.println(nameToSearch);
-            }
-            TableViewObject.resetObservableArrayList();
-            while (cursor.hasNext()){
-                recipeDoc = cursor.next();
-                RecipeTableView recipe = new RecipeTableView(recipeDoc.getString("Name"),
-                        recipeDoc.getString("AuthorName"),new ClassForTableView.CustomImage(new ImageView(recipeDoc.getString("Images"))).getImage());
-                TableViewObject.addToObservableArrayList(recipe);
-            }
-            TableViewObject.setItems();
-        }
+        TableViewObject.resetObservableArrayList();
+        List<RecipeTableView> listRecipeTable = new ArrayList<>();
+        RecipeService.getRecipeFromAuthor(nameToSearch, pageNumber*10, 10)
+                .forEach(recipeReducted -> listRecipeTable.add(
+                        new RecipeTableView(recipeReducted.getName(), recipeReducted.getAuthorName(), new ImageView(recipeReducted.getImage()))));
+        TableViewObject.setObservableArrayList(listRecipeTable);
+        TableViewObject.setItems();
+
     }
 
     //alla fine printDocuments sarà inutile, da togliere in ultimo
-    private static Consumer<Document> printDocuments() {
+    /*private static Consumer<Document> printDocuments() {
         return doc -> System.out.println(doc.toJson());
-    }
+    }*/
 
     public void cambiaSchermata(ActionEvent actionEvent, String nomeSchermata) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(nomeSchermata));
-        stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         stage.setScene(scene);
         stage.show();
@@ -124,15 +100,13 @@ public class LoggatoController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //solo per testing da togliere//
+        /*solo per testing da togliere
         RecipeMongoDAO recipeDAO = new RecipeMongoDAO();
         List<com.example.demo1.model.Recipe> recipes =
                 recipeDAO.findTopRecipesForEachCategory(19);
 
         HashMap<String,Integer> ingredients = recipeDAO.findMostUsedIngredients(10,10);
-        System.out.println(ingredients.toString());
-
-        /////////////////////////////////
+        System.out.println(ingredients.toString());*/
         createTableView(TableViewObject);
     }
 
