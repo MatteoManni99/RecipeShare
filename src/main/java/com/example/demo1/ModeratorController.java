@@ -1,5 +1,11 @@
 package com.example.demo1;
 
+import com.example.demo1.dao.mongo.AuthorMongoDAO;
+import com.example.demo1.dao.mongo.ReportedRecipeMongoDAO;
+import com.example.demo1.model.Author;
+import com.example.demo1.model.ReportedRecipe;
+import com.example.demo1.service.AuthorService;
+import com.example.demo1.service.ReportedRecipeService;
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
 import com.mongodb.client.model.UpdateOptions;
@@ -113,11 +119,12 @@ public class ModeratorController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String uri = Configuration.MONGODB_URL;
-        List<Document> listaReportedRecipes = new ArrayList<>();
+        //String uri = Configuration.MONGODB_URL;
+        List<ReportedRecipe> listaReportedRecipes = new ArrayList<>();
+        listaReportedRecipes = ReportedRecipeMongoDAO.getListReportedRecipes();
         startingX = recipeText.getLayoutX();
 
-        try (MongoClient mongoClient = MongoClients.create(uri)) { //fatto in DAO
+        /*try (MongoClient mongoClient = MongoClients.create(uri)) { //fatto in DAO
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
             MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_REPORTED_RECIPE);
 
@@ -125,11 +132,10 @@ public class ModeratorController implements Initializable {
             while (cursor.hasNext())
                 listaReportedRecipes.add(cursor.next());
         }
-
+        */
         for (int i = 0; i < listaReportedRecipes.size(); i++)
-        {
             setReportedLabels(listaReportedRecipes,i);
-        }
+
 
         //questa parte sotto è quella che setta il Button per la promozione
         if (DataSingleton.getInstance().getTypeOfUser().equals("moderator")) {
@@ -137,7 +143,9 @@ public class ModeratorController implements Initializable {
             promoteAuthorButton.setLayoutX(64);
             promoteAuthorButton.setLayoutY(120);
             promoteAuthorButton.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
-                try (MongoClient mongoClient = MongoClients.create(uri)) {
+                AuthorService.updatePromotion(authorNameClicked,1);
+                authorNameClicked = null;
+                /*try (MongoClient mongoClient = MongoClients.create(uri)) {
                     MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
                     MongoCollection<Document> collectionAuthor = database.getCollection(Configuration.MONGODB_AUTHOR);
                     Document query = new Document().append("authorName", authorNameClicked);
@@ -151,8 +159,7 @@ public class ModeratorController implements Initializable {
                     } catch (MongoException me) {
                         System.err.println("Unable to update due to an error: " + me);
                     }
-                    authorNameClicked = null;
-                }
+                }*/
             });
             anchorPane.getChildren().add(promoteAuthorButton);
         }
@@ -189,7 +196,16 @@ public class ModeratorController implements Initializable {
     }
 
     public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber){
-        Document authorDoc;
+        List<Author> listAuthorsSearched = AuthorService.searchAuthors(nameToSearch,10*pageNumber,10);
+        tableAuthor.resetObservableArrayList();
+        for (Author author : listAuthorsSearched) {
+            AuthorTableView authorTableView = new AuthorTableView(author.getName(),
+                    author.getPromotion(),
+                    new ClassTableAuthor.CustomImageAuthor(author.getImage());
+            tableAuthor.addToObservableArrayList(authorTableView);
+        }
+        tableAuthor.setItems();
+        /*Document authorDoc;
         try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
             MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_AUTHOR);
@@ -204,8 +220,8 @@ public class ModeratorController implements Initializable {
                 cursor = collection.aggregate(Arrays.asList(match, skip(10*pageNumber),limit(10),project)).iterator();
                 System.out.println(nameToSearch);
             }
-            tableAuthor.resetObservableArrayList();
-            while (cursor.hasNext()){
+        //tableAuthor.resetObservableArrayList();
+        while (cursor.hasNext()){
                 authorDoc = cursor.next();
                 AuthorTableView author = new AuthorTableView(authorDoc.getString("authorName"),
                         authorDoc.getInteger("promotion"),
@@ -213,11 +229,12 @@ public class ModeratorController implements Initializable {
                 tableAuthor.addToObservableArrayList(author);
             }
             tableAuthor.setItems();
-        }
+        }*/
     }
 
 
-    public void setReportedLabels(List<Document> listaReportedRecipes,int i) {
+    public void setReportedLabels(List<ReportedRecipe> listaReportedRecipes, int i) {
+        listaReportedRecipes = ReportedRecipeMongoDAO.f
         int documentSize = listaReportedRecipes.get(0).size() - 1;
         List<String> listaLabelNames = new ArrayList<>();
         listaLabelNames.add("RecipeId");
