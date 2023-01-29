@@ -26,9 +26,9 @@ public class SearchAuthorController implements Initializable {
     private String nameToSearch = null;
 
 
-    private ClassTableAuthor tableViewAuthor = new ClassTableAuthor();
+    private TableViewAuthor tableViewAuthor = new TableViewAuthor();
 
-    private ClassTableAuthor tabella;
+    private TableViewAuthor tabella;
 
     @FXML
     public void onLogoutClick(ActionEvent actionEvent){
@@ -85,7 +85,7 @@ public class SearchAuthorController implements Initializable {
 
     }
 
-    public void createTableView (ClassTableAuthor TableViewObject, Boolean showPromotion) {
+    public void createTableView (TableViewAuthor TableViewObject, Boolean showPromotion) {
         TableViewObject.initializeTableView();
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
         if(showPromotion)
@@ -101,8 +101,8 @@ public class SearchAuthorController implements Initializable {
     public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber){
         tableViewAuthor.resetObservableArrayList();
         AuthorService.searchAuthors(nameToSearch,pageNumber*10,10).forEach( author -> {
-            AuthorTableView authorTableView = new AuthorTableView(author.getName(), author.getPromotion(),
-                    new ClassTableAuthor.CustomImageAuthor(new ImageView(Configuration.AVATAR.get(author.getImage() - 1))).getImage());
+            RowAuthor authorTableView = new RowAuthor(author.getName(), author.getPromotion(),
+                    new TableViewAuthor.CustomImageAuthor(new ImageView(Configuration.AVATAR.get(author.getImage() - 1))).getImage());
             tableViewAuthor.addToObservableArrayList(authorTableView);
         });
         tableViewAuthor.setItems();

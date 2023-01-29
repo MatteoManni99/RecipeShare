@@ -13,9 +13,9 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
-public class ClassForTableView {
-    public TableView<RecipeTableView> tabellaDB;
-    private ObservableList<RecipeTableView> ol;
+public class TableViewRecipe {
+    public TableView<RowRecipe> tabellaDB;
+    private ObservableList<RowRecipe> ol;
     //private TableColumn recipeIdCol;
     private TableColumn nameCol;
     //private TableColumn authorIdCol;
@@ -31,9 +31,9 @@ public class ClassForTableView {
         tabellaDB = new TableView<>();
 
         //recipeIdCol = new TableColumn<Recipe, String>("RecipeID");
-        nameCol = new TableColumn<RecipeTableView, String>("Name");
+        nameCol = new TableColumn<RowRecipe, String>("Name");
         //authorIdCol = new TableColumn<Recipe, String>("AuthorID");
-        authorNameCol = new TableColumn<RecipeTableView, String>("AuthorName");
+        authorNameCol = new TableColumn<RowRecipe, String>("AuthorName");
         //recipeIdCol = new TableColumn("RecipeID");
         //nameCol = new TableColumn("Name");
         //authorIdCol = new TableColumn("AuthorID");
@@ -63,7 +63,7 @@ public class ClassForTableView {
         tabellaDB.setItems(ol);
     }
 
-    public TableView<RecipeTableView> getTabellaDB() {
+    public TableView<RowRecipe> getTabellaDB() {
         return tabellaDB;
     }
 
@@ -96,10 +96,10 @@ public class ClassForTableView {
         ol = FXCollections.observableArrayList();
     }
 
-    public void setObservableArrayList(List<RecipeTableView> list){
+    public void setObservableArrayList(List<RowRecipe> list){
         ol = FXCollections.observableList(list);
     }
-    public void addToObservableArrayList(RecipeTableView recipe){
+    public void addToObservableArrayList(RowRecipe recipe){
         ol.add(recipe);
     }
 

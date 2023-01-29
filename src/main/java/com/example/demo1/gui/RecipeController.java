@@ -128,7 +128,7 @@ public class RecipeController implements Initializable {
         recipe.getReviews().forEach(review -> {
             String reviewer = review.getAuthorName();
             reviewers.add(reviewer);
-            ReviewTableView reviewT = new ReviewTableView(reviewer, review.getRating(), review.getReview());
+            RowReview reviewT = new RowReview(reviewer, review.getRating(), review.getReview());
             tableViewReview.addToObservableArrayList(reviewT);
         });
         tableViewReview.setItems();

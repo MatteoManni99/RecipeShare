@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.ImageView;
 
-public class AuthorTableView {
+public class RowAuthor {
     private Object authorName;
     private Object rating;
     private Object image;
@@ -14,10 +14,10 @@ public class AuthorTableView {
 
     private ImageView imageTable;
 
-    public AuthorTableView(String authorName, Integer promotion, ImageView image) {
+    public RowAuthor(String authorName, Integer promotion, ImageView image) {
         authorNameTable = new SimpleStringProperty(authorName);
         promotionTable = new SimpleIntegerProperty(promotion);
-        imageTable = new ClassTableAuthor.CustomImageAuthor(image).getImage();
+        imageTable = new TableViewAuthor.CustomImageAuthor(image).getImage();
     }
 
     public String getAuthorName() { return authorNameTable.get(); }

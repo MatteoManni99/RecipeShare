@@ -7,12 +7,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 
-public class ClassTableAuthor {
+public class TableViewAuthor {
 
-    public TableView<AuthorTableView> tabellaDB;
-    private ObservableList<AuthorTableView> ol;
-    private TableColumn<AuthorTableView, Integer> promotionCol;
-    private TableColumn<AuthorTableView, String> authorNameCol;
+    public TableView<RowAuthor> tabellaDB;
+    private ObservableList<RowAuthor> ol;
+    private TableColumn<RowAuthor, Integer> promotionCol;
+    private TableColumn<RowAuthor, String> authorNameCol;
     private TableColumn imageCol;
 
 
@@ -21,7 +21,7 @@ public class ClassTableAuthor {
 
         authorNameCol = new TableColumn<>("Name");
         promotionCol = new TableColumn<>("Promotion");
-        imageCol = new TableColumn<ClassForTableView.CustomImage, ImageView>("Image");
+        imageCol = new TableColumn<TableViewRecipe.CustomImage, ImageView>("Image");
 
         promotionCol.setCellValueFactory(new PropertyValueFactory<>("promotion"));
         authorNameCol.setCellValueFactory(new PropertyValueFactory<>("authorName"));
@@ -38,14 +38,14 @@ public class ClassTableAuthor {
     public void setTableWithoutPromotion() {tabellaDB.getColumns().addAll(imageCol, authorNameCol);}
     public void setItems(){tabellaDB.setItems(ol);}
 
-    public TableView<AuthorTableView> getTabellaDB() {
+    public TableView<RowAuthor> getTabellaDB() {
         return tabellaDB;
     }
 
     public void resetObservableArrayList(){
         ol = FXCollections.observableArrayList();
     }
-    public void addToObservableArrayList(AuthorTableView author){
+    public void addToObservableArrayList(RowAuthor author){
         ol.add(author);
     }
 

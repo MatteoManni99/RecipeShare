@@ -3,7 +3,7 @@ package com.example.demo1.gui;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.ImageView;
 
-public class RecipeTableView {
+public class RowRecipe {
     private Object recipeName;
     private Object authorName;
     private Object imageLink;
@@ -12,10 +12,10 @@ public class RecipeTableView {
     private final ImageView imageLinkTable;
 
 
-    public RecipeTableView(String name, String authorName, ImageView image) {
+    public RowRecipe(String name, String authorName, ImageView image) {
         recipeNameTable = new SimpleStringProperty(name);
         authorNameTable = new SimpleStringProperty(authorName);
-        imageLinkTable = new ClassForTableView.CustomImage(image).getImage();
+        imageLinkTable = new TableViewRecipe.CustomImage(image).getImage();
     }
 
     public String getName() { return recipeNameTable.get(); }

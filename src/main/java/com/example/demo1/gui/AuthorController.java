@@ -30,7 +30,7 @@ public class AuthorController implements Initializable {
     private final DataSingleton data = DataSingleton.getInstance();
     private String authorName;
 
-    private final ClassForTableView TableViewObject = new ClassForTableView();
+    private final TableViewRecipe TableViewObject = new TableViewRecipe();
 
     @FXML
     private AnchorPane anchorPane;
@@ -63,7 +63,7 @@ public class AuthorController implements Initializable {
         createTableView(TableViewObject);
     }
 
-    public void createTableView(ClassForTableView TableViewObject) {
+    public void createTableView(TableViewRecipe TableViewObject) {
         TableViewObject.initializeTableView("Loggato");
         searchInDBAndLoadInTableView(authorName, pageNumber);
         TableViewObject.setEventForTableCells();
@@ -75,10 +75,10 @@ public class AuthorController implements Initializable {
 
     public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber) {
         TableViewObject.resetObservableArrayList();
-        List<RecipeTableView> listRecipeTable = new ArrayList<>();
+        List<RowRecipe> listRecipeTable = new ArrayList<>();
         RecipeService.getRecipeFromAuthor(nameToSearch, pageNumber*10, 10)
                 .forEach(recipeReducted -> listRecipeTable.add(
-                        new RecipeTableView(recipeReducted.getName(), recipeReducted.getAuthorName(), new ImageView(recipeReducted.getImage()))));
+                        new RowRecipe(recipeReducted.getName(), recipeReducted.getAuthorName(), new ImageView(recipeReducted.getImage()))));
         TableViewObject.setObservableArrayList(listRecipeTable);
         TableViewObject.setItems();
     }

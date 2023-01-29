@@ -36,10 +36,10 @@ public class ModeratorController implements Initializable {
 
     private String authorNameClicked;
 
-    private ClassTableAuthor tabella;
+    private TableViewAuthor tabella;
     @FXML
     private AnchorPane anchorPane;
-    private ClassTableAuthor tableAuthor = new ClassTableAuthor();
+    private TableViewAuthor tableAuthor = new TableViewAuthor();
     @FXML
     public void onLogoutClick(ActionEvent actionEvent) throws IOException {
         Utils.changeScene(actionEvent,"Login.fxml");
@@ -107,7 +107,7 @@ public class ModeratorController implements Initializable {
         createTableView(tableAuthor);
     }
 
-    public void createTableView (ClassTableAuthor TableViewObject) {
+    public void createTableView (TableViewAuthor TableViewObject) {
         TableViewObject.initializeTableView();
         searchInDBAndLoadInTableView(authorName,pageNumber);
         TableViewObject.setTableWithPromotion();
@@ -141,7 +141,7 @@ public class ModeratorController implements Initializable {
         tableAuthor.resetObservableArrayList();
         listAuthorsSearched.forEach(author ->
                 tableAuthor.addToObservableArrayList(
-                        new AuthorTableView(author.getName(), author.getPromotion(),
+                        new RowAuthor(author.getName(), author.getPromotion(),
                                 new ImageView(Configuration.AVATAR.get(author.getImage()-1)))));
         tableAuthor.setItems();
         /*Document authorDoc;

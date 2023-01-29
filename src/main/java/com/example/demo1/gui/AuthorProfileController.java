@@ -41,7 +41,7 @@ public class AuthorProfileController implements Initializable {
     public TextField parameterValueField;
     public Label avatarLabel = new Label();
     private DataSingleton data = DataSingleton.getInstance();
-    private ClassForTableView TableViewObject = new ClassForTableView();
+    private TableViewRecipe TableViewObject = new TableViewRecipe();
     private Integer indexImages = 0;
     private List<String> images_list;
     private Stage stage;
@@ -151,8 +151,8 @@ public class AuthorProfileController implements Initializable {
         List<RecipeReducted> recipeReductedList = RecipeService.getRecipeFromAuthor(DataSingleton.getInstance().getAuthorName(),10 * pageNumber,10);
         TableViewObject.resetObservableArrayList();
         for (RecipeReducted recipeReducted : recipeReductedList) {
-            RecipeTableView recipe = new RecipeTableView( recipeReducted.getName(), recipeReducted.getAuthorName(),
-                    new ClassForTableView.CustomImage(new ImageView(recipeReducted.getImage())).getImage());
+            RowRecipe recipe = new RowRecipe( recipeReducted.getName(), recipeReducted.getAuthorName(),
+                    new TableViewRecipe.CustomImage(new ImageView(recipeReducted.getImage())).getImage());
             TableViewObject.addToObservableArrayList(recipe);
         }
         TableViewObject.setItems();
@@ -185,7 +185,7 @@ public class AuthorProfileController implements Initializable {
         }*/
     }
 
-    public void createTableView(ClassForTableView TableViewObject) {
+    public void createTableView(TableViewRecipe TableViewObject) {
         TableViewObject.initializeTableView("Loggato");
         nameToSearch = authorName;
         searchInDBAndLoadInTableView(nameToSearch, pageNumber);
