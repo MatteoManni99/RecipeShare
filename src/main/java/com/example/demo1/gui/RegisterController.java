@@ -1,5 +1,6 @@
 package com.example.demo1.gui;
 
+import com.example.demo1.Configuration;
 import com.example.demo1.service.AuthorService;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;

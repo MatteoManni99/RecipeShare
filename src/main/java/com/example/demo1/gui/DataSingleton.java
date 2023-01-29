@@ -1,5 +1,6 @@
 package com.example.demo1.gui;
 
+import com.example.demo1.Configuration;
 import javafx.scene.image.ImageView;
 
 public class DataSingleton {

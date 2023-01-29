@@ -1,5 +1,6 @@
 package com.example.demo1.gui;
 
+import com.example.demo1.Configuration;
 import com.example.demo1.dao.mongo.AuthorMongoDAO;
 import com.example.demo1.service.RecipeService;
 import com.example.demo1.model.Author;

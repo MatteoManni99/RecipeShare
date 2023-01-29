@@ -1,6 +1,6 @@
 package com.example.demo1.persistence;
 
-import com.example.demo1.gui.Configuration;
+import com.example.demo1.Configuration;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
