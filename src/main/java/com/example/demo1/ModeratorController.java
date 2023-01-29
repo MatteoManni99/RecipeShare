@@ -64,7 +64,7 @@ public class ModeratorController implements Initializable {
     }
 
     // IMPLEMENTATO IN REPORTED RECIPE DAO
-    public void onHighestRatioQueryClick() {
+    public void onViewAnalyticsClick() {
         ReportedRecipeService.onHighestRatioQueryClick().forEach((key, value) -> System.out.println(key + ":" + value));
     }
 

@@ -56,15 +56,17 @@ public class ReportedRecipeMongoDAO {
         Map<String, Double> mapRatio = new TreeMap<>();
         MongoCollection<Document> collectionRecipe = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_REPORTED_RECIPE);
         MongoCollection<Document> collectionReportedRecipes = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);
-        Bson group = new Document("$group", new Document("_id", "$AuthorName")
+        Bson group1 = new Document("$group", new Document("_id", "$AuthorName")
+                .append("count",new Document("$count",new Document())));
+        Bson group2 = new Document("$group", new Document("_id", "$AuthorName")
                 .append("count",new Document("$count",new Document())));
         //Bson match = match(gt("count", 1));
         Bson sort = sort(descending("_id"));
 
-        collectionRecipe.aggregate(List.of(group)).forEach(document ->
+        collectionRecipe.aggregate(List.of(group1)).forEach(document ->
                 map.put(String.valueOf(document.getString("_id")),document.getInteger("count")));
 
-        for (Document document : collectionReportedRecipes.aggregate(List.of(group))) {
+        for (Document document : collectionReportedRecipes.aggregate(List.of(group2))) {
             String authorName = document.getString("_id");
             if (map.containsKey(authorName) && map.get(authorName)>1) //con questo tolgo quelli che hanno creato 1 ricetta (si può aumentare la soglia o togliere)
                 mapRatio.put(authorName,((double)document.getInteger("count"))/map.get(authorName));

@@ -85,7 +85,7 @@ public class RecipeController implements Initializable {
         ReportedRecipeService.addReportedRecipe(new ReportedRecipe(recipe.getName(),recipe.getAuthorName(),
                 data.getAuthorName(),LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),recipe.getImages().get(0)));
     }
-    public void onLeaveAReviewClick(ActionEvent actionEvent) throws IOException {
+    public void onLeaveAReviewClick(ActionEvent actionEvent){
         String reviewer = data.getAuthorName();
         if(reviewers.contains(reviewer)){
             reviewTextArea.setText("Avevi già recensito questa ricetta");
@@ -113,7 +113,6 @@ public class RecipeController implements Initializable {
         deleteRecipe.setOnAction(eventHandler);
         anchorPane.getChildren().add(deleteRecipe);
     }
-
     private ObservableList<String> safeCastToObservableList(List<String> list){
         try {return FXCollections.observableArrayList(list);}
         catch (NullPointerException e){return null;}
