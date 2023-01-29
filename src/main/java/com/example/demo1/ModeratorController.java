@@ -70,9 +70,8 @@ public class ModeratorController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        List<ReportedRecipe> listaReportedRecipes = ReportedRecipeMongoDAO.getListReportedRecipes();
         startingX = recipeText.getLayoutX();
-
+        //List<ReportedRecipe> listaReportedRecipes = ReportedRecipeMongoDAO.getListReportedRecipes();
         /*try (MongoClient mongoClient = MongoClients.create(uri)) { //fatto in DAO
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
             MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_REPORTED_RECIPE);
@@ -81,10 +80,9 @@ public class ModeratorController implements Initializable {
             while (cursor.hasNext())
                 listaReportedRecipes.add(cursor.next());
         }
-        */
         for (int i = 0; i < listaReportedRecipes.size(); i++)
             setReportedLabels(listaReportedRecipes,i);
-
+        */
 
         //questa parte sotto è quella che setta il Button per la promozione
         if (DataSingleton.getInstance().getTypeOfUser().equals("moderator")) {
@@ -180,18 +178,14 @@ public class ModeratorController implements Initializable {
     }
 
 
-    public void setReportedLabels(List<ReportedRecipe> listaReportedRecipes, int i) {
+    /*public void setReportedLabels(List<ReportedRecipe> listaReportedRecipes, int i) {
         //listaReportedRecipes = ReportedRecipeMongoDAO.f
         //int documentSize = listaReportedRecipes.get(0).size() - 1;
         List<String> listaLabelNames = new ArrayList<>();
-        listaLabelNames.add("RecipeId");
         listaLabelNames.add("RecipeName");
-        listaLabelNames.add("Images");
-        listaLabelNames.add("AuthorId");
+        listaLabelNames.add("Image");
         listaLabelNames.add("AuthorName");
-        listaLabelNames.add("ReporterId");
         listaLabelNames.add("ReporterName");
-        /*
         double copiaStartingX = startingX - 200;
         for (int j = 0;j < documentSize; j++) {
             Label currentLabel = new Label();
@@ -202,8 +196,8 @@ public class ModeratorController implements Initializable {
             currentLabel.setMaxWidth(50);
             copiaStartingX += currentLabel.getMaxWidth();
             anchorPane.getChildren().add(currentLabel);
-        }*/
-    }
+        }
+    }*/
     public void onBrowseAuthorsClick(ActionEvent actionEvent) throws IOException {
         DataSingleton.getInstance().setTypeOfUser("moderator");
         Utils.changeScene(actionEvent,"Ricerca_Utente.fxml");
