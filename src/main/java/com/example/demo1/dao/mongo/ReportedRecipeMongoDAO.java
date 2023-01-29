@@ -34,7 +34,7 @@ public class ReportedRecipeMongoDAO {
         }
         return false;
     }
-    public static Document fromReportedRecipeToDocument(ReportedRecipe reportedRecipe){
+    private static Document fromReportedRecipeToDocument(ReportedRecipe reportedRecipe){
         return new Document("name",reportedRecipe.getName()).append("authorName",reportedRecipe.getAuthorName())
                 .append("reporterName",reportedRecipe.getReporterName()).append("dateReporting",reportedRecipe.getDateReporting())
                 .append("image",reportedRecipe.getImage());
