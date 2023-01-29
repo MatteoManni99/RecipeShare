@@ -1,12 +1,10 @@
 package com.example.demo1.gui;
 
 import com.example.demo1.HelloApplication;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;

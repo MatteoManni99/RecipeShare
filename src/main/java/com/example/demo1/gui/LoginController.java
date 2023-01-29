@@ -1,17 +1,11 @@
-package com.example.demo1;
+package com.example.demo1.gui;
 
-import com.example.demo1.gui.Utils;
 import com.example.demo1.model.Author;
 import com.example.demo1.service.AuthorService;
 import com.example.demo1.service.ModeratorService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 

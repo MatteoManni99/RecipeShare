@@ -1,6 +1,6 @@
 package com.example.demo1.dao.mongo;
 
-import com.example.demo1.Configuration;
+import com.example.demo1.gui.Configuration;
 import com.example.demo1.model.ReportedRecipe;
 import com.example.demo1.persistence.MongoDBDriver;
 import com.mongodb.MongoException;

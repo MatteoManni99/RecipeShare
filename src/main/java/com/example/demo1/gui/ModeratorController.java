@@ -1,17 +1,12 @@
-package com.example.demo1;
+package com.example.demo1.gui;
 
-import com.example.demo1.dao.mongo.ReportedRecipeMongoDAO;
-import com.example.demo1.gui.Utils;
 import com.example.demo1.model.Author;
-import com.example.demo1.model.ReportedRecipe;
 import com.example.demo1.service.AuthorService;
 import com.example.demo1.service.ReportedRecipeService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -21,8 +16,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.bson.Document;
-import org.bson.conversions.Bson;
 
 import java.io.IOException;
 import java.net.URL;

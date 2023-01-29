@@ -1,12 +1,8 @@
-package com.example.demo1;
+package com.example.demo1.gui;
 
-import com.example.demo1.gui.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -15,8 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ClassForTableView {

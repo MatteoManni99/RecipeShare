@@ -1,4 +1,4 @@
-package com.example.demo1;
+package com.example.demo1.gui;
 import java.io.*;
 import javafx.scene.image.Image;
 import java.io.FileInputStream;

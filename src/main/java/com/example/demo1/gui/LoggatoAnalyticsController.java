@@ -1,4 +1,4 @@
-package com.example.demo1;
+package com.example.demo1.gui;
 
 import com.example.demo1.model.Recipe;
 import com.example.demo1.service.RecipeService;

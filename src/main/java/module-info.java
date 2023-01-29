@@ -10,5 +10,7 @@ module com.example.demo1 {
     requires org.mongodb.driver.core;
 
     opens com.example.demo1 to javafx.fxml;
+    exports com.example.demo1.gui;
+    opens com.example.demo1.gui to javafx.fxml;
     exports com.example.demo1;
 }

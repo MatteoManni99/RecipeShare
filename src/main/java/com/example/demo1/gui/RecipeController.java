@@ -1,26 +1,19 @@
-package com.example.demo1;
+package com.example.demo1.gui;
 
-import com.example.demo1.gui.Utils;
 import com.example.demo1.model.Recipe;
 import com.example.demo1.model.ReportedRecipe;
-import com.example.demo1.model.Review;
 import com.example.demo1.service.RecipeService;
 import com.example.demo1.service.ReportedRecipeService;
-import com.mongodb.internal.connection.tlschannel.util.Util;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;

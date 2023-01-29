@@ -1,6 +1,6 @@
 package com.example.demo1.dao.mongo;
 
-import com.example.demo1.Configuration;
+import com.example.demo1.gui.Configuration;
 
 import com.example.demo1.model.Author;
 import com.example.demo1.persistence.MongoDBDriver;
@@ -9,7 +9,6 @@ import com.mongodb.client.*;
 
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
-import com.mongodb.client.result.UpdateResult;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
