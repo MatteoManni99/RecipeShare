@@ -40,7 +40,7 @@ public class ModeratorController implements Initializable {
     @FXML
     private AnchorPane anchorPane;
     private TableViewAuthor tableAuthor = new TableViewAuthor();
-    private TableViewReportedRecipe tableReportedRecipe = new TableViewReportedRecipe();
+    //private TableViewReportedRecipe tableReportedRecipe = new TableViewReportedRecipe();
     @FXML
     public void onLogoutClick(ActionEvent actionEvent) throws IOException {
         Utils.changeScene(actionEvent,"Login.fxml");
@@ -105,10 +105,10 @@ public class ModeratorController implements Initializable {
             });
             anchorPane.getChildren().add(promoteAuthorButton);
         }
-        createTableView(tableAuthor,tableReportedRecipe);
+        createTableView(tableAuthor/*,tableReportedRecipe*/);
     }
 
-    public void createTableView (TableViewAuthor TableViewObject,TableViewReportedRecipe tableReportedRecipe) {
+    public void createTableView (TableViewAuthor TableViewObject/*,TableViewReportedRecipe tableReportedRecipe*/) {
         TableViewObject.initializeTableView();
         searchInDBAndLoadInTableView(authorName,pageNumber);
         TableViewObject.setTableWithPromotion();
