@@ -28,9 +28,26 @@ public class RecipeMongoDAO {
                 getCollection(Configuration.MONGODB_RECIPE).find(new Document("Name", name)).first()));
     }
 
-    public static void addReview(String name,String reviewer,Integer rating,String review) throws MongoException {
+    public static Double calculateAggregatedRating(String recipeName) throws MongoException{
+        Bson match = match(new Document("Name",recipeName));
+        Bson unwind = new Document("$unwind","$Reviews");
+        Bson project = project(new Document("Reviews",1));
+        Bson group = new Document("$group", new Document("_id", null).append("average", new Document("$avg","$Reviews.Rating")));
+
+        return safeExecutionDouble(Objects.requireNonNull(MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
+                .aggregate(Arrays.asList(match, unwind, project, group)).first()),"average");
+
+    }
+
+    public static void setAggregatedRating(String recipeName, Double newAggregatedRating){
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
-                .updateOne(new Document("Name", name), new Document("$push", new Document("Reviews",
+                .updateOne(new Document("Name", recipeName),
+                        new Document("$set", new Document("AggregatedRating", newAggregatedRating)));
+    }
+
+    public static void addReview(String recipeName, String reviewer, Integer rating, String review) throws MongoException {
+        MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
+                .updateOne(new Document("Name", recipeName), new Document("$push", new Document("Reviews",
                         new Document("AuthorName", reviewer).append("Rating", rating).append("Review", review))));
     }
 
