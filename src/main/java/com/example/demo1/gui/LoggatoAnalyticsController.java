@@ -3,13 +3,23 @@ package com.example.demo1.gui;
 import com.example.demo1.model.Recipe;
 import com.example.demo1.service.RecipeService;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import org.bson.Document;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.net.URL;
+import java.util.*;
 import java.util.function.Consumer;
 
-public class LoggatoAnalyticsController {
+public class LoggatoAnalyticsController implements Initializable {
+
+    private final TableViewRating tableView = new TableViewRating();
+
+    @FXML
+    private AnchorPane anchorPane;
+
     private static Consumer<Document> printDocuments() {
         return doc -> System.out.println(doc.toJson());
     }
@@ -25,6 +35,8 @@ public class LoggatoAnalyticsController {
         for (Recipe recipe : listSecondRangeRecipes) System.out.println(recipe);
         System.out.println("RANGE DA 91 IN POI");
         for (Recipe recipe : listThirdRangeRecipes) System.out.println(recipe);
+
+
 
         /*String uri = Configuration.MONGODB_URL;
         try (MongoClient mongoClient = MongoClients.create(uri)) {
@@ -73,32 +85,17 @@ public class LoggatoAnalyticsController {
     }
 
     public void onRecipesWithHighestratingClick(ActionEvent actionEvent) {
-        System.out.println("********************QUERY RECIPES WITH HIGHEST RATING************************");
-        List<Recipe> listRecipesWithHighestrating = RecipeService.findRecipesWithHighestRating(10,3);
-        for (Recipe recipe : listRecipesWithHighestrating) System.out.println(recipe);
-        /*
-        String uri = "mongodb://localhost:27017";
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("RecipeShare");
-            MongoCollection<Document> collection = database.getCollection("recipe");
-            Bson matchR = match(new Document("Reviews.19", new Document("$exists", true)));
-            Bson limit = limit(10);
-            Bson sort = sort(descending("AggregatedRating"));
-            Bson project = project(include("Name","AggregatedRating"));
-            System.out.println("Top Recipes:");
-            collection.aggregate(Arrays.asList(matchR,sort,limit,project)).forEach(printDocuments());
-            //collection.find(filter1).sort(Sorts.descending("AggregatedRating")).limit(10).iterator().forEachRemaining(printDocuments());
-            MongoCursor<Document> cursor = collection.find(filter1).sort(Sorts.descending("AggregatedRating")).limit(10).iterator();
-            while (cursor.hasNext()) {
-                Document c = cursor.next();
-                System.out.println(c);
-                System.out.println(c.get("Name"));
-                System.out.println(c.get("RecipeId"));
-                System.out.println(c.get("AggregatedRating"));
-                System.out.println(c.get("Reviews"));
-                System.out.println("-----------------------");
-            }
-        }*/
+        tableView.initializeTableView();
+        tableView.setEventForTableCells();
+        tableView.resetObservableArrayList();
+
+        RecipeService.findRecipesWithHighestRating(10,3)
+                .forEach(recipe -> tableView.addToObservableArrayList(
+                new RowRecipeRating(recipe.getName(), recipe.getAggregatedRating(), new ImageView(recipe.getImages().get(0)))));
+
+        tableView.setItems();
+        tableView.setTableDBRating();
+        anchorPane.getChildren().add(tableView.getTabellaDB());
     }
 
     //{$sort: {'color': 1, value: -1}},
@@ -132,5 +129,9 @@ public class LoggatoAnalyticsController {
                 stage.show();
             }
         }*/
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
     }
 }

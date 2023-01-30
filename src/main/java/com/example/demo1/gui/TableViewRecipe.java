@@ -56,9 +56,9 @@ public class TableViewRecipe {
 
 
     public void setTabellaDB() {
-        //tabellaDB.setItems(ol);
         tabellaDB.getColumns().addAll(imageCol, nameCol, authorNameCol);
     }
+
     public void setItems(){
         tabellaDB.setItems(ol);
     }

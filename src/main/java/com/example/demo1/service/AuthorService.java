@@ -3,7 +3,7 @@ package com.example.demo1.service;
 import com.example.demo1.dao.mongo.AuthorMongoDAO;
 import com.example.demo1.model.Author;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class AuthorService {
 
@@ -39,7 +39,7 @@ public class AuthorService {
         return AuthorMongoDAO.getAuthor(authorName);
     }
 
-    public static ArrayList<Author> searchAuthors(String nameToSearch, Integer elementsToSkip, Integer elementsToLimit){
+    public static List<Author> searchAuthors(String nameToSearch, Integer elementsToSkip, Integer elementsToLimit){
         return AuthorMongoDAO.searchAuthors(nameToSearch, elementsToSkip, elementsToLimit);
     }
 }
