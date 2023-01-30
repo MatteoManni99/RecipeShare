@@ -35,10 +35,10 @@ public class TableViewRecipeRating {
         ratingCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
         imageCol.setCellValueFactory(new PropertyValueFactory<TableViewRecipe.CustomImage,ImageView>("image"));
 
-        tabellaDB.setPrefHeight(400);
-        tabellaDB.setPrefWidth(600);
-        tabellaDB.setLayoutX(150);
-        tabellaDB.setLayoutY(150);
+        tabellaDB.setPrefHeight(350);
+        tabellaDB.setPrefWidth(350);
+        tabellaDB.setLayoutX(50);
+        tabellaDB.setLayoutY(230);
     }
 
 
@@ -57,10 +57,6 @@ public class TableViewRecipeRating {
 
     public void resetObservableArrayList(){
         ol = FXCollections.observableArrayList();
-    }
-
-    public void setObservableArrayList(List<RowRecipeRating> list){
-        ol = FXCollections.observableList(list);
     }
     public void addToObservableArrayList(RowRecipeRating recipe){
         ol.add(recipe);

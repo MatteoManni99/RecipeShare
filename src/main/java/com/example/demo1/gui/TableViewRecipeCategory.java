@@ -36,10 +36,10 @@ public class TableViewRecipeCategory {
         ratingCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
         imageCol.setCellValueFactory(new PropertyValueFactory<TableViewRecipe.CustomImage,ImageView>("image"));
 
-        tabellaDB.setPrefHeight(400);
-        tabellaDB.setPrefWidth(600);
-        tabellaDB.setLayoutX(150);
-        tabellaDB.setLayoutY(150);
+        tabellaDB.setPrefHeight(350);
+        tabellaDB.setPrefWidth(550);
+        tabellaDB.setLayoutX(50);
+        tabellaDB.setLayoutY(230);
     }
 
 

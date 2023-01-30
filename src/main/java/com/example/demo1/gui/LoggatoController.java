@@ -63,11 +63,9 @@ public class LoggatoController implements Initializable{
     }
     public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber){
         TableViewObject.resetObservableArrayList();
-        List<RowRecipe> listRecipeTable = new ArrayList<>();
         RecipeService.getRecipeFromName(nameToSearch, pageNumber*10, 10)
-                .forEach(recipeReducted -> listRecipeTable.add(
+                .forEach(recipeReducted -> TableViewObject.addToObservableArrayList(
                         new RowRecipe(recipeReducted.getName(), recipeReducted.getAuthorName(), new ImageView(recipeReducted.getImage()))));
-        TableViewObject.setObservableArrayList(listRecipeTable);
         TableViewObject.setItems();
     }
 

@@ -13,15 +13,9 @@ import java.net.URL;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class LoggatoAnalyticsController implements Initializable {
-
-
+public class LoggatoAnalyticsController {
     @FXML
     private AnchorPane anchorPane;
-
-    private static Consumer<Document> printDocuments() {
-        return doc -> System.out.println(doc.toJson());
-    }
 
     public void onTopRecipesForRangesOfPreparationTimeClick(ActionEvent actionEvent) {
         TableViewRecipeTime tableView = new TableViewRecipeTime();
@@ -29,48 +23,34 @@ public class LoggatoAnalyticsController implements Initializable {
         tableView.setEventForTableCells();
         tableView.resetObservableArrayList();
 
-        RecipeService.findTopRecipesForRangesOfPreparationTime(0,30,1,3)
-                .forEach(recipe -> tableView.addToObservableArrayList(new RowRecipeTime(
-                        recipe.getName(), recipe.getTotalTime(), recipe.getAggregatedRating(),
-                        new ImageView(recipe.getImages().get(0)))));
-        RecipeService.findTopRecipesForRangesOfPreparationTime(31,90,1,3)
-                .forEach(recipe -> tableView.addToObservableArrayList(new RowRecipeTime(
-                        recipe.getName(), recipe.getTotalTime(), recipe.getAggregatedRating(),
-                        new ImageView(recipe.getImages().get(0)))));
-        RecipeService.findTopRecipesForRangesOfPreparationTime(90,-1,1,3)
-                .forEach(recipe -> tableView.addToObservableArrayList(new RowRecipeTime(
-                        recipe.getName(), recipe.getTotalTime(), recipe.getAggregatedRating(),
-                        new ImageView(recipe.getImages().get(0)))));
+        addTopRecipesForRangesOfPreparationTime(tableView,0, 30);
+        addTopRecipesForRangesOfPreparationTime(tableView,31, 90);
+        addTopRecipesForRangesOfPreparationTime(tableView,90, -1);
 
         tableView.setItems();
         tableView.setTable();
         anchorPane.getChildren().add(tableView.getTable());
     }
 
+    private void addTopRecipesForRangesOfPreparationTime(TableViewRecipeTime tableView, Integer min, Integer max){
+        RecipeService.findTopRecipesForRangesOfPreparationTime(min,max,1,3)
+                .forEach(recipe -> tableView.addToObservableArrayList(new RowRecipeTime(
+                        recipe.getName(), recipe.getTotalTime(), recipe.getAggregatedRating(),
+                        new ImageView(recipe.getImages().get(0)))));
+    }
+
     public void onMostUsedIngredientsClick(ActionEvent actionEvent) {
-        System.out.println("***********************QUERY SUI MOST USED INGREDIENTS***************************");
-        HashMap<String,Integer> map = RecipeService.findMostUsedIngredients(10,3);
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            System.out.println(entry.getKey() + ":" + entry.getValue().toString());
-        }
+        TableViewRecipeIngredients tableView = new TableViewRecipeIngredients();
+        tableView.initializeTableView();
+        tableView.resetObservableArrayList();
 
-        // INGREDIENTS COUNT
+        RecipeService.findMostUsedIngredients(10,3).forEach((s, integer) ->
+                tableView.addToObservableArrayList( new RowRecipeIngredients(s, integer)));
 
 
-        /*String uri = "mongodb://localhost:27017";
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("RecipeShare");
-            MongoCollection<Document> collection = database.getCollection("recipe");
-            Bson matchR = match(new Document("Reviews.19",new Document("$exists",true))); //questo non so se metterlo
-            Bson unwind = new Document("$unwind",new Document("path","$RecipeIngredientParts"));
-            Bson group = new Document("$group", new Document("_id", "$RecipeIngredientParts").
-                    append("count",new Document("$count",new Document())));
-            Bson project = project(include("RecipeIngredientParts"));
-            Bson limit = limit(10);
-            Bson sort = sort(descending("count"));
-            System.out.println("Most used Ingredients:");
-            collection.aggregate(Arrays.asList(project,unwind,group,sort,limit)).forEach(printDocuments());
-        }*/
+        tableView.setItems();
+        tableView.setTable();
+        anchorPane.getChildren().add(tableView.getTable());
     }
 
     public void onRecipesWithHighestratingClick(ActionEvent actionEvent) {
@@ -105,7 +85,4 @@ public class LoggatoAnalyticsController implements Initializable {
         anchorPane.getChildren().add(tableView.getTable());
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-    }
 }

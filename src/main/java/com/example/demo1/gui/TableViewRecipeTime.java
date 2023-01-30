@@ -37,10 +37,10 @@ public class TableViewRecipeTime {
         ratingCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
         imageCol.setCellValueFactory(new PropertyValueFactory<TableViewRecipe.CustomImage,ImageView>("image"));
 
-        tabellaDB.setPrefHeight(400);
-        tabellaDB.setPrefWidth(600);
-        tabellaDB.setLayoutX(150);
-        tabellaDB.setLayoutY(150);
+        tabellaDB.setPrefHeight(350);
+        tabellaDB.setPrefWidth(500);
+        tabellaDB.setLayoutX(50);
+        tabellaDB.setLayoutY(230);
     }
 
 
