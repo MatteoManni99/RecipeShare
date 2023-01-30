@@ -1,30 +1,22 @@
 package com.example.demo1.gui;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 
-public class TableViewRecipeCategory {
-    public TableView<RowRecipeCategory> tabellaDB;
-    private ObservableList<RowRecipeCategory> ol;
-    private TableColumn nameCol;
-    private TableColumn categoryCol;
-    private TableColumn imageCol;
-    private TableColumn ratingCol;
-
-    private Stage stage;
+public class TableViewRecipeCategory extends TableViewRecipeQuery{
+    private final TableColumn nameCol;
+    private final TableColumn categoryCol;
+    private final TableColumn imageCol;
+    private final TableColumn ratingCol;
 
     private DataSingleton data = DataSingleton.getInstance();
 
-    public void initializeTableView() {
-        tabellaDB = new TableView<>();
+    public TableViewRecipeCategory() {
+        super.table = new TableView<>();
 
         nameCol = new TableColumn<RowRecipe, String>("Name");
         categoryCol = new TableColumn<RowRecipe, String>("Category");
@@ -34,39 +26,24 @@ public class TableViewRecipeCategory {
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         categoryCol.setCellValueFactory(new PropertyValueFactory<>("recipecategory"));
         ratingCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
-        imageCol.setCellValueFactory(new PropertyValueFactory<TableViewRecipe.CustomImage,ImageView>("image"));
+        imageCol.setCellValueFactory(new PropertyValueFactory<ImageTableView,ImageView>("image"));
 
-        tabellaDB.setPrefHeight(350);
-        tabellaDB.setPrefWidth(550);
-        tabellaDB.setLayoutX(50);
-        tabellaDB.setLayoutY(230);
+        super.table.setPrefHeight(350);
+        super.table.setPrefWidth(550);
+        super.table.setLayoutX(50);
+        super.table.setLayoutY(230);
     }
 
 
+    @Override
     public void setTable() {
-        tabellaDB.getColumns().addAll(imageCol, nameCol, categoryCol, ratingCol);
+        table.getColumns().addAll(imageCol, nameCol, categoryCol, ratingCol);
     }
 
-    public void setItems(){
-        tabellaDB.setItems(ol);
-    }
-
-    public TableView<RowRecipeCategory> getTable() {
-        return tabellaDB;
-    }
-
-
-    public void resetObservableArrayList(){
-        ol = FXCollections.observableArrayList();
-    }
-
-    public void addToObservableArrayList(RowRecipeCategory recipe){
-        ol.add(recipe);
-    }
-
+    @Override
     public void setEventForTableCells() {
-        tabellaDB.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il mouse clickato
-                    TableCell cell = findCell(evt,tabellaDB);
+        table.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il mouse clickato
+                    TableCell cell = Utils.findCell(evt, table);
                     if (cell != null && !cell.isEmpty()) {
                         if(cell.getTableColumn().getText().equals("Name")){
                             //System.out.println(cell.getText()); // Andare alla pagina relativa alla ricetta
@@ -79,24 +56,5 @@ public class TableViewRecipeCategory {
         );
     }
 
-    private static TableCell findCell(MouseEvent event, TableView table) { //metodo chiamato dall'evento
-        Node node = event.getPickResult().getIntersectedNode();
-        // go up in node hierarchy until a cell is found or we can be sure no cell was clicked
-        while (node != table && !(node instanceof TableCell)) {
-            node = node.getParent();
-        }
-        return node instanceof TableCell ? (TableCell) node : null;
-    }
-
-    static class CustomImage {
-        private ImageView image;
-        CustomImage(ImageView img) {
-            this.image = img;
-            this.image.setFitHeight(50);
-            this.image.setFitWidth(50);
-        }
-        public void setImage(ImageView value) {image = value;}
-        public ImageView getImage() {return image;}
-    }
 }
 

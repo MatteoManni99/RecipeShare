@@ -4,10 +4,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.ImageView;
 
-public class RowRecipeRating {
-    private Object recipeName;
-    private Object ratingName;
-    private Object imageLink;
+public class RowRecipeRating implements RowRecipeQuery{
     private final SimpleStringProperty recipeNameTable;
     private final SimpleDoubleProperty ratingTable;
     private final ImageView imageLinkTable;

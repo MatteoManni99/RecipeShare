@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.ImageView;
 
-public class RowRecipeCategory {
+public class RowRecipeCategory implements RowRecipeQuery{
 
     private final SimpleStringProperty recipeNameTable;
     private final SimpleStringProperty categoryTable;

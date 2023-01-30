@@ -1,11 +1,9 @@
 package com.example.demo1.gui;
 
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.image.ImageView;
 
-public class RowRecipeIngredients {
+public class RowRecipeIngredients implements RowRecipeQuery {
 
     private final SimpleStringProperty ingredientTable;
     private final SimpleIntegerProperty countTable;

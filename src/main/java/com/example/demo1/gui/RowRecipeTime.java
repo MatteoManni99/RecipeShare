@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.ImageView;
 
-public class RowRecipeTime {
+public class RowRecipeTime implements RowRecipeQuery{
 
     private final SimpleStringProperty recipeNameTable;
     private final SimpleIntegerProperty timeTable;
