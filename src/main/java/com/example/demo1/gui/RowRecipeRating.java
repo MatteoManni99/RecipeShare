@@ -1,27 +1,26 @@
 package com.example.demo1.gui;
 
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.ImageView;
 
-public class RowRecipe {
+public class RowRecipeRating {
     private Object recipeName;
-    private Object authorName;
+    private Object ratingName;
     private Object imageLink;
     private final SimpleStringProperty recipeNameTable;
-    private final SimpleStringProperty authorNameTable;
+    private final SimpleDoubleProperty ratingTable;
     private final ImageView imageLinkTable;
 
 
-    public RowRecipe(String name, String authorName, ImageView image) {
+    public RowRecipeRating(String name, Double rating, ImageView image) {
         recipeNameTable = new SimpleStringProperty(name);
-        authorNameTable = new SimpleStringProperty(authorName);
+        ratingTable = new SimpleDoubleProperty(rating);
         imageLinkTable = new TableViewRecipe.CustomImage(image).getImage();
     }
 
     public String getName() { return recipeNameTable.get(); }
-    public String getAuthorName() { return authorNameTable.get(); }
+    public Double getRating() { return ratingTable.get(); }
     public ImageView getImage() { return imageLinkTable; }
 
 }
