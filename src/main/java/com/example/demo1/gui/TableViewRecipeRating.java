@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
-public class TableViewRating {
+public class TableViewRecipeRating {
     public TableView<RowRecipeRating> tabellaDB;
     private ObservableList<RowRecipeRating> ol;
     private TableColumn nameCol;
@@ -23,7 +23,6 @@ public class TableViewRating {
     private Stage stage;
 
     private DataSingleton data = DataSingleton.getInstance();
-    //private DataSingleton dataAuthor = DataSingleton.getInstance();
 
     public void initializeTableView() {
         tabellaDB = new TableView<>();

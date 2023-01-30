@@ -15,7 +15,6 @@ import java.util.function.Consumer;
 
 public class LoggatoAnalyticsController implements Initializable {
 
-    private final TableViewRating tableView = new TableViewRating();
 
     @FXML
     private AnchorPane anchorPane;
@@ -68,6 +67,10 @@ public class LoggatoAnalyticsController implements Initializable {
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
             System.out.println(entry.getKey() + ":" + entry.getValue().toString());
         }
+
+        // INGREDIENTS COUNT
+
+
         /*String uri = "mongodb://localhost:27017";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             MongoDatabase database = mongoClient.getDatabase("RecipeShare");
@@ -85,6 +88,7 @@ public class LoggatoAnalyticsController implements Initializable {
     }
 
     public void onRecipesWithHighestratingClick(ActionEvent actionEvent) {
+        TableViewRecipeRating tableView = new TableViewRecipeRating();
         tableView.initializeTableView();
         tableView.setEventForTableCells();
         tableView.resetObservableArrayList();
@@ -101,34 +105,18 @@ public class LoggatoAnalyticsController implements Initializable {
     //{$sort: {'color': 1, value: -1}},
     //{$group: {_id: '$color', value: {$first: '$value'}}}
     public void onTopRecipesForEachCategory(ActionEvent actionEvent) {
-        System.out.println("*****************QUERY TOP RECIPES FOR EACH CATEGORY*******************************");
-        List<Recipe> listTopRecipes = RecipeService.findTopRecipesForEachCategory(3);
-        for (Recipe recipe : listTopRecipes) System.out.println(listTopRecipes);
-        /*
-        String uri = Configuration.MONGODB_URL;
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
-            MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_RECIPE);
-            Bson filter = new Document("Reviews.19",new Document("$exists",true));
-            Bson match1 = match(filter);
-            Bson sort = new Document("$sort", new Document("AggregatedRating",-1));
-            Bson group = new Document("$group", new Document("_id", "$RecipeCategory")
-                    .append("Name",new Document("$first","$Name"))
-                    .append("AggregatedRating",new Document("$first","$AggregatedRating"))
-                    .append("Images",new Document("$first","$Images")));
-            collection.aggregate(Arrays.asList(match1,sort,group)).forEach(printDocuments());
+        TableViewRecipeCategory tableView = new TableViewRecipeCategory();
+        tableView.initializeTableView();
+        tableView.setEventForTableCells();
+        tableView.resetObservableArrayList();
 
-            /*MongoCursor<Document> cursor = collection.find().sort(Sorts.descending("AggregateRating")).limit(10).iterator();
-            while (cursor.hasNext()) {
-                System.out.println(cursor.next().toJson());
-                FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("LoggatoAnalytics.fxml"));
-                stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-                Scene scene = new Scene(fxmlLoader.load(), 600, 500);
-                stage.setTitle("Hello "+ name);
-                stage.setScene(scene);
-                stage.show();
-            }
-        }*/
+        RecipeService.findTopRecipesForEachCategory(3).forEach(recipe ->
+                tableView.addToObservableArrayList(new RowRecipeCategory(recipe.getName(), recipe.getRecipeCategory(),
+                        recipe.getAggregatedRating(), new ImageView(recipe.getImages().get(0)))));
+
+        tableView.setItems();
+        tableView.setTable();
+        anchorPane.getChildren().add(tableView.getTable());
     }
 
     @Override
