@@ -1,23 +1,22 @@
 package com.example.demo1.gui;
 
-import com.example.demo1.model.Recipe;
+import javafx.scene.control.TableView;
 import com.example.demo1.service.RecipeService;
 import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import org.bson.Document;
-
-import java.net.URL;
-import java.util.*;
-import java.util.function.Consumer;
 
 public class LoggatoAnalyticsController {
     @FXML
     private AnchorPane anchorPane;
 
+    private void removeOtherTableView(){anchorPane.getChildren().removeIf(node -> node instanceof TableView);}
+
     public void onTopRecipesForRangesOfPreparationTimeClick(ActionEvent actionEvent) {
+        removeOtherTableView();
+
         TableViewRecipeTime tableView = new TableViewRecipeTime();
         tableView.initializeTableView();
         tableView.setEventForTableCells();
@@ -34,12 +33,14 @@ public class LoggatoAnalyticsController {
 
     private void addTopRecipesForRangesOfPreparationTime(TableViewRecipeTime tableView, Integer min, Integer max){
         RecipeService.findTopRecipesForRangesOfPreparationTime(min,max,1,3)
-                .forEach(recipe -> tableView.addToObservableArrayList(new RowRecipeTime(
-                        recipe.getName(), recipe.getTotalTime(), recipe.getAggregatedRating(),
-                        new ImageView(recipe.getImages().get(0)))));
+                .forEach(recipe -> tableView.addToObservableArrayList(
+                        new RowRecipeTime(recipe.getName(), recipe.getTotalTime(), recipe.getAggregatedRating(),
+                                new ImageView(recipe.getImages().get(0)))));
     }
 
     public void onMostUsedIngredientsClick(ActionEvent actionEvent) {
+        removeOtherTableView();
+
         TableViewRecipeIngredients tableView = new TableViewRecipeIngredients();
         tableView.initializeTableView();
         tableView.resetObservableArrayList();
@@ -54,6 +55,8 @@ public class LoggatoAnalyticsController {
     }
 
     public void onRecipesWithHighestratingClick(ActionEvent actionEvent) {
+        removeOtherTableView();
+
         TableViewRecipeRating tableView = new TableViewRecipeRating();
         tableView.initializeTableView();
         tableView.setEventForTableCells();
@@ -71,6 +74,8 @@ public class LoggatoAnalyticsController {
     //{$sort: {'color': 1, value: -1}},
     //{$group: {_id: '$color', value: {$first: '$value'}}}
     public void onTopRecipesForEachCategory(ActionEvent actionEvent) {
+        removeOtherTableView();
+
         TableViewRecipeCategory tableView = new TableViewRecipeCategory();
         tableView.initializeTableView();
         tableView.setEventForTableCells();
