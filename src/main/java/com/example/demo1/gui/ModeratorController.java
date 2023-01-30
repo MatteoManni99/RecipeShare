@@ -119,8 +119,15 @@ public class ModeratorController implements Initializable {
         tableAuthor.getTabellaDB().addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il mouse clickato
                     TableCell cell = findCell(evt,tableAuthor.getTabellaDB());
                     if (cell != null && !cell.isEmpty()) {
-                        if(cell.getTableColumn().getText().equals("Name")){
+                        if(cell.getTableColumn().getText().equals("Promotion")){
+                            int rowIndex = cell.getIndex();
+                            authorNameClicked = (String) tableAuthor.getTabellaDB().getColumns().get(1).getCellData(rowIndex);
+                            cell.setText("1");
+                        }
+                        if(cell.getTableColumn().getText().equals("Name")) {
                             authorNameClicked = cell.getText();
+                            DataSingleton.getInstance().setOtherAuthorName(authorNameClicked);
+                            Utils.changeScene(evt,"Author.fxml");
                         }
                         evt.consume();
                     }
