@@ -11,28 +11,29 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import java.util.List;
+public class TableViewRecipeTime {
 
-public class TableViewRating {
-    public TableView<RowRecipeRating> tabellaDB;
-    private ObservableList<RowRecipeRating> ol;
+    public TableView<RowRecipeTime> tabellaDB;
+    private ObservableList<RowRecipeTime> ol;
     private TableColumn nameCol;
+    private TableColumn timeCol;
     private TableColumn imageCol;
     private TableColumn ratingCol;
 
     private Stage stage;
 
     private DataSingleton data = DataSingleton.getInstance();
-    //private DataSingleton dataAuthor = DataSingleton.getInstance();
 
     public void initializeTableView() {
         tabellaDB = new TableView<>();
 
         nameCol = new TableColumn<RowRecipe, String>("Name");
+        timeCol = new TableColumn<RowRecipe, Integer>("Time");
         ratingCol = new TableColumn<RowRecipe, Double>("Rating");
         imageCol = new TableColumn<TableViewRecipe.CustomImage, ImageView>("Image");
 
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        timeCol.setCellValueFactory(new PropertyValueFactory<>("totaltime"));
         ratingCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
         imageCol.setCellValueFactory(new PropertyValueFactory<TableViewRecipe.CustomImage,ImageView>("image"));
 
@@ -43,15 +44,15 @@ public class TableViewRating {
     }
 
 
-    public void setTableDBRating() {
-        tabellaDB.getColumns().addAll(imageCol, nameCol, ratingCol);
+    public void setTable() {
+        tabellaDB.getColumns().addAll(imageCol, nameCol, timeCol, ratingCol);
     }
 
     public void setItems(){
         tabellaDB.setItems(ol);
     }
 
-    public TableView<RowRecipeRating> getTabellaDB() {
+    public TableView<RowRecipeTime> getTable() {
         return tabellaDB;
     }
 
@@ -60,10 +61,7 @@ public class TableViewRating {
         ol = FXCollections.observableArrayList();
     }
 
-    public void setObservableArrayList(List<RowRecipeRating> list){
-        ol = FXCollections.observableList(list);
-    }
-    public void addToObservableArrayList(RowRecipeRating recipe){
+    public void addToObservableArrayList(RowRecipeTime recipe){
         ol.add(recipe);
     }
 
