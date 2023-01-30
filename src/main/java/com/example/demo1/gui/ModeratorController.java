@@ -8,10 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -23,6 +20,8 @@ import java.net.URL;
 import java.util.*;
 
 public class ModeratorController implements Initializable {
+    public String nameToSearch;
+    public TextField authorToSearchTextField;
     @FXML
     private Label recipeText;
     private double startingX;
@@ -35,6 +34,7 @@ public class ModeratorController implements Initializable {
     private String authorName;
 
     private String authorNameClicked;
+
 
     private TableViewAuthor tabella;
     @FXML
@@ -199,8 +199,10 @@ public class ModeratorController implements Initializable {
             anchorPane.getChildren().add(currentLabel);
         }
     }*/
-    public void onBrowseAuthorsClick(ActionEvent actionEvent) throws IOException {
-        DataSingleton.getInstance().setTypeOfUser("moderator");
-        Utils.changeScene(actionEvent,"Ricerca_Utente.fxml");
+    public void onFindAuthorClick(ActionEvent actionEvent) throws IOException {
+        nameToSearch = authorToSearchTextField.getText();
+        if(nameToSearch.isBlank()) nameToSearch = null;
+        pageNumber = 0;
+        searchInDBAndLoadInTableView(nameToSearch,pageNumber);
     }
 }

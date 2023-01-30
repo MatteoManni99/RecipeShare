@@ -131,7 +131,6 @@ public class SearchAuthorController implements Initializable {
 
     @FXML
     public void onCercaUtenteClick(ActionEvent actionEvent) {
-
         nameToSearch = authorToSearchTextField.getText();
         if(nameToSearch.isBlank()) nameToSearch = null;
         pageNumber = 0;
