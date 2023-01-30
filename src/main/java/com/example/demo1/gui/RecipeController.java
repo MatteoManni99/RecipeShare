@@ -57,20 +57,20 @@ public class RecipeController implements Initializable {
         image.setImage(new Image(images_list.get(indexImages)));
     }
     @FXML
-    public void onPreviousClick(ActionEvent actionEvent) throws IOException {
+    public void onPreviousClick(ActionEvent actionEvent){
         indexImages -= indexImages>0 ? 1 : 0;
         printImages();
     }
 
     @FXML
-    public void onNextClick(ActionEvent actionEvent) throws IOException {
+    public void onNextClick(ActionEvent actionEvent){
         indexImages += indexImages < images_list.size()-1 ? 1 : 0;
         printImages();
     }
 
     @FXML
     public void onBackClick(ActionEvent actionEvent) throws IOException {
-        Utils.changeScene(actionEvent,"loggato.fxml");
+        Utils.changeScene(actionEvent,"Loggato.fxml");
     }
 
     @FXML

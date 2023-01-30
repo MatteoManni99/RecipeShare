@@ -17,8 +17,9 @@ public class RecipeService {
         return RecipeMongoDAO.getRecipeByName(name);
     }
 
-    public static void addReview(String name,String reviewer,Integer rating,String review){
-        RecipeMongoDAO.addReview(name,reviewer, rating, review);
+    public static void addReview(String recipeName, String reviewer, Integer rating, String review){
+        RecipeMongoDAO.addReview(recipeName, reviewer, rating, review);
+        RecipeMongoDAO.setAggregatedRating(recipeName,RecipeMongoDAO.calculateAggregatedRating(recipeName));
     }
 
     public static void addRecipe(Recipe recipe){
