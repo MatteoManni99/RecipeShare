@@ -40,6 +40,7 @@ public class ModeratorController implements Initializable {
     @FXML
     private AnchorPane anchorPane;
     private TableViewAuthor tableAuthor = new TableViewAuthor();
+    private TableViewReportedRecipe tableReportedRecipe = new TableViewReportedRecipe();
     @FXML
     public void onLogoutClick(ActionEvent actionEvent) throws IOException {
         Utils.changeScene(actionEvent,"Login.fxml");
@@ -104,10 +105,10 @@ public class ModeratorController implements Initializable {
             });
             anchorPane.getChildren().add(promoteAuthorButton);
         }
-        createTableView(tableAuthor);
+        createTableView(tableAuthor,tableReportedRecipe);
     }
 
-    public void createTableView (TableViewAuthor TableViewObject) {
+    public void createTableView (TableViewAuthor TableViewObject,TableViewReportedRecipe tableReportedRecipe) {
         TableViewObject.initializeTableView();
         searchInDBAndLoadInTableView(authorName,pageNumber);
         TableViewObject.setTableWithPromotion();
@@ -199,10 +200,10 @@ public class ModeratorController implements Initializable {
             anchorPane.getChildren().add(currentLabel);
         }
     }*/
-    public void onFindAuthorClick(ActionEvent actionEvent) throws IOException {
-        nameToSearch = authorToSearchTextField.getText();
-        if(nameToSearch.isBlank()) nameToSearch = null;
-        pageNumber = 0;
-        searchInDBAndLoadInTableView(nameToSearch,pageNumber);
+    public void onFindAuthorClick(ActionEvent actionEvent ) throws IOException {
+        nameToSearch = authorToSearchTextField.getText( );
+        if(nameToSearch.isBlank()) nameToSearch =  null;
+        pageNumber =  0;
+        searchInDBAndLoadInTableView(nameToSearch, pageNumber);
     }
 }

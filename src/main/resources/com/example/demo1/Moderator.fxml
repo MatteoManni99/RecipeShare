@@ -20,7 +20,7 @@
             <Label fx:id="recipeText" layoutX="61.0" layoutY="134.0" text="Qui puoi vedere la lista &#10;delle Recipe reportate  " textAlignment="CENTER" />
             <Button layoutX="314.0" layoutY="166.0" mnemonicParsing="false" onAction="#onNextPageClick" text="Next" />
             <Button layoutX="160.0" layoutY="166.0" mnemonicParsing="false" onAction="#onPreviousPageClick" text="Previous" />
-            <TextField fx:id="authorToSearchTextField" layoutX="609.0" layoutY="166.0"/>
+            <TextField fx:id="authorToSearchTextField " layoutX="609.0" layoutY="166.0"/>
          </children>
       </AnchorPane>
    </children>
