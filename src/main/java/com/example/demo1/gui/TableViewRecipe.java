@@ -108,16 +108,8 @@ public class TableViewRecipe {
                 TableCell cell = findCell(evt,tabellaDB);
                 if (cell != null && !cell.isEmpty()) {
                     if(cell.getTableColumn().getText().equals("Name")){
-                        //System.out.println(cell.getText()); // Andare alla pagina relativa alla ricetta
                         data.setRecipeName(cell.getText());
                         Utils.changeScene(evt,"Recipe.fxml");
-                        /*try {
-                            Integer cellPosition = recipeNameArray.indexOf(cell.getText());
-                            data.setRecipeId(recipeIdArray.get(cellPosition));
-                            changeScene(evt,"Recipe.fxml");
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }*/
                     }
                     if(cell.getTableColumn().getText().equals("AuthorName")){
                         System.out.println(cell.getText()); // Andare alla pagina relativa all'autore

@@ -1,5 +1,6 @@
 package com.example.demo1.gui;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.ImageView;
@@ -11,7 +12,6 @@ public class RowAuthor {
 
     private SimpleStringProperty authorNameTable;
     private SimpleIntegerProperty promotionTable;
-
     private ImageView imageTable;
 
     public RowAuthor(String authorName, Integer promotion, ImageView image) {

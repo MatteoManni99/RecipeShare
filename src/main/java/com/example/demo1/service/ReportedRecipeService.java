@@ -1,6 +1,7 @@
 package com.example.demo1.service;
 
 import com.example.demo1.dao.mongo.ReportedRecipeMongoDAO;
+import com.example.demo1.model.Author;
 import com.example.demo1.model.ReportedRecipe;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class ReportedRecipeService {
         return ReportedRecipeMongoDAO.getListReportedRecipes();
     }
 
-    public static Map<String, Double> onHighestRatioQueryClick(){
+    public static List<Author> onHighestRatioQueryClick(){
         return ReportedRecipeMongoDAO.onHighestRatioQueryClick();
     }
 

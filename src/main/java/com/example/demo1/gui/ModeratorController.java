@@ -61,25 +61,13 @@ public class ModeratorController implements Initializable {
     }
 
     // IMPLEMENTATO IN REPORTED RECIPE DAO
-    public void onViewAnalyticsClick() {
-        ReportedRecipeService.onHighestRatioQueryClick().forEach((key, value) -> System.out.println(key + ":" + value));
+    public void onViewAnalyticsClick(ActionEvent actionEvent) {
+        Utils.changeScene(actionEvent,"ModeratorAnalytics.fxml");
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         startingX = recipeText.getLayoutX();
-        //List<ReportedRecipe> listaReportedRecipes = ReportedRecipeMongoDAO.getListReportedRecipes();
-        /*try (MongoClient mongoClient = MongoClients.create(uri)) { //fatto in DAO
-            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
-            MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_REPORTED_RECIPE);
-
-            MongoCursor<Document> cursor = collection.find().iterator();
-            while (cursor.hasNext())
-                listaReportedRecipes.add(cursor.next());
-        }
-        for (int i = 0; i < listaReportedRecipes.size(); i++)
-            setReportedLabels(listaReportedRecipes,i);
-        */
 
         //questa parte sotto è quella che setta il Button per la promozione
         if (DataSingleton.getInstance().getTypeOfUser().equals("moderator")) {
@@ -168,54 +156,8 @@ public class ModeratorController implements Initializable {
                         new RowReportedRecipe(reportedRecipe.getName(), reportedRecipe.getAuthorName(),reportedRecipe.getReporterName(),
                                 reportedRecipe.getDateReporting(),new ImageView(Configuration.AVATAR.get(0)/*reportedRecipe.getImage()*/))));
         tableReportedRecipe.setItems();
-        /*Document authorDoc;
-        try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
-            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
-            MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_AUTHOR);
-            MongoCursor<Document> cursor;
-            //Bson filter = Filters.regex("Name", "^(?)" + nameToSearch); //da togliere era il vecchio filtro
-            Bson filter = new Document("Name",new Document("$regex",nameToSearch).append("$options","i"));
-            Bson match = match(filter);
-            Bson project = project(new Document("authorName",1).append("promotion",1).append("image", 1));
-            if(nameToSearch == null){
-                cursor = collection.aggregate(Arrays.asList(skip(10*pageNumber),limit(10),project)).iterator();
-            }else{
-                cursor = collection.aggregate(Arrays.asList(match, skip(10*pageNumber),limit(10),project)).iterator();
-                System.out.println(nameToSearch);
-            }
-        //tableAuthor.resetObservableArrayList();
-        while (cursor.hasNext()){
-                authorDoc = cursor.next();
-                AuthorTableView author = new AuthorTableView(authorDoc.getString("authorName"),
-                        authorDoc.getInteger("promotion"),
-                        new ClassTableAuthor.CustomImageAuthor(new ImageView(Configuration.AVATAR.get(authorDoc.getInteger("image") - 1))).getImage());
-                tableAuthor.addToObservableArrayList(author);
-            }
-            tableAuthor.setItems();
-        }*/
     }
 
-
-    /*public void setReportedLabels(List<ReportedRecipe> listaReportedRecipes, int i) {
-        //listaReportedRecipes = ReportedRecipeMongoDAO.f
-        //int documentSize = listaReportedRecipes.get(0).size() - 1;
-        List<String> listaLabelNames = new ArrayList<>();
-        listaLabelNames.add("RecipeName");
-        listaLabelNames.add("Image");
-        listaLabelNames.add("AuthorName");
-        listaLabelNames.add("ReporterName");
-        double copiaStartingX = startingX - 200;
-        for (int j = 0;j < documentSize; j++) {
-            Label currentLabel = new Label();
-            Object valore = listaReportedRecipes.get(i).get(listaLabelNames.get(j));
-            currentLabel.setText((String.valueOf(valore)));
-            currentLabel.setLayoutX(copiaStartingX + j*10);
-            currentLabel.setLayoutY(recipeText.getLayoutY() + 50 + i * 10);
-            currentLabel.setMaxWidth(50);
-            copiaStartingX += currentLabel.getMaxWidth();
-            anchorPane.getChildren().add(currentLabel);
-        }
-    }*/
     public void onFindAuthorClick(ActionEvent actionEvent ) throws IOException {
         nameToSearch = authorToSearchTextField.getText( );
         if(nameToSearch.isBlank()) nameToSearch =  null;

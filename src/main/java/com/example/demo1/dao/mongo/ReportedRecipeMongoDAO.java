@@ -1,6 +1,7 @@
 package com.example.demo1.dao.mongo;
 
 import com.example.demo1.Configuration;
+import com.example.demo1.model.Author;
 import com.example.demo1.model.ReportedRecipe;
 import com.example.demo1.persistence.MongoDBDriver;
 import com.mongodb.MongoException;
@@ -12,8 +13,9 @@ import org.bson.conversions.Bson;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.mongodb.client.model.Aggregates.match;
 import static com.mongodb.client.model.Aggregates.sort;
-import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Indexes.descending;
 
 public class ReportedRecipeMongoDAO {
@@ -51,27 +53,37 @@ public class ReportedRecipeMongoDAO {
         return listaReportedRecipes;
     }
 
-    public static Map<String, Double> onHighestRatioQueryClick(){
-        Map<String, Integer> map = new TreeMap<>();
-        Map<String, Double> mapRatio = new TreeMap<>();
-        MongoCollection<Document> collectionRecipe = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_REPORTED_RECIPE);
-        MongoCollection<Document> collectionReportedRecipes = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);
-        Bson group1 = new Document("$group", new Document("_id", "$AuthorName")
+    public static List<Author> onHighestRatioQueryClick() throws MongoException{
+        Map<String, Double> map = new TreeMap<>();
+        List<Author> authorList = new ArrayList<>();
+        List<String> reportedAuthor = new ArrayList<>();
+        Bson group1 = new Document("$group", new Document("_id", "$authorName")
                 .append("count",new Document("$count",new Document())));
+        Bson match1 = match(gte("count", 1));
+        MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_REPORTED_RECIPE).aggregate(List.of(group1,match1))
+                .forEach(document -> {
+                    map.put(document.getString("_id"), document.getInteger("count").doubleValue());
+                    reportedAuthor.add(document.getString("_id"));
+                });
+
         Bson group2 = new Document("$group", new Document("_id", "$AuthorName")
                 .append("count",new Document("$count",new Document())));
-        //Bson match = match(gt("count", 1));
-        Bson sort = sort(descending("_id"));
+        Bson match2 = match(in("AuthorName", reportedAuthor));
+        MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE).aggregate(List.of(match2,group2))
+                .forEach(document -> {
+                    String authorName = document.getString("_id");
+                    Double score = document.getInteger("count") / map.get(authorName);
+                    authorList.add(new Author(authorName,score));
+                });
 
-        collectionRecipe.aggregate(List.of(group1)).forEach(document ->
-                map.put(String.valueOf(document.getString("_id")),document.getInteger("count")));
-
-        for (Document document : collectionReportedRecipes.aggregate(List.of(group2))) {
-            String authorName = document.getString("_id");
-            if (map.containsKey(authorName) && map.get(authorName)>1) //con questo tolgo quelli che hanno creato 1 ricetta (si può aumentare la soglia o togliere)
-                mapRatio.put(authorName,((double)document.getInteger("count"))/map.get(authorName));
-        }
-        return sortByValue(mapRatio,false);
+        Collections.sort(authorList, new Comparator<Author>() {
+            @Override
+            public int compare(Author o1, Author o2) {
+                return Double.compare(o1.getScore(), o2.getScore());
+            }
+        });
+        System.out.println(authorList.get(0).getName());
+        return authorList;
     }
 
     private static Map<String, Double> sortByValue(Map<String, Double> unsortMap, final boolean order)

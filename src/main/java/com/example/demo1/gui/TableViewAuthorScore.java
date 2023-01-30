@@ -10,12 +10,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
-public class TableViewAuthor {
+public class TableViewAuthorScore {
 
-    public TableView<RowAuthor> tabellaDB;
-    private ObservableList<RowAuthor> ol;
-    private TableColumn<RowAuthor, Integer> promotionCol;
-    private TableColumn<RowAuthor, String> authorNameCol;
+    public TableView<RowAuthorScore> tabellaDB;
+    private ObservableList<RowAuthorScore> ol;
+    private TableColumn<RowAuthorScore, String> authorNameCol;
+    private TableColumn<RowAuthorScore, Double> scoreCol;
     private TableColumn imageCol;
 
     private DataSingleton data = DataSingleton.getInstance();
@@ -24,12 +24,12 @@ public class TableViewAuthor {
         tabellaDB = new TableView<>();
 
         authorNameCol = new TableColumn<>("Name");
-        promotionCol = new TableColumn<>("Promotion");
         imageCol = new TableColumn<TableViewRecipe.CustomImage, ImageView>("Image");
+        scoreCol = new TableColumn<>("Score");
 
-        promotionCol.setCellValueFactory(new PropertyValueFactory<>("promotion"));
         authorNameCol.setCellValueFactory(new PropertyValueFactory<>("authorName"));
         imageCol.setCellValueFactory(new PropertyValueFactory<>("image"));
+        scoreCol.setCellValueFactory(new PropertyValueFactory<>("score"));
 
         tabellaDB.setPrefHeight(400);
         tabellaDB.setPrefWidth(300);
@@ -37,20 +37,18 @@ public class TableViewAuthor {
         tabellaDB.setLayoutY(200);
     }
 
-    public void setTableWithPromotion() {tabellaDB.getColumns().addAll(imageCol, authorNameCol, promotionCol);}
-
-    public void setTableWithoutPromotion() {tabellaDB.getColumns().addAll(imageCol, authorNameCol);}
+    public void setTable() {tabellaDB.getColumns().addAll(authorNameCol, scoreCol);}
 
     public void setItems(){tabellaDB.setItems(ol);}
 
-    public TableView<RowAuthor> getTabellaDB() {
+    public TableView<RowAuthorScore> getTabellaDB() {
         return tabellaDB;
     }
 
     public void resetObservableArrayList(){
         ol = FXCollections.observableArrayList();
     }
-    public void addToObservableArrayList(RowAuthor author){
+    public void addToObservableArrayList(RowAuthorScore author){
         ol.add(author);
     }
     public void setEventForTableCells() {
