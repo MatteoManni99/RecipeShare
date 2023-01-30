@@ -19,30 +19,33 @@ public class TableViewReportedRecipe {
     private TableColumn nameCol;
     private TableColumn authorNameCol;
     private TableColumn reporterNameCol;
+    private TableColumn dateReportingCol;
     private TableColumn imageCol;
 
-    public void initializeTableView(String classe) {
+    public void initializeTableView() {
         tabellaDB = new TableView<>();
 
         nameCol = new TableColumn<RowReportedRecipe, String>("Name");
         authorNameCol = new TableColumn<RowReportedRecipe, String>("AuthorName");
         reporterNameCol = new TableColumn<RowReportedRecipe, String>("ReporterName");
+        dateReportingCol = new TableColumn<RowReportedRecipe, String>("DateReporting");
         imageCol = new TableColumn<CustomImage, ImageView>("Image");
 
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         authorNameCol.setCellValueFactory(new PropertyValueFactory<>("authorName"));
         reporterNameCol.setCellValueFactory(new PropertyValueFactory<>("reporterName"));
+        dateReportingCol.setCellValueFactory(new PropertyValueFactory<>("dateReporting"));
         imageCol.setCellValueFactory(new PropertyValueFactory<CustomImage,ImageView>("image"));
 
         tabellaDB.setPrefHeight(400);
-        tabellaDB.setPrefWidth(600);
-        tabellaDB.setLayoutX(150);
-        tabellaDB.setLayoutY(150);
+        tabellaDB.setPrefWidth(500);
+        tabellaDB.setLayoutX(40);
+        tabellaDB.setLayoutY(200);
     }
 
 
     public void setTabellaDB() {
-        tabellaDB.getColumns().addAll(imageCol, nameCol, authorNameCol, reporterNameCol);
+        tabellaDB.getColumns().addAll(imageCol, nameCol, authorNameCol, reporterNameCol, dateReportingCol);
     }
 
     public void setItems(){

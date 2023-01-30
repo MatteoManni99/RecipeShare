@@ -29,7 +29,7 @@ public class TableViewAuthor {
 
         tabellaDB.setPrefHeight(400);
         tabellaDB.setPrefWidth(300);
-        tabellaDB.setLayoutX(150);
+        tabellaDB.setLayoutX(600);
         tabellaDB.setLayoutY(200);
     }
 

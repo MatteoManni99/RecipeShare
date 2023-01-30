@@ -2,6 +2,7 @@ package com.example.demo1.gui;
 
 import com.example.demo1.Configuration;
 import com.example.demo1.model.Author;
+import com.example.demo1.model.ReportedRecipe;
 import com.example.demo1.service.AuthorService;
 import com.example.demo1.service.ReportedRecipeService;
 import javafx.event.ActionEvent;
@@ -32,7 +33,8 @@ public class ModeratorController implements Initializable {
     private VBox vbox;
     private Integer pageNumber = 0;
     private String authorName;
-
+    private Integer pageNumberReportedRecipe = 0;
+    private String recipeName;
     private String authorNameClicked;
 
 
@@ -40,7 +42,7 @@ public class ModeratorController implements Initializable {
     @FXML
     private AnchorPane anchorPane;
     private TableViewAuthor tableAuthor = new TableViewAuthor();
-    //private TableViewReportedRecipe tableReportedRecipe = new TableViewReportedRecipe();
+    private TableViewReportedRecipe tableReportedRecipe = new TableViewReportedRecipe();
     @FXML
     public void onLogoutClick(ActionEvent actionEvent) throws IOException {
         Utils.changeScene(actionEvent,"Login.fxml");
@@ -105,15 +107,19 @@ public class ModeratorController implements Initializable {
             });
             anchorPane.getChildren().add(promoteAuthorButton);
         }
-        createTableView(tableAuthor/*,tableReportedRecipe*/);
+        createTableView(tableAuthor,tableReportedRecipe);
     }
 
-    public void createTableView (TableViewAuthor TableViewObject/*,TableViewReportedRecipe tableReportedRecipe*/) {
+    public void createTableView (TableViewAuthor TableViewObject,TableViewReportedRecipe tableReportedRecipe) {
         TableViewObject.initializeTableView();
+        tableReportedRecipe.initializeTableView();
         searchInDBAndLoadInTableView(authorName,pageNumber);
+        searchInDBAndLoadInTableViewReportedRecipe(recipeName,pageNumberReportedRecipe);
         TableViewObject.setTableWithPromotion();
+        tableReportedRecipe.setTabellaDB();
+        tableReportedRecipe.setEventForTableCells();
         setEventForTableCells();
-        anchorPane.getChildren().add(TableViewObject.getTabellaDB());
+        anchorPane.getChildren().addAll(TableViewObject.getTabellaDB(),tableReportedRecipe.getTabellaDB());
     }
 
     public void setEventForTableCells() {
@@ -144,14 +150,24 @@ public class ModeratorController implements Initializable {
         return node instanceof TableCell ? (TableCell) node : null;
     }
 
-    public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber){
-        List<Author> listAuthorsSearched = AuthorService.searchAuthors(nameToSearch,10*pageNumber,10);
+    public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber) {
+        List<Author> listAuthorsSearched = AuthorService.searchAuthors(nameToSearch, 10 * pageNumber, 10);
         tableAuthor.resetObservableArrayList();
         listAuthorsSearched.forEach(author ->
                 tableAuthor.addToObservableArrayList(
                         new RowAuthor(author.getName(), author.getPromotion(),
-                                new ImageView(Configuration.AVATAR.get(author.getImage()-1)))));
+                                new ImageView(Configuration.AVATAR.get(author.getImage() - 1)))));
         tableAuthor.setItems();
+    }
+
+    public void searchInDBAndLoadInTableViewReportedRecipe(String nameToSearch, Integer pageNumber){
+        List<ReportedRecipe> listReportedRecipesSearched = ReportedRecipeService.getListReportedRecipes();
+        tableReportedRecipe.resetObservableArrayList();
+        listReportedRecipesSearched.forEach(reportedRecipe ->
+                tableReportedRecipe.addToObservableArrayList(
+                        new RowReportedRecipe(reportedRecipe.getName(), reportedRecipe.getAuthorName(),reportedRecipe.getReporterName(),
+                                reportedRecipe.getDateReporting(),new ImageView(Configuration.AVATAR.get(0)/*reportedRecipe.getImage()*/))));
+        tableReportedRecipe.setItems();
         /*Document authorDoc;
         try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
             MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
