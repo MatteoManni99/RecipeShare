@@ -29,9 +29,7 @@ public class TableViewRecipe extends TableViewAbstract {
     }
 
 
-    public void setTable() {
-        table.getColumns().addAll(imageCol, nameCol, authorNameCol);
-    }
+    public void setTable() {table.getColumns().addAll(imageCol, nameCol, authorNameCol);}
 
 
 }

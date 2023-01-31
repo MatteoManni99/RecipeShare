@@ -1,7 +1,5 @@
 package com.example.demo1.model;
 
-import java.util.List;
-
 public class RecipeReducted {
 
     private String name;

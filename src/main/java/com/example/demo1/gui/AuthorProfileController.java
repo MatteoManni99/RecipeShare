@@ -107,7 +107,7 @@ public class AuthorProfileController implements Initializable {
             temp.setId(String.valueOf(i+1));
             temp.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il click sull'immagine
                 System.out.println(temp.getId());
-                DataSingleton.getInstance().setAvatar(Integer.parseInt(temp.getId()) - 1);
+                DataSingleton.getInstance().setAvatar(Integer.parseInt(temp.getId()));
                 int avatarIndex = anchorPane.getChildren().indexOf(avatar);
                 avatar.setImage(Configuration.AVATAR.get(Integer.parseInt(temp.getId()) - 1));
                 avatar.setX(avatarLabel.getLayoutX());
@@ -148,13 +148,12 @@ public class AuthorProfileController implements Initializable {
     }
 
     public void searchInDBAndLoadInTableView(String nameToSearch, int pageNumber) { //chiamata a DAO
-        List<RecipeReducted> recipeReductedList = RecipeService.getRecipeFromAuthor(DataSingleton.getInstance().getAuthorName(),10 * pageNumber,10);
         TableViewObject.resetObservableArrayList();
-        for (RecipeReducted recipeReducted : recipeReductedList) {
-            RowRecipe recipe = new RowRecipe( recipeReducted.getName(), recipeReducted.getAuthorName(),
-                    new ImageTableView(new ImageView(recipeReducted.getImage())).getImage());
-            TableViewObject.addToObservableArrayList(recipe);
-        }
+        RecipeService.getRecipeFromAuthor(DataSingleton.getInstance().getAuthorName(),
+                10 * pageNumber,10).forEach(recipeReducted ->
+                TableViewObject.addToObservableArrayList(new RowRecipe( recipeReducted.getName(),
+                        recipeReducted.getAuthorName(),
+                        new ImageTableView(new ImageView(recipeReducted.getImage())).getImage())));
         TableViewObject.setItems();
     }
 
@@ -166,8 +165,7 @@ public class AuthorProfileController implements Initializable {
         TableViewObject.getTable().setLayoutX(20);
         TableViewObject.getTable().setLayoutY(240);
         anchorPane.getChildren().addAll(TableViewObject.getTable());
-        //avatarsAvailable.forEach(image -> anchorPane.getChildren().add((Node) image));
-        for (int i = 0; i < 8; i++) anchorPane.getChildren().add((Node) avatarsAvailable.get(i));
+        avatarsAvailable.forEach(image -> anchorPane.getChildren().add((Node) image));
     }
 
     public void changeProfileParameter(ActionEvent actionEvent) {

@@ -1,14 +1,11 @@
 package com.example.demo1.gui;
 
 import com.example.demo1.Configuration;
-import com.example.demo1.model.Author;
-import com.example.demo1.model.ReportedRecipe;
 import com.example.demo1.service.AuthorService;
 import com.example.demo1.service.ReportedRecipeService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;

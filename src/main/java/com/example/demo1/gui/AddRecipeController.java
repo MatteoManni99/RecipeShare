@@ -1,22 +1,21 @@
 package com.example.demo1.gui;
+
 import com.example.demo1.model.Recipe;
 import com.example.demo1.service.RecipeService;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-
 import javafx.fxml.Initializable;
-
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddRecipeController implements Initializable {
@@ -29,16 +28,16 @@ public class AddRecipeController implements Initializable {
     public TextArea descriptionField;
     public TextField keywordField;
     public ListView<String> keywordListView;
-    private final ArrayList<String> keywordArrayList = new ArrayList<>();
+    private final List<String> keywordArrayList = new ArrayList<>();
     public TextField ingredientField;
     public ListView<String> ingredientListView;
-    private final ArrayList<String> ingredientArrayList = new ArrayList<>();
+    private final List<String> ingredientArrayList = new ArrayList<>();
     public TextField imageField;
     public ListView<String> imageListView;
-    private final ArrayList<String> imageArrayList = new ArrayList<>();
+    private final List<String> imageArrayList = new ArrayList<>();
     public TextField instructionsField;
     public ListView<String> instructionsListView;
-    private final ArrayList<String> instructionsArrayList = new ArrayList<>();
+    private final List<String> instructionsArrayList = new ArrayList<>();
     ObservableList<String> observableList;
 
     @Override
@@ -131,7 +130,7 @@ public class AddRecipeController implements Initializable {
     public void onRemoveInstructionClick(ActionEvent actionEvent) {
         onRemove(instructionsField,instructionsArrayList,ingredientListView);
     }
-    private void onRemove(TextField textField, ArrayList<String> arrayList, ListView<String> listView){
+    private void onRemove(TextField textField, List<String> arrayList, ListView<String> listView){
         String field = textField.getText();
         if(!field.isBlank() && !field.isEmpty()) {
             arrayList.remove(field);
@@ -139,7 +138,7 @@ public class AddRecipeController implements Initializable {
             listView.setItems(observableList);
         }
     }
-    private void onAdd(TextField textField, ArrayList<String> arrayList, ListView<String> listView){
+    private void onAdd(TextField textField, List<String> arrayList, ListView<String> listView){
         String field = textField.getText();
         if(!field.isBlank() && !field.isEmpty()) {
             arrayList.add(field);

@@ -52,17 +52,16 @@ public class AuthorMongoDAO {
     }
 
     public static void updateImage(String authorName, Integer newImageIndex) throws MongoException{
-        MongoCollection<Document> authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
-        Document query = new Document().append("authorName", authorName);
-        Bson updates = Updates.combine(Updates.set("image", newImageIndex));
-        authorCollection.updateOne(query, updates);
+        MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR)
+                .updateOne(new Document().append("authorName", authorName),
+                    Updates.combine(Updates.set("image", newImageIndex)));
     }
 
     public static void updatePromotion(String authorName, Integer newPromotionValue) throws MongoException{
-        Document query = new Document().append("authorName", authorName);
-        Bson updates = Updates.combine(Updates.set("promotion",newPromotionValue));
-        UpdateOptions options = new UpdateOptions().upsert(true);
-        MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR).updateOne(query, updates, options);
+        MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR)
+                .updateOne(new Document().append("authorName", authorName),
+                            Updates.combine(Updates.set("promotion",newPromotionValue)),
+                                new UpdateOptions().upsert(true));
     }
 
     public static boolean changeAuthorName(String newAuthorName, Author currentAuthor) throws MongoException{
@@ -86,9 +85,9 @@ public class AuthorMongoDAO {
         }
     }
     public static void changePassword(String newPassword, Author author)  throws MongoException{
-        Document query = new Document().append("authorName", author.getName());
-        Bson updates = Updates.combine(Updates.set("password", newPassword));
-        MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR).updateOne(query, updates);
+        MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR).updateOne(
+                new Document().append("authorName", author.getName()),
+                    Updates.combine(Updates.set("password", newPassword)));
         System.out.println("Pass CAMBIATA");
     }
 

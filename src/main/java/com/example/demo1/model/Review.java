@@ -1,10 +1,5 @@
 package com.example.demo1.model;
 
-import org.bson.Document;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Review {
     private String authorName;
     private Integer rating;

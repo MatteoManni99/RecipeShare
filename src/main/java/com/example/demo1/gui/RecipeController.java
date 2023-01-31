@@ -47,9 +47,7 @@ public class RecipeController implements Initializable {
     private List<String> images_list;
     private String recipeName;
     private Recipe recipe;
-
     private final TableViewAbstract tableViewReview = new TableViewReview();
-
 
     private final ArrayList<String> reviewers = new ArrayList<>();
 

@@ -14,9 +14,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.mongodb.client.model.Aggregates.match;
-import static com.mongodb.client.model.Aggregates.sort;
 import static com.mongodb.client.model.Filters.*;
-import static com.mongodb.client.model.Indexes.descending;
 
 public class ReportedRecipeMongoDAO {
 
@@ -43,7 +41,7 @@ public class ReportedRecipeMongoDAO {
     }
     private static ReportedRecipe fromDocToReportedRecipe(Document doc){
         return new ReportedRecipe(doc.getString("name"),doc.getString("authorName"),
-                doc.getString("reporterName"),doc.getString("dateReporting"), doc.getString("image"));
+                doc.getString("reporterName"),doc.getString("dateReporting"), doc.getString("images"));
     }
 
     public static List<ReportedRecipe> getListReportedRecipes() throws MongoException {
@@ -76,12 +74,15 @@ public class ReportedRecipeMongoDAO {
                     authorList.add(new Author(authorName,score));
                 });
 
-        Collections.sort(authorList, new Comparator<Author>() {
+        /*Collections.sort(authorList, new Comparator<Author>() {
             @Override
             public int compare(Author o1, Author o2) {
                 return Double.compare(o1.getScore(), o2.getScore());
             }
-        });
+        });*/
+
+        authorList.sort(Comparator.comparingDouble(Author::getScore));
+
         System.out.println(authorList.get(0).getName());
         return authorList;
     }

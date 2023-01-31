@@ -5,7 +5,6 @@ import com.example.demo1.Configuration;
 import com.example.demo1.persistence.MongoDBDriver;
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
-
 import org.bson.Document;
 import org.bson.types.ObjectId;
 

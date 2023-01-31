@@ -5,12 +5,10 @@ import com.example.demo1.service.AuthorService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,14 +17,13 @@ public class SearchAuthorController implements Initializable {
     @FXML
     public Button cercaUtenteButton;
     public TextField authorToSearchTextField;
-    private Stage stage;
     private String authorNameClicked; //qui ci salvo l'utente della tabella che è stato clickato e che quindi si vuole promuovere
     public AnchorPane anchorPane;
     private Integer pageNumber = 0;
     private String nameToSearch = null;
 
 
-    private TableViewAbstract tableViewAuthor = new TableViewAuthor();
+    private final TableViewAbstract tableViewAuthor = new TableViewAuthor();
 
     private TableViewAbstract tabella;
 

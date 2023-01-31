@@ -50,18 +50,19 @@ public class LoggatoAnalyticsController {
     }
 
     public void onRecipesWithHighestratingClick(ActionEvent actionEvent) {
-        TableViewRecipeRating tableView = new TableViewRecipeRating();
+        TableViewAbstract tableView = new TableViewRecipeRating();
         initializeTableView(tableView);
         RecipeService.findRecipesWithHighestRating(10,3)
                 .forEach(recipe -> tableView.addToObservableArrayList(
-                new RowRecipeRating(recipe.getName(), recipe.getAggregatedRating(), new ImageView(recipe.getImages().get(0)))));
+                    new RowRecipeRating(recipe.getName(), recipe.getAggregatedRating(),
+                        new ImageView(recipe.getImages().get(0)))));
         displayTableView(tableView);
     }
 
     //{$sort: {'color': 1, value: -1}},
     //{$group: {_id: '$color', value: {$first: '$value'}}}
     public void onTopRecipesForEachCategory(ActionEvent actionEvent) {
-        TableViewRecipeCategory tableView = new TableViewRecipeCategory();
+        TableViewAbstract tableView = new TableViewRecipeCategory();
         initializeTableView(tableView);
         RecipeService.findTopRecipesForEachCategory(3).forEach(recipe ->
                 tableView.addToObservableArrayList(new RowRecipeCategory(recipe.getName(), recipe.getRecipeCategory(),

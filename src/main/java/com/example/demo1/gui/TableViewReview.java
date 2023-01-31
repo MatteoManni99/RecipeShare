@@ -27,8 +27,6 @@ public class TableViewReview extends TableViewAbstract {
         //table.pol(TableView.C);
     }
 
-    public void setTable() {
-        table.getColumns().addAll(ratingCol, authorNameCol, descriptionCol);
-    }
+    public void setTable() {table.getColumns().addAll(ratingCol, authorNameCol, descriptionCol);}
 
 }

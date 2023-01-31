@@ -1,19 +1,14 @@
 package com.example.demo1.gui;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 
 public class TableViewAuthor extends TableViewAbstract{
     private final TableColumn<RowTableView, Integer> promotionCol;
     private final TableColumn<RowTableView, String> authorNameCol;
-    private TableColumn<RowTableView, ImageView> imageCol;
+    private final TableColumn<RowTableView, ImageView> imageCol;
 
 
     public TableViewAuthor() {
@@ -42,7 +37,7 @@ public class TableViewAuthor extends TableViewAbstract{
     }
 
     public void setTable(){
-        if (data.getInstance().getTypeOfUser().equals("moderator")) setTableWithPromotion();
+        if (data.getTypeOfUser().equals("moderator")) setTableWithPromotion();
         else setTableWithoutPromotion();
     }
 

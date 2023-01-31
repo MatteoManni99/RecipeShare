@@ -5,13 +5,13 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class RowAuthorScore implements RowTableView {
 
-    private SimpleStringProperty authorNameTable;
-    private SimpleDoubleProperty scoreTable;
+    private final SimpleStringProperty authorNameTable;
+    private final SimpleDoubleProperty scoreTable;
 
     public RowAuthorScore(String authorName, Double score) {
         authorNameTable = new SimpleStringProperty(authorName);
         scoreTable = new SimpleDoubleProperty(score);
-        //imageTable = new TableViewAuthor.CustomImageAuthor(image).getImage();
+        //imageTable = new ImageTable(image).getImage();
     }
 
     public String getAuthorName() { return authorNameTable.get(); }

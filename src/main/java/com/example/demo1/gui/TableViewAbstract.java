@@ -36,16 +36,10 @@ public abstract class TableViewAbstract {
 
     public void setItems() {table.setItems(ol);}
 
-    public TableView<RowTableView> getTable() {
-        return table;
-    }
+    public TableView<RowTableView> getTable() {return table;}
 
-    public void resetObservableArrayList() {
-        ol = FXCollections.observableArrayList();
-    }
+    public void resetObservableArrayList() {ol = FXCollections.observableArrayList();}
 
-    public void addToObservableArrayList(RowTableView recipe) {
-        ol.add(recipe);
-    }
+    public void addToObservableArrayList(RowTableView recipe) {ol.add(recipe);}
 
 }
