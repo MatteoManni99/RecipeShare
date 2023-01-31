@@ -14,7 +14,7 @@ public class LoggatoAnalyticsController {
     private void removeOtherTableView(){anchorPane.getChildren().removeIf(node -> node instanceof TableView);}
 
     public void onTopRecipesForRangesOfPreparationTimeClick(ActionEvent actionEvent) {
-        TableViewRecipeQuery tableView = new TableViewRecipeTime();
+        TableViewAbstract tableView = new TableViewRecipeTime();
         initializeTableView(tableView);
         addTopRecipesForRangesOfPreparationTime(tableView,0, 30);
         addTopRecipesForRangesOfPreparationTime(tableView,31, 90);
@@ -22,19 +22,19 @@ public class LoggatoAnalyticsController {
         displayTableView(tableView);
     }
 
-    private void displayTableView(TableViewRecipeQuery tableView) {
+    private void displayTableView(TableViewAbstract tableView) {
         tableView.setItems();
         tableView.setTable();
         anchorPane.getChildren().add(tableView.getTable());
     }
 
-    private void initializeTableView(TableViewRecipeQuery tableView) {
+    private void initializeTableView(TableViewAbstract tableView) {
         removeOtherTableView();
         tableView.setEventForTableCells();
         tableView.resetObservableArrayList();
     }
 
-    private void addTopRecipesForRangesOfPreparationTime(TableViewRecipeQuery tableView, Integer min, Integer max){
+    private void addTopRecipesForRangesOfPreparationTime(TableViewAbstract tableView, Integer min, Integer max){
         RecipeService.findTopRecipesForRangesOfPreparationTime(min,max,1,3)
                 .forEach(recipe -> tableView.addToObservableArrayList(
                         new RowRecipeTime(recipe.getName(), recipe.getTotalTime(), recipe.getAggregatedRating(),
@@ -42,7 +42,7 @@ public class LoggatoAnalyticsController {
     }
 
     public void onMostUsedIngredientsClick(ActionEvent actionEvent) {
-        TableViewRecipeQuery tableView = new TableViewRecipeIngredients();
+        TableViewAbstract tableView = new TableViewRecipeIngredients();
         initializeTableView(tableView);
         RecipeService.findMostUsedIngredients(10,3).forEach((s, integer) ->
                 tableView.addToObservableArrayList( new RowRecipeIngredients(s, integer)));

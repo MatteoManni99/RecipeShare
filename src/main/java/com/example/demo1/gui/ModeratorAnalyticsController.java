@@ -27,17 +27,15 @@ public class ModeratorAnalyticsController implements Initializable {
     }
 
     public void createTableView (TableViewAuthorScore TableViewObject) {
-        TableViewObject.initializeTableView();
         searchInDBAndLoadInTableView(pageNumber);
         TableViewObject.setTable();
         TableViewObject.setEventForTableCells();
-        anchorPane.getChildren().add(TableViewObject.getTabellaDB());
+        anchorPane.getChildren().add(TableViewObject.getTable());
     }
 
     public void searchInDBAndLoadInTableView(Integer pageNumber){
         tableViewAuthorScore.resetObservableArrayList();
-        List<Author> listAuthors = ReportedRecipeService.onHighestRatioQueryClick();
-        listAuthors.forEach(author ->
+        ReportedRecipeService.onHighestRatioQueryClick().forEach(author ->
                 tableViewAuthorScore.addToObservableArrayList(new RowAuthorScore(author.getName(),author.getScore())));
         tableViewAuthorScore.setItems();
     }

@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.ImageView;
 
-public class RowRecipeCategory implements RowRecipeQuery{
+public class RowRecipeCategory implements RowTableView {
 
     private final SimpleStringProperty recipeNameTable;
     private final SimpleStringProperty categoryTable;
@@ -16,7 +16,7 @@ public class RowRecipeCategory implements RowRecipeQuery{
         recipeNameTable = new SimpleStringProperty(name);
         categoryTable = new SimpleStringProperty(category);
         ratingTable = new SimpleDoubleProperty(rating);
-        imageLinkTable = new TableViewRecipe.CustomImage(image).getImage();
+        imageLinkTable = new ImageTableView(image).getImage();
     }
 
     public String getName() { return recipeNameTable.get(); }

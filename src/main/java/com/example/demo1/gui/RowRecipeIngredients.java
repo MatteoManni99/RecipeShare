@@ -3,7 +3,7 @@ package com.example.demo1.gui;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class RowRecipeIngredients implements RowRecipeQuery {
+public class RowRecipeIngredients implements RowTableView {
 
     private final SimpleStringProperty ingredientTable;
     private final SimpleIntegerProperty countTable;

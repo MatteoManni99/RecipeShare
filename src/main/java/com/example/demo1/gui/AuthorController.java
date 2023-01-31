@@ -13,8 +13,6 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -30,7 +28,7 @@ public class AuthorController implements Initializable {
     private final DataSingleton data = DataSingleton.getInstance();
     private String authorName;
 
-    private final TableViewRecipe TableViewObject = new TableViewRecipe();
+    private final TableViewAbstract TableViewObject = new TableViewRecipe();
 
     @FXML
     private AnchorPane anchorPane;
@@ -62,17 +60,16 @@ public class AuthorController implements Initializable {
         if (author == null) System.out.println("NON ESISTE NELLA COLLECTION AUTHOR"); //problema: authorName c'è in Recipe ma non in Author
         name.setText(Objects.requireNonNull(author).getName());
         image.setImage(Configuration.AVATAR.get(author.getImage() - 1));
-        createTableView(TableViewObject);
+        createTableView();
     }
 
-    public void createTableView(TableViewRecipe TableViewObject) {
-        TableViewObject.initializeTableView("Loggato");
+    public void createTableView() {
         searchInDBAndLoadInTableView(authorName, pageNumber);
         TableViewObject.setEventForTableCells();
-        TableViewObject.setTabellaDB();
-        TableViewObject.getTabellaDB().setLayoutX(40);
-        TableViewObject.getTabellaDB().setLayoutY(240);
-        anchorPane.getChildren().add(TableViewObject.getTabellaDB());
+        TableViewObject.setTable();
+        TableViewObject.getTable().setLayoutX(40);
+        TableViewObject.getTable().setLayoutY(240);
+        anchorPane.getChildren().add(TableViewObject.getTable());
     }
 
     public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber) {

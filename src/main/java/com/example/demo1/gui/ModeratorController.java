@@ -107,7 +107,7 @@ public class ModeratorController implements Initializable {
         tableReportedRecipe.setTabellaDB();
         tableReportedRecipe.setEventForTableCells();
         setEventForTableCells();
-        anchorPane.getChildren().addAll(TableViewObject.getTabellaDB(),tableReportedRecipe.getTabellaDB());
+        anchorPane.getChildren().addAll(TableViewObject.getTabellaDB(),tableReportedRecipe.getTable());
     }
 
     public void setEventForTableCells() {

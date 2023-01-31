@@ -48,7 +48,7 @@ public class RecipeController implements Initializable {
     private String recipeName;
     private Recipe recipe;
 
-    private TableViewReview tableViewReview = new TableViewReview();
+    private TableViewAbstract tableViewReview = new TableViewReview();
 
 
     private ArrayList<String> reviewers = new ArrayList<>();
@@ -134,10 +134,10 @@ public class RecipeController implements Initializable {
         tableViewReview.setItems();
     }
     public void initializeTableViewReview(){
-        tableViewReview.initializeTableView();
         tableViewReview.resetObservableArrayList();
-        tableViewReview.setTableDB();
-        anchorPane.getChildren().add(tableViewReview.getTableDB());
+        tableViewReview.setEventForTableCells();
+        tableViewReview.setTable();
+        anchorPane.getChildren().add(tableViewReview.getTable());
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

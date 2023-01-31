@@ -1,18 +1,12 @@
 package com.example.demo1.gui;
 
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.image.ImageView;
 
-public class RowAuthorScore {
-    private Object authorName;
-    private Object score;
-    //private Object image;
+public class RowAuthorScore implements RowTableView {
 
     private SimpleStringProperty authorNameTable;
     private SimpleDoubleProperty scoreTable;
-    //private ImageView imageTable;
 
     public RowAuthorScore(String authorName, Double score) {
         authorNameTable = new SimpleStringProperty(authorName);

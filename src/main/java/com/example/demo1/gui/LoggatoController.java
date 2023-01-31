@@ -17,7 +17,7 @@ public class LoggatoController implements Initializable{
     public AnchorPane anchorPane;
     @FXML
     private Label welcomeText;
-    private final TableViewRecipe TableViewObject = new TableViewRecipe();
+    private final TableViewAbstract TableViewObject = new TableViewRecipe();
     @FXML
     private TextField nameToSearchTextField;
     private String nameToSearch = null;
@@ -71,11 +71,10 @@ public class LoggatoController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        TableViewObject.initializeTableView("Loggato");
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
         TableViewObject.setEventForTableCells();
-        TableViewObject.setTabellaDB();
-        anchorPane.getChildren().add(TableViewObject.getTabellaDB());
+        TableViewObject.setTable();
+        anchorPane.getChildren().add(TableViewObject.getTable());
     }
 
     @FXML

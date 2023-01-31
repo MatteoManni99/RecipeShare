@@ -102,7 +102,7 @@ public class SearchAuthorController implements Initializable {
         tableViewAuthor.resetObservableArrayList();
         AuthorService.searchAuthors(nameToSearch,pageNumber*10,10).forEach( author -> {
             RowAuthor authorTableView = new RowAuthor(author.getName(), author.getPromotion(),
-                    new TableViewAuthor.CustomImageAuthor(new ImageView(Configuration.AVATAR.get(author.getImage() - 1))).getImage());
+                    new ImageTableView(new ImageView(Configuration.AVATAR.get(author.getImage() - 1))).getImage());
             tableViewAuthor.addToObservableArrayList(authorTableView);
         });
         tableViewAuthor.setItems();

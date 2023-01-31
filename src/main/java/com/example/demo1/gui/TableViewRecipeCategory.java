@@ -1,59 +1,40 @@
 package com.example.demo1.gui;
 
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 
-public class TableViewRecipeCategory extends TableViewRecipeQuery{
-    private final TableColumn nameCol;
-    private final TableColumn categoryCol;
+public class TableViewRecipeCategory extends TableViewAbstract {
+    private final TableColumn<RowTableView, String> nameCol;
+    private final TableColumn<RowTableView, String> categoryCol;
     private final TableColumn imageCol;
-    private final TableColumn ratingCol;
+    private final TableColumn<RowTableView, Double> ratingCol;
 
-    private DataSingleton data = DataSingleton.getInstance();
 
     public TableViewRecipeCategory() {
-        super.table = new TableView<>();
+        table = new TableView<>();
 
-        nameCol = new TableColumn<RowRecipe, String>("Name");
-        categoryCol = new TableColumn<RowRecipe, String>("Category");
-        ratingCol = new TableColumn<RowRecipe, Double>("Rating");
-        imageCol = new TableColumn<TableViewRecipe.CustomImage, ImageView>("Image");
+        nameCol = new TableColumn<>("Name");
+        categoryCol = new TableColumn<>("Category");
+        ratingCol = new TableColumn<>("Rating");
+        imageCol = new TableColumn<ImageTableView, ImageView>("Image");
 
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         categoryCol.setCellValueFactory(new PropertyValueFactory<>("recipecategory"));
         ratingCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
         imageCol.setCellValueFactory(new PropertyValueFactory<ImageTableView,ImageView>("image"));
 
-        super.table.setPrefHeight(350);
-        super.table.setPrefWidth(550);
-        super.table.setLayoutX(50);
-        super.table.setLayoutY(230);
+        table.setPrefHeight(350);
+        table.setPrefWidth(550);
+        table.setLayoutX(50);
+        table.setLayoutY(230);
     }
 
 
     @Override
     public void setTable() {
         table.getColumns().addAll(imageCol, nameCol, categoryCol, ratingCol);
-    }
-
-    @Override
-    public void setEventForTableCells() {
-        table.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il mouse clickato
-                    TableCell cell = Utils.findCell(evt, table);
-                    if (cell != null && !cell.isEmpty()) {
-                        if(cell.getTableColumn().getText().equals("Name")){
-                            //System.out.println(cell.getText()); // Andare alla pagina relativa alla ricetta
-                            data.setRecipeName(cell.getText());
-                            Utils.changeScene(evt,"Recipe.fxml");
-                        }
-                        evt.consume();
-                    }
-                }
-        );
     }
 
 }

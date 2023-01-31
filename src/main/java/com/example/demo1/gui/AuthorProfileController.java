@@ -144,7 +144,7 @@ public class AuthorProfileController implements Initializable {
             }
             avatarsAvailable.add(i,temp);
         }
-        createTableView(TableViewObject);
+        createTableView();
     }
 
     public void searchInDBAndLoadInTableView(String nameToSearch, int pageNumber) { //chiamata a DAO
@@ -152,48 +152,20 @@ public class AuthorProfileController implements Initializable {
         TableViewObject.resetObservableArrayList();
         for (RecipeReducted recipeReducted : recipeReductedList) {
             RowRecipe recipe = new RowRecipe( recipeReducted.getName(), recipeReducted.getAuthorName(),
-                    new TableViewRecipe.CustomImage(new ImageView(recipeReducted.getImage())).getImage());
+                    new ImageTableView(new ImageView(recipeReducted.getImage())).getImage());
             TableViewObject.addToObservableArrayList(recipe);
         }
         TableViewObject.setItems();
-        /*Document recipeDoc;
-        try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
-            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
-            MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_RECIPE);
-            MongoCursor<Document> cursor;
-            //Bson filter = Filters.regex("Name", "^(?)" + nameToSearch); //da togliere era il vecchio filtro
-            Bson filter = new Document("AuthorName", new Document("$regex",/*nameToSearch"Malarkey Test").append("$options", "i")); //ho messo elly9812 per avere dei risultati nella tabella, sarebbe da mettere nameToSearch
-            Bson match = match(filter);
-            Bson project = project(new Document("Name", 1).append("AuthorName", 1)
-                    .append("Images", new Document("$first", "$Images")));
-
-            if (nameToSearch == null) {
-                cursor = collection.aggregate(Arrays.asList(skip(10 * pageNumber), limit(10), project)).iterator();
-                System.out.println("null");
-            } else {
-                cursor = collection.aggregate(Arrays.asList(match, skip(10 * pageNumber), limit(10), project)).iterator();
-                System.out.println(nameToSearch);
-            }
-            TableViewObject.resetObservableArrayList();
-            while (cursor.hasNext()) {
-                recipeDoc = cursor.next();
-                RecipeTableView recipe = new RecipeTableView( recipeDoc.getString("Name"), recipeDoc.getString("AuthorName"),
-                        new ClassForTableView.CustomImage(new ImageView(recipeDoc.getString("Images"))).getImage());
-                TableViewObject.addToObservableArrayList(recipe);
-            }
-            TableViewObject.setItems();
-        }*/
     }
 
-    public void createTableView(TableViewRecipe TableViewObject) {
-        TableViewObject.initializeTableView("Loggato");
+    public void createTableView() {
         nameToSearch = authorName;
         searchInDBAndLoadInTableView(nameToSearch, pageNumber);
         TableViewObject.setEventForTableCells();
-        TableViewObject.setTabellaDB();
-        TableViewObject.getTabellaDB().setLayoutX(20);
-        TableViewObject.getTabellaDB().setLayoutY(240);
-        anchorPane.getChildren().addAll(TableViewObject.getTabellaDB());
+        TableViewObject.setTable();
+        TableViewObject.getTable().setLayoutX(20);
+        TableViewObject.getTable().setLayoutY(240);
+        anchorPane.getChildren().addAll(TableViewObject.getTable());
         for (int i = 0; i < 8; i++) anchorPane.getChildren().add((Node) avatarsAvailable.get(i));
     }
 

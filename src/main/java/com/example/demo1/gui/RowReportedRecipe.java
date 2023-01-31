@@ -3,7 +3,7 @@ package com.example.demo1.gui;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.ImageView;
 
-public class RowReportedRecipe {
+public class RowReportedRecipe implements RowTableView {
     private final SimpleStringProperty recipeNameTable;
     private final SimpleStringProperty authorNameTable;
     private final SimpleStringProperty reporterNameTable;
@@ -15,7 +15,7 @@ public class RowReportedRecipe {
         authorNameTable = new SimpleStringProperty(authorName);
         reporterNameTable = new SimpleStringProperty(reporterName);
         dateReportingTable = new SimpleStringProperty(dateReporting);;
-        imageLinkTable = new TableViewReportedRecipe.CustomImage(image).getImage();
+        imageLinkTable = new ImageTableView(image).getImage();
     }
 
     public String getName() { return recipeNameTable.get(); }

@@ -3,11 +3,7 @@ package com.example.demo1.gui;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class RowReview {
-    private Object authorName;
-    private Object rating;
-    private Object review;
-
+public class RowReview implements RowTableView {
     private final SimpleStringProperty authorNameTable;
     private final SimpleIntegerProperty ratingTable;
     private final SimpleStringProperty reviewTable;

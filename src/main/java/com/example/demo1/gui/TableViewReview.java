@@ -1,26 +1,19 @@
 package com.example.demo1.gui;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 
-public class TableViewReview {
-    public TableView<RowReview> table;
-    private ObservableList<RowReview> reviews;
-    private TableColumn descriptionCol;
-    private TableColumn authorNameCol;
-    private TableColumn ratingCol;
-    private Stage stage;
-    private DataSingleton data = DataSingleton.getInstance();
+public class TableViewReview extends TableViewAbstract {
+    private final TableColumn<RowTableView, String> descriptionCol;
+    private final TableColumn<RowTableView, String> authorNameCol;
+    private final TableColumn<RowTableView, Double> ratingCol;
 
-    public void initializeTableView() {
+    public TableViewReview() {
         table = new TableView<>();
-        descriptionCol = new TableColumn<RowRecipe, String>("Review");
-        authorNameCol = new TableColumn<RowRecipe, String>("AuthorName");
-        ratingCol = new TableColumn<RowRecipe, String>("Rating");
+        descriptionCol = new TableColumn<>("Review");
+        authorNameCol = new TableColumn<>("Author");
+        ratingCol = new TableColumn<>("Rating");
 
         descriptionCol.setCellValueFactory(new PropertyValueFactory<>("review"));
         authorNameCol.setCellValueFactory(new PropertyValueFactory<>("authorName"));
@@ -34,23 +27,8 @@ public class TableViewReview {
         //table.pol(TableView.C);
     }
 
-    public void setTableDB() {
+    public void setTable() {
         table.getColumns().addAll(ratingCol, authorNameCol, descriptionCol);
     }
 
-    public void setItems(){
-        table.setItems(reviews);
-    }
-
-    public TableView<RowReview> getTableDB() {
-        return table;
-    }
-
-    public void resetObservableArrayList() {
-        reviews = FXCollections.observableArrayList();
-    }
-
-    public void addToObservableArrayList(RowReview review){
-        reviews.add(review);
-    }
 }
