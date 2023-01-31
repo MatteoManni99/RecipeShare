@@ -8,7 +8,7 @@ import javafx.scene.image.ImageView;
 public class TableViewRecipeCategory extends TableViewAbstract {
     private final TableColumn<RowTableView, String> nameCol;
     private final TableColumn<RowTableView, String> categoryCol;
-    private final TableColumn imageCol;
+    private final TableColumn<RowTableView, ImageView> imageCol;
     private final TableColumn<RowTableView, Double> ratingCol;
 
 
@@ -18,12 +18,12 @@ public class TableViewRecipeCategory extends TableViewAbstract {
         nameCol = new TableColumn<>("Name");
         categoryCol = new TableColumn<>("Category");
         ratingCol = new TableColumn<>("Rating");
-        imageCol = new TableColumn<ImageTableView, ImageView>("Image");
+        imageCol = new TableColumn<>("Image");
 
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         categoryCol.setCellValueFactory(new PropertyValueFactory<>("recipecategory"));
         ratingCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
-        imageCol.setCellValueFactory(new PropertyValueFactory<ImageTableView,ImageView>("image"));
+        imageCol.setCellValueFactory(new PropertyValueFactory<>("image"));
 
         table.setPrefHeight(350);
         table.setPrefWidth(550);

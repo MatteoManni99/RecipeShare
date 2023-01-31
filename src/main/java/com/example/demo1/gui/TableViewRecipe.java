@@ -8,29 +8,29 @@ import javafx.scene.image.ImageView;
 public class TableViewRecipe extends TableViewAbstract {
     private final TableColumn<RowTableView, String> nameCol;
     private final TableColumn<RowTableView, String> authorNameCol;
-    private final TableColumn imageCol;
+    private final TableColumn<RowTableView, ImageView> imageCol;
 
     public TableViewRecipe() {
-        super.table = new TableView<>();
+        table = new TableView<>();
 
         nameCol = new TableColumn<>("Name");
         authorNameCol = new TableColumn<>("Author");
-        imageCol = new TableColumn<ImageTableView, ImageView>("Image");
+        imageCol = new TableColumn<>("Image");
 
 
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         authorNameCol.setCellValueFactory(new PropertyValueFactory<>("authorName"));
-        imageCol.setCellValueFactory(new PropertyValueFactory<ImageTableView,ImageView>("image"));
+        imageCol.setCellValueFactory(new PropertyValueFactory<>("image"));
 
-        super.table.setPrefHeight(400);
-        super.table.setPrefWidth(600);
-        super.table.setLayoutX(150);
-        super.table.setLayoutY(150);
+        table.setPrefHeight(400);
+        table.setPrefWidth(600);
+        table.setLayoutX(150);
+        table.setLayoutY(150);
     }
 
 
     public void setTable() {
-        super.table.getColumns().addAll(imageCol, nameCol, authorNameCol);
+        table.getColumns().addAll(imageCol, nameCol, authorNameCol);
     }
 
 

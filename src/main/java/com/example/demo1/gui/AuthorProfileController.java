@@ -166,6 +166,7 @@ public class AuthorProfileController implements Initializable {
         TableViewObject.getTable().setLayoutX(20);
         TableViewObject.getTable().setLayoutY(240);
         anchorPane.getChildren().addAll(TableViewObject.getTable());
+        //avatarsAvailable.forEach(image -> anchorPane.getChildren().add((Node) image));
         for (int i = 0; i < 8; i++) anchorPane.getChildren().add((Node) avatarsAvailable.get(i));
     }
 

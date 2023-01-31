@@ -26,9 +26,9 @@ public class SearchAuthorController implements Initializable {
     private String nameToSearch = null;
 
 
-    private TableViewAuthor tableViewAuthor = new TableViewAuthor();
+    private TableViewAbstract tableViewAuthor = new TableViewAuthor();
 
-    private TableViewAuthor tabella;
+    private TableViewAbstract tabella;
 
     @FXML
     public void onLogoutClick(ActionEvent actionEvent){
@@ -63,7 +63,7 @@ public class SearchAuthorController implements Initializable {
             });
             anchorPane.getChildren().add(promoteAuthorButton);
         }
-        createTableView(tableViewAuthor, DataSingleton.getInstance().getTypeOfUser().equals("moderator"));
+        createTableView();
         /*
         String uri = Configuration.MONGODB_URL;
         List<Document> listaAuthors = new ArrayList<>();
@@ -85,21 +85,17 @@ public class SearchAuthorController implements Initializable {
 
     }
 
-    public void createTableView (TableViewAuthor TableViewObject, Boolean showPromotion) {
-        TableViewObject.initializeTableView();
-        TableViewObject.getTabellaDB().setLayoutX(220);
-        TableViewObject.getTabellaDB().setLayoutY(150);
-        TableViewObject.getTabellaDB().setPrefHeight(400);
-        TableViewObject.getTabellaDB().setPrefWidth(210);
+    public void createTableView () {
+        tableViewAuthor.getTable().setLayoutX(220);
+        tableViewAuthor.getTable().setLayoutY(150);
+        tableViewAuthor.getTable().setPrefHeight(400);
+        tableViewAuthor.getTable().setPrefWidth(210);
+        tableViewAuthor.setEventForTableCells();
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
-        if(showPromotion)
-            TableViewObject.setTableWithPromotion();
-        else
-            TableViewObject.setTableWithoutPromotion();
-
-        tabella = TableViewObject;
+        tableViewAuthor.setTable();
+        tabella = tableViewAuthor;
         setEventForTableCells();
-        anchorPane.getChildren().add(TableViewObject.getTabellaDB());
+        anchorPane.getChildren().add(tableViewAuthor.getTable());
     }
 
     public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber){
@@ -142,11 +138,12 @@ public class SearchAuthorController implements Initializable {
     }
 
     public void setEventForTableCells() {
-        tabella.getTabellaDB().addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il mouse clickato
-                    TableCell cell = Utils.findCell(evt,tabella.getTabellaDB());
+        tabella.getTable().addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il mouse clickato
+                    TableCell cell = Utils.findCell(evt,tabella.getTable());
                     if (cell != null && !cell.isEmpty()) {
-                        if(cell.getTableColumn().getText().equals("Name")){
+                        if(cell.getTableColumn().getText().equals("Author")){
                             authorNameClicked = cell.getText();
+                            System.out.println("COSA SERVE??");
                         }
                         evt.consume();
                     }

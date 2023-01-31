@@ -41,8 +41,8 @@ public class ModeratorController implements Initializable {
     private TableViewAuthor tabella;
     @FXML
     private AnchorPane anchorPane;
-    private TableViewAuthor tableAuthor = new TableViewAuthor();
-    private TableViewReportedRecipe tableReportedRecipe = new TableViewReportedRecipe();
+    private TableViewAbstract tableAuthor = new TableViewAuthor();
+    private TableViewAbstract tableReportedRecipe = new TableViewReportedRecipe();
     @FXML
     public void onLogoutClick(ActionEvent actionEvent) throws IOException {
         Utils.changeScene(actionEvent,"Login.fxml");
@@ -95,31 +95,29 @@ public class ModeratorController implements Initializable {
             });
             anchorPane.getChildren().add(promoteAuthorButton);
         }
-        createTableView(tableAuthor,tableReportedRecipe);
+        createTableView();
     }
 
-    public void createTableView (TableViewAuthor TableViewObject,TableViewReportedRecipe tableReportedRecipe) {
-        TableViewObject.initializeTableView();
-        tableReportedRecipe.initializeTableView();
+    public void createTableView () {
         searchInDBAndLoadInTableView(authorName,pageNumber);
         searchInDBAndLoadInTableViewReportedRecipe(recipeName,pageNumberReportedRecipe);
-        TableViewObject.setTableWithPromotion();
-        tableReportedRecipe.setTabellaDB();
+        tableAuthor.setTable();
+        tableReportedRecipe.setTable();
         tableReportedRecipe.setEventForTableCells();
         setEventForTableCells();
-        anchorPane.getChildren().addAll(TableViewObject.getTabellaDB(),tableReportedRecipe.getTable());
+        anchorPane.getChildren().addAll(tableAuthor.getTable(),tableReportedRecipe.getTable());
     }
 
     public void setEventForTableCells() {
-        tableAuthor.getTabellaDB().addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il mouse clickato
-                    TableCell cell = findCell(evt,tableAuthor.getTabellaDB());
+        tableAuthor.getTable().addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il mouse clickato
+                    TableCell cell = Utils.findCell(evt,tableAuthor.getTable());
                     if (cell != null && !cell.isEmpty()) {
                         if(cell.getTableColumn().getText().equals("Promotion")){
                             int rowIndex = cell.getIndex();
-                            authorNameClicked = (String) tableAuthor.getTabellaDB().getColumns().get(1).getCellData(rowIndex);
+                            authorNameClicked = (String) tableAuthor.getTable().getColumns().get(1).getCellData(rowIndex);
                             cell.setText("1");
                         }
-                        if(cell.getTableColumn().getText().equals("Name")) {
+                        if(cell.getTableColumn().getText().equals("Author")) {
                             authorNameClicked = cell.getText();
                             DataSingleton.getInstance().setOtherAuthorName(authorNameClicked);
                             Utils.changeScene(evt,"Author.fxml");
@@ -129,19 +127,10 @@ public class ModeratorController implements Initializable {
                 }
         );
     }
-    private static TableCell findCell(MouseEvent event, TableView table) { //metodo chiamato dall'evento
-        Node node = event.getPickResult().getIntersectedNode();
-        // go up in node hierarchy until a cell is found or we can be sure no cell was clicked
-        while (node != table && !(node instanceof TableCell)) {
-            node = node.getParent();
-        }
-        return node instanceof TableCell ? (TableCell) node : null;
-    }
 
     public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber) {
-        List<Author> listAuthorsSearched = AuthorService.searchAuthors(nameToSearch, 10 * pageNumber, 10);
         tableAuthor.resetObservableArrayList();
-        listAuthorsSearched.forEach(author ->
+        AuthorService.searchAuthors(nameToSearch, 10 * pageNumber, 10).forEach(author ->
                 tableAuthor.addToObservableArrayList(
                         new RowAuthor(author.getName(), author.getPromotion(),
                                 new ImageView(Configuration.AVATAR.get(author.getImage() - 1)))));
@@ -149,9 +138,8 @@ public class ModeratorController implements Initializable {
     }
 
     public void searchInDBAndLoadInTableViewReportedRecipe(String nameToSearch, Integer pageNumber){
-        List<ReportedRecipe> listReportedRecipesSearched = ReportedRecipeService.getListReportedRecipes();
         tableReportedRecipe.resetObservableArrayList();
-        listReportedRecipesSearched.forEach(reportedRecipe ->
+        ReportedRecipeService.getListReportedRecipes().forEach(reportedRecipe ->
                 tableReportedRecipe.addToObservableArrayList(
                         new RowReportedRecipe(reportedRecipe.getName(), reportedRecipe.getAuthorName(),reportedRecipe.getReporterName(),
                                 reportedRecipe.getDateReporting(),new ImageView(reportedRecipe.getImage()))));

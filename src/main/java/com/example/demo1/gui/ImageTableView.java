@@ -2,7 +2,7 @@ package com.example.demo1.gui;
 
 import javafx.scene.image.ImageView;
 
-public class ImageTableView {
+public class ImageTableView implements RowTableView{
 
     private ImageView image;
 

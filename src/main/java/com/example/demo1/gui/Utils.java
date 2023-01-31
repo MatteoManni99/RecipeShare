@@ -1,7 +1,6 @@
 package com.example.demo1.gui;
 
 import com.example.demo1.HelloApplication;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -25,12 +24,12 @@ public class Utils {
         } catch (IOException e) {throw new RuntimeException(e);}
     }
 
-    public static TableCell findCell(MouseEvent event, TableView table) { //metodo chiamato dall'evento
+    public static TableCell<RowTableView, ?>  findCell(MouseEvent event, TableView<RowTableView>  table) { //metodo chiamato dall'evento
         Node node = event.getPickResult().getIntersectedNode();
         // go up in node hierarchy until a cell is found or we can be sure no cell was clicked
         while (node != table && !(node instanceof TableCell)) {
             node = node.getParent();
         }
-        return node instanceof TableCell ? (TableCell) node : null;
+        return node instanceof TableCell ? (TableCell<RowTableView, ?>) node : null;
     }
 }

@@ -28,7 +28,7 @@ public class AuthorController implements Initializable {
     private final DataSingleton data = DataSingleton.getInstance();
     private String authorName;
 
-    private final TableViewAbstract TableViewObject = new TableViewRecipe();
+    private final TableViewAbstract tableViewAuthor = new TableViewRecipe();
 
     @FXML
     private AnchorPane anchorPane;
@@ -65,18 +65,20 @@ public class AuthorController implements Initializable {
 
     public void createTableView() {
         searchInDBAndLoadInTableView(authorName, pageNumber);
-        TableViewObject.setEventForTableCells();
-        TableViewObject.setTable();
-        TableViewObject.getTable().setLayoutX(40);
-        TableViewObject.getTable().setLayoutY(240);
-        anchorPane.getChildren().add(TableViewObject.getTable());
+        tableViewAuthor.setEventForTableCells();
+        tableViewAuthor.setTable();
+        tableViewAuthor.getTable().setLayoutX(40);
+        tableViewAuthor.getTable().setLayoutY(220);
+        tableViewAuthor.getTable().setPrefHeight(350);
+        tableViewAuthor.getTable().setPrefWidth(450);
+        anchorPane.getChildren().add(tableViewAuthor.getTable());
     }
 
     public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber) {
-        TableViewObject.resetObservableArrayList();
+        tableViewAuthor.resetObservableArrayList();
         RecipeService.getRecipeFromAuthor(nameToSearch, pageNumber*10, 10)
-                .forEach(recipeReducted -> TableViewObject.addToObservableArrayList(
+                .forEach(recipeReducted -> tableViewAuthor.addToObservableArrayList(
                         new RowRecipe(recipeReducted.getName(), recipeReducted.getAuthorName(), new ImageView(recipeReducted.getImage()))));
-        TableViewObject.setItems();
+        tableViewAuthor.setItems();
     }
 }

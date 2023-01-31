@@ -6,36 +6,36 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 
 public class TableViewReportedRecipe extends TableViewAbstract {
-    private TableColumn nameCol;
-    private TableColumn authorNameCol;
-    private TableColumn reporterNameCol;
-    private TableColumn dateReportingCol;
-    private TableColumn imageCol;
+    private final TableColumn<RowTableView, String> nameCol;
+    private final TableColumn<RowTableView, String> authorNameCol;
+    private final TableColumn<RowTableView, String> reporterNameCol;
+    private final TableColumn<RowTableView, String> dateReportingCol;
+    private final TableColumn<RowTableView, ImageView> imageCol;
 
-    public void initializeTableView() {
-        super.table = new TableView<>();
+    public TableViewReportedRecipe() {
+        table = new TableView<>();
 
-        nameCol = new TableColumn<RowReportedRecipe, String>("Name");
-        authorNameCol = new TableColumn<RowReportedRecipe, String>("AuthorName");
-        reporterNameCol = new TableColumn<RowReportedRecipe, String>("ReporterName");
-        dateReportingCol = new TableColumn<RowReportedRecipe, String>("DateReporting");
-        imageCol = new TableColumn<ImageTableView, ImageView>("Image");
+        nameCol = new TableColumn<>("Name");
+        authorNameCol = new TableColumn<>("AuthorName");
+        reporterNameCol = new TableColumn<>("ReporterName");
+        dateReportingCol = new TableColumn<>("DateReporting");
+        imageCol = new TableColumn<>("Image");
 
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         authorNameCol.setCellValueFactory(new PropertyValueFactory<>("authorName"));
         reporterNameCol.setCellValueFactory(new PropertyValueFactory<>("reporterName"));
         dateReportingCol.setCellValueFactory(new PropertyValueFactory<>("dateReporting"));
-        imageCol.setCellValueFactory(new PropertyValueFactory<ImageTableView,ImageView>("image"));
+        imageCol.setCellValueFactory(new PropertyValueFactory<>("image"));
 
-        super.table.setPrefHeight(400);
-        super.table.setPrefWidth(500);
-        super.table.setLayoutX(40);
-        super.table.setLayoutY(200);
+        table.setPrefHeight(400);
+        table.setPrefWidth(500);
+        table.setLayoutX(40);
+        table.setLayoutY(200);
     }
 
 
-    public void setTabellaDB() {
-        super.table.getColumns().addAll(imageCol, nameCol, authorNameCol, reporterNameCol, dateReportingCol);
+    public void setTable() {
+        table.getColumns().addAll(imageCol, nameCol, authorNameCol, reporterNameCol, dateReportingCol);
     }
 
 }

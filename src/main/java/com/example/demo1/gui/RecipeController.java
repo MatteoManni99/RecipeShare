@@ -48,10 +48,10 @@ public class RecipeController implements Initializable {
     private String recipeName;
     private Recipe recipe;
 
-    private TableViewAbstract tableViewReview = new TableViewReview();
+    private final TableViewAbstract tableViewReview = new TableViewReview();
 
 
-    private ArrayList<String> reviewers = new ArrayList<>();
+    private final ArrayList<String> reviewers = new ArrayList<>();
 
     private void printImages(){
         image.setImage(new Image(images_list.get(indexImages)));

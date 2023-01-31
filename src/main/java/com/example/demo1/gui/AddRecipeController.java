@@ -29,16 +29,16 @@ public class AddRecipeController implements Initializable {
     public TextArea descriptionField;
     public TextField keywordField;
     public ListView<String> keywordListView;
-    private final ArrayList<String> keywordArrayList = new ArrayList<String>();
+    private final ArrayList<String> keywordArrayList = new ArrayList<>();
     public TextField ingredientField;
     public ListView<String> ingredientListView;
-    private final ArrayList<String> ingredientArrayList = new ArrayList<String>();
+    private final ArrayList<String> ingredientArrayList = new ArrayList<>();
     public TextField imageField;
     public ListView<String> imageListView;
-    private final ArrayList<String> imageArrayList = new ArrayList<String>();
+    private final ArrayList<String> imageArrayList = new ArrayList<>();
     public TextField instructionsField;
     public ListView<String> instructionsListView;
-    private final ArrayList<String> instructionsArrayList = new ArrayList<String>();
+    private final ArrayList<String> instructionsArrayList = new ArrayList<>();
     ObservableList<String> observableList;
 
     @Override
