@@ -154,7 +154,7 @@ public class ModeratorController implements Initializable {
         listReportedRecipesSearched.forEach(reportedRecipe ->
                 tableReportedRecipe.addToObservableArrayList(
                         new RowReportedRecipe(reportedRecipe.getName(), reportedRecipe.getAuthorName(),reportedRecipe.getReporterName(),
-                                reportedRecipe.getDateReporting(),new ImageView(Configuration.AVATAR.get(0)/*reportedRecipe.getImage()*/))));
+                                reportedRecipe.getDateReporting(),new ImageView(reportedRecipe.getImage()))));
         tableReportedRecipe.setItems();
     }
 

@@ -59,6 +59,7 @@ public class AuthorController implements Initializable {
         authorName = data.getOtherAuthorName();
         System.out.println(authorName);
         Author author = AuthorMongoDAO.getAuthor(authorName);
+        if (author == null) System.out.println("NON ESISTE NELLA COLLECTION AUTHOR"); //problema: authorName c'è in Recipe ma non in Author
         name.setText(Objects.requireNonNull(author).getName());
         image.setImage(Configuration.AVATAR.get(author.getImage() - 1));
         createTableView(TableViewObject);
