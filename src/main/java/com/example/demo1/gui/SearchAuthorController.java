@@ -87,6 +87,10 @@ public class SearchAuthorController implements Initializable {
 
     public void createTableView (TableViewAuthor TableViewObject, Boolean showPromotion) {
         TableViewObject.initializeTableView();
+        TableViewObject.getTabellaDB().setLayoutX(220);
+        TableViewObject.getTabellaDB().setLayoutY(150);
+        TableViewObject.getTabellaDB().setPrefHeight(400);
+        TableViewObject.getTabellaDB().setPrefWidth(210);
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
         if(showPromotion)
             TableViewObject.setTableWithPromotion();
@@ -139,7 +143,7 @@ public class SearchAuthorController implements Initializable {
 
     public void setEventForTableCells() {
         tabella.getTabellaDB().addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il mouse clickato
-                    TableCell cell = findCell(evt,tabella.getTabellaDB());
+                    TableCell cell = Utils.findCell(evt,tabella.getTabellaDB());
                     if (cell != null && !cell.isEmpty()) {
                         if(cell.getTableColumn().getText().equals("Name")){
                             authorNameClicked = cell.getText();
@@ -148,13 +152,5 @@ public class SearchAuthorController implements Initializable {
                     }
                 }
         );
-    }
-    private static TableCell findCell(MouseEvent event, TableView table) { //metodo chiamato dall'evento
-        Node node = event.getPickResult().getIntersectedNode();
-        // go up in node hierarchy until a cell is found or we can be sure no cell was clicked
-        while (node != table && !(node instanceof TableCell)) {
-            node = node.getParent();
-        }
-        return node instanceof TableCell ? (TableCell) node : null;
     }
 }
