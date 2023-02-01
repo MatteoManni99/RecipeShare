@@ -16,7 +16,7 @@ public class TableViewReportedRecipe extends TableViewAbstract {
         table = new TableView<>();
 
         nameCol = new TableColumn<>("Name");
-        authorNameCol = new TableColumn<>("AuthorName");
+        authorNameCol = new TableColumn<>("Author");
         reporterNameCol = new TableColumn<>("ReporterName");
         dateReportingCol = new TableColumn<>("DateReporting");
         imageCol = new TableColumn<>("Image");

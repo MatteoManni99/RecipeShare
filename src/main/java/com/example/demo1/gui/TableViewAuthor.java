@@ -1,9 +1,11 @@
 package com.example.demo1.gui;
 
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 public class TableViewAuthor extends TableViewAbstract{
     private final TableColumn<RowTableView, Integer> promotionCol;
@@ -40,6 +42,7 @@ public class TableViewAuthor extends TableViewAbstract{
         if (data.getTypeOfUser().equals("moderator")) setTableWithPromotion();
         else setTableWithoutPromotion();
     }
+
 
 }
 

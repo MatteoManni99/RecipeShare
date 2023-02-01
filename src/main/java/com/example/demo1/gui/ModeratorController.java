@@ -10,8 +10,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,12 +20,7 @@ public class ModeratorController implements Initializable {
     public TextField authorToSearchTextField;
     @FXML
     private Label recipeText;
-    private double startingX;
-    @FXML
-    private Label reviewText;
-    private Stage stage;
-    @FXML
-    private VBox vbox;
+
     private Integer pageNumber = 0;
     private String authorName;
     private Integer pageNumberReportedRecipe = 0;
@@ -38,8 +31,10 @@ public class ModeratorController implements Initializable {
     private TableViewAuthor tabella;
     @FXML
     private AnchorPane anchorPane;
-    private TableViewAbstract tableAuthor = new TableViewAuthor();
-    private TableViewAbstract tableReportedRecipe = new TableViewReportedRecipe();
+
+    private TableCell cellAuthorPromotion;
+    private final TableViewAbstract tableAuthor = new TableViewAuthor();
+    private final TableViewAbstract tableReportedRecipe = new TableViewReportedRecipe();
     @FXML
     public void onLogoutClick(ActionEvent actionEvent) throws IOException {
         Utils.changeScene(actionEvent,"Login.fxml");
@@ -64,7 +59,7 @@ public class ModeratorController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        startingX = recipeText.getLayoutX();
+        double startingX = recipeText.getLayoutX();
         if (DataSingleton.getInstance().getTypeOfUser().equals("moderator")) {
             Button promoteAuthorButton = new Button("PROMOTE AUTHOR");
             promoteAuthorButton.setLayoutX(64);
@@ -72,6 +67,7 @@ public class ModeratorController implements Initializable {
             promoteAuthorButton.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
                 AuthorService.updatePromotion(authorNameClicked,1);
                 authorNameClicked = null;
+                cellAuthorPromotion.setText("1");
             });
             anchorPane.getChildren().add(promoteAuthorButton);
         }
@@ -82,25 +78,20 @@ public class ModeratorController implements Initializable {
         searchInDBAndLoadInTableView(authorName,pageNumber);
         searchInDBAndLoadInTableViewReportedRecipe(recipeName,pageNumberReportedRecipe);
         tableAuthor.setTable();
+        tableAuthor.setEventForTableCells();
         tableReportedRecipe.setTable();
         tableReportedRecipe.setEventForTableCells();
-        setEventForTableCells();
+        setEventPromotion();
         anchorPane.getChildren().addAll(tableAuthor.getTable(),tableReportedRecipe.getTable());
     }
 
-    public void setEventForTableCells() {
+    public void setEventPromotion() {
         tableAuthor.getTable().addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il mouse clickato
                     TableCell cell = Utils.findCell(evt,tableAuthor.getTable());
                     if (cell != null && !cell.isEmpty()) {
                         if(cell.getTableColumn().getText().equals("Promotion")){
-                            int rowIndex = cell.getIndex();
-                            authorNameClicked = (String) tableAuthor.getTable().getColumns().get(1).getCellData(rowIndex);
-                            cell.setText("1");
-                        }
-                        if(cell.getTableColumn().getText().equals("Author")) {
-                            authorNameClicked = cell.getText();
-                            DataSingleton.getInstance().setOtherAuthorName(authorNameClicked);
-                            Utils.changeScene(evt,"Author.fxml");
+                            authorNameClicked = (String) tableAuthor.getTable().getColumns().get(1).getCellData(cell.getIndex());
+                            cellAuthorPromotion = cell;
                         }
                         evt.consume();
                     }

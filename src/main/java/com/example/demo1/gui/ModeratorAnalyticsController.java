@@ -17,20 +17,20 @@ import java.util.ResourceBundle;
 public class ModeratorAnalyticsController implements Initializable {
 
     public AnchorPane anchorPane;
-    private final TableViewAuthorScore tableViewAuthorScore = new TableViewAuthorScore();
+    private final TableViewAbstract tableViewAuthorScore = new TableViewAuthorScore();
     private Integer pageNumber = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        createTableView(tableViewAuthorScore);
+        createTableView();
 
     }
 
-    public void createTableView (TableViewAuthorScore TableViewObject) {
+    public void createTableView () {
         searchInDBAndLoadInTableView(pageNumber);
-        TableViewObject.setTable();
-        TableViewObject.setEventForTableCells();
-        anchorPane.getChildren().add(TableViewObject.getTable());
+        tableViewAuthorScore.setTable();
+        tableViewAuthorScore.setEventForTableCells();
+        anchorPane.getChildren().add(tableViewAuthorScore.getTable());
     }
 
     public void searchInDBAndLoadInTableView(Integer pageNumber){
