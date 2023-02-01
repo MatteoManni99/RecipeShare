@@ -72,10 +72,11 @@ public class LoggatoAnalyticsController {
     }
 
     public void onTopRecipesForEachCategory(ActionEvent actionEvent) {
-        TableViewAbstract tableView = new TableViewRecipeCategory();
         List<Recipe> listRecipe = RecipeService.findTopRecipesForEachCategory(3);
         int[] page = {10};
 
+
+        listRecipe.forEach(recipe -> System.out.println(recipe.getRecipeCategory()));
 
         /*RecipeService.findTopRecipesForEachCategory(3).forEach(recipe ->
                 tableView.addToObservableArrayList(new RowRecipeCategory(recipe.getName(), recipe.getRecipeCategory(),
@@ -88,28 +89,28 @@ public class LoggatoAnalyticsController {
         nextPage.setLayoutX(420);
         nextPage.setLayoutY(200);
         nextPage.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
-            initializeTableView(tableView);
-            listRecipe.subList(page[0], page[0] +10).forEach(recipe -> tableView.addToObservableArrayList(new RowRecipeCategory(recipe.getName(), recipe.getRecipeCategory(),
+            TableViewAbstract tableViewN = new TableViewRecipeCategory();
+            initializeTableView(tableViewN);
+            listRecipe.subList(page[0], page[0] +10).forEach(recipe -> tableViewN.addToObservableArrayList(new RowRecipeCategory(recipe.getName(), recipe.getRecipeCategory(),
                     recipe.getAggregatedRating(), new ImageView(recipe.getImages().get(0)))));
-            displayTableView(tableView);
+            displayTableView(tableViewN);
             page[0] +=10;
         });
 
         previousPage.setLayoutX(280);
         previousPage.setLayoutY(200);
         previousPage.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
-            if(page[0]>10){
-                initializeTableView(tableView);
-                initializeTableView(tableView);
-                listRecipe.subList(page[0], page[0] -10).forEach(recipe -> tableView.addToObservableArrayList(new RowRecipeCategory(recipe.getName(), recipe.getRecipeCategory(),
+            if(page[0]>=10){
+                TableViewAbstract tableViewP = new TableViewRecipeCategory();
+                initializeTableView(tableViewP);
+                listRecipe.subList(page[0]-10, page[0]).forEach(recipe -> tableViewP.addToObservableArrayList(new RowRecipeCategory(recipe.getName(), recipe.getRecipeCategory(),
                         recipe.getAggregatedRating(), new ImageView(recipe.getImages().get(0)))));
-                displayTableView(tableView);
+                displayTableView(tableViewP);
                 page[0] -=10;
-                displayTableView(tableView);
             }
         });
 
-        initializeTableView(tableView);
+        TableViewAbstract tableView = new TableViewRecipeCategory();
         initializeTableView(tableView);
         listRecipe.subList(0, 10).forEach(recipe -> tableView.addToObservableArrayList(new RowRecipeCategory(recipe.getName(), recipe.getRecipeCategory(),
                 recipe.getAggregatedRating(), new ImageView(recipe.getImages().get(0)))));
