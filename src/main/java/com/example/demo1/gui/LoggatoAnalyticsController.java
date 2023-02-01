@@ -1,15 +1,27 @@
 package com.example.demo1.gui;
 
+import com.example.demo1.model.Recipe;
+import com.example.demo1.service.AuthorService;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import com.example.demo1.service.RecipeService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+
+import java.io.IOException;
+import java.util.List;
 
 public class LoggatoAnalyticsController {
     @FXML
     private AnchorPane anchorPane;
+
+    @FXML
+    public void onBackClick(ActionEvent actionEvent) throws IOException {
+        Utils.changeScene(actionEvent,"Loggato.fxml");
+    }
 
     private void removeOtherTableView(){anchorPane.getChildren().removeIf(node -> node instanceof TableView);}
 
@@ -59,15 +71,54 @@ public class LoggatoAnalyticsController {
         displayTableView(tableView);
     }
 
-    //{$sort: {'color': 1, value: -1}},
-    //{$group: {_id: '$color', value: {$first: '$value'}}}
     public void onTopRecipesForEachCategory(ActionEvent actionEvent) {
+        List<Recipe> listRecipe = RecipeService.findTopRecipesForEachCategory(3);
+        int[] page = {10};
+
+
+        listRecipe.forEach(recipe -> System.out.println(recipe.getRecipeCategory()));
+
+        /*RecipeService.findTopRecipesForEachCategory(3).forEach(recipe ->
+                tableView.addToObservableArrayList(new RowRecipeCategory(recipe.getName(), recipe.getRecipeCategory(),
+                        recipe.getAggregatedRating(), new ImageView(recipe.getImages().get(0)))));*/
+
+
+        Button nextPage = new Button("Next Page");
+        Button previousPage = new Button("Previous Page");
+
+        nextPage.setLayoutX(420);
+        nextPage.setLayoutY(200);
+        nextPage.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
+            TableViewAbstract tableViewN = new TableViewRecipeCategory();
+            initializeTableView(tableViewN);
+            listRecipe.subList(page[0], page[0] +10).forEach(recipe -> tableViewN.addToObservableArrayList(new RowRecipeCategory(recipe.getName(), recipe.getRecipeCategory(),
+                    recipe.getAggregatedRating(), new ImageView(recipe.getImages().get(0)))));
+            displayTableView(tableViewN);
+            page[0] +=10;
+        });
+
+        previousPage.setLayoutX(280);
+        previousPage.setLayoutY(200);
+        previousPage.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
+            if(page[0]>=10){
+                TableViewAbstract tableViewP = new TableViewRecipeCategory();
+                initializeTableView(tableViewP);
+                listRecipe.subList(page[0]-10, page[0]).forEach(recipe -> tableViewP.addToObservableArrayList(new RowRecipeCategory(recipe.getName(), recipe.getRecipeCategory(),
+                        recipe.getAggregatedRating(), new ImageView(recipe.getImages().get(0)))));
+                displayTableView(tableViewP);
+                page[0] -=10;
+            }
+        });
+
         TableViewAbstract tableView = new TableViewRecipeCategory();
         initializeTableView(tableView);
-        RecipeService.findTopRecipesForEachCategory(3).forEach(recipe ->
-                tableView.addToObservableArrayList(new RowRecipeCategory(recipe.getName(), recipe.getRecipeCategory(),
-                        recipe.getAggregatedRating(), new ImageView(recipe.getImages().get(0)))));
+        listRecipe.subList(0, 10).forEach(recipe -> tableView.addToObservableArrayList(new RowRecipeCategory(recipe.getName(), recipe.getRecipeCategory(),
+                recipe.getAggregatedRating(), new ImageView(recipe.getImages().get(0)))));
         displayTableView(tableView);
+
+        anchorPane.getChildren().add(nextPage);
+        anchorPane.getChildren().add(previousPage);
+
     }
 
 }

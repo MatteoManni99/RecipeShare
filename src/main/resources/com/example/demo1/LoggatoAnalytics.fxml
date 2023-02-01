@@ -10,10 +10,11 @@
       <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0">
          <children>
             <Label layoutX="264.0" layoutY="29.0" prefHeight="18.0" prefWidth="114.0" text="AUTHOR ANALYTICS " />
-            <Button layoutX="14.0" layoutY="183.0" mnemonicParsing="false" onAction="#onTopRecipesForRangesOfPreparationTimeClick" text="Top recipes for ranges of PreparationTime" />
-            <Button layoutX="14.0" layoutY="148.0" mnemonicParsing="false" onAction="#onMostUsedIngredientsClick" text="Most used Ingredients" />
-            <Button layoutX="14.0" layoutY="113.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="175.0" onAction="#onTopRecipesForEachCategory" text="Top recipes for each category" />
-            <Button layoutX="14.0" layoutY="77.0" mnemonicParsing="false" onAction="#onRecipesWithHighestratingClick" text="Recipes with highest rating" />
+            <Button layoutX="14.0" layoutY="183.0" mnemonicParsing="false" onAction="#onTopRecipesForRangesOfPreparationTimeClick" prefHeight="26.0" prefWidth="252.0" text="Top recipes for ranges of PreparationTime" />
+            <Button layoutX="14.0" layoutY="148.0" mnemonicParsing="false" onAction="#onMostUsedIngredientsClick" prefHeight="26.0" prefWidth="252.0" text="Most used Ingredients" />
+            <Button layoutX="14.0" layoutY="113.0" mnemonicParsing="false" onAction="#onTopRecipesForEachCategory" prefHeight="26.0" prefWidth="252.0" text="Top recipes for each category" />
+            <Button layoutX="14.0" layoutY="77.0" mnemonicParsing="false" onAction="#onRecipesWithHighestratingClick" prefHeight="26.0" prefWidth="252.0" text="Recipes with highest rating" />
+            <Button layoutX="527.0" layoutY="65.0" mnemonicParsing="false" onAction="#onBackClick" text="Back" />
          </children>
       </AnchorPane>
    </children>
