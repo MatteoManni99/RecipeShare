@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.PasswordField?>
 <VBox alignment="TOP_CENTER" prefHeight="600" prefWidth="1000" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.gui.LoginController">
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0">
@@ -18,7 +19,7 @@
             <Button layoutX="549.0" layoutY="508.0" mnemonicParsing="false" onAction="#onRegisterClick" text="REGISTER" />
             <Label layoutX="360.0" layoutY="512.0" text="Non hai un'account? Registrati qui" />
             <TextField fx:id="insertedName" layoutX="433.0" layoutY="393.0" />
-            <TextField fx:id="insertedPassword" layoutX="433.0" layoutY="433.0" />
+            <PasswordField fx:id="insertedPassword" layoutX="433.0" layoutY="433.0" />
             <ImageView fitHeight="181.0" fitWidth="669.0" layoutX="208.0" layoutY="104.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../avatarImages/logo.png" />

@@ -53,7 +53,7 @@ public class AuthorMongoDAO {
 
     public static void updateImage(String authorName, Integer newImageIndex) throws MongoException{
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR)
-                .updateOne(new Document().append("authorName", authorName),
+                .updateOne(new Document("authorName", authorName),
                     Updates.combine(Updates.set("image", newImageIndex)));
     }
 
@@ -72,8 +72,8 @@ public class AuthorMongoDAO {
             System.out.println("ESISTE GIA IL NICK");
             return false;
         }else {
-            ///DA FARE IL CAMBIO ANCHE DELLE REVIEW/// quindi forse è meglio non permettere il cambio dell'author name?
-            //perchè tanto costoso
+            //TODO
+            /// -> DA FARE IL CAMBIO ANCHE DELLE REVIEW///
             Document query = new Document("authorName", currentAuthor.getName());
             Bson updates = Updates.combine(Updates.set("authorName", newAuthorName));
             Document queryRecipe = new Document("AuthorName", currentAuthor.getName());
