@@ -29,39 +29,23 @@ public class AuthorProfileController implements Initializable {
     @FXML
     public Label name;
     @FXML
-    public Text description;
-    @FXML
     public ImageView image;
     @FXML
-    public ListView<String> ingredients;
-    @FXML
-    public ListView<String> keywords;
-    @FXML
-    public ListView<String> instructions;
-    public TextField parameterValueField;
+    //public TextField parameterValueField;
     public Label avatarLabel = new Label();
+
     private DataSingleton data = DataSingleton.getInstance();
     private TableViewRecipe TableViewObject = new TableViewRecipe();
     private Integer indexImages = 0;
     private List<String> images_list;
-    private Stage stage;
-    private Integer recipeId;
-    private String authorName;
-    private String password;
-    @FXML
-    private ImageView avatar;
-    private ArrayList avatarsAvailable;
     @FXML
     private TextField authorNameField;
     @FXML
     private TextField passwordField;
-    private String parameterToChange = null;
-    private String nameToSearch = null;
     private Integer pageNumber = 0;
     @FXML
     private AnchorPane anchorPane;
-    @FXML
-    public ImageView imageNew;
+    public ImageView avatarImage;
 
 
     private void printImages() {
@@ -87,54 +71,18 @@ public class AuthorProfileController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        authorName = data.getAuthorName();
-        password = data.getPassword();
-        avatar = DataSingleton.getInstance().getAvatar();
-        authorNameField.setText(authorName);
-        authorNameField.setEditable(false);
-        passwordField.setText(password);
-        passwordField.setEditable(false);
-        avatar.setX(avatarLabel.getLayoutX());
-        avatar.setY(avatarLabel.getLayoutY() + 20);
-        avatar.setFitHeight(100);
-        avatar.setFitWidth(100);
-        anchorPane.getChildren().add(avatar);
-        System.out.println(anchorPane.getChildren().indexOf(avatar));
-        avatarsAvailable = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            ImageView temp = new ImageView();
-            temp.setImage(Configuration.AVATAR.get(i));
-            temp.setId(String.valueOf(i+1));
-            temp.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il click sull'immagine
-                System.out.println(temp.getId());
-                DataSingleton.getInstance().setAvatar(Integer.parseInt(temp.getId()));
-                int avatarIndex = anchorPane.getChildren().indexOf(avatar);
-                avatar.setImage(Configuration.AVATAR.get(Integer.parseInt(temp.getId()) - 1));
-                avatar.setX(avatarLabel.getLayoutX());
-                avatar.setY(avatarLabel.getLayoutY() + 20);
-                avatar.setFitHeight(100);
-                avatar.setFitWidth(100);
-                anchorPane.getChildren().set(avatarIndex,avatar);
-                AuthorService.updateImage(DataSingleton.getInstance().getAuthorName(),Integer.parseInt(temp.getId())); //chiamata a DAO
-            });
-            temp.setFitWidth(70);
-            temp.setFitHeight(70);
-            if (i >= 4) {
-                temp.setY(avatarLabel.getLayoutY() + 170);
-                temp.setX(avatarLabel.getLayoutX() - 50 + 55*(i-4));
-            }
-            else {
-                temp.setY(avatarLabel.getLayoutY() + 100);
-                temp.setX(avatarLabel.getLayoutX() - 50 + 55 * i);
-            }
-            avatarsAvailable.add(i,temp);
-        }
+        avatarImage.setImage(data.getAvatar().getImage());
+
+        authorNameField.setText(data.getAuthorName());
+        //authorNameField.setEditable(false);
+        passwordField.setText(data.getPassword());
+        //passwordField.setEditable(false);
         createTableView();
     }
 
-    public void searchInDBAndLoadInTableView(String nameToSearch, int pageNumber) { //chiamata a DAO
+    public void searchInDBAndLoadInTableView(Integer pageNumber) { //chiamata a DAO
         TableViewObject.resetObservableArrayList();
-        RecipeService.getRecipeFromAuthor(DataSingleton.getInstance().getAuthorName(),
+        RecipeService.getRecipeFromAuthor(data.getAuthorName(),
                 10 * pageNumber,10).forEach(recipeReducted ->
                 TableViewObject.addToObservableArrayList(new RowRecipe( recipeReducted.getName(),
                         recipeReducted.getAuthorName(),
@@ -143,52 +91,67 @@ public class AuthorProfileController implements Initializable {
     }
 
     public void createTableView() {
-        nameToSearch = authorName;
-        searchInDBAndLoadInTableView(nameToSearch, pageNumber);
+        searchInDBAndLoadInTableView(pageNumber);
         TableViewObject.setEventForTableCells();
         TableViewObject.setTable();
         TableViewObject.getTable().setLayoutX(20);
         TableViewObject.getTable().setLayoutY(240);
         anchorPane.getChildren().addAll(TableViewObject.getTable());
-        avatarsAvailable.forEach(image -> anchorPane.getChildren().add((Node) image));
     }
 
-    public void changeProfileParameter(ActionEvent actionEvent) {
+    public void changePassword(ActionEvent actionEvent) {
+        String newPassword = passwordField.getText();
+        System.out.println(newPassword);
+        Author currentAuthor = new Author(data.getAuthorName(),data.getPassword(),
+                data.getAvatarIndex(), data.getAuthorPromotion());
 
-        if (parameterToChange == null) {
-            System.out.println("Prima devi selezionare un' opzione dal menu a tendina sopra");
-            return;
+        AuthorService.changePassword(newPassword,currentAuthor);
+        data.setPassword(newPassword);
+        passwordField.setText(newPassword);
+        Utils.changeScene(actionEvent,"AuthorProfile.fxml");
+    }
+    public void changeAuthorName(ActionEvent actionEvent) {
+        String newAuthorName = authorNameField.getText();
+        System.out.println(newAuthorName);
+        Author currentAuthor = new Author(data.getAuthorName(),data.getPassword(),
+                data.getAvatarIndex(), data.getAuthorPromotion());
+
+        if(AuthorService.changeAuthorName(newAuthorName,currentAuthor)){
+            data.setAuthorName(newAuthorName);
+            authorNameField.setText(newAuthorName);
+            Utils.changeScene(actionEvent,"AuthorProfile.fxml");
         }
-        String parameterNewValue = parameterValueField.getText();
-        Author currentAuthor = new Author(DataSingleton.getInstance().getAuthorName(),DataSingleton.getInstance().getPassword(),
-                DataSingleton.getInstance().getAvatarIndex(),DataSingleton.getInstance().getAuthorPromotion());
-        if (!parameterToChange.equals("authorName")) {
-            //System.out.println("PARAMETRO CAMBIATO");
-            AuthorService.changePassword(parameterNewValue,currentAuthor); //chiamata a DAO
-            if (parameterToChange.equals("password")) {
-                passwordField.setText(parameterNewValue);
-                DataSingleton.getInstance().setPassword(parameterNewValue);
-                authorName = data.getAuthorName();
-                password = data.getPassword();
-            }
-            parameterToChange = null;
-            return;
-        }
-        //System.out.println(parameterNewValue);
-        if (!AuthorService.changeAuthorName(parameterNewValue, currentAuthor)) { //chiamata a DAO
-            parameterToChange = null;
-            return;
-        }
-        //System.out.println("PARAMETRO CAMBIATO");
-        authorNameField.setText(parameterNewValue);
-        DataSingleton.getInstance().setAuthorName(parameterNewValue);
-        authorName = data.getAuthorName();
-        password = data.getPassword();
-        parameterToChange = null;
-        //}
     }
 
-    public void setParameterToAuthorName(ActionEvent actionEvent) {parameterToChange = "authorName";}
-    public void setParameterToPassword(ActionEvent actionEvent) {parameterToChange = "password";}
+    private void setSelectedImage(Integer imageNumber){
+        avatarImage.setImage(Configuration.AVATAR.get(imageNumber-1));
+        AuthorService.updateImage(data.getAuthorName(),imageNumber);
+        data.setAvatar(imageNumber);
+    }
+    public void onMouseClickImage1(MouseEvent mouseEvent) {
+        setSelectedImage(1);
+    }
+    public void onMouseClickImage2(MouseEvent mouseEvent) {
+        setSelectedImage(2);
+    }
+    public void onMouseClickImage3(MouseEvent mouseEvent) {
+        setSelectedImage(3);
+    }
+    public void onMouseClickImage4(MouseEvent mouseEvent) {
+        setSelectedImage(4);
+    }
+    public void onMouseClickImage5(MouseEvent mouseEvent) {
+        setSelectedImage(5);
+    }
+    public void onMouseClickImage6(MouseEvent mouseEvent) {
+        setSelectedImage(6);
+    }
+    public void onMouseClickImage7(MouseEvent mouseEvent) {
+        setSelectedImage(7);
+    }
+    public void onMouseClickImage8(MouseEvent mouseEvent) {
+        setSelectedImage(8);
+    }
+
 }
 

@@ -5,6 +5,7 @@ import com.example.demo1.service.AuthorService;
 import com.example.demo1.service.ModeratorService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ public class LoginController {
     @FXML
     private TextField insertedName;
     @FXML
-    private TextField insertedPassword;
+    private PasswordField insertedPassword;
 
     @FXML
     public void onRegisterClick(ActionEvent actionEvent) throws IOException {
