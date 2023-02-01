@@ -59,8 +59,6 @@ public class LoggatoAnalyticsController {
         displayTableView(tableView);
     }
 
-    //{$sort: {'color': 1, value: -1}},
-    //{$group: {_id: '$color', value: {$first: '$value'}}}
     public void onTopRecipesForEachCategory(ActionEvent actionEvent) {
         TableViewAbstract tableView = new TableViewRecipeCategory();
         initializeTableView(tableView);

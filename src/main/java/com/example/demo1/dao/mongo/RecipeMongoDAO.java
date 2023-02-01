@@ -1,6 +1,7 @@
 package com.example.demo1.dao.mongo;
 
 import com.example.demo1.Configuration;
+import com.example.demo1.model.Author;
 import com.example.demo1.model.Recipe;
 import com.example.demo1.model.RecipeReducted;
 import com.example.demo1.model.Review;
@@ -152,7 +153,7 @@ public class RecipeMongoDAO {
                             Double.valueOf(String.valueOf(doc.get("AggregatedRating"))), null, null, null, null)));
         return listRecipe;
     }
-    public static HashMap<String,Integer> findMostUsedIngredients(Integer limitIngredients, Integer minNumberReviews) throws MongoException{
+    public static Map<String,Integer> findMostUsedIngredients(Integer limitIngredients, Integer minNumberReviews) throws MongoException{
         Bson matchR = match(new Document("Reviews." + minNumberReviews, new Document("$exists",true)));
         Bson unwind = new Document("$unwind",new Document("path","$RecipeIngredientParts"));
         Bson group = new Document("$group", new Document("_id", "$RecipeIngredientParts").
@@ -164,10 +165,11 @@ public class RecipeMongoDAO {
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
                 .aggregate(Arrays.asList(matchR,project,unwind,group,sort,limit))
                 .forEach(doc -> mapIngredient.put(doc.getString("_id"),doc.getInteger("count")));
-
-        //ordinare Mappa
-
-        return mapIngredient;
+        List<Map.Entry<String, Integer>> list = new LinkedList<>(mapIngredient.entrySet());
+        list.sort((o1, o2) -> (o2.getValue()).compareTo(o1.getValue()));
+        Map<String, Integer> sortedMap = new LinkedHashMap<>();
+        list.forEach(entry -> sortedMap.put(entry.getKey(), entry.getValue()));
+        return sortedMap;
     }
     public static List<Recipe> findRecipesWithHighestRating(Integer limitRecipes, Integer minNumberReviews) throws MongoException{
         Bson matchR = match(new Document("Reviews." + minNumberReviews, new Document("$exists", true)));

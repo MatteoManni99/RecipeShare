@@ -6,6 +6,7 @@ import com.example.demo1.model.RecipeReducted;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RecipeService {
 
@@ -43,7 +44,7 @@ public class RecipeService {
         return RecipeMongoDAO.findTopRecipesForRangesOfPreparationTime(lowerLimit, upperLimit, minNumberReviews, limitRecipes);
     }
 
-    public static HashMap<String,Integer> findMostUsedIngredients(Integer limitIngredients, Integer minNumberReviews){
+    public static Map<String,Integer> findMostUsedIngredients(Integer limitIngredients, Integer minNumberReviews){
         return RecipeMongoDAO.findMostUsedIngredients(limitIngredients, minNumberReviews);
     }
 
