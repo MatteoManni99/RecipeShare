@@ -33,7 +33,6 @@ public class RecipeMongoDAO {
         Bson unwind = new Document("$unwind","$Reviews");
         Bson project = project(new Document("Reviews",1));
         Bson group = new Document("$group", new Document("_id", null).append("average", new Document("$avg","$Reviews.Rating")));
-
         return safeExecutionDouble(Objects.requireNonNull(MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
                 .aggregate(Arrays.asList(match, unwind, project, group)).first()),"average");
 
@@ -41,8 +40,7 @@ public class RecipeMongoDAO {
 
     public static void setAggregatedRating(String recipeName, Double newAggregatedRating){
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
-                .updateOne(new Document("Name", recipeName),
-                        new Document("$set", new Document("AggregatedRating", newAggregatedRating)));
+                .updateOne(new Document("Name", recipeName), new Document("$set", new Document("AggregatedRating", newAggregatedRating)));
     }
 
     public static void addReview(String recipeName, String reviewer, Integer rating, String review) throws MongoException {
@@ -73,17 +71,11 @@ public class RecipeMongoDAO {
         Bson match = match(new Document("AuthorName", authorName));
         Bson project = project(new Document("Name", 1).append("AuthorName", 1)
                 .append("Images", new Document("$first", "$Images")));
-        MongoCursor<Document> cursor;
-        if(authorName == null){
-            cursor = collection.aggregate(Arrays.asList(skip(elementToSkip),limit(elementsToLimit),project)).iterator();
-        }else{
-            cursor = collection.aggregate(Arrays.asList(match,skip(elementToSkip),limit(elementsToLimit),project)).iterator();
-        }
-        while (cursor.hasNext()){
-            Document recipeDoc = cursor.next();
-            recipeReducted.add(new RecipeReducted(recipeDoc.getString("Name"),
-                    recipeDoc.getString("AuthorName"), recipeDoc.getString("Images")));
-        }
+        MongoCursor<Document> cursor = (authorName == null) ?
+                collection.aggregate(Arrays.asList(skip(elementToSkip),limit(elementsToLimit),project)).iterator():
+                collection.aggregate(Arrays.asList(match,skip(elementToSkip),limit(elementsToLimit),project)).iterator();
+        cursor.forEachRemaining(recipeDoc -> recipeReducted.add(new RecipeReducted(recipeDoc.getString("Name"),
+                recipeDoc.getString("AuthorName"), recipeDoc.getString("Images"))));
         return recipeReducted;
     }
 
@@ -91,19 +83,12 @@ public class RecipeMongoDAO {
         List<RecipeReducted> recipeReducted = new ArrayList<>();
         MongoCollection<Document> collection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);
         Bson match = match(new Document("Name",new Document("$regex",name).append("$options","i")));
-        Bson project = project(new Document("Name",1).append("AuthorName",1)
-                .append("Images", new Document("$first","$Images")));
-        MongoCursor<Document> cursor;
-        if(name == null){
-            cursor = collection.aggregate(Arrays.asList(skip(elementToSkip),limit(elementsToLimit),project)).iterator();
-        }else{
-            cursor = collection.aggregate(Arrays.asList(match,skip(elementToSkip),limit(elementsToLimit),project)).iterator();
-        }
-        while (cursor.hasNext()){
-            Document recipeDoc = cursor.next();
-            recipeReducted.add(new RecipeReducted(recipeDoc.getString("Name"),
-                    recipeDoc.getString("AuthorName"), recipeDoc.getString("Images")));
-        }
+        Bson project = project(new Document("Name",1).append("AuthorName",1).append("Images", new Document("$first","$Images")));
+        MongoCursor<Document> cursor = (name == null) ?
+                collection.aggregate(Arrays.asList(skip(elementToSkip),limit(elementsToLimit),project)).iterator() :
+                collection.aggregate(Arrays.asList(match,skip(elementToSkip),limit(elementsToLimit),project)).iterator();
+        cursor.forEachRemaining(recipeDoc -> recipeReducted.add(new RecipeReducted(recipeDoc.getString("Name"),
+                recipeDoc.getString("AuthorName"), recipeDoc.getString("Images"))));
         return recipeReducted;
     }
 
@@ -154,21 +139,17 @@ public class RecipeMongoDAO {
     public static List<Recipe> findTopRecipesForRangesOfPreparationTime(Integer lowerLimit, Integer upperLimit, Integer minNumberReviews,
                                                                  Integer limitRecipes) throws MongoException{
         List<Recipe> listRecipe = new ArrayList<>();
-        Bson match;
-        if (upperLimit != -1) match = match(new Document("TotalTime", new Document("$gt",lowerLimit).append("$lte", upperLimit)));
-        else match = match(new Document("TotalTime", new Document("$gt",lowerLimit))); //terzo range
+        Bson match = (upperLimit != -1) ? match(new Document("TotalTime", new Document("$gt",lowerLimit).append("$lte", upperLimit))) :
+                match(new Document("TotalTime", new Document("$gt",lowerLimit))); //terzo range
         Bson matchR = match(new Document("Reviews." + minNumberReviews, new Document("$exists",true)));
         Bson sort = sort(descending("AggregatedRating"));
         Bson limit = limit(limitRecipes);
         Bson project = project(new Document("Name", 1).append("TotalTime", 1).append("AggregatedRating",1).append("Images", new Document("$first", "$Images")));
-        for (Document doc : MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
-                .aggregate(Arrays.asList(matchR,match,sort,limit,project))) {
-            List<String> images = new ArrayList<>();
-            images.add(doc.getString("Images"));
-            listRecipe.add(new Recipe(doc.getString("Name"), null, doc.getInteger("TotalTime"), null, null,
-                    images, null, null, null,
-                    Double.valueOf(String.valueOf(doc.get("AggregatedRating"))), null, null, null, null));
-        }
+        MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
+                .aggregate(Arrays.asList(matchR,match,sort,limit,project)).forEach(doc ->
+                    listRecipe.add(new Recipe(doc.getString("Name"), null, doc.getInteger("TotalTime"),
+                            null, null, new ArrayList<>(Collections.singleton(doc.getString("Images"))), null, null, null,
+                            Double.valueOf(String.valueOf(doc.get("AggregatedRating"))), null, null, null, null)));
         return listRecipe;
     }
     public static HashMap<String,Integer> findMostUsedIngredients(Integer limitIngredients, Integer minNumberReviews) throws MongoException{
@@ -180,10 +161,9 @@ public class RecipeMongoDAO {
         Bson limit = limit(limitIngredients);
         Bson sort = sort(descending("count"));
         HashMap<String,Integer> mapIngredient = new HashMap<>();
-        for (Document doc : MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
-                .aggregate(Arrays.asList(matchR,project,unwind,group,sort,limit))) {
-            mapIngredient.put(doc.getString("_id"),doc.getInteger("count"));
-        }
+        MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
+                .aggregate(Arrays.asList(matchR,project,unwind,group,sort,limit))
+                .forEach(doc -> mapIngredient.put(doc.getString("_id"),doc.getInteger("count")));
         return mapIngredient;
     }
     public static List<Recipe> findRecipesWithHighestRating(Integer limitRecipes, Integer minNumberReviews) throws MongoException{
@@ -192,14 +172,12 @@ public class RecipeMongoDAO {
         Bson sort = sort(descending("AggregatedRating"));
         Bson project = project(new Document("Name", 1).append("AggregatedRating",1).append("Images", new Document("$first", "$Images")));
         List<Recipe> listRecipe = new ArrayList<>();
-        for (Document doc : MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
-                .aggregate(Arrays.asList(matchR,sort,limit,project))) {
-            List<String> images = new ArrayList<>();
-            images.add(doc.getString("Images"));
-            listRecipe.add(new Recipe(doc.getString("Name"), null, null, null, null,
-                    images, null, null, null,
-                    Double.valueOf(String.valueOf(doc.get("AggregatedRating"))), null, null, null, null));
-        }
+        MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
+                .aggregate(Arrays.asList(matchR,sort,limit,project)).forEach( doc ->
+                    listRecipe.add(new Recipe(doc.getString("Name"), null, null, null,
+                            null, new ArrayList<>(Collections.singleton(doc.getString("Images"))),
+                            null, null, null, Double.valueOf(String.valueOf(doc.get("AggregatedRating"))),
+                            null, null, null, null)));
         return listRecipe;
     }
     public static List<Recipe> findTopRecipesForEachCategory(Integer minNumberReviews) throws MongoException{
@@ -210,14 +188,12 @@ public class RecipeMongoDAO {
                 .append("Name", new Document("$first", "$Name"))
                 .append("AggregatedRating", new Document("$first", "$AggregatedRating"))
                 .append("Images", new Document("$first", "$Images")));
-        for (Document doc : MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
-                .aggregate(Arrays.asList(match, sort, group))) {
-            List<String> images = new ArrayList<>();
-            images.add(doc.getList("Images", String.class).get(0));
-            listRecipe.add(new Recipe(doc.getString("Name"), null, null, null, null,
-                    images, doc.getString("_id"), null, null,
-                    Double.valueOf(String.valueOf(doc.get("AggregatedRating"))), null, null, null, null));
-        }
+        MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
+                .aggregate(Arrays.asList(match, sort, group)).forEach(doc ->
+                        listRecipe.add(new Recipe(doc.getString("Name"), null, null,
+                        null, null, new ArrayList<>(Collections.singleton(doc.getString("Images"))),
+                        doc.getString("_id"), null, null, Double.valueOf(String.valueOf(doc.get("AggregatedRating"))),
+                        null, null, null, null)));
         return listRecipe;
     }
 }

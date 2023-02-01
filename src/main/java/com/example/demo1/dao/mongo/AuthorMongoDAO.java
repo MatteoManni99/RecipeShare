@@ -104,20 +104,14 @@ public class AuthorMongoDAO {
     public static ArrayList<Author> searchAuthors(String nameToSearch, Integer elementsToSkip, Integer elementsToLimit) throws MongoException{
         ArrayList<Author> authors = new ArrayList<Author>();
         MongoCollection<Document> collection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
-        MongoCursor<Document> cursor;
         Bson filter = new Document("authorName",new Document("$regex",nameToSearch).append("$options","i"));
         Bson match = match(filter);
         Bson project = project(new Document("authorName",1).append("promotion",1).append("image", 1));
-        if(nameToSearch == null) {
-            cursor = collection.aggregate(Arrays.asList(skip(elementsToSkip),limit(elementsToLimit),project)).iterator();
-        }else {
-            cursor = collection.aggregate(Arrays.asList(match, skip(elementsToSkip),limit(elementsToLimit),project)).iterator();
-        }
-        while(cursor.hasNext()){
-            Document authorDoc = cursor.next();
-            authors.add(new Author(authorDoc.getString("authorName"),null,
-                    authorDoc.getInteger("image"), authorDoc.getInteger("promotion")));
-        }
+        MongoCursor<Document> cursor = (nameToSearch == null) ?
+                collection.aggregate(Arrays.asList(skip(elementsToSkip),limit(elementsToLimit),project)).iterator() :
+                collection.aggregate(Arrays.asList(match, skip(elementsToSkip),limit(elementsToLimit),project)).iterator();
+        cursor.forEachRemaining(authorDoc -> authors.add(new Author(authorDoc.getString("authorName"),null,
+                authorDoc.getInteger("image"), authorDoc.getInteger("promotion"))));
         return authors;
     }
 }
