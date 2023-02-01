@@ -41,7 +41,7 @@ public class ReportedRecipeMongoDAO {
     }
     private static ReportedRecipe fromDocToReportedRecipe(Document doc){
         return new ReportedRecipe(doc.getString("name"),doc.getString("authorName"),
-                doc.getString("reporterName"),doc.getString("dateReporting"), doc.getString("images"));
+                doc.getString("reporterName"),doc.getString("dateReporting"), doc.getString("image"));
     }
 
     public static List<ReportedRecipe> getListReportedRecipes() throws MongoException {

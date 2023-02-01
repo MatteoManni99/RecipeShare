@@ -164,6 +164,9 @@ public class RecipeMongoDAO {
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
                 .aggregate(Arrays.asList(matchR,project,unwind,group,sort,limit))
                 .forEach(doc -> mapIngredient.put(doc.getString("_id"),doc.getInteger("count")));
+
+        //ordinare Mappa
+
         return mapIngredient;
     }
     public static List<Recipe> findRecipesWithHighestRating(Integer limitRecipes, Integer minNumberReviews) throws MongoException{
@@ -190,12 +193,8 @@ public class RecipeMongoDAO {
                 .append("Images", new Document("$first", "$Images")));
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
                 .aggregate(Arrays.asList(match, sort, group)).forEach(doc ->{
-
-                    List<String> images = new ArrayList<>();
-                    images.add(doc.getList("Images", String.class).get(0));
-
                         listRecipe.add(new Recipe(doc.getString("Name"), null, null,
-                        null, null, images,
+                        null, null, new ArrayList<>(Collections.singleton(doc.getList("Images", String.class).get(0))),
                         doc.getString("_id"), null, null, Double.valueOf(String.valueOf(doc.get("AggregatedRating"))),
                         null, null, null, null));}
                 );
