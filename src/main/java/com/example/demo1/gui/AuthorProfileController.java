@@ -34,35 +34,15 @@ public class AuthorProfileController implements Initializable {
     //public TextField parameterValueField;
     public Label avatarLabel = new Label();
 
-    private DataSingleton data = DataSingleton.getInstance();
-    private TableViewRecipe TableViewObject = new TableViewRecipe();
-    private Integer indexImages = 0;
-    private List<String> images_list;
+    private final DataSingleton data = DataSingleton.getInstance();
+    private final TableViewRecipe TableViewObject = new TableViewRecipe();
     @FXML
     private TextField authorNameField;
     @FXML
     private TextField passwordField;
-    private Integer pageNumber = 0;
     @FXML
     private AnchorPane anchorPane;
     public ImageView avatarImage;
-
-
-    private void printImages() {
-        image.setImage(new Image(images_list.get(indexImages)));
-    }
-
-    @FXML
-    public void onPreviousClick(ActionEvent actionEvent) throws IOException {
-        indexImages -= indexImages > 0 ? 1 : 0;
-        printImages();
-    }
-
-    @FXML
-    public void onNextClick(ActionEvent actionEvent) throws IOException {
-        indexImages += indexImages < images_list.size() - 1 ? 1 : 0;
-        printImages();
-    }
 
     @FXML
     public void onBackClick(ActionEvent actionEvent) throws IOException {
@@ -72,11 +52,9 @@ public class AuthorProfileController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         avatarImage.setImage(data.getAvatar().getImage());
-
         authorNameField.setText(data.getAuthorName());
-        //authorNameField.setEditable(false);
         passwordField.setText(data.getPassword());
-        //passwordField.setEditable(false);
+
         createTableView();
     }
 
@@ -91,11 +69,13 @@ public class AuthorProfileController implements Initializable {
     }
 
     public void createTableView() {
-        searchInDBAndLoadInTableView(pageNumber);
+        searchInDBAndLoadInTableView(0);
         TableViewObject.setEventForTableCells();
-        TableViewObject.setTable();
+        TableViewObject.setTableWithoutAuthorNameCol();
         TableViewObject.getTable().setLayoutX(20);
         TableViewObject.getTable().setLayoutY(240);
+        TableViewObject.getTable().setPrefWidth(450);
+        TableViewObject.getTable().setPrefHeight(340);
         anchorPane.getChildren().addAll(TableViewObject.getTable());
     }
 

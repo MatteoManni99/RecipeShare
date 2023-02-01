@@ -22,12 +22,12 @@ public class TableViewAuthorScore extends TableViewAbstract {
         imageCol.setCellValueFactory(new PropertyValueFactory<>("image"));
         scoreCol.setCellValueFactory(new PropertyValueFactory<>("score"));
 
-        table.setPrefHeight(400);
-        table.setPrefWidth(300);
-        table.setLayoutX(600);
-        table.setLayoutY(200);
+        table.setPrefHeight(500);
+        table.setPrefWidth(350);
+        table.setLayoutX(20);
+        table.setLayoutY(100);
     }
 
-    public void setTable() {table.getColumns().addAll(authorNameCol, scoreCol);}
+    public void setTable() {table.getColumns().addAll(imageCol, authorNameCol, scoreCol);}
 
 }

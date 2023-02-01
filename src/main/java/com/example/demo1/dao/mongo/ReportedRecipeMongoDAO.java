@@ -4,6 +4,7 @@ import com.example.demo1.Configuration;
 import com.example.demo1.model.Author;
 import com.example.demo1.model.ReportedRecipe;
 import com.example.demo1.persistence.MongoDBDriver;
+import com.example.demo1.service.AuthorService;
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
@@ -71,7 +72,7 @@ public class ReportedRecipeMongoDAO {
                 .forEach(document -> {
                     String authorName = document.getString("_id");
                     Double score = document.getInteger("count") / map.get(authorName);
-                    authorList.add(new Author(authorName,score));
+                    authorList.add(new Author(authorName,score,AuthorService.searchAuthors(authorName, 0,1).get(0).getImage()));
                 });
 
         authorList.sort(Comparator.comparingDouble(Author::getScore));

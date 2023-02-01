@@ -13,9 +13,10 @@ public class Author {
         this.image = image;
         this.promotion = promotion;
     }
-    public Author(String name,Double score){
+    public Author(String name,Double score, Integer image){
         this.name = name;
         this.score = score;
+        this.image = image;
     }
 
     public void setPromotion(Integer promotion) {

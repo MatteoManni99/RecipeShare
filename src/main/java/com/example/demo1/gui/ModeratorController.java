@@ -18,8 +18,6 @@ import java.util.*;
 public class ModeratorController implements Initializable {
     public String nameToSearch;
     public TextField authorToSearchTextField;
-    @FXML
-    private Label recipeText;
 
     private Integer pageNumber = 0;
     private String authorName;
@@ -27,8 +25,6 @@ public class ModeratorController implements Initializable {
     private String recipeName;
     private String authorNameClicked;
 
-
-    private TableViewAuthor tabella;
     @FXML
     private AnchorPane anchorPane;
 
@@ -36,7 +32,7 @@ public class ModeratorController implements Initializable {
     private final TableViewAbstract tableAuthor = new TableViewAuthor();
     private final TableViewAbstract tableReportedRecipe = new TableViewReportedRecipe();
     @FXML
-    public void onLogoutClick(ActionEvent actionEvent) throws IOException {
+    public void onLogoutClick(ActionEvent actionEvent){
         Utils.changeScene(actionEvent,"Login.fxml");
     }
 
@@ -59,26 +55,18 @@ public class ModeratorController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        double startingX = recipeText.getLayoutX();
-        if (DataSingleton.getInstance().getTypeOfUser().equals("moderator")) {
-            Button promoteAuthorButton = new Button("PROMOTE AUTHOR");
-            promoteAuthorButton.setLayoutX(64);
-            promoteAuthorButton.setLayoutY(120);
-            promoteAuthorButton.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
-                AuthorService.updatePromotion(authorNameClicked,1);
-                authorNameClicked = null;
-                cellAuthorPromotion.setText("1");
-            });
-            anchorPane.getChildren().add(promoteAuthorButton);
-        }
-        createTableView();
+        createTableViews();
     }
 
-    public void createTableView () {
+    public void createTableViews() {
         searchInDBAndLoadInTableView(authorName,pageNumber);
         searchInDBAndLoadInTableViewReportedRecipe(recipeName,pageNumberReportedRecipe);
         tableAuthor.setTable();
+        tableAuthor.getTable().setPrefSize(300,450);
+        tableAuthor.getTable().setLayoutX(670);
+        tableAuthor.getTable().setLayoutY(100);
         tableAuthor.setEventForTableCells();
+
         tableReportedRecipe.setTable();
         tableReportedRecipe.setEventForTableCells();
         setEventPromotion();
@@ -122,5 +110,17 @@ public class ModeratorController implements Initializable {
         if(nameToSearch.isBlank()) nameToSearch =  null;
         pageNumber =  0;
         searchInDBAndLoadInTableView(nameToSearch, pageNumber);
+    }
+
+    public void onPromoteAuthorClick(ActionEvent actionEvent) {
+        AuthorService.updatePromotion(authorNameClicked,1);
+        authorNameClicked = null;
+        searchInDBAndLoadInTableView(authorName,pageNumber);
+    }
+
+    public void onNextPageRecipeClick(ActionEvent actionEvent) {
+    }
+
+    public void onPreviousRecipePageClick(ActionEvent actionEvent) {
     }
 }

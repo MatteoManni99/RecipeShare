@@ -8,8 +8,8 @@ public class ImageTableView implements RowTableView{
 
     ImageTableView(ImageView img) {
         this.image = img;
-        this.image.setFitHeight(50);
-        this.image.setFitWidth(50);
+        this.image.setFitHeight(80);
+        this.image.setFitWidth(80);
     }
 
     public void setImage(ImageView value) {image = value;}
