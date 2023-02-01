@@ -72,7 +72,7 @@ public class RecipeMongoDAO {
         Bson project = project(new Document("Name", 1).append("AuthorName", 1)
                 .append("Images", new Document("$first", "$Images")));
         MongoCursor<Document> cursor = (authorName == null) ?
-                collection.aggregate(Arrays.asList(skip(elementToSkip),limit(elementsToLimit),project)).iterator():
+                collection.aggregate(Arrays.asList(skip(elementToSkip),limit(elementsToLimit),project)).iterator() :
                 collection.aggregate(Arrays.asList(match,skip(elementToSkip),limit(elementsToLimit),project)).iterator();
         cursor.forEachRemaining(recipeDoc -> recipeReducted.add(new RecipeReducted(recipeDoc.getString("Name"),
                 recipeDoc.getString("AuthorName"), recipeDoc.getString("Images"))));
@@ -189,11 +189,16 @@ public class RecipeMongoDAO {
                 .append("AggregatedRating", new Document("$first", "$AggregatedRating"))
                 .append("Images", new Document("$first", "$Images")));
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
-                .aggregate(Arrays.asList(match, sort, group)).forEach(doc ->
+                .aggregate(Arrays.asList(match, sort, group)).forEach(doc ->{
+
+                    List<String> images = new ArrayList<>();
+                    images.add(doc.getList("Images", String.class).get(0));
+
                         listRecipe.add(new Recipe(doc.getString("Name"), null, null,
-                        null, null, new ArrayList<>(Collections.singleton(doc.getString("Images"))),
+                        null, null, images,
                         doc.getString("_id"), null, null, Double.valueOf(String.valueOf(doc.get("AggregatedRating"))),
-                        null, null, null, null)));
+                        null, null, null, null));}
+                );
         return listRecipe;
     }
 }

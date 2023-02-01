@@ -65,8 +65,6 @@ public class ModeratorController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         startingX = recipeText.getLayoutX();
-
-        //questa parte sotto è quella che setta il Button per la promozione
         if (DataSingleton.getInstance().getTypeOfUser().equals("moderator")) {
             Button promoteAuthorButton = new Button("PROMOTE AUTHOR");
             promoteAuthorButton.setLayoutX(64);
@@ -74,21 +72,6 @@ public class ModeratorController implements Initializable {
             promoteAuthorButton.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
                 AuthorService.updatePromotion(authorNameClicked,1);
                 authorNameClicked = null;
-                /*try (MongoClient mongoClient = MongoClients.create(uri)) {
-                    MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
-                    MongoCollection<Document> collectionAuthor = database.getCollection(Configuration.MONGODB_AUTHOR);
-                    Document query = new Document().append("authorName", authorNameClicked);
-                    Bson updates = Updates.combine(
-                            Updates.set("promotion",1)
-                    );
-                    UpdateOptions options = new UpdateOptions().upsert(true);
-                    try {
-                        UpdateResult result = collectionAuthor.updateOne(query, updates, options);
-                        System.out.println("Modified document count: " + result.getModifiedCount());
-                    } catch (MongoException me) {
-                        System.err.println("Unable to update due to an error: " + me);
-                    }
-                }*/
             });
             anchorPane.getChildren().add(promoteAuthorButton);
         }

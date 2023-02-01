@@ -21,11 +21,7 @@ public class SearchAuthorController implements Initializable {
     public AnchorPane anchorPane;
     private Integer pageNumber = 0;
     private String nameToSearch = null;
-
-
     private final TableViewAbstract tableViewAuthor = new TableViewAuthor();
-
-    private TableViewAbstract tabella;
 
     @FXML
     public void onLogoutClick(ActionEvent actionEvent){
@@ -61,22 +57,6 @@ public class SearchAuthorController implements Initializable {
             anchorPane.getChildren().add(promoteAuthorButton);
         }
         createTableView();
-        /*
-        String uri = Configuration.MONGODB_URL;
-        List<Document> listaAuthors = new ArrayList<>();
-
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB); //da scegliere il nome uguale per tutti
-            MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_AUTHOR);
-
-            MongoCursor<Document> cursor = collection.find().iterator();
-            while (cursor.hasNext())
-                listaAuthors.add(cursor.next());
-        }
-
-        for (int i = 0; i < listaAuthors.size() - 220000; i++)
-            setAuthorLabels(listaAuthors,i);
-        */
 
         //questa parte sotto è quella che setta il Button per la promozione
 
@@ -90,8 +70,6 @@ public class SearchAuthorController implements Initializable {
         tableViewAuthor.setEventForTableCells();
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
         tableViewAuthor.setTable();
-        tabella = tableViewAuthor;
-        setEventForTableCells();
         anchorPane.getChildren().add(tableViewAuthor.getTable());
     }
 
@@ -103,26 +81,6 @@ public class SearchAuthorController implements Initializable {
         tableViewAuthor.setItems();
     }
 
-    /*
-    public void setAuthorLabels(List<Document> listaAuthors,int i) {
-        int documentSize = listaAuthors.get(0).size() - 2;
-        List<String> listaLabelNames = new ArrayList<>();
-        listaLabelNames.add("authorId");
-        listaLabelNames.add("authorName");
-
-        double copiaStartingX = cercaUtenteButton.getLayoutX() - 200;
-        for (int j = 0;j < documentSize; j++) {
-            Label currentLabel = new Label();
-            Object valore = listaAuthors.get(i).get(listaLabelNames.get(j));
-            currentLabel.setText((String.valueOf(valore)));
-            currentLabel.setLayoutX(copiaStartingX + j*10);
-            currentLabel.setLayoutY(cercaUtenteButton.getLayoutY() + 50 + i * 10);
-            currentLabel.setMaxWidth(50);
-            copiaStartingX += currentLabel.getMaxWidth();
-            anchorPane.getChildren().add(currentLabel);
-        }
-    }
-    */
 
     @FXML
     public void onCercaUtenteClick(ActionEvent actionEvent) {
@@ -132,17 +90,4 @@ public class SearchAuthorController implements Initializable {
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
     }
 
-    public void setEventForTableCells() {
-        tabella.getTable().addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il mouse clickato
-                    TableCell cell = Utils.findCell(evt,tabella.getTable());
-                    if (cell != null && !cell.isEmpty()) {
-                        if(cell.getTableColumn().getText().equals("Author")){
-                            authorNameClicked = cell.getText();
-                            System.out.println("COSA SERVE??");
-                        }
-                        evt.consume();
-                    }
-                }
-        );
-    }
 }

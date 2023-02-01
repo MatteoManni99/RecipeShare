@@ -116,21 +116,6 @@ public class AuthorProfileController implements Initializable {
                 avatar.setFitWidth(100);
                 anchorPane.getChildren().set(avatarIndex,avatar);
                 AuthorService.updateImage(DataSingleton.getInstance().getAuthorName(),Integer.parseInt(temp.getId())); //chiamata a DAO
-                /*try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
-                    MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
-                    MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_AUTHOR);
-                    Document query = new Document().append("authorName", authorName);
-                    Bson updates = Updates.combine(
-                            Updates.set("image", Integer.parseInt(temp.getId()))
-                    );
-                    UpdateOptions options = new UpdateOptions().upsert(true);
-                    try {
-                        UpdateResult result = collection.updateOne(query, updates, options);
-                        System.out.println("Modified document count: " + result.getModifiedCount());
-                    } catch (MongoException me) {
-                        System.err.println("Unable to update due to an error: " + me);
-                    }
-                }*/
             });
             temp.setFitWidth(70);
             temp.setFitHeight(70);
@@ -175,32 +160,6 @@ public class AuthorProfileController implements Initializable {
             return;
         }
         String parameterNewValue = parameterValueField.getText();
-
-        /*try (MongoClient mongoClient = MongoClients.create(Configuration.MONGODB_URL)) {
-            MongoDatabase database = mongoClient.getDatabase(Configuration.MONGODB_DB);
-            MongoCollection<Document> collection = database.getCollection(Configuration.MONGODB_AUTHOR);
-            if (parameterToChange.equals("authorName")) {
-                Bson filterAuthor = Filters.and(
-                        Filters.eq("authorName", parameterNewValue));
-                MongoCursor<Document> cursorAuthor = collection.find(filterAuthor).iterator();
-                if (cursorAuthor.hasNext()) {
-                    System.out.println("QUESTO NICKNAME ESISTE GIA, PROVANE UN ALTRO");
-                    return;
-                }
-            }
-            Document query = new Document().append("authorName", authorName);
-            Bson updates = Updates.combine(
-                    Updates.set(parameterToChange, parameterNewValue)
-                    );
-            UpdateOptions options = new UpdateOptions().upsert(true);
-
-            try {
-                UpdateResult result = collection.updateOne(query, updates, options);
-                System.out.println("Modified document count: " + result.getModifiedCount());
-            } catch (MongoException me) {
-                System.err.println("Unable to update due to an error: " + me);
-            }
-        */
         Author currentAuthor = new Author(DataSingleton.getInstance().getAuthorName(),DataSingleton.getInstance().getPassword(),
                 DataSingleton.getInstance().getAvatarIndex(),DataSingleton.getInstance().getAuthorPromotion());
         if (!parameterToChange.equals("authorName")) {
@@ -215,20 +174,6 @@ public class AuthorProfileController implements Initializable {
             parameterToChange = null;
             return;
         }
-
-        /*MongoCollection<Document> collectionRecipe = database.getCollection(Configuration.MONGODB_RECIPE);
-        Document queryRecipe = new Document().append("AuthorName", authorName);
-        Bson updatesRecipe = Updates.combine(
-                Updates.set("AuthorName", parameterNewValue));
-        UpdateOptions optionsRecipe = new UpdateOptions().upsert(true);
-
-            try {
-                UpdateResult result = collectionRecipe.updateMany(queryRecipe, updatesRecipe, optionsRecipe);
-                System.out.println("Modified document count: " + result.getModifiedCount());
-            } catch (MongoException me) {
-                System.err.println("Unable to update due to an error: " + me);
-            }
-        */
         //System.out.println(parameterNewValue);
         if (!AuthorService.changeAuthorName(parameterNewValue, currentAuthor)) { //chiamata a DAO
             parameterToChange = null;
