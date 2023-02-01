@@ -1,7 +1,6 @@
 package com.example.demo1.gui;
 
 import com.example.demo1.model.Recipe;
-import com.example.demo1.service.AuthorService;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import com.example.demo1.service.RecipeService;
@@ -12,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 
 public class LoggatoAnalyticsController {
@@ -72,53 +72,35 @@ public class LoggatoAnalyticsController {
     }
 
     public void onTopRecipesForEachCategory(ActionEvent actionEvent) {
-        List<Recipe> listRecipe = RecipeService.findTopRecipesForEachCategory(3);
-        int[] page = {10};
-
-
-        listRecipe.forEach(recipe -> System.out.println(recipe.getRecipeCategory()));
-
-        /*RecipeService.findTopRecipesForEachCategory(3).forEach(recipe ->
-                tableView.addToObservableArrayList(new RowRecipeCategory(recipe.getName(), recipe.getRecipeCategory(),
-                        recipe.getAggregatedRating(), new ImageView(recipe.getImages().get(0)))));*/
-
-
+        List<Recipe> listRecipe = RecipeService.findTopRecipesForEachCategory(3).stream()
+                .filter(recipe -> recipe.getRecipeCategory() != null).sorted(Comparator.comparing(Recipe::getRecipeCategory)).toList();
+        int[] pageNumber = {0};
         Button nextPage = new Button("Next Page");
         Button previousPage = new Button("Previous Page");
-
         nextPage.setLayoutX(420);
         nextPage.setLayoutY(200);
         nextPage.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
-            TableViewAbstract tableViewN = new TableViewRecipeCategory();
-            initializeTableView(tableViewN);
-            listRecipe.subList(page[0], page[0] +10).forEach(recipe -> tableViewN.addToObservableArrayList(new RowRecipeCategory(recipe.getName(), recipe.getRecipeCategory(),
-                    recipe.getAggregatedRating(), new ImageView(recipe.getImages().get(0)))));
-            displayTableView(tableViewN);
-            page[0] +=10;
+            pageNumber[0] += 1;
+            printCategoryTable(listRecipe, pageNumber[0]);
         });
-
         previousPage.setLayoutX(280);
         previousPage.setLayoutY(200);
         previousPage.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
-            if(page[0]>=10){
-                TableViewAbstract tableViewP = new TableViewRecipeCategory();
-                initializeTableView(tableViewP);
-                listRecipe.subList(page[0]-10, page[0]).forEach(recipe -> tableViewP.addToObservableArrayList(new RowRecipeCategory(recipe.getName(), recipe.getRecipeCategory(),
-                        recipe.getAggregatedRating(), new ImageView(recipe.getImages().get(0)))));
-                displayTableView(tableViewP);
-                page[0] -=10;
-            }
+            pageNumber[0] -= pageNumber[0] >0 ? 1 : 0;
+            printCategoryTable(listRecipe, pageNumber[0]);
         });
-
-        TableViewAbstract tableView = new TableViewRecipeCategory();
-        initializeTableView(tableView);
-        listRecipe.subList(0, 10).forEach(recipe -> tableView.addToObservableArrayList(new RowRecipeCategory(recipe.getName(), recipe.getRecipeCategory(),
-                recipe.getAggregatedRating(), new ImageView(recipe.getImages().get(0)))));
-        displayTableView(tableView);
-
+        printCategoryTable(listRecipe, pageNumber[0]);
         anchorPane.getChildren().add(nextPage);
         anchorPane.getChildren().add(previousPage);
+    }
 
+    private void printCategoryTable(List<Recipe> listRecipe, Integer page){
+        TableViewAbstract tableViewN = new TableViewRecipeCategory();
+        initializeTableView(tableViewN);
+        listRecipe.stream().skip(page * 10L).limit(10).toList().forEach(recipe ->
+                tableViewN.addToObservableArrayList(new RowRecipeCategory(recipe.getName(), recipe.getRecipeCategory(),
+                        recipe.getAggregatedRating(), new ImageView(recipe.getImages().get(0)))));
+        displayTableView(tableViewN);
     }
 
 }

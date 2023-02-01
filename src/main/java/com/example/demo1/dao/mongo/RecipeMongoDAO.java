@@ -165,8 +165,7 @@ public class RecipeMongoDAO {
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
                 .aggregate(Arrays.asList(matchR,project,unwind,group,sort,limit))
                 .forEach(doc -> mapIngredient.put(doc.getString("_id"),doc.getInteger("count")));
-        List<Map.Entry<String, Integer>> list = new LinkedList<>(mapIngredient.entrySet());
-        list.sort((o1, o2) -> (o2.getValue()).compareTo(o1.getValue()));
+        List<Map.Entry<String, Integer>> list = new LinkedList<>(mapIngredient.entrySet()).stream().sorted((o1, o2) -> (o2.getValue()).compareTo(o1.getValue())).toList();
         Map<String, Integer> sortedMap = new LinkedHashMap<>();
         list.forEach(entry -> sortedMap.put(entry.getKey(), entry.getValue()));
         return sortedMap;

@@ -26,7 +26,7 @@ public class TableViewRecipeCategory extends TableViewAbstract {
         imageCol.setCellValueFactory(new PropertyValueFactory<>("image"));
 
         table.setPrefHeight(350);
-        table.setPrefWidth(550);
+        table.setPrefWidth(600);
         table.setLayoutX(50);
         table.setLayoutY(230);
     }
