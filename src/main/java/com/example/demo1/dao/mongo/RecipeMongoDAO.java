@@ -14,7 +14,6 @@ import org.bson.conversions.Bson;
 import java.util.*;
 
 import static com.mongodb.client.model.Aggregates.*;
-import static com.mongodb.client.model.Aggregates.limit;
 import static com.mongodb.client.model.Indexes.descending;
 import static com.mongodb.client.model.Projections.include;
 
@@ -39,15 +38,27 @@ public class RecipeMongoDAO {
 
     }
 
-    public static void setAggregatedRating(String recipeName, Double newAggregatedRating){
+    public static void setAggregatedRating(String recipeName, Double newAggregatedRating) throws MongoException {
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
                 .updateOne(new Document("Name", recipeName), new Document("$set", new Document("AggregatedRating", newAggregatedRating)));
     }
+    public static boolean checkIfReviewSpaceIsFull(String recipeName, Integer maxSizeOfReviews) throws MongoException{
+        Bson match = match(new Document("Name",recipeName));
+        Bson project = new Document("$project",new Document("numberOfReviews",new Document("$size", "$Reviews" )));
+        return !(MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
+                .aggregate(Arrays.asList(match, project)).first().getInteger("numberOfReviews") < maxSizeOfReviews);
+    }
 
     public static void addReview(String recipeName, String reviewer, Integer rating, String review) throws MongoException {
-        MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
-                .updateOne(new Document("Name", recipeName), new Document("$push", new Document("Reviews",
-                        new Document("AuthorName", reviewer).append("Rating", rating).append("Review", review))));
+        MongoCollection<Document> collection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);
+        //entra solo quando reviews è piano e toglie la prima
+        if(checkIfReviewSpaceIsFull(recipeName,500)){
+            collection.updateOne(new Document("Name", recipeName), new Document("$pop", new Document("Reviews", -1)));
+        }
+
+        collection.updateOne(new Document("Name", recipeName), new Document("$push", new Document("Reviews",
+                new Document("AuthorName", reviewer).append("Rating", rating).append("Review", review))));
+
     }
 
     public static void addRecipe(Recipe recipe) throws MongoException {
