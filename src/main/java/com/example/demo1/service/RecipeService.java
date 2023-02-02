@@ -3,6 +3,7 @@ package com.example.demo1.service;
 import com.example.demo1.dao.mongo.RecipeMongoDAO;
 import com.example.demo1.model.Recipe;
 import com.example.demo1.model.RecipeReducted;
+import com.mongodb.MongoException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,8 +11,14 @@ import java.util.Map;
 
 public class RecipeService {
 
-    public static void deleteRecipe(Recipe recipe){
-        RecipeMongoDAO.deleteRecipe(recipe);
+    public static boolean deleteRecipe(Recipe recipe) throws MongoException {
+        try{
+            RecipeMongoDAO.deleteRecipe(recipe);
+            return true;
+        }catch (Exception e){
+            //TODO rollback
+            return false;
+        }
     }
 
     public static Recipe getRecipeByName(String name){

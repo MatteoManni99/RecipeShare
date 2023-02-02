@@ -45,8 +45,8 @@
             <TextArea fx:id="reviewTextArea" layoutX="29.0" layoutY="550.0" prefHeight="70.0" prefWidth="235.0" text="Write a Review here..." />
             <ChoiceBox fx:id="ratingChoiceBox" layoutX="116.0" layoutY="626.0" prefHeight="26.0" prefWidth="34.0" />
             <Label layoutX="71.0" layoutY="630.0" text="Rating" />
-            <Text layoutX="801.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Recipe Rating" wrappingWidth="77.60000000000002" />
-            <TextField fx:id="aggregatedRating" editable="false" layoutX="805.0" layoutY="104.0" prefHeight="26.0" prefWidth="69.0" text=" aggregated rating" />
+            <Text layoutX="805.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Recipe Rating" wrappingWidth="77.60000000000002" />
+            <TextField fx:id="aggregatedRating" editable="false" layoutX="809.0" layoutY="143.0" prefHeight="26.0" prefWidth="69.0" text=" aggregated rating" />
          </children>
       </AnchorPane>
    </children>

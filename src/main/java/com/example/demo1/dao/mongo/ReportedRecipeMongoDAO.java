@@ -35,17 +35,17 @@ public class ReportedRecipeMongoDAO {
         }
         return false;
     }
-    private static Document fromReportedRecipeToDocument(ReportedRecipe reportedRecipe){
+    private static Document fromReportedRecipeToDocument(ReportedRecipe reportedRecipe) throws MongoException{
         return new Document("name",reportedRecipe.getName()).append("authorName",reportedRecipe.getAuthorName())
                 .append("reporterName",reportedRecipe.getReporterName()).append("dateReporting",reportedRecipe.getDateReporting())
                 .append("image",reportedRecipe.getImage());
     }
-    private static ReportedRecipe fromDocToReportedRecipe(Document doc){
+    private static ReportedRecipe fromDocToReportedRecipe(Document doc) throws MongoException{
         return new ReportedRecipe(doc.getString("name"),doc.getString("authorName"),
                 doc.getString("reporterName"),doc.getString("dateReporting"), doc.getString("image"));
     }
 
-    public static List<ReportedRecipe> getListReportedRecipes() throws MongoException {
+    public static List<ReportedRecipe> getListReportedRecipes() throws MongoException{
         List<ReportedRecipe> listaReportedRecipes = new ArrayList<>();
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_REPORTED_RECIPE).find()
                 .forEach(document -> listaReportedRecipes.add(fromDocToReportedRecipe(document)));
@@ -81,5 +81,8 @@ public class ReportedRecipeMongoDAO {
         return authorList;
     }
 
+    public static void removeReportedRecipe(String reportedRecipeToRemove) throws MongoException{
+        MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_REPORTED_RECIPE).deleteMany(new Document("name",reportedRecipeToRemove));
+    }
 }
 

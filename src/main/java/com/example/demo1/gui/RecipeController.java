@@ -73,7 +73,9 @@ public class RecipeController implements Initializable {
 
     @FXML
     public void onBackClick(ActionEvent actionEvent) throws IOException {
-        Utils.changeScene(actionEvent,"Loggato.fxml");
+        if(data.getTypeOfUser().equals("moderator")){
+            Utils.changeScene(actionEvent,"Moderator.fxml");
+        }else Utils.changeScene(actionEvent,"Loggato.fxml");
     }
 
     @FXML
@@ -96,8 +98,7 @@ public class RecipeController implements Initializable {
     }
 
     //this method is called when the recipe's author correspond to the recipe visualizer
-    public void addDeleteButtonAndRemoveReportButton(){
-        anchorPane.getChildren().remove(reportRecipeButton);
+    public void addDeleteButton(){
         Button deleteRecipe = new Button();
         deleteRecipe.setText("Delete this Recipe");
         deleteRecipe.setLayoutX(750);
@@ -109,6 +110,32 @@ public class RecipeController implements Initializable {
         deleteRecipe.setOnAction(eventHandler);
         anchorPane.getChildren().add(deleteRecipe);
     }
+    public void addApprovalButtons(){
+        //aggiunta tasto per approvare
+        Button approveRecipe = new Button();
+        approveRecipe.setText("Approve Recipe");
+        approveRecipe.setLayoutX(750);
+        approveRecipe.setLayoutY(26);
+        EventHandler<ActionEvent> eventHandlerApprove = actionEvent -> {
+            if(ReportedRecipeService.approveReportedRecipe(recipe))
+                Utils.changeScene(actionEvent,"Moderator.fxml");;
+        };
+        approveRecipe.setOnAction(eventHandlerApprove);
+        anchorPane.getChildren().add(approveRecipe);
+
+        //aggiunta tasto per NON approvare
+        Button notApproveRecipe = new Button();
+        notApproveRecipe.setText("Not Approve Recipe");
+        notApproveRecipe.setLayoutX(750);
+        notApproveRecipe.setLayoutY(60);
+        EventHandler<ActionEvent> eventHandlerNotApprove = actionEvent -> {
+            if(ReportedRecipeService.notApproveReportedRecipe(recipe))
+                Utils.changeScene(actionEvent,"Moderator.fxml");;
+        };
+        notApproveRecipe.setOnAction(eventHandlerNotApprove);
+        anchorPane.getChildren().add(notApproveRecipe);
+    }
+
     private ObservableList<String> safeCastToObservableList(List<String> list){
         try {return FXCollections.observableArrayList(list);}
         catch (NullPointerException e){return null;}
@@ -154,7 +181,13 @@ public class RecipeController implements Initializable {
         recipe = RecipeService.getRecipeByName(data.getRecipeName());
         setLablesAndLists(recipe);
 
-        if(data.getAuthorName().equals(recipe.getAuthorName()))
-            addDeleteButtonAndRemoveReportButton();
+        if(data.getAuthorName().equals(recipe.getAuthorName())){
+            anchorPane.getChildren().remove(reportRecipeButton);
+            addDeleteButton();
+        }
+        if(data.getTypeOfUser().equals("moderator")){
+            anchorPane.getChildren().remove(reportRecipeButton);
+            addApprovalButtons();
+        }
     }
 }
