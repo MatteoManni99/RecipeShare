@@ -2,6 +2,7 @@ package com.example.demo1.gui;
 
 import com.example.demo1.Configuration;
 import com.example.demo1.gui.row.RowAuthor;
+import com.example.demo1.gui.row.RowImage;
 import com.example.demo1.gui.tableview.TableViewAbstract;
 import com.example.demo1.gui.tableview.TableViewAuthor;
 import com.example.demo1.service.AuthorService;
@@ -80,7 +81,7 @@ public class SearchAuthorController implements Initializable {
         tableViewAuthor.resetObservableArrayList();
         AuthorService.searchAuthors(nameToSearch,pageNumber*10,10).forEach( author ->
             tableViewAuthor.addToObservableArrayList(new RowAuthor(author.getName(), author.getPromotion(),
-                    new ImageTableView(new ImageView(Configuration.AVATAR.get(author.getImage() - 1))).getImage())));
+                    new RowImage(new ImageView(Configuration.AVATAR.get(author.getImage() - 1))).getImage())));
         tableViewAuthor.setItems();
     }
 

@@ -1,6 +1,7 @@
 package com.example.demo1.gui;
 
 import com.example.demo1.Configuration;
+import com.example.demo1.gui.row.RowImage;
 import com.example.demo1.gui.row.RowRecipe;
 import com.example.demo1.gui.tableview.TableViewRecipe;
 import com.example.demo1.model.Author;
@@ -59,7 +60,7 @@ public class AuthorProfileController implements Initializable {
                 10 * pageNumber,10).forEach(recipeReducted ->
                 TableViewObject.addToObservableArrayList(new RowRecipe( recipeReducted.getName(),
                         recipeReducted.getAuthorName(),
-                        new ImageTableView(new ImageView(recipeReducted.getImage())).getImage())));
+                        new RowImage(new ImageView(recipeReducted.getImage())).getImage())));
         TableViewObject.setItems();
     }
 

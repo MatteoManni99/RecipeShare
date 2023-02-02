@@ -1,6 +1,5 @@
 package com.example.demo1.gui.row;
 
-import com.example.demo1.gui.ImageTableView;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -18,7 +17,7 @@ public class RowRecipeTime implements RowTableView {
         recipeNameTable = new SimpleStringProperty(name);
         timeTable = new SimpleIntegerProperty(time);
         ratingTable = new SimpleDoubleProperty(rating);
-        imageLinkTable = new ImageTableView(image).getImage();
+        imageLinkTable = new RowImage(image).getImage();
     }
 
     public String getName() { return recipeNameTable.get(); }
