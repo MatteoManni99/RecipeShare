@@ -2,6 +2,7 @@ package com.example.demo1.dao.mongo;
 
 import com.example.demo1.Configuration;
 import com.example.demo1.model.Author;
+import com.example.demo1.model.RecipeReducted;
 import com.example.demo1.model.ReportedRecipe;
 import com.example.demo1.persistence.MongoDBDriver;
 import com.example.demo1.service.AuthorService;
@@ -14,7 +15,7 @@ import org.bson.conversions.Bson;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.mongodb.client.model.Aggregates.match;
+import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Filters.*;
 
 public class ReportedRecipeMongoDAO {
@@ -45,11 +46,19 @@ public class ReportedRecipeMongoDAO {
                 doc.getString("reporterName"),doc.getString("dateReporting"), doc.getString("image"));
     }
 
-    public static List<ReportedRecipe> getListReportedRecipes() throws MongoException{
-        List<ReportedRecipe> listaReportedRecipes = new ArrayList<>();
+    public static List<ReportedRecipe> getListReportedRecipes(String name, Integer elementToSkip, Integer elementsToLimit) throws MongoException{
+        List<ReportedRecipe> reportedRecipesList = new ArrayList<>();
+        /*
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_REPORTED_RECIPE).find()
-                .forEach(document -> listaReportedRecipes.add(fromDocToReportedRecipe(document)));
-        return listaReportedRecipes;
+                .forEach(document -> reportedRecipesList.add(fromDocToReportedRecipe(document)));*/
+
+        MongoCollection<Document> collection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_REPORTED_RECIPE);
+        Bson match = match(new Document("name",new Document("$regex",name).append("$options","i")));
+        MongoCursor<Document> cursor = (name == null) ?
+                collection.aggregate(Arrays.asList(skip(elementToSkip),limit(elementsToLimit))).iterator() :
+                collection.aggregate(Arrays.asList(match,skip(elementToSkip),limit(elementsToLimit))).iterator();
+        cursor.forEachRemaining(document -> reportedRecipesList.add(fromDocToReportedRecipe(document)));
+        return reportedRecipesList;
     }
 
     public static List<Author> onHighestRatioQueryClick() throws MongoException{

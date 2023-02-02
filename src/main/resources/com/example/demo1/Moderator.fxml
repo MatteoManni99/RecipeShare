@@ -13,13 +13,15 @@
             <Label layoutX="262.0" layoutY="25.0" text="RECIPE SHARE" />
             <Button layoutX="29.0" layoutY="30.0" mnemonicParsing="false" onAction="#onLogoutClick" text="LOGOUT" />
             <Button layoutX="133.0" layoutY="21.0" mnemonicParsing="false" onAction="#onViewAnalyticsClick" text="VIEW &#10;ANALYTICS" textAlignment="CENTER" />
-            <Button layoutX="673.0" layoutY="24.0" mnemonicParsing="false" onAction="#onFindAuthorClick" text="FIND AUTHOR" textAlignment="CENTER" />
-            <Button layoutX="927.0" layoutY="61.0" mnemonicParsing="false" onAction="#onNextPageClick" text="Next" />
-            <Button layoutX="673.0" layoutY="61.0" mnemonicParsing="false" onAction="#onPreviousPageClick" text="Previous" />
-            <TextField fx:id="authorToSearchTextField" layoutX="775.0" layoutY="24.0" prefHeight="26.0" prefWidth="193.0" />
-            <Button layoutX="283.0" layoutY="163.0" mnemonicParsing="false" onAction="#onNextPageRecipeClick" text="Next" />
-            <Button layoutX="29.0" layoutY="163.0" mnemonicParsing="false" onAction="#onPreviousRecipePageClick" text="Previous" />
+            <Button layoutX="670.0" layoutY="24.0" mnemonicParsing="false" onAction="#onFindAuthorClick" text="Find Author" textAlignment="CENTER" />
+            <Button layoutX="927.0" layoutY="61.0" mnemonicParsing="false" onAction="#onNextPageAuthorClick" text="Next" />
             <Button layoutX="766.0" layoutY="61.0" mnemonicParsing="false" onAction="#onPromoteAuthorClick" text="PROMOTE AUTHOR" />
+            <Button layoutX="670.0" layoutY="61.0" mnemonicParsing="false" onAction="#onPreviousPageAuthorClick" text="Previous" />
+            <TextField fx:id="authorToSearchTextField" layoutX="761.0" layoutY="24.0" prefHeight="26.0" prefWidth="208.0" />
+            <Button layoutX="323.0" layoutY="120.0" mnemonicParsing="false" onAction="#onNextPageReportedRecipeClick" text="Next" />
+            <Button layoutX="20.0" layoutY="120.0" mnemonicParsing="false" onAction="#onPreviousReportedRecipePageClick" text="Previous" />
+            <Button layoutX="20.0" layoutY="87.0" mnemonicParsing="false" onAction="#onFindReportedRecipeClick" text="Find Reported Recipe" textAlignment="CENTER" />
+            <TextField fx:id="reportedRecipeToSearchTextField" layoutX="171.0" layoutY="87.0" prefHeight="26.0" prefWidth="193.0" />
          </children>
       </AnchorPane>
    </children>

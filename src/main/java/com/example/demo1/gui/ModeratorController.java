@@ -21,14 +21,14 @@ import java.net.URL;
 import java.util.*;
 
 public class ModeratorController implements Initializable {
-    public String nameToSearch;
     public TextField authorToSearchTextField;
-
-    private Integer pageNumber = 0;
+    private Integer pageNumberAuthor = 0;
     private String authorName;
-    private Integer pageNumberReportedRecipe = 0;
-    private String recipeName;
     private String authorNameClicked;
+
+    public TextField reportedRecipeToSearchTextField;
+    private Integer pageNumberReportedRecipe = 0;
+    private String reportedRecipeName;
 
     @FXML
     private AnchorPane anchorPane;
@@ -41,19 +41,6 @@ public class ModeratorController implements Initializable {
         Utils.changeScene(actionEvent,"Login.fxml");
     }
 
-    public void onNextPageClick(){
-        pageNumber = pageNumber + 1;
-        searchInDBAndLoadInTableView(authorName,pageNumber);
-    }
-    @FXML
-    public void onPreviousPageClick(){
-        if(pageNumber>=1){
-            pageNumber = pageNumber - 1;
-            searchInDBAndLoadInTableView(authorName,pageNumber);
-        }
-    }
-
-    // IMPLEMENTATO IN REPORTED RECIPE DAO
     public void onViewAnalyticsClick(ActionEvent actionEvent) {
         Utils.changeScene(actionEvent,"ModeratorAnalytics.fxml");
     }
@@ -64,16 +51,19 @@ public class ModeratorController implements Initializable {
     }
 
     public void createTableViews() {
-        searchInDBAndLoadInTableView(authorName,pageNumber);
-        searchInDBAndLoadInTableViewReportedRecipe(recipeName,pageNumberReportedRecipe);
+        searchInDBAndLoadInTableViewAuthor(authorName,pageNumberAuthor);
+        searchInDBAndLoadInTableViewReportedRecipe(null,pageNumberReportedRecipe);
         tableAuthor.setTable();
-        tableAuthor.getTable().setPrefSize(300,450);
+        tableAuthor.getTable().setPrefSize(300,470);
         tableAuthor.getTable().setLayoutX(670);
         tableAuthor.getTable().setLayoutY(100);
         tableAuthor.setEventForTableCells();
 
         tableReportedRecipe.setTable();
         tableReportedRecipe.setEventForTableCells();
+        tableReportedRecipe.getTable().setPrefSize(600,420);
+        tableReportedRecipe.getTable().setLayoutX(20);
+        tableReportedRecipe.getTable().setLayoutY(150);
         setEventPromotion();
         anchorPane.getChildren().addAll(tableAuthor.getTable(),tableReportedRecipe.getTable());
     }
@@ -91,8 +81,14 @@ public class ModeratorController implements Initializable {
                 }
         );
     }
+    public void onPromoteAuthorClick(ActionEvent actionEvent) {
+        System.out.println("promozione a" + authorNameClicked);
+        AuthorService.updatePromotion(authorNameClicked,1);
+        authorNameClicked = null;
+        searchInDBAndLoadInTableViewAuthor(authorName, pageNumberAuthor);
+    }
 
-    public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber) {
+    public void searchInDBAndLoadInTableViewAuthor(String nameToSearch, Integer pageNumber) {
         tableAuthor.resetObservableArrayList();
         AuthorService.searchAuthors(nameToSearch, 10 * pageNumber, 10).forEach(author ->
                 tableAuthor.addToObservableArrayList(
@@ -100,32 +96,46 @@ public class ModeratorController implements Initializable {
                                 new ImageView(Configuration.AVATAR.get(author.getImage() - 1)))));
         tableAuthor.setItems();
     }
+    public void onFindAuthorClick(ActionEvent actionEvent ) {
+        authorName = authorToSearchTextField.getText( );
+        if(authorName.isBlank()) authorName = null;
+        pageNumberAuthor =  0;
+        searchInDBAndLoadInTableViewAuthor(authorName, pageNumberAuthor);
+    }
+    public void onNextPageAuthorClick(){
+        pageNumberAuthor = pageNumberAuthor + 1;
+        searchInDBAndLoadInTableViewAuthor(authorName,pageNumberAuthor);
+    }
+    @FXML
+    public void onPreviousPageAuthorClick(){
+        if(pageNumberAuthor>=1){
+            pageNumberAuthor = pageNumberAuthor - 1;
+            searchInDBAndLoadInTableViewAuthor(authorName,pageNumberAuthor);
+        }
+    }
 
-    public void searchInDBAndLoadInTableViewReportedRecipe(String nameToSearch, Integer pageNumber){
+    public void searchInDBAndLoadInTableViewReportedRecipe(String nameToSearch, Integer pageNumberReportedRecipe){
         tableReportedRecipe.resetObservableArrayList();
-        ReportedRecipeService.getListReportedRecipes().forEach(reportedRecipe ->
+        ReportedRecipeService.getListReportedRecipes(nameToSearch,pageNumberReportedRecipe*10,10).forEach(reportedRecipe ->
                 tableReportedRecipe.addToObservableArrayList(
                         new RowReportedRecipe(reportedRecipe.getName(), reportedRecipe.getAuthorName(),reportedRecipe.getReporterName(),
                                 reportedRecipe.getDateReporting(),new ImageView(reportedRecipe.getImage()))));
         tableReportedRecipe.setItems();
     }
-
-    public void onFindAuthorClick(ActionEvent actionEvent ) throws IOException {
-        nameToSearch = authorToSearchTextField.getText( );
-        if(nameToSearch.isBlank()) nameToSearch =  null;
-        pageNumber =  0;
-        searchInDBAndLoadInTableView(nameToSearch, pageNumber);
+    public void onFindReportedRecipeClick(ActionEvent actionEvent ) {
+        reportedRecipeName = reportedRecipeToSearchTextField.getText();
+        if(reportedRecipeName.isBlank()) reportedRecipeName =  null;
+        pageNumberReportedRecipe =  0;
+        searchInDBAndLoadInTableViewReportedRecipe(reportedRecipeName, pageNumberReportedRecipe);
     }
-
-    public void onPromoteAuthorClick(ActionEvent actionEvent) {
-        AuthorService.updatePromotion(authorNameClicked,1);
-        authorNameClicked = null;
-        searchInDBAndLoadInTableView(authorName,pageNumber);
+    public void onNextPageReportedRecipeClick(ActionEvent actionEvent) {
+        pageNumberReportedRecipe = pageNumberReportedRecipe + 1;
+        searchInDBAndLoadInTableViewReportedRecipe(reportedRecipeName,pageNumberReportedRecipe);
     }
-
-    public void onNextPageRecipeClick(ActionEvent actionEvent) {
-    }
-
-    public void onPreviousRecipePageClick(ActionEvent actionEvent) {
+    public void onPreviousReportedRecipePageClick(ActionEvent actionEvent) {
+        if(pageNumberReportedRecipe>=1){
+            pageNumberReportedRecipe = pageNumberReportedRecipe - 1;
+            searchInDBAndLoadInTableViewReportedRecipe(reportedRecipeName,pageNumberReportedRecipe);
+        }
     }
 }

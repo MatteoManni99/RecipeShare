@@ -92,16 +92,16 @@ public class RecipeMongoDAO {
     }
 
     public static List<RecipeReducted> getRecipeFromName(String name, Integer elementToSkip, Integer elementsToLimit) throws MongoException{
-        List<RecipeReducted> recipeReducted = new ArrayList<>();
+        List<RecipeReducted> recipesList = new ArrayList<>();
         MongoCollection<Document> collection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);
         Bson match = match(new Document("Name",new Document("$regex",name).append("$options","i")));
         Bson project = project(new Document("Name",1).append("AuthorName",1).append("Images", new Document("$first","$Images")));
         MongoCursor<Document> cursor = (name == null) ?
                 collection.aggregate(Arrays.asList(skip(elementToSkip),limit(elementsToLimit),project)).iterator() :
                 collection.aggregate(Arrays.asList(match,skip(elementToSkip),limit(elementsToLimit),project)).iterator();
-        cursor.forEachRemaining(recipeDoc -> recipeReducted.add(new RecipeReducted(recipeDoc.getString("Name"),
+        cursor.forEachRemaining(recipeDoc -> recipesList.add(new RecipeReducted(recipeDoc.getString("Name"),
                 recipeDoc.getString("AuthorName"), recipeDoc.getString("Images"))));
-        return recipeReducted;
+        return recipesList;
     }
 
     private static Review transformDocToRev(Document doc) throws MongoException{

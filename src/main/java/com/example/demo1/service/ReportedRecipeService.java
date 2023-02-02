@@ -37,8 +37,8 @@ public class ReportedRecipeService {
         }
     }
 
-    public static List<ReportedRecipe> getListReportedRecipes() {
-        return ReportedRecipeMongoDAO.getListReportedRecipes();
+    public static List<ReportedRecipe> getListReportedRecipes(String nameToSearch, Integer elementToSkip, Integer elementsToLimit) {
+        return ReportedRecipeMongoDAO.getListReportedRecipes(nameToSearch, elementToSkip, elementsToLimit);
     }
 
     public static List<Author> onHighestRatioQueryClick(){
