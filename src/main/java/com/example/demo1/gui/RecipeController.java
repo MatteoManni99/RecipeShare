@@ -25,14 +25,16 @@ import java.util.ResourceBundle;
 
 public class RecipeController implements Initializable {
 
+
     @FXML
     private AnchorPane anchorPane;
-    public Label name;
-    public Label authorName;
-    public Label calories;
-    public Label servings;
-    public Label time;
-    public Label date;
+    public TextField name;
+    public TextField authorName;
+    public TextField calories;
+    public TextField servings;
+    public TextField time;
+    public TextField date;
+    public TextField aggregatedRating;
     public ChoiceBox<Integer> ratingChoiceBox;
     public Button reportRecipeButton;
     public TextArea description;
@@ -96,7 +98,7 @@ public class RecipeController implements Initializable {
         Button deleteRecipe = new Button();
         deleteRecipe.setText("Delete this Recipe");
         deleteRecipe.setLayoutX(750);
-        deleteRecipe.setLayoutY(34);
+        deleteRecipe.setLayoutY(26);
         EventHandler<ActionEvent> eventHandler = actionEvent -> {
             RecipeService.deleteRecipe(recipe);
             Utils.changeScene(actionEvent,"Loggato.fxml");
@@ -117,6 +119,7 @@ public class RecipeController implements Initializable {
         servings.setText(String.valueOf(recipe.getRecipeServings()));
         time.setText(String.valueOf(recipe.getTotalTime()));
         date.setText(recipe.getDatePublished());
+        aggregatedRating.setText(String.valueOf(recipe.getAggregatedRating()));
         keywords.setItems(safeCastToObservableList(recipe.getKeywords()));
         ingredients.setItems(safeCastToObservableList(recipe.getRecipeIngredientParts()));
         instructions.setItems(safeCastToObservableList(recipe.getRecipeInstructions()));
@@ -135,6 +138,9 @@ public class RecipeController implements Initializable {
         tableViewReview.resetObservableArrayList();
         tableViewReview.setEventForTableCells();
         tableViewReview.setTable();
+        tableViewReview.getTable().setLayoutY(480);
+        tableViewReview.getTable().setLayoutX(295);
+        tableViewReview.getTable().setPrefWidth(679);
         anchorPane.getChildren().add(tableViewReview.getTable());
     }
     @Override
