@@ -22,7 +22,8 @@ import java.util.List;
 public class LoggatoAnalyticsController {
     @FXML
     private AnchorPane anchorPane;
-
+    private Button nextPage;
+    private Button previousPage;
     @FXML
     public void onBackClick(ActionEvent actionEvent) throws IOException {
         Utils.changeScene(actionEvent,"Loggato.fxml");
@@ -31,6 +32,7 @@ public class LoggatoAnalyticsController {
     private void removeOtherTableView(){anchorPane.getChildren().removeIf(node -> node instanceof TableView);}
 
     public void onTopRecipesForRangesOfPreparationTimeClick(ActionEvent actionEvent) {
+        removeButton();
         TableViewAbstract tableView = new TableViewRecipeTime();
         initializeTableView(tableView);
         addTopRecipesForRangesOfPreparationTime(tableView,0, 30);
@@ -59,6 +61,7 @@ public class LoggatoAnalyticsController {
     }
 
     public void onMostUsedIngredientsClick(ActionEvent actionEvent) {
+        removeButton();
         TableViewAbstract tableView = new TableViewRecipeIngredients();
         initializeTableView(tableView);
         RecipeService.findMostUsedIngredients(10,3).forEach((s, integer) ->
@@ -67,6 +70,7 @@ public class LoggatoAnalyticsController {
     }
 
     public void onRecipesWithHighestratingClick(ActionEvent actionEvent) {
+        removeButton();
         TableViewAbstract tableView = new TableViewRecipeRating();
         initializeTableView(tableView);
         RecipeService.findRecipesWithHighestRating(10,3)
@@ -75,13 +79,17 @@ public class LoggatoAnalyticsController {
                         new ImageView(recipe.getImages().get(0)))));
         displayTableView(tableView);
     }
+    private void removeButton(){
+        anchorPane.getChildren().remove(nextPage);
+        anchorPane.getChildren().remove(previousPage);
+    }
 
     public void onTopRecipesForEachCategory(ActionEvent actionEvent) {
         List<Recipe> listRecipe = RecipeService.findTopRecipesForEachCategory(3).stream()
                 .filter(recipe -> recipe.getRecipeCategory() != null).sorted(Comparator.comparing(Recipe::getRecipeCategory)).toList();
         int[] pageNumber = {0};
-        Button nextPage = new Button("Next Page");
-        Button previousPage = new Button("Previous Page");
+        nextPage = new Button("Next Page");
+        previousPage = new Button("Previous Page");
         nextPage.setLayoutX(420);
         nextPage.setLayoutY(200);
         nextPage.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {
