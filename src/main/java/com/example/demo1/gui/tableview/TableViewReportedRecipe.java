@@ -1,5 +1,6 @@
-package com.example.demo1.gui;
+package com.example.demo1.gui.tableview;
 
+import com.example.demo1.gui.row.RowTableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;

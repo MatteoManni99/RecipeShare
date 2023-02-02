@@ -1,5 +1,6 @@
-package com.example.demo1.gui;
+package com.example.demo1.gui.row;
 
+import com.example.demo1.gui.ImageTableView;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.ImageView;
 

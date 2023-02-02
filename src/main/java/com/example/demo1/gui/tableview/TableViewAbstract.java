@@ -1,5 +1,8 @@
-package com.example.demo1.gui;
+package com.example.demo1.gui.tableview;
 
+import com.example.demo1.gui.DataSingleton;
+import com.example.demo1.gui.Utils;
+import com.example.demo1.gui.row.RowTableView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableCell;

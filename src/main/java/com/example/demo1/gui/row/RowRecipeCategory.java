@@ -1,27 +1,27 @@
-package com.example.demo1.gui;
+package com.example.demo1.gui.row;
 
+import com.example.demo1.gui.ImageTableView;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.ImageView;
 
-public class RowRecipeTime implements RowTableView {
+public class RowRecipeCategory implements RowTableView {
 
     private final SimpleStringProperty recipeNameTable;
-    private final SimpleIntegerProperty timeTable;
+    private final SimpleStringProperty categoryTable;
     private final SimpleDoubleProperty ratingTable;
     private final ImageView imageLinkTable;
 
 
-    public RowRecipeTime(String name, Integer time, Double rating, ImageView image) {
+    public RowRecipeCategory(String name, String category, Double rating, ImageView image) {
         recipeNameTable = new SimpleStringProperty(name);
-        timeTable = new SimpleIntegerProperty(time);
+        categoryTable = new SimpleStringProperty(category);
         ratingTable = new SimpleDoubleProperty(rating);
         imageLinkTable = new ImageTableView(image).getImage();
     }
 
     public String getName() { return recipeNameTable.get(); }
-    public Integer getTotaltime() { return timeTable.get(); }
+    public String getRecipecategory() { return categoryTable.get(); }
     public Double getRating() { return ratingTable.get(); }
     public ImageView getImage() { return imageLinkTable; }
 }

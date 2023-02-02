@@ -1,4 +1,4 @@
-package com.example.demo1.gui;
+package com.example.demo1.gui.row;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;

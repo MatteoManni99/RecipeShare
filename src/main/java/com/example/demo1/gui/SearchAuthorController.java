@@ -1,6 +1,9 @@
 package com.example.demo1.gui;
 
 import com.example.demo1.Configuration;
+import com.example.demo1.gui.row.RowAuthor;
+import com.example.demo1.gui.tableview.TableViewAbstract;
+import com.example.demo1.gui.tableview.TableViewAuthor;
 import com.example.demo1.service.AuthorService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

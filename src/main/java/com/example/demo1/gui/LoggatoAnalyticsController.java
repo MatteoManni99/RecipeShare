@@ -1,5 +1,10 @@
 package com.example.demo1.gui;
 
+import com.example.demo1.gui.row.RowRecipeCategory;
+import com.example.demo1.gui.row.RowRecipeIngredients;
+import com.example.demo1.gui.row.RowRecipeRating;
+import com.example.demo1.gui.row.RowRecipeTime;
+import com.example.demo1.gui.tableview.*;
 import com.example.demo1.model.Recipe;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;

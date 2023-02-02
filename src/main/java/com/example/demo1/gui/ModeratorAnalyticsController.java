@@ -1,9 +1,9 @@
 package com.example.demo1.gui;
 import com.example.demo1.Configuration;
-import com.example.demo1.model.Author;
-import com.example.demo1.service.RecipeService;
+import com.example.demo1.gui.row.RowAuthorScore;
+import com.example.demo1.gui.tableview.TableViewAbstract;
+import com.example.demo1.gui.tableview.TableViewAuthorScore;
 import com.example.demo1.service.ReportedRecipeService;
-import com.mongodb.internal.connection.tlschannel.util.Util;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 
@@ -11,7 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class ModeratorAnalyticsController implements Initializable {

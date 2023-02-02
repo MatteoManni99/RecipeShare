@@ -2,6 +2,9 @@ package com.example.demo1.gui;
 
 import com.example.demo1.Configuration;
 import com.example.demo1.dao.mongo.AuthorMongoDAO;
+import com.example.demo1.gui.row.RowRecipe;
+import com.example.demo1.gui.tableview.TableViewAbstract;
+import com.example.demo1.gui.tableview.TableViewRecipe;
 import com.example.demo1.service.RecipeService;
 import com.example.demo1.model.Author;
 import javafx.event.ActionEvent;

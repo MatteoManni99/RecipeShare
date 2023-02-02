@@ -1,39 +1,42 @@
-package com.example.demo1.gui;
+package com.example.demo1.gui.tableview;
 
+import com.example.demo1.gui.row.RowTableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 
-public class TableViewRecipeTime extends TableViewAbstract {
+public class TableViewRecipeCategory extends TableViewAbstract {
     private final TableColumn<RowTableView, String> nameCol;
-    private final TableColumn<RowTableView, String> timeCol;
+    private final TableColumn<RowTableView, String> categoryCol;
     private final TableColumn<RowTableView, ImageView> imageCol;
     private final TableColumn<RowTableView, Double> ratingCol;
 
-    public TableViewRecipeTime() {
+
+    public TableViewRecipeCategory() {
         table = new TableView<>();
 
         nameCol = new TableColumn<>("Name");
-        timeCol = new TableColumn<>("Time");
+        categoryCol = new TableColumn<>("Category");
         ratingCol = new TableColumn<>("Rating");
         imageCol = new TableColumn<>("Image");
 
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        timeCol.setCellValueFactory(new PropertyValueFactory<>("totaltime"));
+        categoryCol.setCellValueFactory(new PropertyValueFactory<>("recipecategory"));
         ratingCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
         imageCol.setCellValueFactory(new PropertyValueFactory<>("image"));
 
         table.setPrefHeight(350);
-        table.setPrefWidth(500);
+        table.setPrefWidth(600);
         table.setLayoutX(50);
         table.setLayoutY(230);
     }
 
+
     @Override
     public void setTable() {
-        table.getColumns().addAll(imageCol, nameCol, timeCol, ratingCol);
+        table.getColumns().addAll(imageCol, nameCol, categoryCol, ratingCol);
     }
 
-
 }
+

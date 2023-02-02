@@ -1,11 +1,10 @@
-package com.example.demo1.gui;
+package com.example.demo1.gui.tableview;
 
-import javafx.scene.control.TableCell;
+import com.example.demo1.gui.row.RowTableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 
 public class TableViewAuthor extends TableViewAbstract{
     private final TableColumn<RowTableView, Integer> promotionCol;

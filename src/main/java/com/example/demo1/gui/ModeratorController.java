@@ -1,6 +1,11 @@
 package com.example.demo1.gui;
 
 import com.example.demo1.Configuration;
+import com.example.demo1.gui.row.RowAuthor;
+import com.example.demo1.gui.row.RowReportedRecipe;
+import com.example.demo1.gui.tableview.TableViewAbstract;
+import com.example.demo1.gui.tableview.TableViewAuthor;
+import com.example.demo1.gui.tableview.TableViewReportedRecipe;
 import com.example.demo1.service.AuthorService;
 import com.example.demo1.service.ReportedRecipeService;
 import javafx.event.ActionEvent;

@@ -1,5 +1,8 @@
 package com.example.demo1.gui;
 
+import com.example.demo1.gui.row.RowReview;
+import com.example.demo1.gui.tableview.TableViewAbstract;
+import com.example.demo1.gui.tableview.TableViewReview;
 import com.example.demo1.model.Recipe;
 import com.example.demo1.model.ReportedRecipe;
 import com.example.demo1.service.RecipeService;
