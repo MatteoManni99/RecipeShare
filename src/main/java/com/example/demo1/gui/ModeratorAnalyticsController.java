@@ -29,8 +29,9 @@ public class ModeratorAnalyticsController implements Initializable {
         searchInDBAndLoadInTableView(pageNumber);
         tableViewAuthorScore.setTable();
         tableViewAuthorScore.setEventForTableCells();
-        tableViewAuthorScore.getTable().setLayoutX(20);
-        tableViewAuthorScore.getTable().setLayoutY(200);
+        tableViewAuthorScore.getTable().setLayoutX(30);
+        tableViewAuthorScore.getTable().setLayoutY(100);
+        tableViewAuthorScore.getTable().setPrefSize(300,450);
         anchorPane.getChildren().add(tableViewAuthorScore.getTable());
     }
 

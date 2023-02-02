@@ -8,7 +8,7 @@
     <children>
         <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0">
          <children>
-            <Button layoutX="365.0" layoutY="56.0" mnemonicParsing="false" onAction="#onBackToHomeClick" text="Back to Home" />
+            <Button layoutX="30.0" layoutY="30.0" mnemonicParsing="false" onAction="#onBackToHomeClick" text="Home" />
          </children>
         </AnchorPane>
     </children>
