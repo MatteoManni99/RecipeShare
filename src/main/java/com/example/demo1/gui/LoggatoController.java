@@ -41,10 +41,6 @@ public class LoggatoController implements Initializable{
     }
 
     @FXML
-    public void onProvaRecipe(ActionEvent actionEvent){
-        Utils.changeScene(actionEvent,"Recipe.fxml");
-    }
-    @FXML
     public void onNextPageClick(){
         pageNumber += 1;
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
