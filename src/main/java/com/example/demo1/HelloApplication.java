@@ -18,14 +18,21 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        MongoClientSettings mcs = MongoClientSettings.builder()
+        MongoClientSettings settingAP = MongoClientSettings.builder()
                 .applyConnectionString(new ConnectionString("mongodb://10.1.1.8:27019"))
-                .readPreference(ReadPreference.nearest())
+                .readPreference(ReadPreference.secondaryPreferred())
                 .retryWrites(true)
-                .writeConcern(WriteConcern.W1).build();
-        MongoClient client = MongoClients.create(mcs);
-        System.out.println(client.getDatabase("RecipeShare").getCollection("author")
+                .writeConcern(WriteConcern.W1).build(); //W3 garantirebbe la massima consistenza perché appena cade un nodo non viene fatta la write
+        MongoClient clientSettingsAP = MongoClients.create(settingAP);  //mettendo noi W1 ci garantiamo che basta un solo nodo UP per far passare la write, accettando
+        System.out.println(clientSettingsAP.getDatabase("RecipeShare").getCollection("author") //l'inconsistenza momentanea dei dati per avere aggiornamenti successivi
                 .find(new Document("authorName","Malarkey Test")).first().getString("authorName"));
+
+        MongoClientSettings settingCP = MongoClientSettings.builder()
+                .applyConnectionString(new ConnectionString("mongodb://10.1.1.8:27019"))
+                .readPreference(ReadPreference.primary())
+                .retryWrites(true)
+                .writeConcern(WriteConcern.MAJORITY).build(); //
+        MongoClient clientSettingsCP = MongoClients.create(settingCP);
 
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Login.fxml"));
