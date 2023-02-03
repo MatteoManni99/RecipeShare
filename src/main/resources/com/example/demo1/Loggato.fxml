@@ -19,7 +19,6 @@
             <Button alignment="CENTER" contentDisplay="CENTER" layoutX="805.0" layoutY="272.0" mnemonicParsing="false" onAction="#onAnalyticsClick" prefHeight="47.0" prefWidth="81.0" text="VIEW &#10;ANALYTICS" textAlignment="CENTER" />
             <Label layoutX="292.0" layoutY="105.0" text="Qui puoi vedere la lista delle recipe" />
             <Label layoutX="262.0" layoutY="31.0" text="RECIPE SHARE" />
-            <Button layoutX="15.0" layoutY="172.0" mnemonicParsing="false" onAction="#onProvaRecipe" text="PROVARECIPE" />
             <Button layoutX="489.0" layoutY="101.0" mnemonicParsing="false" onAction="#onNextPageClick" text="Next page" />
             <Button layoutX="191.0" layoutY="101.0" mnemonicParsing="false" onAction="#onPreviousPageClick" text="Previous page" />
             <TextField fx:id="nameToSearchTextField" layoutX="191.0" layoutY="67.0" prefHeight="26.0" prefWidth="186.0" />
