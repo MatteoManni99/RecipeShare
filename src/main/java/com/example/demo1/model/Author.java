@@ -43,10 +43,10 @@ public class Author {
     public void setPassword(String password) {
         this.password = password;
     }
-    public int getPromotion() {
+    public Integer getPromotion() {
         return promotion;
     }
-    public int getImage() {
+    public Integer getImage() {
         return image;
     }
     public void setImage(int image) {

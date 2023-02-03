@@ -51,6 +51,9 @@ public class AuthorMongoDAO {
             return true;
         }
     }
+    public static void deleteAuthor(String authorName) throws MongoException{
+        MongoDBDriver.getDriver().getCollectionCP(Configuration.MONGODB_AUTHOR).deleteOne(new Document("authorName",authorName));
+    }
 
     public static void updateImage(String authorName, Integer newImageIndex) throws MongoException{
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR)

@@ -14,8 +14,6 @@ import org.bson.Document;
 public class MongoDBDriver {
 
     private static final MongoDBDriver driver = new MongoDBDriver();
-    private final MongoClient mongoClientAP;
-    private final MongoClient mongoClientCP;
     private final MongoDatabase databaseAP;
     private final MongoDatabase databaseCP;
 
@@ -32,19 +30,20 @@ public class MongoDBDriver {
                 .retryWrites(true)
                 .writeConcern(WriteConcern.MAJORITY).build();
 
-        mongoClientAP = MongoClients.create(settingAP);
-        mongoClientCP = MongoClients.create(settingCP);
+        MongoClient mongoClientAP = MongoClients.create(settingAP);
+        MongoClient mongoClientCP = MongoClients.create(settingCP);
         databaseAP = mongoClientAP.getDatabase(Configuration.MONGODB_DB);
         databaseCP = mongoClientCP.getDatabase(Configuration.MONGODB_DB);
     }
-
     public MongoCollection<Document> getCollection(String collection) {
         return databaseAP.getCollection(collection);
     }
-    public MongoCollection<Document> getCollectionCP(String collection) {return databaseCP.getCollection(collection);}
+    public MongoCollection<Document> getCollectionCP(String collection) {
+        return databaseCP.getCollection(collection);
+    }
+    public static MongoDBDriver getDriver() {
+        return driver;
+    }
 
-
-    public static MongoDBDriver getDriver() {return driver;}
-
-    public void closeConnection() {mongoClientAP.close();}
+    //public void closeConnection() {mongoClientAP.close();}
 }

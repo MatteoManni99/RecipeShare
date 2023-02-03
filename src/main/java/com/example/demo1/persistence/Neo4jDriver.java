@@ -18,7 +18,11 @@ public class Neo4jDriver {
         driver = GraphDatabase.driver(Configuration.NEO4J_URL,
                 AuthTokens.basic(Configuration.NEO4J_USERNAME, Configuration.NEO4J_PASSWORD));
     }
-    public Session getSession(){return driver.session();}
-    public static Neo4jDriver getNeoDriver() {return neoDriver;}
+    public Session getSession(){
+        return driver.session();
+    }
+    public static Neo4jDriver getNeoDriver() {
+        return neoDriver;
+    }
 
 }

@@ -85,6 +85,7 @@ public class AuthorProfileController implements Initializable {
         passwordField.setText(newPassword);
         Utils.changeScene(actionEvent,"AuthorProfile.fxml");
     }
+    /*
     public void changeAuthorName(ActionEvent actionEvent) {
         String newAuthorName = authorNameField.getText();
         System.out.println(newAuthorName);
@@ -95,7 +96,7 @@ public class AuthorProfileController implements Initializable {
             authorNameField.setText(newAuthorName);
             Utils.changeScene(actionEvent,"AuthorProfile.fxml");
         }
-    }
+    }*/
 
     private void setSelectedImage(Integer imageNumber){
         avatarImage.setImage(Configuration.AVATAR.get(imageNumber-1));

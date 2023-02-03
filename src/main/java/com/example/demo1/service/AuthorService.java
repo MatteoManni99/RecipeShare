@@ -1,7 +1,10 @@
 package com.example.demo1.service;
 
 import com.example.demo1.dao.mongo.AuthorMongoDAO;
+import com.example.demo1.dao.neo4j.AuthorNeoDAO;
 import com.example.demo1.model.Author;
+import com.mongodb.MongoException;
+import org.neo4j.driver.exceptions.Neo4jException;
 
 import java.util.List;
 
@@ -12,14 +15,39 @@ public class AuthorService {
     }
 
     public static boolean register(String authorName, String password, Integer image, Integer standardPromotionValue) {
-        if (AuthorMongoDAO.registration(authorName, password, image, standardPromotionValue)) {
-            //if(NEO)
-            return true;
-        } else {
+        try{ //add su Mongo
+            if(!AuthorMongoDAO.registration(authorName, password, image, standardPromotionValue)) return false;
+        }catch(MongoException e){return false;}
+
+        try{AuthorNeoDAO.addAuthor(authorName,image);} //add su Neo
+        catch(Neo4jException e){
+            AuthorMongoDAO.deleteAuthor(authorName); //rollback su mongo
             return false;
         }
+        return true;
+    }
+    public static boolean followAnOtherAuthor(String authorName1, String authorName2Follow) {
+        try{ //check if follow is available
+            if(AuthorNeoDAO.checkIfFollowIsAvailable(authorName1, authorName2Follow)){
+                AuthorNeoDAO.addRelationFollow(authorName1, authorName2Follow); //add relation
+                return true;
+            }else return false;
+        }catch(Neo4jException e){return false;}
+    }
+    public static boolean unfollowAuthor(String authorName1, String authorName2Unfollow) {
+        try{ //check if unfollow is available
+            if(!AuthorNeoDAO.checkIfFollowIsAvailable(authorName1, authorName2Unfollow)){
+                AuthorNeoDAO.removeRelationFollow(authorName1, authorName2Unfollow); //remove relation
+                return true;
+            }else return false;
+        }catch(Neo4jException e){return false;}
     }
 
+    public static boolean checkIfFollowIsAvailable (String authorName1, String authorName2){
+        return AuthorNeoDAO.checkIfFollowIsAvailable(authorName1, authorName2);
+    }
+
+    //TODO decidere cosa fare con change Avatar
     public static void updateImage(String authorName, Integer newImageIndex){
         AuthorMongoDAO.updateImage(authorName, newImageIndex);
     }
@@ -27,14 +55,13 @@ public class AuthorService {
     public static void updatePromotion(String authorName, Integer newPromotionValue){
         AuthorMongoDAO.updatePromotion(authorName, newPromotionValue);
     }
-
+    //TODO decidere cosa fare con changeAuthorName
     public static boolean changeAuthorName(String newAuthorName, Author currentAuthor){
         return AuthorMongoDAO.changeAuthorName(newAuthorName, currentAuthor);
     }
     public static void changePassword(String newPassword, Author author){
         AuthorMongoDAO.changePassword(newPassword, author);
     }
-
     public static Author getAuthor(String authorName){
         return AuthorMongoDAO.getAuthor(authorName);
     }
@@ -42,4 +69,5 @@ public class AuthorService {
     public static List<Author> searchAuthors(String nameToSearch, Integer elementsToSkip, Integer elementsToLimit){
         return AuthorMongoDAO.searchAuthors(nameToSearch, elementsToSkip, elementsToLimit);
     }
+
 }
