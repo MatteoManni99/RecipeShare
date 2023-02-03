@@ -13,6 +13,9 @@ public class Configuration {
     public static final String MONGODB_REPORTED_RECIPE = load("MONGODB_REPORTED_RECIPE");
     public static final String MONGODB_AUTHOR = load("MONGODB_AUTHOR");
     public static final String MONGODB_MODERATOR = load("MONGODB_MODERATOR");
+    public static final String NEO4J_URL = load("NEO4J_URL");
+    public static final String NEO4J_USERNAME = load("NEO4J_USERNAME");
+    public static final String NEO4J_PASSWORD = load("NEO4J_PASSWORD");
     public static final List<Image> AVATAR;
 
     static {

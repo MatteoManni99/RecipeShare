@@ -8,6 +8,7 @@ module com.example.demo1 {
     requires org.mongodb.driver.sync.client;
     requires org.mongodb.bson;
     requires org.mongodb.driver.core;
+    requires org.neo4j.driver;
 
     opens com.example.demo1 to javafx.fxml;
     exports com.example.demo1.gui;
