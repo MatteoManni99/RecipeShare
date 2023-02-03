@@ -6,6 +6,7 @@ import com.example.demo1.gui.row.RowRecipe;
 import com.example.demo1.gui.tableview.TableViewAbstract;
 import com.example.demo1.gui.tableview.TableViewRecipe;
 import com.example.demo1.gui.tableview.TableViewRecipeWithoutAuthor;
+import com.example.demo1.service.AuthorService;
 import com.example.demo1.service.RecipeService;
 import com.example.demo1.model.Author;
 import javafx.event.ActionEvent;
@@ -60,7 +61,7 @@ public class AuthorController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         authorName = data.getOtherAuthorName();
         System.out.println(authorName);
-        Author author = AuthorMongoDAO.getAuthor(authorName);
+        Author author = AuthorService.getAuthor(authorName);
         if (author == null) System.out.println("NON ESISTE NELLA COLLECTION AUTHOR"); //problema: authorName c'è in Recipe ma non in Author
         name.setText(Objects.requireNonNull(author).getName());
         image.setImage(Configuration.AVATAR.get(author.getImage() - 1));

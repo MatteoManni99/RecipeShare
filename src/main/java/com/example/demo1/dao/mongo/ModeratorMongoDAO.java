@@ -13,7 +13,9 @@ import static com.mongodb.client.model.Filters.eq;
 public class ModeratorMongoDAO {
 
     public static boolean checkModeratorName(String name) throws MongoException{
-        return MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_MODERATOR)
+        /*return MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_MODERATOR)
+                .find(eq("moderatorName", name)).iterator().hasNext();*/
+        return MongoDBDriver.getDriver().getCollectionCP(Configuration.MONGODB_MODERATOR)
                 .find(eq("moderatorName", name)).iterator().hasNext();
     }
 
@@ -33,8 +35,10 @@ public class ModeratorMongoDAO {
     }
 
     public static boolean checkRegistration(String name, String password) throws MongoException{
+        /*MongoCursor<Document> cursorModerator = MongoDBDriver.getDriver().
+                getCollection(Configuration.MONGODB_MODERATOR).find(eq("moderatorName", name)).iterator();*/
         MongoCursor<Document> cursorModerator = MongoDBDriver.getDriver().
-                getCollection(Configuration.MONGODB_MODERATOR).find(eq("moderatorName", name)).iterator();
+                getCollectionCP(Configuration.MONGODB_MODERATOR).find(eq("moderatorName", name)).iterator();
         if (cursorModerator.hasNext()) {
             System.out.println("NICKNAME GIA USATO");
             return false;

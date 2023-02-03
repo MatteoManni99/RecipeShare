@@ -21,6 +21,7 @@ import static com.mongodb.client.model.Filters.*;
 public class ReportedRecipeMongoDAO {
 
     public static boolean addReportedRecipe(ReportedRecipe reportedRecipe) throws MongoException {
+        //MongoCollection<Document> reportedCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_REPORTED_RECIPE);
         MongoCollection<Document> reportedCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_REPORTED_RECIPE);
         Bson filter = Filters.and(
                 Filters.eq("name", reportedRecipe.getName()),

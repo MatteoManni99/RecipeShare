@@ -40,8 +40,9 @@ public class AuthorMongoDAO {
     }
 
     public static boolean registration(String authorName, String password, Integer image, Integer standardPromotionValue) throws MongoException {
-        MongoCollection<Document> authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
-        if (getAuthor(authorName) != null){
+        //MongoCollection<Document> authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
+        MongoCollection<Document> authorCollection = MongoDBDriver.getDriver().getCollectionCP(Configuration.MONGODB_AUTHOR);
+        if (!checkIfUsernameIsAvailable(authorName)){
             return false;
         } else {
             System.out.println("NICKNAME VALIDO");
@@ -65,10 +66,12 @@ public class AuthorMongoDAO {
     }
 
     public static boolean changeAuthorName(String newAuthorName, Author currentAuthor) throws MongoException{
-        MongoCollection<Document> authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
-        MongoCollection<Document> recipeCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);
+        /*MongoCollection<Document> authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
+        MongoCollection<Document> recipeCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);*/
+        MongoCollection<Document> authorCollection = MongoDBDriver.getDriver().getCollectionCP(Configuration.MONGODB_AUTHOR);
+        MongoCollection<Document> recipeCollection = MongoDBDriver.getDriver().getCollectionCP(Configuration.MONGODB_RECIPE);
 
-        if (getAuthor(newAuthorName) != null){
+        if (!checkIfUsernameIsAvailable(newAuthorName)){
             System.out.println("ESISTE GIA IL NICK");
             return false;
         }else {
@@ -99,6 +102,12 @@ public class AuthorMongoDAO {
             return new Author(doc.getString("authorName"),doc.getString("password"),
                     doc.getInteger("image"),doc.getInteger("promotion"));
         } else return null;
+    }
+
+    public static boolean checkIfUsernameIsAvailable(String authorName)  throws MongoException{ //uso CP
+        MongoCursor<Document> cursor = MongoDBDriver.getDriver().
+                getCollectionCP(Configuration.MONGODB_AUTHOR).find(eq("authorName", authorName)).iterator();
+        return !cursor.hasNext();
     }
 
     public static ArrayList<Author> searchAuthors(String nameToSearch, Integer elementsToSkip, Integer elementsToLimit) throws MongoException{

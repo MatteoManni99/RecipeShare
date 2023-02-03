@@ -44,7 +44,7 @@ public class RegisterController implements Initializable {
         } else if (checkIfEmpty(name.getText()) || checkIfEmpty(password.getText())) {
             warningLabel.setText("Insert valid Username and Password...");
         } else {
-            if (AuthorService.register(name.getText(), password.getText(), selectedImageNumber-1, 0)){
+            if (AuthorService.register(name.getText(), password.getText(), selectedImageNumber, 0)){
                 warningLabel.setText("Successfully Registered");
             }else
                 warningLabel.setText("Username not Available");

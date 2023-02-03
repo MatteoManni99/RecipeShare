@@ -73,7 +73,9 @@ public class RecipeMongoDAO {
     }
 
     public static boolean checkIfNameIsAvailable(String name) throws MongoException{
-        return !MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE).
+        /*return !MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE).
+                find(new Document("Name",name)).cursor().hasNext();*/
+        return !MongoDBDriver.getDriver().getCollectionCP(Configuration.MONGODB_RECIPE).
                 find(new Document("Name",name)).cursor().hasNext();
     }
 

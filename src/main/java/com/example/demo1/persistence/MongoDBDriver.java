@@ -1,6 +1,10 @@
 package com.example.demo1.persistence;
 
 import com.example.demo1.Configuration;
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.ReadPreference;
+import com.mongodb.WriteConcern;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -10,19 +14,37 @@ import org.bson.Document;
 public class MongoDBDriver {
 
     private static final MongoDBDriver driver = new MongoDBDriver();
-    private final MongoClient mongoClient;
-    private final MongoDatabase database;
+    private final MongoClient mongoClientAP;
+    private final MongoClient mongoClientCP;
+    private final MongoDatabase databaseAP;
+    private final MongoDatabase databaseCP;
 
     private MongoDBDriver() {
-        mongoClient = MongoClients.create(Configuration.MONGODB_URL);
-        database = mongoClient.getDatabase(Configuration.MONGODB_DB);
+        MongoClientSettings settingAP = MongoClientSettings.builder()
+                .applyConnectionString(new ConnectionString("mongodb://10.1.1.8:27019"))
+                .readPreference(ReadPreference.secondaryPreferred())
+                .retryWrites(true)
+                .writeConcern(WriteConcern.W1).build();
+
+        MongoClientSettings settingCP = MongoClientSettings.builder()
+                .applyConnectionString(new ConnectionString("mongodb://10.1.1.8:27019"))
+                .readPreference(ReadPreference.primary())
+                .retryWrites(true)
+                .writeConcern(WriteConcern.MAJORITY).build();
+
+        mongoClientAP = MongoClients.create(settingAP);
+        mongoClientCP = MongoClients.create(settingCP);
+        databaseAP = mongoClientAP.getDatabase(Configuration.MONGODB_DB);
+        databaseCP = mongoClientCP.getDatabase(Configuration.MONGODB_DB);
     }
 
     public MongoCollection<Document> getCollection(String collection) {
-        return database.getCollection(collection);
+        return databaseAP.getCollection(collection);
     }
+    public MongoCollection<Document> getCollectionCP(String collection) {return databaseCP.getCollection(collection);}
+
 
     public static MongoDBDriver getDriver() {return driver;}
 
-    public void closeConnection() {mongoClient.close();}
+    public void closeConnection() {mongoClientAP.close();}
 }
