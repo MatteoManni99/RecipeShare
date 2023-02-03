@@ -18,6 +18,7 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class LoggatoAnalyticsController {
     @FXML
@@ -108,12 +109,12 @@ public class LoggatoAnalyticsController {
     }
 
     private void printCategoryTable(List<Recipe> listRecipe, Integer page){
-        TableViewAbstract tableViewN = new TableViewRecipeCategory();
-        initializeTableView(tableViewN);
+        TableViewAbstract tableView = new TableViewRecipeCategory();
+        initializeTableView(tableView);
         listRecipe.stream().skip(page * 10L).limit(10).toList().forEach(recipe ->
-                tableViewN.addToObservableArrayList(new RowRecipeCategory(recipe.getName(), recipe.getRecipeCategory(),
+                tableView.addToObservableArrayList(new RowRecipeCategory(recipe.getName(), recipe.getRecipeCategory(),
                         recipe.getAggregatedRating(), new ImageView(recipe.getImages().get(0)))));
-        displayTableView(tableViewN);
+        displayTableView(tableView);
     }
 
 }

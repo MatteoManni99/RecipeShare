@@ -31,7 +31,7 @@ public class TableViewRecipeRating extends TableViewAbstract {
 
     @Override
     public void setTable() {
-        table.getColumns().addAll(imageCol, nameCol, ratingCol);
+        setColumns(imageCol, nameCol, ratingCol);
     }
 
 }

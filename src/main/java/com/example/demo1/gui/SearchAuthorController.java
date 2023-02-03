@@ -70,7 +70,7 @@ public class SearchAuthorController implements Initializable {
         tableViewAuthor.getTable().setLayoutX(220);
         tableViewAuthor.getTable().setLayoutY(150);
         tableViewAuthor.getTable().setPrefHeight(400);
-        tableViewAuthor.getTable().setPrefWidth(210);
+        tableViewAuthor.getTable().setPrefWidth(250);
         tableViewAuthor.setEventForTableCells();
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
         tableViewAuthor.setTable();

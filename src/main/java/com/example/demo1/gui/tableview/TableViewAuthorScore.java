@@ -28,7 +28,7 @@ public class TableViewAuthorScore extends TableViewAbstract {
         table.setLayoutX(20);
         table.setLayoutY(100);
     }
-
-    public void setTable() {table.getColumns().addAll(imageCol, authorNameCol, scoreCol);}
+    @Override
+    public void setTable() {setColumns(imageCol, authorNameCol, scoreCol);}
 
 }

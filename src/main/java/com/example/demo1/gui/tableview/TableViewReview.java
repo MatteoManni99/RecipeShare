@@ -24,10 +24,8 @@ public class TableViewReview extends TableViewAbstract {
         table.setPrefWidth(500);
         table.setLayoutX(480);
         table.setLayoutY(370);
-
-        //table.pol(TableView.C);
     }
-
-    public void setTable() {table.getColumns().addAll(ratingCol, authorNameCol, descriptionCol);}
+    @Override
+    public void setTable() {setColumns(ratingCol, authorNameCol, descriptionCol);}
 
 }

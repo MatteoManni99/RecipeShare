@@ -6,18 +6,20 @@ import com.example.demo1.gui.row.RowTableView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 
 public abstract class TableViewAbstract {
 
-    public TableView<RowTableView> table;
+    protected TableView<RowTableView> table;
     private ObservableList<RowTableView> ol;
-    public final DataSingleton data = DataSingleton.getInstance();
+    private final DataSingleton data = DataSingleton.getInstance();
 
-    public void setTable() {
+    public void setTable() {}
 
-    }
+    @SafeVarargs
+    public final void setColumns(TableColumn<RowTableView, ?>... columns){table.getColumns().addAll(columns);}
 
     public void setEventForTableCells() {
         table.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> {

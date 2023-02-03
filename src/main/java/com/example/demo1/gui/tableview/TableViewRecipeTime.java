@@ -33,7 +33,7 @@ public class TableViewRecipeTime extends TableViewAbstract {
 
     @Override
     public void setTable() {
-        table.getColumns().addAll(imageCol, nameCol, timeCol, ratingCol);
+        setColumns(imageCol, nameCol, timeCol, ratingCol);
     }
 
 

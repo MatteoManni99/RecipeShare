@@ -1,5 +1,6 @@
 package com.example.demo1.gui.tableview;
 
+import com.example.demo1.gui.DataSingleton;
 import com.example.demo1.gui.row.RowTableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -28,18 +29,10 @@ public class TableViewAuthor extends TableViewAbstract{
         table.setLayoutX(600);
         table.setLayoutY(200);
     }
-
-    public void setTableWithPromotion() {
-        table.getColumns().addAll(imageCol, authorNameCol, promotionCol);
-    }
-
-    public void setTableWithoutPromotion() {
-        table.getColumns().addAll(imageCol, authorNameCol);
-    }
-
+    @Override
     public void setTable(){
-        if (data.getTypeOfUser().equals("moderator")) setTableWithPromotion();
-        else setTableWithoutPromotion();
+        if (DataSingleton.getInstance().getTypeOfUser().equals("moderator")) setColumns(imageCol, authorNameCol, promotionCol);
+        else setColumns(imageCol, authorNameCol);
     }
 
 

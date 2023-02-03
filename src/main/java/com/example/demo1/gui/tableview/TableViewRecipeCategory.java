@@ -32,11 +32,8 @@ public class TableViewRecipeCategory extends TableViewAbstract {
         table.setLayoutY(230);
     }
 
-
     @Override
-    public void setTable() {
-        table.getColumns().addAll(imageCol, nameCol, categoryCol, ratingCol);
-    }
+    public void setTable() {setColumns(imageCol, nameCol, categoryCol, ratingCol);}
 
 }
 

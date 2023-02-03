@@ -3,7 +3,9 @@ package com.example.demo1.gui;
 import com.example.demo1.Configuration;
 import com.example.demo1.gui.row.RowImage;
 import com.example.demo1.gui.row.RowRecipe;
+import com.example.demo1.gui.tableview.TableViewAbstract;
 import com.example.demo1.gui.tableview.TableViewRecipe;
+import com.example.demo1.gui.tableview.TableViewRecipeWithoutAuthor;
 import com.example.demo1.model.Author;
 import com.example.demo1.service.AuthorService;
 import com.example.demo1.service.RecipeService;
@@ -31,7 +33,7 @@ public class AuthorProfileController implements Initializable {
     public Label avatarLabel = new Label();
 
     private final DataSingleton data = DataSingleton.getInstance();
-    private final TableViewRecipe TableViewObject = new TableViewRecipe();
+    private final TableViewAbstract tableRecipe = new TableViewRecipeWithoutAuthor();
     @FXML
     private TextField authorNameField;
     @FXML
@@ -50,29 +52,27 @@ public class AuthorProfileController implements Initializable {
         avatarImage.setImage(data.getAvatar().getImage());
         authorNameField.setText(data.getAuthorName());
         passwordField.setText(data.getPassword());
-
         createTableView();
     }
 
     public void searchInDBAndLoadInTableView(Integer pageNumber) { //chiamata a DAO
-        TableViewObject.resetObservableArrayList();
+        tableRecipe.resetObservableArrayList();
         RecipeService.getRecipeFromAuthor(data.getAuthorName(),
                 10 * pageNumber,10).forEach(recipeReducted ->
-                TableViewObject.addToObservableArrayList(new RowRecipe( recipeReducted.getName(),
-                        recipeReducted.getAuthorName(),
-                        new RowImage(new ImageView(recipeReducted.getImage())).getImage())));
-        TableViewObject.setItems();
+                tableRecipe.addToObservableArrayList(new RowRecipe( recipeReducted.getName(),
+                        recipeReducted.getAuthorName(), new RowImage(new ImageView(recipeReducted.getImage())).getImage())));
+        tableRecipe.setItems();
     }
 
     public void createTableView() {
         searchInDBAndLoadInTableView(0);
-        TableViewObject.setEventForTableCells();
-        TableViewObject.setTableWithoutAuthorNameCol();
-        TableViewObject.getTable().setLayoutX(20);
-        TableViewObject.getTable().setLayoutY(240);
-        TableViewObject.getTable().setPrefWidth(450);
-        TableViewObject.getTable().setPrefHeight(340);
-        anchorPane.getChildren().addAll(TableViewObject.getTable());
+        tableRecipe.setEventForTableCells();
+        tableRecipe.setTable();
+        tableRecipe.getTable().setLayoutX(20);
+        tableRecipe.getTable().setLayoutY(240);
+        tableRecipe.getTable().setPrefWidth(450);
+        tableRecipe.getTable().setPrefHeight(340);
+        anchorPane.getChildren().addAll(tableRecipe.getTable());
     }
 
     public void changePassword(ActionEvent actionEvent) {
@@ -80,7 +80,6 @@ public class AuthorProfileController implements Initializable {
         System.out.println(newPassword);
         Author currentAuthor = new Author(data.getAuthorName(),data.getPassword(),
                 data.getAvatarIndex(), data.getAuthorPromotion());
-
         AuthorService.changePassword(newPassword,currentAuthor);
         data.setPassword(newPassword);
         passwordField.setText(newPassword);
@@ -91,7 +90,6 @@ public class AuthorProfileController implements Initializable {
         System.out.println(newAuthorName);
         Author currentAuthor = new Author(data.getAuthorName(),data.getPassword(),
                 data.getAvatarIndex(), data.getAuthorPromotion());
-
         if(AuthorService.changeAuthorName(newAuthorName,currentAuthor)){
             data.setAuthorName(newAuthorName);
             authorNameField.setText(newAuthorName);

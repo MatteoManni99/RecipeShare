@@ -24,9 +24,7 @@ public class TableViewRecipeIngredients extends TableViewAbstract {
         table.setLayoutY(230);
     }
     @Override
-    public void setTable() {
-        table.getColumns().addAll(ingredientCol, countCol);
-    }
+    public void setTable() {setColumns(ingredientCol, countCol);}
 
 
 }

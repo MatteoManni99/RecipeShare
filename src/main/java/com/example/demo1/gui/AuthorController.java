@@ -5,6 +5,7 @@ import com.example.demo1.dao.mongo.AuthorMongoDAO;
 import com.example.demo1.gui.row.RowRecipe;
 import com.example.demo1.gui.tableview.TableViewAbstract;
 import com.example.demo1.gui.tableview.TableViewRecipe;
+import com.example.demo1.gui.tableview.TableViewRecipeWithoutAuthor;
 import com.example.demo1.service.RecipeService;
 import com.example.demo1.model.Author;
 import javafx.event.ActionEvent;
@@ -31,7 +32,7 @@ public class AuthorController implements Initializable {
     private final DataSingleton data = DataSingleton.getInstance();
     private String authorName;
 
-    private final TableViewAbstract tableViewAuthor = new TableViewRecipe();
+    private final TableViewAbstract tableViewAuthor = new TableViewRecipeWithoutAuthor();
 
     @FXML
     private AnchorPane anchorPane;

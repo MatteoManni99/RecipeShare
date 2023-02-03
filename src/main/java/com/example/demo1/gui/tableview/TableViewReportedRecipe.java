@@ -34,9 +34,9 @@ public class TableViewReportedRecipe extends TableViewAbstract {
         table.setLayoutY(200);
     }
 
-
+    @Override
     public void setTable() {
-        table.getColumns().addAll(imageCol, nameCol, authorNameCol, reporterNameCol, dateReportingCol);
+        setColumns(imageCol, nameCol, authorNameCol, reporterNameCol, dateReportingCol);
     }
 
 }
