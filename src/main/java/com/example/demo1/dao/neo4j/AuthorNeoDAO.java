@@ -1,4 +1,50 @@
 package com.example.demo1.dao.neo4j;
 
+import com.example.demo1.persistence.Neo4jDriver;
+import org.neo4j.driver.Result;
+import org.neo4j.driver.Session;
+import org.neo4j.driver.exceptions.Neo4jException;
+
+import static org.neo4j.driver.Values.parameters;
+
 public class AuthorNeoDAO {
+
+    public boolean checkIfAuthorNameIsAvailable(String authorName) throws Neo4jException {
+        return Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
+            Result result = tx.run("MATCH (n:Author {name: $name})" + "RETURN COUNT(n)",
+                    parameters("name", authorName));
+            return result.next().get("COUNT(n)").asInt() == 0;
+        });
+    }
+
+    public void addAuthor(String authorName) throws Neo4jException {
+
+        Neo4jDriver.getNeoDriver().getSession().executeWriteWithoutResult(tx -> {
+            tx.run("CREATE (n:Author {name: $name})",
+                    parameters("name", authorName)).consume();
+            //.consume() se ho capito bene è per liberare memoria; per dire che hai finito
+            // e dopo non devi e non puoi fare .hasNext o .next()
+        });
+    }
+
+    public boolean checkIfFollowIsAvailable(String authorName1, String authorName2) throws Neo4jException {
+
+        String query = "MATCH (a:Author {name: $authorName1})-[r:FOLLOW]->(b:Author {name: $authorName2})";
+        return Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
+            Result result = tx.run(query + "RETURN COUNT(r)",
+                    parameters("authorName1", authorName1, "authorName2", authorName2));
+            return result.next().get("COUNT(r)").asInt() == 0;
+        });
+    }
+
+    //prima di essere chiamato va chiamato checkIfRelationIsAvailable() per vedere se è c'è già
+    public void addRelationFollow(String authorName1, String authorName2) throws Neo4jException {
+        String query = "MATCH (a:Author {name: $authorName1}), (b:Author {name: $authorName2})" +
+                "CREATE (a)-[r:FOLLOW]->(b)";
+        Neo4jDriver.getNeoDriver().getSession().executeWriteWithoutResult(tx -> {
+            tx.run(query, parameters("authorName1", authorName1, "authorName2", authorName2)).consume();
+            //.consume() se ho capito bene è per liberare memoria; per dire che hai finito
+            // e dopo non devi e non puoi fare .hasNext o .next()
+        });
+    }
 }
