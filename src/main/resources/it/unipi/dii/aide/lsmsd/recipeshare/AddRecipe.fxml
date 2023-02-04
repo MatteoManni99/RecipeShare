@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="TOP_CENTER" prefHeight="600" prefWidth="1000" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.dii.aide.lsmsd.recipeshare.gui.AddRecipeController">
+    <children>
+        <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0">
+         <children>
+            <TextField fx:id="nameField" layoutX="147.0" layoutY="51.0" />
+            <TextField fx:id="categoryField" layoutX="147.0" layoutY="97.0" />
+            <TextField fx:id="servingsField" layoutX="147.0" layoutY="141.0" />
+            <Text layoutX="96.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Category:" />
+            <Text layoutX="110.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" />
+            <Text layoutX="51.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Preparetion Time:" />
+            <Text layoutX="99.0" layoutY="246.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Calories:" />
+            <Text layoutX="98.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Servings:" />
+            <Text layoutX="426.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" />
+            <TextField fx:id="timeField" layoutX="147.0" layoutY="185.0" />
+            <TextField fx:id="caloriesField" layoutX="147.0" layoutY="229.0" />
+            <Button fx:id="addKeyword" layoutX="303.0" layoutY="272.0" mnemonicParsing="false" onAction="#onAddKeywordClick" text="Add" />
+            <TextField fx:id="keywordField" layoutX="147.0" layoutY="271.0" />
+            <ListView fx:id="keywordListView" layoutX="146.0" layoutY="300.0" prefHeight="74.0" prefWidth="150.0" />
+            <Text layoutX="89.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Keywords:" />
+            <TextField fx:id="ingredientField" layoutX="147.0" layoutY="395.0" />
+            <ListView fx:id="ingredientListView" layoutX="146.0" layoutY="423.0" prefHeight="74.0" prefWidth="150.0" />
+            <Text layoutX="79.0" layoutY="412.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ingredients:" />
+            <Button fx:id="removeKeyword" layoutX="303.0" layoutY="300.0" mnemonicParsing="false" onAction="#onRemoveKeywordClick" text="Remove" />
+            <TextField fx:id="imageField" layoutX="498.0" layoutY="196.0" prefHeight="26.0" prefWidth="310.0" />
+            <ListView fx:id="imageListView" layoutX="497.0" layoutY="225.0" prefHeight="74.0" prefWidth="310.0" />
+            <Text layoutX="423.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Images links:" />
+            <Button fx:id="addIngredient" layoutX="303.0" layoutY="396.0" mnemonicParsing="false" onAction="#onAddIngredientClick" text="Add" />
+            <Button fx:id="removeIngredient" layoutX="303.0" layoutY="424.0" mnemonicParsing="false" onAction="#onRemoveIngredientClick" text="Remove" />
+            <Button fx:id="addImage" layoutX="816.0" layoutY="195.0" mnemonicParsing="false" onAction="#onAddImageClick" text="Add" />
+            <Button fx:id="removeImage" layoutX="816.0" layoutY="223.0" mnemonicParsing="false" onAction="#onRemoveImageClick" text="Remove" />
+            <TextField fx:id="instructionsField" layoutX="497.0" layoutY="331.0" prefHeight="26.0" prefWidth="310.0" />
+            <ListView fx:id="instructionsListView" layoutX="496.0" layoutY="360.0" prefHeight="139.0" prefWidth="310.0" />
+            <Text layoutX="427.0" layoutY="349.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Instructions:" />
+            <Button fx:id="addInstruction" layoutX="815.0" layoutY="330.0" mnemonicParsing="false" onAction="#onAddInstructionClick" text="Add" />
+            <Button fx:id="removeInstruction" layoutX="815.0" layoutY="358.0" mnemonicParsing="false" onAction="#onRemoveInstructionClick" text="Remove" />
+            <Button fx:id="addRecipe" layoutX="846.0" layoutY="532.0" mnemonicParsing="false" onAction="#onAddRecipeClick" text="Add Recipe" />
+            <Button fx:id="Back" layoutX="51.0" layoutY="532.0" mnemonicParsing="false" onAction="#onBackClick" text="Back" />
+            <TextArea fx:id="descriptionField" layoutX="500.0" layoutY="50.0" prefHeight="102.0" prefWidth="310.0" />
+         </children>
+        </AnchorPane>
+    </children>
+</VBox>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="anchorPane" prefHeight="600" prefWidth="1000" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.dii.aide.lsmsd.recipeshare.gui.RegisterController">
+   <children>
+      <Label layoutX="183.0" layoutY="97.0" text="Username" />
+      <Label layoutX="185.0" layoutY="137.0" text="Password" />
+      <TextField fx:id="name" layoutX="248.0" layoutY="93.0" prefHeight="26.0" prefWidth="168.0" />
+      <TextField fx:id="password" layoutX="248.0" layoutY="133.0" prefHeight="26.0" prefWidth="168.0" />
+      <Button layoutX="247.0" layoutY="167.0" mnemonicParsing="false" onAction="#onRegisterClick" text="REGISTER TO RECIPE SHARE " />
+      <Label fx:id="avatarLabel" layoutX="269.0" layoutY="251.0" prefHeight="18.0" prefWidth="124.0" text="Choose an avatar" />
+      <ImageView fx:id="selectedImage" fitHeight="120.0" fitWidth="120.0" layoutX="47.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../avatarImages/avatarVoid.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="image6" fitHeight="120.0" fitWidth="120.0" layoutX="211.0" layoutY="410.0" onMouseClicked="#onMouseClickImage6" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../avatarImages/avatar6.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="image5" fitHeight="120.0" fitWidth="120.0" layoutX="76.0" layoutY="410.0" onMouseClicked="#onMouseClickImage5" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../avatarImages/avatar5.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="image2" fitHeight="120.0" fitWidth="120.0" layoutX="211.0" layoutY="283.0" onMouseClicked="#onMouseClickImage2" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../avatarImages/avatar2.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="image3" fitHeight="120.0" fitWidth="120.0" layoutX="341.0" layoutY="283.0" onMouseClicked="#onMouseClickImage3" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../avatarImages/avatar3.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="image7" fitHeight="120.0" fitWidth="120.0" layoutX="341.0" layoutY="410.0" onMouseClicked="#onMouseClickImage7" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../avatarImages/avatar7.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="image4" fitHeight="120.0" fitWidth="120.0" layoutX="472.0" layoutY="283.0" onMouseClicked="#onMouseClickImage4" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../avatarImages/avatar4.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="image1" fitHeight="120.0" fitWidth="120.0" layoutX="76.0" layoutY="283.0" onMouseClicked="#onMouseClickImage1" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../avatarImages/avatar1.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="image8" fitHeight="120.0" fitWidth="120.0" layoutX="472.0" layoutY="410.0" onMouseClicked="#onMouseClickImage8" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../avatarImages/avatar8.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="warningLabel" layoutX="90.0" layoutY="222.0" prefHeight="18.0" prefWidth="343.0" text="Warning Label" />
+      <Button layoutX="46.0" layoutY="25.0" mnemonicParsing="false" onAction="#onBackToLoginClick" text="BACK TO LOGIN" />
+   </children>
+</AnchorPane>

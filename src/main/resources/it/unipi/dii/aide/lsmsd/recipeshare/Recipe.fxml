@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="TOP_CENTER" prefHeight="700" prefWidth="1000" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.dii.aide.lsmsd.recipeshare.gui.RecipeController">
+   <children>
+      <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0">
+         <children>
+            <Button fx:id="leaveReviewButton" layoutX="169.0" layoutY="627.0" mnemonicParsing="false" onAction="#onLeaveAReviewClick" text="Leave a Review" />
+            <Button fx:id="reportRecipeButton" layoutX="757.0" layoutY="26.0" mnemonicParsing="false" onAction="#onReportRecipeClick" prefHeight="26.0" prefWidth="96.0" text="Report Recipe" />
+            <ImageView fx:id="image" fitHeight="189.0" fitWidth="337.0" layoutX="32.0" layoutY="62.0" pickOnBounds="true" preserveRatio="true" />
+            <TextField fx:id="name" editable="false" layoutX="121.0" layoutY="27.0" prefHeight="18.0" prefWidth="200.0" text="name" />
+            <Text layoutX="410.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" wrappingWidth="68.79999999999995" />
+            <ListView fx:id="keywords" layoutX="30.0" layoutY="330.0" prefHeight="174.0" prefWidth="110.0" />
+            <ListView fx:id="ingredients" layoutX="155.0" layoutY="330.0" prefHeight="174.0" prefWidth="110.0" />
+            <ListView fx:id="instructions" layoutX="295.0" layoutY="330.0" prefHeight="111.0" prefWidth="679.0" />
+            <Label layoutX="30.0" layoutY="312.0" text="Keywords" />
+            <Label layoutX="155.0" layoutY="312.0" text="Ingredients" />
+            <Label layoutX="295.0" layoutY="312.0" text="Instruction" />
+            <Button layoutX="870.0" layoutY="26.0" mnemonicParsing="false" onAction="#onBackClick" text="Home" />
+            <Button layoutX="140.0" layoutY="259.0" mnemonicParsing="false" onAction="#onNextClick" text="Next image" />
+            <Button layoutX="30.0" layoutY="259.0" mnemonicParsing="false" onAction="#onPreviousClick" text="Previous image" />
+            <TextField fx:id="authorName" editable="false" layoutX="468.0" layoutY="30.0" prefHeight="18.0" prefWidth="218.0" text="authorName " />
+            <Label layoutX="408.0" layoutY="35.0" text="Author" />
+            <TextArea fx:id="description" editable="false" layoutX="408.0" layoutY="224.0" prefHeight="82.0" prefWidth="566.0" />
+            <Label layoutX="295.0" layoutY="454.0" text="Reviews" />
+            <Text layoutX="408.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Preparetion Time (min) " wrappingWidth="144.79998779296875" />
+            <Text layoutX="408.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Calories " wrappingWidth="51.200000000000045" />
+            <Label layoutX="37.0" layoutY="30.0" text="Recipe Name:" />
+            <Text layoutX="408.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Servings " wrappingWidth="51.200000000000045" />
+            <Text layoutX="408.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Published" wrappingWidth="56.799999999999955" />
+            <TextField fx:id="date" editable="false" layoutX="468.0" layoutY="65.0" prefHeight="18.0" prefWidth="218.0" text="date" />
+            <TextField fx:id="time" editable="false" layoutX="543.0" layoutY="170.0" text="time" />
+            <TextField fx:id="calories" editable="false" layoutX="468.0" layoutY="100.0" text="calories" />
+            <TextField fx:id="servings" editable="false" layoutX="468.0" layoutY="135.0" text="servings" />
+            <TextArea fx:id="reviewTextArea" layoutX="29.0" layoutY="550.0" prefHeight="70.0" prefWidth="235.0" text="Write a Review here..." />
+            <ChoiceBox fx:id="ratingChoiceBox" layoutX="116.0" layoutY="626.0" prefHeight="26.0" prefWidth="34.0" />
+            <Label layoutX="71.0" layoutY="630.0" text="Rating" />
+            <Text layoutX="805.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Recipe Rating" wrappingWidth="77.60000000000002" />
+            <TextField fx:id="aggregatedRating" editable="false" layoutX="809.0" layoutY="143.0" prefHeight="26.0" prefWidth="69.0" text=" aggregated rating" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

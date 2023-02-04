@@ -10,12 +10,12 @@ module com.example.demo1 {
     requires org.mongodb.driver.core;
     requires org.neo4j.driver;
 
-    opens com.example.demo1 to javafx.fxml;
-    exports com.example.demo1.gui;
-    opens com.example.demo1.gui to javafx.fxml;
-    exports com.example.demo1;
-    exports com.example.demo1.gui.row;
-    opens com.example.demo1.gui.row to javafx.fxml;
-    exports com.example.demo1.gui.tableview;
-    opens com.example.demo1.gui.tableview to javafx.fxml;
+    opens it.unipi.dii.aide.lsmsd.recipeshare to javafx.fxml;
+    exports it.unipi.dii.aide.lsmsd.recipeshare.gui;
+    opens it.unipi.dii.aide.lsmsd.recipeshare.gui to javafx.fxml;
+    exports it.unipi.dii.aide.lsmsd.recipeshare;
+    exports it.unipi.dii.aide.lsmsd.recipeshare.gui.row;
+    opens it.unipi.dii.aide.lsmsd.recipeshare.gui.row to javafx.fxml;
+    exports it.unipi.dii.aide.lsmsd.recipeshare.gui.tableview;
+    opens it.unipi.dii.aide.lsmsd.recipeshare.gui.tableview to javafx.fxml;
 }
