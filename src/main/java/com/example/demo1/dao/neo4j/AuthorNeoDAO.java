@@ -89,17 +89,28 @@ public class AuthorNeoDAO {
         });
     }
 
-    //TODO
-    public static List<Author> getSuggestedAuthor(String authorName){
-        List<Author> suggestedAuthorList = new ArrayList<Author>();
-        Author author = new Author("nome",1);
-        return suggestedAuthorList;
+    public static List<Author> getAuthorSuggested(Author author){
+        String query = "MATCH (a:Author {name: $authorName})-[:FOLLOW]->(f1:Author)-[:FOLLOW]->(f2:Author) " +
+                "RETURN f2.name as Name, f2.avatar as Avatar, COUNT(*) as Frequency " +
+                "ORDER BY Frequency DESC";
+        List<Author> authorSuggested = Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
+            Result result = tx.run(query, parameters("authorName", author.getName()));
+            List<Author> authorSuggested_ = new ArrayList<>();
+            while(result.hasNext()) {
+                Record r = result.next();
+                authorSuggested_.add(new Author(r.get("Name").asString(),r.get("Avatar").asInt()));
+            }
+            return authorSuggested_;
+        });
+        authorSuggested.removeAll(AuthorNeoDAO.getFollowing(author.getName()));
+        authorSuggested.remove(author);
+        return authorSuggested;
     }
 
     //TODO
     public static List<RecipeReducted> getSuggestedRecipe(String authorName){
         List<RecipeReducted> suggestedRecipeList = new ArrayList<RecipeReducted>();
-        RecipeReducted recipe = new RecipeReducted("nome","authorname","image");
+        RecipeReducted recipe = new RecipeReducted("nome","authorName","image");
         return suggestedRecipeList;
     }
 }

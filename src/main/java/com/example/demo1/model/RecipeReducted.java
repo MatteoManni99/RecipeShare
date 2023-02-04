@@ -1,5 +1,7 @@
 package com.example.demo1.model;
 
+import java.util.Objects;
+
 public class RecipeReducted {
 
     private String name;
@@ -37,4 +39,20 @@ public class RecipeReducted {
     public void setImage(String image) {
         this.image = image;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RecipeReducted recipe = (RecipeReducted) o;
+        return Objects.equals(image, recipe.image) &&
+                Objects.equals(authorName, recipe.authorName) &&
+                Objects.equals(name, recipe.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, image, authorName);
+    }
 }
+

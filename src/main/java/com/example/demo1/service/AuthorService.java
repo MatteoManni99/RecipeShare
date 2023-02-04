@@ -63,6 +63,9 @@ public class AuthorService {
     public static List<Author> getFollowing(String authorName){
         return AuthorNeoDAO.getFollowing(authorName);
     }
+    public static List<Author> getAuthorSuggested(Author author){
+        return AuthorNeoDAO.getAuthorSuggested(author);
+    }
 
     public static void updatePromotion(String authorName, Integer newPromotionValue){
         AuthorMongoDAO.updatePromotion(authorName, newPromotionValue);
