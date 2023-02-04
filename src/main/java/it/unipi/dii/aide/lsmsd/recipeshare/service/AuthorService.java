@@ -4,16 +4,15 @@ import it.unipi.dii.aide.lsmsd.recipeshare.dao.mongo.AuthorMongoDAO;
 import it.unipi.dii.aide.lsmsd.recipeshare.dao.neo4j.AuthorNeoDAO;
 import it.unipi.dii.aide.lsmsd.recipeshare.model.Author;
 import com.mongodb.MongoException;
+import it.unipi.dii.aide.lsmsd.recipeshare.model.RecipeReducted;
 import org.neo4j.driver.exceptions.Neo4jException;
 
 import java.util.List;
 
 public class AuthorService {
-
     public static boolean login(String name, String password){
         return AuthorMongoDAO.tryLogin(name,password);
     }
-
     public static boolean register(String authorName, String password, Integer image, Integer standardPromotionValue) {
         try{ //add su Mongo
             if(!AuthorMongoDAO.registration(authorName, password, image, standardPromotionValue)) return false;
@@ -66,7 +65,9 @@ public class AuthorService {
     public static List<Author> getAuthorSuggested(Author author){
         return AuthorNeoDAO.getAuthorSuggested(author);
     }
-
+    public static List<RecipeReducted> getRecipeSuggested(String authorName){
+        return AuthorNeoDAO.getRecipeSuggested(authorName);
+    }
     public static void updatePromotion(String authorName, Integer newPromotionValue){
         AuthorMongoDAO.updatePromotion(authorName, newPromotionValue);
     }

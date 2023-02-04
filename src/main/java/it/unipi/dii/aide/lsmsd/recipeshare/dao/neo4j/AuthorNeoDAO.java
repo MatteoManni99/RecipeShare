@@ -21,14 +21,12 @@ public class AuthorNeoDAO {
             return result.next().get("COUNT(n)").asInt() == 0;
         });
     }
-
     public static void addAuthor(String authorName, Integer avatar) throws Neo4jException {
         Neo4jDriver.getNeoDriver().getSession().executeWriteWithoutResult(tx -> {
             tx.run("CREATE (n:Author {name: $name, avatar: $avatar})",
                     parameters("name", authorName, "avatar", avatar)).consume();
         });
     }
-
     public static void changeAvatar(String authorName, Integer newAvatar) throws Neo4jException{
         String query = "MATCH (a:Author {name: $authorName})" +
                 "SET a.avatar = $newAvatar";
@@ -36,7 +34,6 @@ public class AuthorNeoDAO {
             tx.run(query, parameters("authorName", authorName, "newAvatar", newAvatar));
         });
     }
-
     public static boolean checkIfFollowIsAvailable(String authorName1, String authorName2Follow) throws Neo4jException {
         String query = "MATCH (a:Author {name: $authorName1})-[r:FOLLOW]->(b:Author {name: $authorName2Follow})";
         return Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
@@ -45,7 +42,6 @@ public class AuthorNeoDAO {
             return result.next().get("COUNT(r)").asInt() == 0;
         });
     }
-
     public static void addRelationFollow(String authorName1, String authorName2Follow) throws Neo4jException {
         String query = "MATCH (a:Author {name: $authorName1}), (b:Author {name: $authorName2Follow})" +
                 "CREATE (a)-[r:FOLLOW]->(b)";
@@ -53,15 +49,14 @@ public class AuthorNeoDAO {
             tx.run(query, parameters("authorName1", authorName1, "authorName2Follow", authorName2Follow));
         });
     }
-    public static void removeRelationFollow(String authorName1, String authorName2Unfollow) {
+    public static void removeRelationFollow(String authorName1, String authorName2Unfollow) throws Neo4jException {
         String query = "MATCH (a:Author {name: $authorName1})-[r:FOLLOW]->(b:Author {name: $authorName2Unfollow})" +
                 "DELETE r";
         Neo4jDriver.getNeoDriver().getSession().executeWriteWithoutResult(tx -> {
             tx.run(query, parameters("authorName1", authorName1, "authorName2Unfollow", authorName2Unfollow));
         });
     }
-
-    public static List<Author> getFollowers(String authorName){
+    public static List<Author> getFollowers(String authorName) throws Neo4jException {
         String query = "MATCH (f:Author)-[:FOLLOW]->(a:Author {name: $authorName})" +
                 "RETURN f.name as Name, f.avatar as Avatar";
         return Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
@@ -74,7 +69,7 @@ public class AuthorNeoDAO {
             return follower;
         });
     }
-    public static List<Author> getFollowing(String authorName){
+    public static List<Author> getFollowing(String authorName) throws Neo4jException {
         String query = "MATCH (a:Author {name: $authorName})-[:FOLLOW]->(f:Author)" +
                 "RETURN f.name as Name, f.avatar as Avatar";
         return Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
@@ -87,8 +82,7 @@ public class AuthorNeoDAO {
             return follower;
         });
     }
-
-    public static List<Author> getAuthorSuggested(Author author){
+    public static List<Author> getAuthorSuggested(Author author) throws Neo4jException {
         String query = "MATCH (a:Author {name: $authorName})-[:FOLLOW]->(f1:Author)-[:FOLLOW]->(f2:Author) " +
                 "RETURN f2.name as Name, f2.avatar as Avatar, COUNT(*) as Frequency " +
                 "ORDER BY Frequency DESC";
@@ -105,11 +99,22 @@ public class AuthorNeoDAO {
         authorSuggested.remove(author);
         return authorSuggested;
     }
+    public static List<RecipeReducted> getRecipeSuggested(String authorName) throws Neo4jException {
+        String query = "MATCH (a:Author {name: $authorName})-[:FOLLOW]->(f:Author)-[:WRITE]->(n:Recipe) " +
+                "RETURN f.name as AuthorName, n.name as Name,  n.image as Image";
 
-    //TODO
-    public static List<RecipeReducted> getSuggestedRecipe(String authorName){
-        List<RecipeReducted> suggestedRecipeList = new ArrayList<RecipeReducted>();
-        RecipeReducted recipe = new RecipeReducted("nome","authorName","image");
-        return suggestedRecipeList;
+        List<RecipeReducted> recipeSuggested = Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
+            Result result = tx.run(query, parameters("authorName", authorName));
+            List<RecipeReducted> recipeSuggested_ = new ArrayList<>();
+            while(result.hasNext()) {
+                Record r = result.next();
+                recipeSuggested_.add(new RecipeReducted(r.get("Name").asString(),r.get("AuthorName").asString(),
+                        r.get("Image").asString()));
+            }
+            return recipeSuggested_;
+        });
+        //recipeSuggested.removeAll(AuthorNeoDAO.getFollowing(author.getName()));
+        //recipeSuggested.remove(author);
+        return recipeSuggested;
     }
 }

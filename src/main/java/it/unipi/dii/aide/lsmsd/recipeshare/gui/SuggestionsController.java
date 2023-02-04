@@ -3,8 +3,10 @@ package it.unipi.dii.aide.lsmsd.recipeshare.gui;
 import it.unipi.dii.aide.lsmsd.recipeshare.Configuration;
 import it.unipi.dii.aide.lsmsd.recipeshare.gui.row.RowAuthor;
 import it.unipi.dii.aide.lsmsd.recipeshare.gui.row.RowImage;
+import it.unipi.dii.aide.lsmsd.recipeshare.gui.row.RowRecipe;
 import it.unipi.dii.aide.lsmsd.recipeshare.gui.tableview.TableViewAbstract;
 import it.unipi.dii.aide.lsmsd.recipeshare.gui.tableview.TableViewAuthor;
+import it.unipi.dii.aide.lsmsd.recipeshare.gui.tableview.TableViewRecipe;
 import it.unipi.dii.aide.lsmsd.recipeshare.model.Author;
 import it.unipi.dii.aide.lsmsd.recipeshare.service.AuthorService;
 import javafx.event.ActionEvent;
@@ -19,7 +21,7 @@ import java.util.ResourceBundle;
 public class SuggestionsController implements Initializable {
     public AnchorPane anchorPane;
     private final TableViewAbstract tableViewAuthorSugg = new TableViewAuthor();
-    private final TableViewAbstract tableViewRecipeSugg = new TableViewAuthor();
+    private final TableViewAbstract tableViewRecipeSugg = new TableViewRecipe();
     private final DataSingleton data = DataSingleton.getInstance();
 
     @FXML
@@ -37,12 +39,12 @@ public class SuggestionsController implements Initializable {
         tableViewAuthorSugg.getTable().setLayoutY(50);
         tableViewAuthorSugg.getTable().setPrefSize(250,530);
         tableViewAuthorSugg.setEventForTableCells();
-        searchInDBAndLoadInTableViewFollowers(new Author(data.getAuthorName(),data.getAvatarIndex()));
+        searchInDBAndLoadInTableViewAuthorSugg(new Author(data.getAuthorName(),data.getAvatarIndex()));
         tableViewAuthorSugg.setTable();
         anchorPane.getChildren().add(tableViewAuthorSugg.getTable());
     }
 
-    public void searchInDBAndLoadInTableViewFollowers(Author currentAuthor){
+    public void searchInDBAndLoadInTableViewAuthorSugg(Author currentAuthor){
         tableViewAuthorSugg.resetObservableArrayList();
         AuthorService.getAuthorSuggested(currentAuthor).forEach(author ->
                 tableViewAuthorSugg.addToObservableArrayList(new RowAuthor(author.getName(), 0,
@@ -55,15 +57,15 @@ public class SuggestionsController implements Initializable {
         tableViewRecipeSugg.getTable().setLayoutY(120);
         tableViewRecipeSugg.getTable().setPrefSize(465,460);
         tableViewRecipeSugg.setEventForTableCells();
-        searchInDBAndLoadInTableViewFollowing(data.getAuthorName());
+        searchInDBAndLoadInTableRecipeSugg(data.getAuthorName());
         tableViewRecipeSugg.setTable();
         anchorPane.getChildren().add(tableViewRecipeSugg.getTable());
     }
-    public void searchInDBAndLoadInTableViewFollowing(String authorName){
+    public void searchInDBAndLoadInTableRecipeSugg(String authorName){
         tableViewRecipeSugg.resetObservableArrayList();
-        AuthorService.getFollowing(authorName).forEach( author ->
-                tableViewRecipeSugg.addToObservableArrayList(new RowAuthor(author.getName(), 0,
-                        new RowImage(new ImageView(Configuration.AVATAR.get(author.getImage() - 1))).getImage())));
+        AuthorService.getRecipeSuggested(authorName).forEach( recipeReducted ->
+                tableViewRecipeSugg.addToObservableArrayList(new RowRecipe(recipeReducted.getName(), recipeReducted.getAuthorName(),
+                       new ImageView(recipeReducted.getImage()))));
         tableViewRecipeSugg.setItems();
     }
 }

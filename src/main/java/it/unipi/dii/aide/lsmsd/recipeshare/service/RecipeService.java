@@ -37,7 +37,7 @@ public class RecipeService {
     public static boolean addRecipe(Recipe recipe){
         try{RecipeMongoDAO.addRecipe(recipe);}
         catch (MongoException e){ return false;}
-        try{RecipeNeoDAO.addRecipe(new RecipeReducted(recipe.getName(),recipe.getImages().get(0),recipe.getAuthorName()));}
+        try{RecipeNeoDAO.addRecipe(new RecipeReducted(recipe.getName(),recipe.getAuthorName(),recipe.getImages().get(0)));}
         catch (Neo4jException e){
             RecipeMongoDAO.deleteRecipe(recipe); //rollback su mongo
             return false;
