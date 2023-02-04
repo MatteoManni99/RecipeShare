@@ -78,7 +78,7 @@ public class AddRecipeController implements Initializable {
     }
 
     public void onBackClick(ActionEvent actionEvent) throws IOException {
-        Utils.changeScene(actionEvent,"Loggato.fxml");
+        Utils.changeScene(actionEvent,"HomeAuthor.fxml");
     }
 
     private void clearFields() {

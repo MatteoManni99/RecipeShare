@@ -16,10 +16,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class LoggatoController implements Initializable{
+public class HomeAuthorController implements Initializable{
     public AnchorPane anchorPane;
-    @FXML
-    private Label welcomeText;
     private final TableViewAbstract TableViewObject = new TableViewRecipe();
     @FXML
     private TextField nameToSearchTextField;
@@ -32,12 +30,12 @@ public class LoggatoController implements Initializable{
 
     @FXML
     public void onCercaUtenteClick(ActionEvent actionEvent){
-        Utils.changeScene(actionEvent,"Ricerca_Utente.fxml");
+        Utils.changeScene(actionEvent,"SearchAuthor.fxml");
     }
 
     @FXML
     public void onAnalyticsClick(ActionEvent actionEvent){
-        Utils.changeScene(actionEvent,"LoggatoAnalytics.fxml");
+        Utils.changeScene(actionEvent,"AuthorAnalytics.fxml");
     }
 
     @FXML
@@ -71,16 +69,22 @@ public class LoggatoController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
+        TableViewObject.getTable().setLayoutY(110);
+        TableViewObject.getTable().setLayoutX(183);
+        TableViewObject.getTable().setPrefSize(465,480);
         TableViewObject.setEventForTableCells();
         TableViewObject.setTable();
         anchorPane.getChildren().add(TableViewObject.getTable());
     }
 
     @FXML
-    public void onAddRecipeClick(ActionEvent actionEvent) throws IOException {
+    public void onAddRecipeClick(ActionEvent actionEvent) {
         Utils.changeScene(actionEvent,"AddRecipe.fxml");
     }
-    public void onPersonalProfileClick(ActionEvent actionEvent) throws IOException {
+    public void onPersonalProfileClick(ActionEvent actionEvent) {
         Utils.changeScene(actionEvent,"AuthorProfile.fxml");
+    }
+    public void onFollowersClick(ActionEvent actionEvent) {
+        Utils.changeScene(actionEvent,"FollowerAndFollowing.fxml");
     }
 }

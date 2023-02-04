@@ -43,7 +43,7 @@ public class AuthorProfileController implements Initializable {
 
     @FXML
     public void onBackClick(ActionEvent actionEvent) throws IOException {
-        Utils.changeScene(actionEvent,"Loggato.fxml");
+        Utils.changeScene(actionEvent,"HomeAuthor.fxml");
     }
 
     @Override

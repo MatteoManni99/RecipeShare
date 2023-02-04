@@ -44,6 +44,6 @@ public class ModeratorAnalyticsController implements Initializable {
     }
 
     public void onBackToHomeClick(ActionEvent actionEvent) {
-        Utils.changeScene(actionEvent,"Moderator.fxml");
+        Utils.changeScene(actionEvent,"HomeModerator.fxml");
     }
 }

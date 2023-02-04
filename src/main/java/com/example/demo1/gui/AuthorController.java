@@ -44,8 +44,8 @@ public class AuthorController implements Initializable {
 
     @FXML
     public void onBackClick(ActionEvent actionEvent) throws IOException {
-        if(data.getTypeOfUser().equals("moderator")) Utils.changeScene(actionEvent,"Moderator.fxml");
-        else Utils.changeScene(actionEvent,"Loggato.fxml");
+        if(data.getTypeOfUser().equals("moderator")) Utils.changeScene(actionEvent,"HomeModerator.fxml");
+        else Utils.changeScene(actionEvent,"HomeAuthor.fxml");
     }
 
     public void onFollowButtonClick(ActionEvent actionEvent) {

@@ -74,8 +74,8 @@ public class RecipeController implements Initializable {
     @FXML
     public void onBackClick(ActionEvent actionEvent) throws IOException {
         if(data.getTypeOfUser().equals("moderator")){
-            Utils.changeScene(actionEvent,"Moderator.fxml");
-        }else Utils.changeScene(actionEvent,"Loggato.fxml");
+            Utils.changeScene(actionEvent,"HomeModerator.fxml");
+        }else Utils.changeScene(actionEvent,"HomeAuthor.fxml");
     }
 
     @FXML
@@ -105,7 +105,7 @@ public class RecipeController implements Initializable {
         deleteRecipe.setLayoutY(26);
         EventHandler<ActionEvent> eventHandler = actionEvent -> {
             if(RecipeService.deleteRecipe(recipe)){
-                Utils.changeScene(actionEvent,"Loggato.fxml");
+                Utils.changeScene(actionEvent,"HomeAuthor.fxml");
             }else System.out.println("Errore nella cancellazione della recipe");
         };
         deleteRecipe.setOnAction(eventHandler);
@@ -119,7 +119,7 @@ public class RecipeController implements Initializable {
         approveRecipe.setLayoutY(26);
         EventHandler<ActionEvent> eventHandlerApprove = actionEvent -> {
             if(ReportedRecipeService.approveReportedRecipe(recipe))
-                Utils.changeScene(actionEvent,"Moderator.fxml");;
+                Utils.changeScene(actionEvent,"HomeModerator.fxml");;
         };
         approveRecipe.setOnAction(eventHandlerApprove);
         anchorPane.getChildren().add(approveRecipe);
@@ -131,7 +131,7 @@ public class RecipeController implements Initializable {
         notApproveRecipe.setLayoutY(60);
         EventHandler<ActionEvent> eventHandlerNotApprove = actionEvent -> {
             if(ReportedRecipeService.notApproveReportedRecipe(recipe))
-                Utils.changeScene(actionEvent,"Moderator.fxml");;
+                Utils.changeScene(actionEvent,"HomeModerator.fxml");;
         };
         notApproveRecipe.setOnAction(eventHandlerNotApprove);
         anchorPane.getChildren().add(notApproveRecipe);

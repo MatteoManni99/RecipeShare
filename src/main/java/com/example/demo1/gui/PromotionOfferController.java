@@ -19,7 +19,7 @@ public class PromotionOfferController implements Initializable {
     public void onRejectPromotionClick(ActionEvent actionEvent) {
         AuthorService.updatePromotion(DataSingleton.getInstance().getAuthorName(),0);
         DataSingleton.getInstance().setTypeOfUser("author");
-        Utils.changeScene(actionEvent,"Loggato.fxml");
+        Utils.changeScene(actionEvent,"HomeAuthor.fxml");
     }
 
     public void onAcceptPromotionClick(ActionEvent actionEvent) {

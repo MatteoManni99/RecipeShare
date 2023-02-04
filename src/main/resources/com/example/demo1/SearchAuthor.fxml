@@ -10,13 +10,11 @@
    <children>
       <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0">
          <children>
-            <Label layoutX="262.0" layoutY="41.0" text="RECIPE SHARE" />
-            <Button layoutX="522.0" layoutY="76.0" mnemonicParsing="false" onAction="#onLogoutClick" text="LOGOUT" />
-            <Button layoutX="164.0" layoutY="76.0" mnemonicParsing="false" onAction="#onCercaUtenteClick" text="CERCA UTENTE" />
-            <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBackClick" text="TORNA INDIETRO" />
+            <Button layoutX="164.0" layoutY="76.0" mnemonicParsing="false" onAction="#onSearchAuthorClick" text="Search Author" />
+            <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBackClick" text="Back to Home" />
             <TextField fx:id="authorToSearchTextField" layoutX="290.0" layoutY="76.0" />
-            <Button layoutX="315.0" layoutY="114.0" mnemonicParsing="false" onAction="#onNextPageClick" text="Next" />
-            <Button layoutX="164.0" layoutY="115.0" mnemonicParsing="false" onAction="#onPreviousPageClick" text="Previous" />
+            <Button layoutX="315.0" layoutY="114.0" mnemonicParsing="false" onAction="#onNextPageClick" text="Next Authors" />
+            <Button layoutX="164.0" layoutY="115.0" mnemonicParsing="false" onAction="#onPreviousPageClick" text="Previous Authors" />
          </children>
       </AnchorPane>
    </children>

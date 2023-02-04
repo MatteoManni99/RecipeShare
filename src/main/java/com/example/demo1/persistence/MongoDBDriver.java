@@ -20,7 +20,7 @@ public class MongoDBDriver {
     private MongoDBDriver() {
         MongoClientSettings settingAP = MongoClientSettings.builder()
                 .applyConnectionString(new ConnectionString(Configuration.MONGODB_URL))
-                .readPreference(ReadPreference.secondaryPreferred())
+                .readPreference(ReadPreference.nearest())
                 .retryWrites(true)
                 .writeConcern(WriteConcern.W1).build();
 

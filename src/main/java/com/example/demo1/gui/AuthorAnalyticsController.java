@@ -18,16 +18,15 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
-public class LoggatoAnalyticsController {
+public class AuthorAnalyticsController {
     @FXML
     private AnchorPane anchorPane;
     private Button nextPage;
     private Button previousPage;
     @FXML
     public void onBackClick(ActionEvent actionEvent) throws IOException {
-        Utils.changeScene(actionEvent,"Loggato.fxml");
+        Utils.changeScene(actionEvent,"HomeAuthor.fxml");
     }
 
     private void removeOtherTableView(){anchorPane.getChildren().removeIf(node -> node instanceof TableView);}

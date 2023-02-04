@@ -35,17 +35,17 @@ public class LoginController {
             DataSingleton.getInstance().setAvatarIndex(avatarIndex);
             DataSingleton.getInstance().setAuthorPromotion(currentAuthor.getPromotion());
             DataSingleton.getInstance().setTypeOfUser("author");
-            nomePagina = "Loggato.fxml";
+            nomePagina = "HomeAuthor.fxml";
         }
         else if (existModerator){
             DataSingleton.getInstance().setTypeOfUser("moderator");
-            nomePagina = "Moderator.fxml";
+            nomePagina = "HomeModerator.fxml";
         }
         if (nomePagina != null) {
             DataSingleton data = DataSingleton.getInstance();
             data.setAuthorName(name);
             data.setPassword(password);
-            if (nomePagina.equals("Loggato.fxml") && DataSingleton.getInstance().getAuthorPromotion() == 1)
+            if (nomePagina.equals("HomeAuthor.fxml") && DataSingleton.getInstance().getAuthorPromotion() == 1)
                 Utils.changeScene(actionEvent,"PromotionOffer.fxml");
             else Utils.changeScene(actionEvent,nomePagina);
         }

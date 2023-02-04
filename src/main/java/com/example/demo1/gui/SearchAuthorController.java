@@ -28,10 +28,6 @@ public class SearchAuthorController implements Initializable {
     private final TableViewAbstract tableViewAuthor = new TableViewAuthor();
 
     @FXML
-    public void onLogoutClick(ActionEvent actionEvent){
-        Utils.changeScene(actionEvent,"Login.fxml");
-    }
-    @FXML
     public void onNextPageClick(){
         pageNumber = pageNumber + 1;
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
@@ -46,7 +42,7 @@ public class SearchAuthorController implements Initializable {
 
     @FXML
     public void onBackClick(ActionEvent actionEvent){
-        Utils.changeScene(actionEvent,"loggato.fxml");
+        Utils.changeScene(actionEvent,"HomeAuthor.fxml");
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -87,7 +83,7 @@ public class SearchAuthorController implements Initializable {
 
 
     @FXML
-    public void onCercaUtenteClick(ActionEvent actionEvent) {
+    public void onSearchAuthorClick(ActionEvent actionEvent) {
         nameToSearch = authorToSearchTextField.getText();
         if(nameToSearch.isBlank()) nameToSearch = null;
         pageNumber = 0;
