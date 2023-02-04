@@ -16,17 +16,14 @@ public class RecipeNeoDAO {
     public static void addRecipe(RecipeReducted recipe){
         Neo4jDriver.getNeoDriver().getSession().executeWriteWithoutResult(tx -> {
             tx.run("CREATE (n:Recipe {name: $name, image: $image})",
-                    parameters("name", recipe.getName(), "image", recipe.getImage())).consume();
-            //.consume() se ho capito bene è per liberare memoria; per dire che hai finito
-            // e dopo non devi e non puoi fare .hasNext o .next()
+                    parameters("name", recipe.getName(), "image", recipe.getImage()));
         });
     }
-    public static void deleteRecipe(RecipeReducted recipe){
+    public static void deleteRecipe(String recipeName){
         Neo4jDriver.getNeoDriver().getSession().executeWriteWithoutResult(tx -> {
-            tx.run("CREATE (n:Recipe {name: $name, image: $image})",
-                    parameters("name", recipe.getName(), "image", recipe.getImage())).consume();
-            //.consume() se ho capito bene è per liberare memoria; per dire che hai finito
-            // e dopo non devi e non puoi fare .hasNext o .next()
+            tx.run("MATCH (n:Recipe {name: $name})"+
+                    "DETACH DELETE n",
+                    parameters("name", recipeName));
         });
     }
 
@@ -34,9 +31,7 @@ public class RecipeNeoDAO {
         String query = "MATCH (a:Author {name: $authorName}), (b:Recipe {name: $recipeName})" +
                 "CREATE (a)-[r:WRITE]->(b)";
         Neo4jDriver.getNeoDriver().getSession().executeWriteWithoutResult(tx -> {
-            tx.run(query, parameters("authorName", authorName, "recipeName", recipeName)).consume();
-            //.consume() se ho capito bene è per liberare memoria; per dire che hai finito
-            // e dopo non devi e non puoi fare .hasNext o .next()
+            tx.run(query, parameters("authorName", authorName, "recipeName", recipeName));
         });
     }
 }

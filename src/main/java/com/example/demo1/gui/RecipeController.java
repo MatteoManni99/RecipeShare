@@ -104,8 +104,9 @@ public class RecipeController implements Initializable {
         deleteRecipe.setLayoutX(750);
         deleteRecipe.setLayoutY(26);
         EventHandler<ActionEvent> eventHandler = actionEvent -> {
-            RecipeService.deleteRecipe(recipe);
-            Utils.changeScene(actionEvent,"Loggato.fxml");
+            if(RecipeService.deleteRecipe(recipe)){
+                Utils.changeScene(actionEvent,"Loggato.fxml");
+            }else System.out.println("Errore nella cancellazione della recipe");
         };
         deleteRecipe.setOnAction(eventHandler);
         anchorPane.getChildren().add(deleteRecipe);

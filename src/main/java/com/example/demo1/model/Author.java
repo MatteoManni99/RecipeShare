@@ -18,6 +18,14 @@ public class Author {
         this.score = score;
         this.image = image;
     }
+    public Author(String name,Integer image){
+        this.name = name;
+        this.image = image;
+    }
+    @Override
+    public String toString() {
+        return "name: " + name + "\t\t" + "image: " + image + "\n";
+    }
 
     public void setPromotion(Integer promotion) {
         this.promotion = promotion;

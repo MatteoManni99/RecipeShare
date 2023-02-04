@@ -2,6 +2,7 @@ package com.example.demo1;
 
 import com.example.demo1.dao.mongo.ReportedRecipeMongoDAO;
 import com.example.demo1.persistence.MongoDBDriver;
+import com.example.demo1.service.AuthorService;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.ReadPreference;
@@ -19,7 +20,7 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-
+        //System.out.println(AuthorService.getFollowing("prova3"));
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         stage.setResizable(false);

@@ -1,9 +1,11 @@
 package com.example.demo1.service;
 
 import com.example.demo1.dao.mongo.RecipeMongoDAO;
+import com.example.demo1.dao.neo4j.RecipeNeoDAO;
 import com.example.demo1.model.Recipe;
 import com.example.demo1.model.RecipeReducted;
 import com.mongodb.MongoException;
+import org.neo4j.driver.exceptions.Neo4jException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,12 +13,15 @@ import java.util.Map;
 
 public class RecipeService {
 
-    public static boolean deleteRecipe(Recipe recipe) throws MongoException {
+    public static boolean deleteRecipe(Recipe recipe) {
         try{
             RecipeMongoDAO.deleteRecipe(recipe);
+        }catch (MongoException e){return false;}
+        try {
+            RecipeNeoDAO.deleteRecipe(recipe.getName());
             return true;
-        }catch (Exception e){
-            //TODO rollback
+        }catch(Neo4jException e){
+            RecipeMongoDAO.addRecipe(recipe);
             return false;
         }
     }
@@ -30,8 +35,22 @@ public class RecipeService {
         RecipeMongoDAO.setAggregatedRating(recipeName,RecipeMongoDAO.calculateAggregatedRating(recipeName));
     }
 
-    public static void addRecipe(Recipe recipe){
-        RecipeMongoDAO.addRecipe(recipe);
+    public static boolean addRecipe(Recipe recipe){
+        try{RecipeMongoDAO.addRecipe(recipe);}
+        catch (MongoException e){ return false;}
+        try{RecipeNeoDAO.addRecipe(new RecipeReducted(recipe.getName(),recipe.getImages().get(0),recipe.getAuthorName()));}
+        catch (Neo4jException e){
+            RecipeMongoDAO.deleteRecipe(recipe); //rollback su mongo
+            return false;
+        }
+        try{
+            RecipeNeoDAO.addRelationWrite(recipe.getAuthorName(), recipe.getName());
+            return true;
+        }catch (Neo4jException e){
+            RecipeNeoDAO.deleteRecipe(recipe.getName()); //rollback su neo
+            RecipeMongoDAO.deleteRecipe(recipe); //rollback su mongo
+            return false;
+        }
     }
 
     public static boolean checkIfNameIsAvailable(String name){

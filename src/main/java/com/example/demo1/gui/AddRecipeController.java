@@ -60,13 +60,13 @@ public class AddRecipeController implements Initializable {
         }else if(RecipeService.checkIfNameIsAvailable(name)) {
             System.out.println("Name is available");
             data = DataSingleton.getInstance();
-
-            RecipeService.addRecipe( new Recipe(name, data.getAuthorName(), time, LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),
+            if(RecipeService.addRecipe( new Recipe(name, data.getAuthorName(), time, LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),
                     setNullIfEmpty(descriptionField.getText()), imageArrayList, setNullIfEmpty(categoryField.getText()),
                     keywordArrayList, ingredientArrayList, null, calories, servings, instructionsArrayList,
-                    new ArrayList<>()));
-            clearFields();
-            System.out.println("Recipe was added");
+                    new ArrayList<>()))) {
+                clearFields();
+                System.out.println("Recipe was added");
+            }else System.out.println("Error in adding recipe");
         }else{
             System.out.println("Name isn't available");
         }
