@@ -15,8 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class FollowerAndFollowingController implements Initializable {
-    private String authorNameClicked; //qui ci salvo l'utente della tabella che è stato clickato
+public class FollowerController implements Initializable {
     public AnchorPane anchorPane;
     private final TableViewAbstract tableViewAuthorFollowers = new TableViewAuthor();
     private final TableViewAbstract tableViewAuthorFollowing = new TableViewAuthor();

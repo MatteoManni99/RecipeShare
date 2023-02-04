@@ -9,17 +9,17 @@
    <children>
       <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0">
          <children>
-            <Button layoutX="14.0" layoutY="227.0" mnemonicParsing="false" onAction="#onCercaUtenteClick" prefHeight="46.0" prefWidth="106.0" text="SEARCH&#10;AUTHOR" textAlignment="CENTER" />
-            <Button layoutX="395.0" layoutY="35.0" mnemonicParsing="false" onAction="#onFindRecipeByNameClick" text="FIND RECIPE" />
-            <Button layoutX="16.0" layoutY="178.0" mnemonicParsing="false" onAction="#onAddRecipeClick" prefHeight="30.0" prefWidth="106.0" text="ADD RECIPE&#10;" textAlignment="CENTER" />
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="16.0" layoutY="285.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="106.0" text="SUGGESTIONS" textAlignment="CENTER" />
-            <Button layoutX="14.0" layoutY="20.0" mnemonicParsing="false" onAction="#onLogoutClick" prefHeight="30.0" prefWidth="106.0" text="LOGOUT" />
-            <Button layoutX="14.0" layoutY="133.0" mnemonicParsing="false" onAction="#onFollowersClick" prefHeight="30.0" prefWidth="106.0" text="FOLLOWERS&#10;" textAlignment="CENTER" />
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="227.0" mnemonicParsing="false" onAction="#onCercaUtenteClick" prefHeight="46.0" prefWidth="106.0" text="SEARCH&#10;AUTHOR" textAlignment="CENTER" />
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="395.0" layoutY="35.0" mnemonicParsing="false" onAction="#onFindRecipeByNameClick" text="FIND RECIPE" />
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="16.0" layoutY="178.0" mnemonicParsing="false" onAction="#onAddRecipeClick" prefHeight="30.0" prefWidth="106.0" text="ADD RECIPE&#10;" textAlignment="CENTER" />
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="16.0" layoutY="285.0" mnemonicParsing="false" onAction="#onSuggestionsClick" prefHeight="30.0" prefWidth="106.0" text="SUGGESTIONS" textAlignment="CENTER" />
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="20.0" mnemonicParsing="false" onAction="#onLogoutClick" prefHeight="30.0" prefWidth="106.0" text="LOGOUT" />
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="133.0" mnemonicParsing="false" onAction="#onFollowersClick" prefHeight="30.0" prefWidth="106.0" text="FOLLOWERS&#10;" textAlignment="CENTER" />
             <Button alignment="CENTER" contentDisplay="CENTER" layoutX="16.0" layoutY="330.0" mnemonicParsing="false" onAction="#onAnalyticsClick" prefHeight="46.0" prefWidth="106.0" text="VIEW &#10;ANALYTICS" textAlignment="CENTER" />
-            <Button layoutX="494.0" layoutY="69.0" mnemonicParsing="false" onAction="#onNextPageClick" text="Next page" />
-            <Button layoutX="184.0" layoutY="71.0" mnemonicParsing="false" onAction="#onPreviousPageClick" text="Previous page" />
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="494.0" layoutY="69.0" mnemonicParsing="false" onAction="#onNextPageClick" text="Next page" />
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="184.0" layoutY="71.0" mnemonicParsing="false" onAction="#onPreviousPageClick" text="Previous page" />
             <TextField fx:id="nameToSearchTextField" layoutX="184.0" layoutY="35.0" prefHeight="26.0" prefWidth="203.0" />
-            <Button layoutX="14.0" layoutY="72.0" mnemonicParsing="false" onAction="#onPersonalProfileClick" prefHeight="46.0" prefWidth="106.0" text="PERSONAL&#10;PROFILE&#10;" textAlignment="CENTER" />
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="72.0" mnemonicParsing="false" onAction="#onPersonalProfileClick" prefHeight="46.0" prefWidth="106.0" text="PERSONAL&#10;PROFILE&#10;" textAlignment="CENTER" />
          </children>
       </AnchorPane>
    </children>

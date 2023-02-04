@@ -83,6 +83,9 @@ public class HomeAuthorController implements Initializable{
         Utils.changeScene(actionEvent,"AuthorProfile.fxml");
     }
     public void onFollowersClick(ActionEvent actionEvent) {
-        Utils.changeScene(actionEvent,"FollowerAndFollowing.fxml");
+        Utils.changeScene(actionEvent,"Follower.fxml");
+    }
+    public void onSuggestionsClick(ActionEvent actionEvent) {
+        Utils.changeScene(actionEvent,"Suggestions.fxml");
     }
 }
