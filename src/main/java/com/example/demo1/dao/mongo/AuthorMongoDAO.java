@@ -55,7 +55,7 @@ public class AuthorMongoDAO {
         MongoDBDriver.getDriver().getCollectionCP(Configuration.MONGODB_AUTHOR).deleteOne(new Document("authorName",authorName));
     }
 
-    public static void updateImage(String authorName, Integer newImageIndex) throws MongoException{
+    public static void changeAvatar(String authorName, Integer newImageIndex) throws MongoException{
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR)
                 .updateOne(new Document("authorName", authorName),
                     Updates.combine(Updates.set("image", newImageIndex)));

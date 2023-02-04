@@ -42,14 +42,20 @@ public class AuthorService {
             }else return false;
         }catch(Neo4jException e){return false;}
     }
-
     public static boolean checkIfFollowIsAvailable (String authorName1, String authorName2){
         return AuthorNeoDAO.checkIfFollowIsAvailable(authorName1, authorName2);
     }
 
-    //TODO decidere cosa fare con change Avatar
-    public static void updateImage(String authorName, Integer newImageIndex){
-        AuthorMongoDAO.updateImage(authorName, newImageIndex);
+    public static boolean changeAvatar(String authorName, Integer newImageIndex){
+        try{AuthorMongoDAO.changeAvatar(authorName, newImageIndex);}
+        catch(MongoException e){return false;}
+        try{AuthorNeoDAO.changeAvatar(authorName, newImageIndex);}
+        catch(Neo4jException e){
+            //TODO rollback su mongo
+
+            return false;
+        }
+        return true;
     }
 
     public static void updatePromotion(String authorName, Integer newPromotionValue){

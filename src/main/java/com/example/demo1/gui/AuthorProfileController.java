@@ -4,7 +4,6 @@ import com.example.demo1.Configuration;
 import com.example.demo1.gui.row.RowImage;
 import com.example.demo1.gui.row.RowRecipe;
 import com.example.demo1.gui.tableview.TableViewAbstract;
-import com.example.demo1.gui.tableview.TableViewRecipe;
 import com.example.demo1.gui.tableview.TableViewRecipeWithoutAuthor;
 import com.example.demo1.model.Author;
 import com.example.demo1.service.AuthorService;
@@ -85,7 +84,8 @@ public class AuthorProfileController implements Initializable {
         passwordField.setText(newPassword);
         Utils.changeScene(actionEvent,"AuthorProfile.fxml");
     }
-    /*
+
+    /*NON CANCELLARE
     public void changeAuthorName(ActionEvent actionEvent) {
         String newAuthorName = authorNameField.getText();
         System.out.println(newAuthorName);
@@ -96,11 +96,13 @@ public class AuthorProfileController implements Initializable {
             authorNameField.setText(newAuthorName);
             Utils.changeScene(actionEvent,"AuthorProfile.fxml");
         }
+     NON CANCELLARE
     }*/
 
     private void setSelectedImage(Integer imageNumber){
         avatarImage.setImage(Configuration.AVATAR.get(imageNumber-1));
-        AuthorService.updateImage(data.getAuthorName(),imageNumber);
+        if(!AuthorService.changeAvatar(data.getAuthorName(),imageNumber))
+            System.out.println("Avatar non cambiato per un errore");
         data.setAvatar(imageNumber);
     }
     public void onMouseClickImage1(MouseEvent mouseEvent) {

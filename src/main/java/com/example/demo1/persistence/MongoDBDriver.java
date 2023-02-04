@@ -19,13 +19,13 @@ public class MongoDBDriver {
 
     private MongoDBDriver() {
         MongoClientSettings settingAP = MongoClientSettings.builder()
-                .applyConnectionString(new ConnectionString("mongodb://10.1.1.8:27019"))
+                .applyConnectionString(new ConnectionString(Configuration.MONGODB_URL))
                 .readPreference(ReadPreference.secondaryPreferred())
                 .retryWrites(true)
                 .writeConcern(WriteConcern.W1).build();
 
         MongoClientSettings settingCP = MongoClientSettings.builder()
-                .applyConnectionString(new ConnectionString("mongodb://10.1.1.8:27019"))
+                .applyConnectionString(new ConnectionString(Configuration.MONGODB_URL))
                 .readPreference(ReadPreference.primary())
                 .retryWrites(true)
                 .writeConcern(WriteConcern.MAJORITY).build();

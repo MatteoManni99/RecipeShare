@@ -20,8 +20,14 @@ public class AuthorNeoDAO {
         Neo4jDriver.getNeoDriver().getSession().executeWriteWithoutResult(tx -> {
             tx.run("CREATE (n:Author {name: $name, avatar: $avatar})",
                     parameters("name", authorName, "avatar", avatar)).consume();
-            //.consume() se ho capito bene è per liberare memoria; per dire che hai finito
-            // e dopo non devi e non puoi fare .hasNext o .next()
+        });
+    }
+
+    public static void changeAvatar(String authorName, Integer newAvatar) throws Neo4jException{
+        String query = "MATCH (a:Author {name: $authorName})" +
+                "SET a.avatar = $newAvatar";
+        Neo4jDriver.getNeoDriver().getSession().executeWriteWithoutResult(tx -> {
+            tx.run(query, parameters("authorName", authorName, "newAvatar", newAvatar));
         });
     }
 
@@ -39,8 +45,6 @@ public class AuthorNeoDAO {
                 "CREATE (a)-[r:FOLLOW]->(b)";
         Neo4jDriver.getNeoDriver().getSession().executeWriteWithoutResult(tx -> {
             tx.run(query, parameters("authorName1", authorName1, "authorName2Follow", authorName2Follow));
-            //.consume() se ho capito bene è per liberare memoria; per dire che hai finito
-            // e dopo non devi e non puoi fare .hasNext o .next()
         });
     }
     public static void removeRelationFollow(String authorName1, String authorName2Unfollow) {
