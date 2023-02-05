@@ -56,6 +56,21 @@ public class AuthorNeoDAO {
             tx.run(query, parameters("authorName1", authorName1, "authorName2Unfollow", authorName2Unfollow));
         });
     }
+    public static void addRelationReview(String authorName, String recipeName, Integer rating) throws Neo4jException {
+        String query = "MATCH (a:Author {name: $authorName}), (b:Recipe {name: $recipeName})" +
+                "CREATE (a)-[r:REVIEW {rating:$rating}]->(b)";
+        Neo4jDriver.getNeoDriver().getSession().executeWriteWithoutResult(tx -> {
+            tx.run(query, parameters("authorName", authorName, "recipeName", recipeName, "rating",rating));
+        });
+    }
+    public static void removeRelationReview(String authorName, String recipeName) throws Neo4jException {
+        String query = "MATCH (a:Author {name: $authorName})-[r:REVIEW]->(b:Author {name: $recipeName})" +
+                "DELETE r";
+        Neo4jDriver.getNeoDriver().getSession().executeWriteWithoutResult(tx -> {
+            tx.run(query, parameters("authorName", authorName, "recipeName", recipeName));
+        });
+    }
+
     public static List<Author> getFollowers(String authorName) throws Neo4jException {
         String query = "MATCH (f:Author)-[:FOLLOW]->(a:Author {name: $authorName})" +
                 "RETURN f.name as Name, f.avatar as Avatar";
@@ -103,7 +118,7 @@ public class AuthorNeoDAO {
         String query = "MATCH (a:Author {name: $authorName})-[:FOLLOW]->(f:Author)-[:WRITE]->(n:Recipe) " +
                 "RETURN f.name as AuthorName, n.name as Name,  n.image as Image";
 
-        List<RecipeReducted> recipeSuggested = Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
+        return Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
             Result result = tx.run(query, parameters("authorName", authorName));
             List<RecipeReducted> recipeSuggested_ = new ArrayList<>();
             while(result.hasNext()) {
@@ -113,8 +128,5 @@ public class AuthorNeoDAO {
             }
             return recipeSuggested_;
         });
-        //recipeSuggested.removeAll(AuthorNeoDAO.getFollowing(author.getName()));
-        //recipeSuggested.remove(author);
-        return recipeSuggested;
     }
 }

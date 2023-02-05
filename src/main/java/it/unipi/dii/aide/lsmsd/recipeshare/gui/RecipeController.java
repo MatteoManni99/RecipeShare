@@ -92,8 +92,9 @@ public class RecipeController implements Initializable {
         } else if (ratingChoiceBox.getValue() == null){
             reviewTextArea.setText("Select a rating");
         }else{
-            RecipeService.addReview(recipeName, reviewer, ratingChoiceBox.getValue(), reviewTextArea.getText());
-            Utils.changeScene(actionEvent, "Recipe.fxml");
+            if(RecipeService.addReview(recipeName, reviewer, ratingChoiceBox.getValue(), reviewTextArea.getText())){
+                Utils.changeScene(actionEvent, "Recipe.fxml");
+            }else System.out.println("Error: Review not added");
         }
     }
 

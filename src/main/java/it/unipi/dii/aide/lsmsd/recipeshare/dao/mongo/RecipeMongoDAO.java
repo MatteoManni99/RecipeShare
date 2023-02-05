@@ -54,10 +54,12 @@ public class RecipeMongoDAO {
         if(checkIfReviewSpaceIsFull(recipeName,500)){
             collection.updateOne(new Document("Name", recipeName), new Document("$pop", new Document("Reviews", -1)));
         }
-
         collection.updateOne(new Document("Name", recipeName), new Document("$push", new Document("Reviews",
                 new Document("AuthorName", reviewer).append("Rating", rating).append("Review", review))));
-
+    }
+    public static void deleteReview(String recipeName, String reviewer){
+        MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE).updateOne(new Document("Name", recipeName),
+                new Document("$pull", new Document("Reviews",new Document("$elemMatch", new Document("AuthorName",reviewer)))));
     }
 
     public static void addRecipe(Recipe recipe) throws MongoException {

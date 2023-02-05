@@ -28,7 +28,7 @@ public class MongoDBDriver {
                 .applyConnectionString(new ConnectionString(Configuration.MONGODB_URL))
                 .readPreference(ReadPreference.primary())
                 .retryWrites(true)
-                .writeConcern(WriteConcern.MAJORITY).build();
+                .writeConcern(WriteConcern.W3).build();
 
         MongoClient mongoClientAP = MongoClients.create(settingAP);
         MongoClient mongoClientCP = MongoClients.create(settingCP);

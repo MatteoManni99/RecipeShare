@@ -1,6 +1,7 @@
 package it.unipi.dii.aide.lsmsd.recipeshare.service;
 
 import it.unipi.dii.aide.lsmsd.recipeshare.dao.mongo.RecipeMongoDAO;
+import it.unipi.dii.aide.lsmsd.recipeshare.dao.neo4j.AuthorNeoDAO;
 import it.unipi.dii.aide.lsmsd.recipeshare.dao.neo4j.RecipeNeoDAO;
 import it.unipi.dii.aide.lsmsd.recipeshare.model.Recipe;
 import it.unipi.dii.aide.lsmsd.recipeshare.model.RecipeReducted;
@@ -29,9 +30,17 @@ public class RecipeService {
         return RecipeMongoDAO.getRecipeByName(name);
     }
 
-    public static void addReview(String recipeName, String reviewer, Integer rating, String review){
-        RecipeMongoDAO.addReview(recipeName, reviewer, rating, review);
-        RecipeMongoDAO.setAggregatedRating(recipeName,RecipeMongoDAO.calculateAggregatedRating(recipeName));
+    public static boolean addReview(String recipeName, String reviewer, Integer rating, String reviewText){
+        try{ RecipeMongoDAO.addReview(recipeName, reviewer, rating, reviewText); }
+        catch(MongoException e){ return false; }
+        try{
+            AuthorNeoDAO.addRelationReview(reviewer, recipeName, rating);
+            RecipeMongoDAO.setAggregatedRating(recipeName,RecipeMongoDAO.calculateAggregatedRating(recipeName));
+            return true;
+        }catch(Neo4jException e){
+            RecipeMongoDAO.deleteReview(recipeName, reviewer);//rollback su mongo
+            return false;
+        }
     }
 
     public static boolean addRecipe(Recipe recipe){
