@@ -28,7 +28,6 @@ public class AuthorProfileController implements Initializable {
     @FXML
     public ImageView image;
     @FXML
-    //public TextField parameterValueField;
     public Label avatarLabel = new Label();
 
     private final DataSingleton data = DataSingleton.getInstance();
@@ -85,19 +84,18 @@ public class AuthorProfileController implements Initializable {
         Utils.changeScene(actionEvent,"AuthorProfile.fxml");
     }
 
-    /*NON CANCELLARE
+    @Deprecated
     public void changeAuthorName(ActionEvent actionEvent) {
         String newAuthorName = authorNameField.getText();
         System.out.println(newAuthorName);
-        Author currentAuthor = new Author(data.getAuthorName(),data.getPassword(),
+        Author currentAuthor = new Author(data.getAuthorName(), data.getPassword(),
                 data.getAvatarIndex(), data.getAuthorPromotion());
-        if(AuthorService.changeAuthorName(newAuthorName,currentAuthor)){
+        if (AuthorService.changeAuthorName(newAuthorName, currentAuthor)) {
             data.setAuthorName(newAuthorName);
             authorNameField.setText(newAuthorName);
-            Utils.changeScene(actionEvent,"AuthorProfile.fxml");
+            Utils.changeScene(actionEvent, "AuthorProfile.fxml");
         }
-     NON CANCELLARE
-    }*/
+    }
 
     private void setSelectedImage(Integer imageNumber){
         avatarImage.setImage(Configuration.AVATAR.get(imageNumber-1));

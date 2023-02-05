@@ -68,28 +68,23 @@ public class AuthorMongoDAO {
                                 new UpdateOptions().upsert(true));
     }
 
+    @Deprecated
     public static boolean changeAuthorName(String newAuthorName, Author currentAuthor) throws MongoException{
-        /*MongoCollection<Document> authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
-        MongoCollection<Document> recipeCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);*/
         MongoCollection<Document> authorCollection = MongoDBDriver.getDriver().getCollectionCP(Configuration.MONGODB_AUTHOR);
         MongoCollection<Document> recipeCollection = MongoDBDriver.getDriver().getCollectionCP(Configuration.MONGODB_RECIPE);
-
         if (!checkIfUsernameIsAvailable(newAuthorName)){
-            System.out.println("ESISTE GIA IL NICK");
             return false;
         }else {
-            //TODO
-            /// -> DA FARE IL CAMBIO ANCHE DELLE REVIEW///
             Document query = new Document("authorName", currentAuthor.getName());
             Bson updates = Updates.combine(Updates.set("authorName", newAuthorName));
             Document queryRecipe = new Document("AuthorName", currentAuthor.getName());
             Bson updatesRecipe = Updates.combine(Updates.set("AuthorName", newAuthorName));
             authorCollection.updateOne(query, updates);
             recipeCollection.updateMany(queryRecipe, updatesRecipe);
-            System.out.println("PARAMETRO CAMBIATO");
             return true;
         }
     }
+
     public static void changePassword(String newPassword, Author author)  throws MongoException{
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR).updateOne(
                 new Document().append("authorName", author.getName()),

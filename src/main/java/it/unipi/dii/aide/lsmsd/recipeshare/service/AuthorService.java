@@ -77,9 +77,10 @@ public class AuthorService {
     public static void updatePromotion(String authorName, Integer newPromotionValue){
         AuthorMongoDAO.updatePromotion(authorName, newPromotionValue);
     }
-    //TODO decidere cosa fare con changeAuthorName
+
+    @Deprecated
     public static boolean changeAuthorName(String newAuthorName, Author currentAuthor){
-        return AuthorMongoDAO.changeAuthorName(newAuthorName, currentAuthor);
+        return AuthorMongoDAO.changeAuthorName(newAuthorName,currentAuthor);
     }
     public static void changePassword(String newPassword, Author author){
         AuthorMongoDAO.changePassword(newPassword, author);
