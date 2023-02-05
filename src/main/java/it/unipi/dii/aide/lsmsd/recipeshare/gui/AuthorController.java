@@ -65,12 +65,9 @@ public class AuthorController implements Initializable {
         author = AuthorService.getAuthor(authorName);
         if (author == null) System.out.println("NON ESISTE NELLA COLLECTION AUTHOR"); //problema: authorName c'è in Recipe ma non in Author
 
-        //delete follow or unfollow button //TODO disabilitare anzichè togliere
         if(AuthorService.checkIfFollowIsAvailable(data.getAuthorName(),author.getName()))
             unfollowButton.setDisable(true);
-            //anchorPane.getChildren().remove(unfollowButton);
         else followButton.setDisable(true);
-            //anchorPane.getChildren().remove(followButton);
 
         name.setText(Objects.requireNonNull(author).getName());
         image.setImage(Configuration.AVATAR.get(author.getImage() - 1));

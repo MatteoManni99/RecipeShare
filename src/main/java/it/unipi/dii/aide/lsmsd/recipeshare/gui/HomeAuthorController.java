@@ -69,7 +69,7 @@ public class HomeAuthorController implements Initializable{
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
         TableViewObject.getTable().setLayoutY(110);
         TableViewObject.getTable().setLayoutX(183);
-        TableViewObject.getTable().setPrefSize(465,480);
+        TableViewObject.getTable().setPrefSize(465,580);
         TableViewObject.setEventForTableCells();
         TableViewObject.setTable();
         anchorPane.getChildren().add(TableViewObject.getTable());

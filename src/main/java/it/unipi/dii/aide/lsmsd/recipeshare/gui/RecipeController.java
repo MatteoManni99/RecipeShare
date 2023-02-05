@@ -80,8 +80,16 @@ public class RecipeController implements Initializable {
 
     @FXML
     public void onReportRecipeClick(ActionEvent actionEvent){
-        ReportedRecipeService.addReportedRecipe(new ReportedRecipe(recipe.getName(),recipe.getAuthorName(),
-                data.getAuthorName(),LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),recipe.getImages().get(0)));
+        ReportedRecipe reportedRecipe = new ReportedRecipe(recipe.getName(),recipe.getAuthorName(),
+                data.getAuthorName(),LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),recipe.getImages().get(0));
+
+        if(!ReportedRecipeService.checkIfRecipeAlreadyReported(reportedRecipe)){
+            if(ReportedRecipeService.addReportedRecipe(reportedRecipe)){
+                System.out.println("Recipe correctly reported");
+            }else{
+                System.out.println("Error: Recipe not reported");
+            }
+        }else System.out.println("You have already reported this recipe");
     }
     public void onLeaveAReviewClick(ActionEvent actionEvent){
         String reviewer = data.getAuthorName();
@@ -127,12 +135,13 @@ public class RecipeController implements Initializable {
 
         //aggiunta tasto per NON approvare
         Button notApproveRecipe = new Button();
-        notApproveRecipe.setText("Not Approve Recipe");
+        notApproveRecipe.setText("Not Approve and Delete Recipe");
         notApproveRecipe.setLayoutX(750);
         notApproveRecipe.setLayoutY(60);
         EventHandler<ActionEvent> eventHandlerNotApprove = actionEvent -> {
-            if(ReportedRecipeService.notApproveReportedRecipe(recipe))
-                Utils.changeScene(actionEvent,"HomeModerator.fxml");;
+            if(ReportedRecipeService.notApproveReportedRecipe(recipe)){
+                Utils.changeScene(actionEvent,"HomeModerator.fxml");
+            }else System.out.println("Error: Not Approve Recipe didn't work");
         };
         notApproveRecipe.setOnAction(eventHandlerNotApprove);
         anchorPane.getChildren().add(notApproveRecipe);

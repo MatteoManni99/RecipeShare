@@ -101,7 +101,7 @@ public class AuthorProfileController implements Initializable {
 
     private void setSelectedImage(Integer imageNumber){
         avatarImage.setImage(Configuration.AVATAR.get(imageNumber-1));
-        if(!AuthorService.changeAvatar(data.getAuthorName(),imageNumber))
+        if(!AuthorService.changeAvatar(data.getAuthorName(),imageNumber, data.getAvatarIndex()))
             System.out.println("Avatar non cambiato per un errore");
         data.setAvatar(imageNumber);
     }

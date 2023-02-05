@@ -19,7 +19,7 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 import java.util.*;
 
-public class ModeratorController implements Initializable {
+public class HomeModeratorController implements Initializable {
     public TextField authorToSearchTextField;
     private Integer pageNumberAuthor = 0;
     private String authorName;

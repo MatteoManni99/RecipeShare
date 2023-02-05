@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="TOP_CENTER" prefHeight="600" prefWidth="1000" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.dii.aide.lsmsd.recipeshare.gui.HomeAuthorController">
+<VBox alignment="TOP_CENTER" prefHeight="700" prefWidth="800" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.dii.aide.lsmsd.recipeshare.gui.HomeAuthorController">
    <children>
-      <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0">
+      <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0">
          <children>
             <Button alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="227.0" mnemonicParsing="false" onAction="#onCercaUtenteClick" prefHeight="46.0" prefWidth="106.0" text="SEARCH&#10;AUTHOR" textAlignment="CENTER" />
             <Button alignment="CENTER" contentDisplay="CENTER" layoutX="395.0" layoutY="35.0" mnemonicParsing="false" onAction="#onFindRecipeByNameClick" text="FIND RECIPE" />

@@ -1,6 +1,7 @@
 package it.unipi.dii.aide.lsmsd.recipeshare.service;
 
 import it.unipi.dii.aide.lsmsd.recipeshare.dao.mongo.AuthorMongoDAO;
+import it.unipi.dii.aide.lsmsd.recipeshare.dao.mongo.RecipeMongoDAO;
 import it.unipi.dii.aide.lsmsd.recipeshare.dao.neo4j.AuthorNeoDAO;
 import it.unipi.dii.aide.lsmsd.recipeshare.model.Author;
 import com.mongodb.MongoException;
@@ -45,13 +46,12 @@ public class AuthorService {
         return AuthorNeoDAO.checkIfFollowIsAvailable(authorName1, authorName2);
     }
 
-    public static boolean changeAvatar(String authorName, Integer newImageIndex){
+    public static boolean changeAvatar(String authorName, Integer newImageIndex, Integer oldImageIndex){
         try{AuthorMongoDAO.changeAvatar(authorName, newImageIndex);}
         catch(MongoException e){return false;}
         try{AuthorNeoDAO.changeAvatar(authorName, newImageIndex);}
         catch(Neo4jException e){
-            //TODO rollback su mongo
-
+            AuthorMongoDAO.changeAvatar(authorName, oldImageIndex); //rollback su mongo
             return false;
         }
         return true;
@@ -63,10 +63,17 @@ public class AuthorService {
         return AuthorNeoDAO.getFollowing(authorName);
     }
     public static List<Author> getAuthorSuggested(Author author){
-        return AuthorNeoDAO.getAuthorSuggested(author);
+        List<Author> authorSuggested = AuthorNeoDAO.getAuthorSuggested(author);
+        authorSuggested.removeAll(AuthorNeoDAO.getFollowing(author.getName()));
+        authorSuggested.remove(author);
+        return authorSuggested;
     }
     public static List<RecipeReducted> getRecipeSuggested(String authorName){
-        return AuthorNeoDAO.getRecipeSuggested(authorName);
+        List<RecipeReducted> recipeSuggested = AuthorNeoDAO.getRecipeSuggestedByWrite(authorName);
+        recipeSuggested.addAll(AuthorNeoDAO.getRecipeSuggestedByReview(authorName));
+        recipeSuggested.removeAll(AuthorNeoDAO.getRecipeAdded(authorName));
+        //TODO togliere replicati
+        return recipeSuggested;
     }
     public static void updatePromotion(String authorName, Integer newPromotionValue){
         AuthorMongoDAO.updatePromotion(authorName, newPromotionValue);

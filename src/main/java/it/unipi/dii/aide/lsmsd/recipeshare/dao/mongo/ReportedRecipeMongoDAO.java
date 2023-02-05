@@ -18,23 +18,18 @@ import static com.mongodb.client.model.Filters.*;
 
 public class ReportedRecipeMongoDAO {
 
-    public static boolean addReportedRecipe(ReportedRecipe reportedRecipe) throws MongoException {
-        //MongoCollection<Document> reportedCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_REPORTED_RECIPE);
+    public static void addReportedRecipe(ReportedRecipe reportedRecipe) throws MongoException {
+        MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_REPORTED_RECIPE).
+                insertOne(fromReportedRecipeToDocument(reportedRecipe)).wasAcknowledged();
+    }
+    public static boolean checkIfRecipeAlreadyReported(ReportedRecipe reportedRecipe) throws MongoException {
         MongoCollection<Document> reportedCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_REPORTED_RECIPE);
         Bson filter = Filters.and(
                 Filters.eq("name", reportedRecipe.getName()),
                 Filters.eq("reporterName", reportedRecipe.getReporterName()));
-        if (reportedCollection.find(filter).cursor().hasNext()) {
-            System.out.println("Avevi già Reportato questa Recipe");
-            return false;
-        }else{
-            if(reportedCollection.insertOne(fromReportedRecipeToDocument(reportedRecipe)).wasAcknowledged()){
-                System.out.println("Recipe Reportata");
-                return true;
-            }
-        }
-        return false;
+        return reportedCollection.find(filter).cursor().hasNext();
     }
+
     private static Document fromReportedRecipeToDocument(ReportedRecipe reportedRecipe) throws MongoException{
         return new Document("name",reportedRecipe.getName()).append("authorName",reportedRecipe.getAuthorName())
                 .append("reporterName",reportedRecipe.getReporterName()).append("dateReporting",reportedRecipe.getDateReporting())
