@@ -72,8 +72,7 @@ public class AuthorService {
         List<RecipeReducted> recipeSuggested = AuthorNeoDAO.getRecipeSuggestedByWrite(authorName);
         recipeSuggested.addAll(AuthorNeoDAO.getRecipeSuggestedByReview(authorName));
         recipeSuggested.removeAll(AuthorNeoDAO.getRecipeAdded(authorName));
-        //TODO togliere replicati
-        return recipeSuggested;
+        return recipeSuggested.stream().distinct().toList();
     }
     public static void updatePromotion(String authorName, Integer newPromotionValue){
         AuthorMongoDAO.updatePromotion(authorName, newPromotionValue);
