@@ -19,8 +19,11 @@ public class HomeAuthorController implements Initializable{
     private final TableViewAbstract TableViewObject = new TableViewRecipe();
     @FXML
     private TextField nameToSearchTextField;
+    @FXML
+    private TextField pageNumberField;
     private String nameToSearch = null;
     private Integer pageNumber = 0;
+
     @FXML
     public void onLogoutClick(ActionEvent actionEvent){
         Utils.changeScene(actionEvent,"Login.fxml");
@@ -40,12 +43,14 @@ public class HomeAuthorController implements Initializable{
     public void onNextPageClick(){
         pageNumber += 1;
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
+        pageNumberField.setText(String.valueOf(pageNumber+1));
     }
     @FXML
     public void onPreviousPageClick(){
         if(pageNumber>=1){
             pageNumber -= 1;
             searchInDBAndLoadInTableView(nameToSearch,pageNumber);
+            pageNumberField.setText(String.valueOf(pageNumber+1));
         }
     }
     @FXML
@@ -73,6 +78,7 @@ public class HomeAuthorController implements Initializable{
         TableViewObject.setEventForTableCells();
         TableViewObject.setTable();
         anchorPane.getChildren().add(TableViewObject.getTable());
+        pageNumberField.setText(String.valueOf(pageNumber+1));
     }
 
     @FXML

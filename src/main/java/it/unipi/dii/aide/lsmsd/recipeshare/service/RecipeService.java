@@ -82,8 +82,8 @@ public class RecipeService {
         return RecipeMongoDAO.findMostUsedIngredients(limitIngredients, minNumberReviews);
     }
 
-    public static List<Recipe> findRecipesWithHighestRating(Integer limitRecipes, Integer minNumberReviews){
-        return RecipeMongoDAO.findRecipesWithHighestRating(limitRecipes, minNumberReviews);
+    public static List<Recipe> findRecipesWithHighestRating(Integer skipRecipes, Integer limitRecipes, Integer minNumberReviews){
+        return RecipeMongoDAO.findRecipesWithHighestRating(skipRecipes,limitRecipes, minNumberReviews);
     }
 
     public static List<Recipe> findTopRecipesForEachCategory(Integer minNumberReviews){

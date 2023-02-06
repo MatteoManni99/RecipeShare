@@ -92,7 +92,7 @@ public class AuthorNeoDAO {
             List<Author> follower = new ArrayList<>();
             while(result.hasNext()) {
                 Record r = result.next();
-                follower.add(new Author(r.get("Name").asString(),r.get("Avatar").asInt()));
+                follower.add(new Author(r.get("Name").asString(),(r.get("Avatar").asInt())));
             }
             return follower;
         });

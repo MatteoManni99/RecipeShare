@@ -184,14 +184,15 @@ public class RecipeMongoDAO {
         list.forEach(entry -> sortedMap.put(entry.getKey(), entry.getValue()));
         return sortedMap;
     }
-    public static List<Recipe> findRecipesWithHighestRating(Integer limitRecipes, Integer minNumberReviews) throws MongoException{
+    public static List<Recipe> findRecipesWithHighestRating(Integer skipRecipes, Integer limitRecipes, Integer minNumberReviews) throws MongoException{
         Bson matchR = match(new Document("Reviews." + minNumberReviews, new Document("$exists", true)));
+        Bson skip = skip(skipRecipes);
         Bson limit = limit(limitRecipes);
         Bson sort = sort(descending("AggregatedRating"));
         Bson project = project(new Document("Name", 1).append("AggregatedRating",1).append("Images", new Document("$first", "$Images")));
         List<Recipe> listRecipe = new ArrayList<>();
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
-                .aggregate(Arrays.asList(matchR,sort,limit,project)).forEach( doc ->
+                .aggregate(Arrays.asList(matchR,sort,skip,limit,project)).forEach( doc ->
                     listRecipe.add(new Recipe(doc.getString("Name"), null, null, null,
                             null, new ArrayList<>(Collections.singleton(doc.getString("Images"))),
                             null, null, null, Double.valueOf(String.valueOf(doc.get("AggregatedRating"))),
