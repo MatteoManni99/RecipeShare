@@ -78,10 +78,11 @@ public class AuthorProfileController implements Initializable {
         System.out.println(newPassword);
         Author currentAuthor = new Author(data.getAuthorName(),data.getPassword(),
                 data.getAvatarIndex(), data.getAuthorPromotion());
-        AuthorService.changePassword(newPassword,currentAuthor);
-        data.setPassword(newPassword);
-        passwordField.setText(newPassword);
-        Utils.changeScene(actionEvent,"AuthorProfile.fxml");
+        if(AuthorService.changePassword(newPassword,currentAuthor)){
+            data.setPassword(newPassword);
+            passwordField.setText(newPassword);
+            Utils.changeScene(actionEvent,"AuthorProfile.fxml");
+        }else {System.out.println("Error: Password wasn't changed");}
     }
 
     @Deprecated

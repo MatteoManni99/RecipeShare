@@ -63,6 +63,8 @@ public class AuthorController implements Initializable {
 
         authorName = data.getOtherAuthorName();
         author = AuthorService.getAuthor(authorName);
+
+        //TODO credo che questo si possa togliere
         if (author == null) System.out.println("NON ESISTE NELLA COLLECTION AUTHOR"); //problema: authorName c'è in Recipe ma non in Author
 
         if(AuthorService.checkIfFollowIsAvailable(data.getAuthorName(),author.getName()))

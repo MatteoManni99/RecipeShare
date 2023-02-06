@@ -47,10 +47,10 @@ public class AuthorService {
     }
 
     public static boolean changeAvatar(String authorName, Integer newImageIndex, Integer oldImageIndex){
-        try{AuthorMongoDAO.changeAvatar(authorName, newImageIndex);}
-        catch(MongoException e){return false;}
-        try{AuthorNeoDAO.changeAvatar(authorName, newImageIndex);}
-        catch(Neo4jException e){
+        try{AuthorMongoDAO.changeAvatar(authorName, newImageIndex);
+        } catch(MongoException e){return false;}
+        try{AuthorNeoDAO.changeAvatar(authorName, newImageIndex);
+        } catch(Neo4jException e){
             AuthorMongoDAO.changeAvatar(authorName, oldImageIndex); //rollback su mongo
             return false;
         }
@@ -82,8 +82,11 @@ public class AuthorService {
     public static boolean changeAuthorName(String newAuthorName, Author currentAuthor){
         return AuthorMongoDAO.changeAuthorName(newAuthorName,currentAuthor);
     }
-    public static void changePassword(String newPassword, Author author){
-        AuthorMongoDAO.changePassword(newPassword, author);
+    public static boolean changePassword(String newPassword, Author author){
+        try{
+            AuthorMongoDAO.changePassword(newPassword, author);
+            return true;
+        } catch (MongoException e){ return false; }
     }
     public static Author getAuthor(String authorName){
         return AuthorMongoDAO.getAuthor(authorName);

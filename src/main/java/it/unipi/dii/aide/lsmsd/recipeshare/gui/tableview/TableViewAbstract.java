@@ -31,7 +31,10 @@ public abstract class TableViewAbstract {
                         }
                         if(cell.getTableColumn().getText().equals("Author")){
                             data.setOtherAuthorName(cell.getText());
-                            Utils.changeScene(evt,"Author.fxml");
+                            if(data.getAuthorName().equals(data.getOtherAuthorName()))
+                                Utils.changeScene(evt,"AuthorProfile.fxml");
+                            else
+                                Utils.changeScene(evt,"Author.fxml");
                         }
                         evt.consume();
                     }

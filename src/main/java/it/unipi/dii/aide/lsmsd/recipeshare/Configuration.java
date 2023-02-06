@@ -19,8 +19,17 @@ public class Configuration {
     public static final String NEO4J_URL = load("NEO4J_URL");
     public static final String NEO4J_USERNAME = load("NEO4J_USERNAME");
     public static final String NEO4J_PASSWORD = load("NEO4J_PASSWORD");
-    public static final List<Image> AVATAR;
 
+    public static final Image LOGO;
+    static {
+        try {
+            LOGO = new Image(new FileInputStream(load("LOGO")));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static final List<Image> AVATAR;
     static {
         try {
             AVATAR = Arrays.asList(new Image(new FileInputStream(load("AVATAR_1"))), new Image(new FileInputStream(load("AVATAR_2"))),

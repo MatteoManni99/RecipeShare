@@ -22,7 +22,7 @@
             <PasswordField fx:id="insertedPassword" layoutX="433.0" layoutY="433.0" />
             <ImageView fitHeight="181.0" fitWidth="669.0" layoutX="208.0" layoutY="104.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../avatarImages/logo.png" />
+                  <Image url="@../../../../../../avatarImages/logoAndText.png" />
                </image>
             </ImageView>
          </children>

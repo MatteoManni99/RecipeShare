@@ -89,7 +89,6 @@ public class AuthorMongoDAO {
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR).updateOne(
                 new Document().append("authorName", author.getName()),
                     Updates.combine(Updates.set("password", newPassword)));
-        System.out.println("Pass CAMBIATA");
     }
 
     public static Author getAuthor(String authorName)  throws MongoException{
