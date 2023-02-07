@@ -108,6 +108,7 @@ public class RecipeController implements Initializable {
             }
         }else System.out.println("You have already reported this recipe");
     }
+    @FXML
     private void onLeaveAReviewClick(ActionEvent actionEvent){
         String reviewer = data.getAuthorName();
         if(reviewers.contains(reviewer)){
