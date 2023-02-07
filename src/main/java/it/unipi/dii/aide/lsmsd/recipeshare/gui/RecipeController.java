@@ -27,25 +27,42 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class RecipeController implements Initializable {
-
-
     @FXML
     private AnchorPane anchorPane;
-    public TextField name;
-    public TextField authorName;
-    public TextField calories;
-    public TextField servings;
-    public TextField time;
-    public TextField date;
-    public TextField aggregatedRating;
-    public ChoiceBox<Integer> ratingChoiceBox;
-    public Button reportRecipeButton;
-    public TextArea description;
-    public TextArea reviewTextArea;
-    public ImageView image;
-    public ListView<String> ingredients;
-    public ListView<String> keywords;
-    public ListView<String> instructions;
+    @FXML
+    private TextField name;
+    @FXML
+    private TextField authorName;
+    @FXML
+    private TextField calories;
+    @FXML
+    private TextField servings;
+    @FXML
+    private TextField time;
+    @FXML
+    private TextField date;
+    @FXML
+    private TextField aggregatedRating;
+    @FXML
+    private ChoiceBox<Integer> ratingChoiceBox;
+    @FXML
+    private Button reportRecipeButton;
+    @FXML
+    private TextArea description;
+    @FXML
+    private TextArea reviewTextArea;
+    @FXML
+    private Button leaveReviewButton;
+    @FXML
+    private ImageView image;
+    @FXML
+    private Label ratingLabel;
+    @FXML
+    private ListView<String> ingredients;
+    @FXML
+    private ListView<String> keywords;
+    @FXML
+    private ListView<String> instructions;
 
     private final DataSingleton data = DataSingleton.getInstance();
     private Integer indexImages=0;
@@ -60,26 +77,26 @@ public class RecipeController implements Initializable {
         image.setImage(new Image(images_list.get(indexImages)));
     }
     @FXML
-    public void onPreviousClick(ActionEvent actionEvent){
+    private void onPreviousClick(ActionEvent actionEvent){
         indexImages -= indexImages>0 ? 1 : 0;
         printImages();
     }
 
     @FXML
-    public void onNextClick(ActionEvent actionEvent){
+    private void onNextClick(ActionEvent actionEvent){
         indexImages += indexImages < images_list.size()-1 ? 1 : 0;
         printImages();
     }
 
     @FXML
-    public void onBackClick(ActionEvent actionEvent) throws IOException {
+    private void onBackClick(ActionEvent actionEvent) throws IOException {
         if(data.getTypeOfUser().equals("moderator")){
             Utils.changeScene(actionEvent,"HomeModerator.fxml");
         }else Utils.changeScene(actionEvent,"HomeAuthor.fxml");
     }
 
     @FXML
-    public void onReportRecipeClick(ActionEvent actionEvent){
+    private void onReportRecipeClick(ActionEvent actionEvent){
         ReportedRecipe reportedRecipe = new ReportedRecipe(recipe.getName(),recipe.getAuthorName(),
                 data.getAuthorName(),LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),recipe.getImages().get(0));
 
@@ -91,7 +108,7 @@ public class RecipeController implements Initializable {
             }
         }else System.out.println("You have already reported this recipe");
     }
-    public void onLeaveAReviewClick(ActionEvent actionEvent){
+    private void onLeaveAReviewClick(ActionEvent actionEvent){
         String reviewer = data.getAuthorName();
         if(reviewers.contains(reviewer)){
             reviewTextArea.setText("Avevi già recensito questa ricetta");
@@ -107,7 +124,7 @@ public class RecipeController implements Initializable {
     }
 
     //this method is called when the recipe's author correspond to the recipe visualizer
-    public void addDeleteButton(){
+    private void addDeleteButton(){
         Button deleteRecipe = new Button();
         deleteRecipe.setText("Delete this Recipe");
         deleteRecipe.setLayoutX(750);
@@ -120,7 +137,7 @@ public class RecipeController implements Initializable {
         deleteRecipe.setOnAction(eventHandler);
         anchorPane.getChildren().add(deleteRecipe);
     }
-    public void addApprovalButtons(){
+    private void addApprovalButtons(){
         //aggiunta tasto per approvare
         Button approveRecipe = new Button();
         approveRecipe.setText("Approve Recipe");
@@ -175,7 +192,7 @@ public class RecipeController implements Initializable {
         });
         tableViewReview.setItems();
     }
-    public void initializeTableViewReview(){
+    private void initializeTableViewReview(){
         tableViewReview.resetObservableArrayList();
         tableViewReview.setEventForTableCells();
         tableViewReview.setTable();
@@ -183,6 +200,12 @@ public class RecipeController implements Initializable {
         tableViewReview.getTable().setLayoutX(295);
         tableViewReview.getTable().setPrefWidth(679);
         anchorPane.getChildren().add(tableViewReview.getTable());
+    }
+    private void removeReviewInterface(){
+        anchorPane.getChildren().remove(ratingChoiceBox);
+        anchorPane.getChildren().remove(ratingLabel);
+        anchorPane.getChildren().remove(reviewTextArea);
+        anchorPane.getChildren().remove(leaveReviewButton);
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -198,6 +221,7 @@ public class RecipeController implements Initializable {
         }
         if(data.getTypeOfUser().equals("moderator")){
             anchorPane.getChildren().remove(reportRecipeButton);
+            removeReviewInterface();
             addApprovalButtons();
         }
     }
