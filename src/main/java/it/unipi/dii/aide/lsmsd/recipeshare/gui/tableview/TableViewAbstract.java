@@ -29,7 +29,7 @@ public abstract class TableViewAbstract {
                             data.setRecipeName(cell.getText());
                             Utils.changeScene(evt,"Recipe.fxml");
                         }
-                        if(cell.getTableColumn().getText().equals("Author")){
+                        if(cell.getTableColumn().getText().equals("Author") || cell.getTableColumn().getText().equals("ReporterName")){
                             data.setOtherAuthorName(cell.getText());
                             if(data.getAuthorName().equals(data.getOtherAuthorName()))
                                 Utils.changeScene(evt,"AuthorProfile.fxml");

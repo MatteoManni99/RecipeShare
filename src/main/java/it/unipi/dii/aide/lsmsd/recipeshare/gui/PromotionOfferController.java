@@ -25,7 +25,7 @@ public class PromotionOfferController implements Initializable {
     public void onAcceptPromotionClick(ActionEvent actionEvent) {
         AuthorService.updatePromotion(DataSingleton.getInstance().getAuthorName(), 2);
         DataSingleton.getInstance().setTypeOfUser("moderator");
-        Utils.changeScene(actionEvent,"Register.fxml");
+        Utils.changeScene(actionEvent,"RegisterAsModerator.fxml");
     }
 }
 

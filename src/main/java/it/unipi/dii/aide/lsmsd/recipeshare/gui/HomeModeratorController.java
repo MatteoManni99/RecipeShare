@@ -24,7 +24,6 @@ public class HomeModeratorController implements Initializable {
     private Integer pageNumberAuthor = 0;
     private String authorName;
     private String authorNameClicked;
-
     public TextField reportedRecipeToSearchTextField;
     private Integer pageNumberReportedRecipe = 0;
     private String reportedRecipeName;
@@ -72,6 +71,7 @@ public class HomeModeratorController implements Initializable {
                     TableCell cell = Utils.findCell(evt,tableAuthor.getTable());
                     if (cell != null && !cell.isEmpty()) {
                         if(cell.getTableColumn().getText().equals("Promotion")){
+                            if (cell.getText().equals(0) == false) return;
                             authorNameClicked = (String) tableAuthor.getTable().getColumns().get(1).getCellData(cell.getIndex());
                             cellAuthorPromotion = cell;
                         }
@@ -81,7 +81,7 @@ public class HomeModeratorController implements Initializable {
         );
     }
     public void onPromoteAuthorClick(ActionEvent actionEvent) {
-        System.out.println("promozione a" + authorNameClicked);
+        System.out.println("promozione a " + authorNameClicked);
         AuthorService.updatePromotion(authorNameClicked,1);
         authorNameClicked = null;
         searchInDBAndLoadInTableViewAuthor(authorName, pageNumberAuthor);
