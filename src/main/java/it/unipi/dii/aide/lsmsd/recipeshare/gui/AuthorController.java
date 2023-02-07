@@ -23,7 +23,6 @@ import java.util.ResourceBundle;
 public class AuthorController implements Initializable {
     @FXML
     public ImageView image;
-
     @FXML
     public TextField name;
     public Button followButton;
@@ -32,9 +31,7 @@ public class AuthorController implements Initializable {
     private final DataSingleton data = DataSingleton.getInstance();
     private String authorName;
     private Author author;
-
     private final TableViewAbstract tableViewAuthor = new TableViewRecipeWithoutAuthor();
-
     @FXML
     private AnchorPane anchorPane;
 

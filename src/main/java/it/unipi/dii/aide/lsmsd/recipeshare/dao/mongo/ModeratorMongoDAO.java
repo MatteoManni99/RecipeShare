@@ -35,11 +35,11 @@ public class ModeratorMongoDAO {
     }
 
     public static boolean checkRegistration(String name, String password) throws MongoException{
-        /*MongoCursor<Document> cursorModerator = MongoDBDriver.getDriver().
-                getCollection(Configuration.MONGODB_MODERATOR).find(eq("moderatorName", name)).iterator();*/
         MongoCursor<Document> cursorModerator = MongoDBDriver.getDriver().
                 getCollectionCP(Configuration.MONGODB_MODERATOR).find(eq("moderatorName", name)).iterator();
-        if (cursorModerator.hasNext()) {
+        MongoCursor<Document> cursorAuthor = MongoDBDriver.getDriver().
+                getCollectionCP(Configuration.MONGODB_AUTHOR).find(eq("authorName", name)).iterator();
+        if (cursorModerator.hasNext() || cursorAuthor.hasNext()) {
             System.out.println("NICKNAME GIA USATO");
             return false;
         }
