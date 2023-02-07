@@ -38,6 +38,7 @@ public class RegisterAsModeratorController implements Initializable {
                 warningLabel.setText("Successfully Registered");
                 name.setEditable(false);
                 password.setEditable(false);
+                AuthorService.updatePromotion(DataSingleton.getInstance().getAuthorName(), 2);
             }else
                 warningLabel.setText("Username not Available");
         }

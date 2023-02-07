@@ -71,7 +71,7 @@ public class HomeModeratorController implements Initializable {
                     TableCell cell = Utils.findCell(evt,tableAuthor.getTable());
                     if (cell != null && !cell.isEmpty()) {
                         if(cell.getTableColumn().getText().equals("Promotion")){
-                            if (cell.getText().equals(0) == false) return;
+                            if (cell.getText().equals("0") == false) return;
                             authorNameClicked = (String) tableAuthor.getTable().getColumns().get(1).getCellData(cell.getIndex());
                             cellAuthorPromotion = cell;
                         }
