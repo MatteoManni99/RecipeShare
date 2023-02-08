@@ -156,13 +156,13 @@ public class RecipeController implements Initializable {
 
         //aggiunta tasto per NON approvare
         Button notApproveRecipe = new Button();
-        notApproveRecipe.setText("Not Approve and Delete Recipe");
+        notApproveRecipe.setText("Reject and Delete Recipe");
         notApproveRecipe.setLayoutX(750);
         notApproveRecipe.setLayoutY(60);
         EventHandler<ActionEvent> eventHandlerNotApprove = actionEvent -> {
             if(ReportedRecipeService.notApproveReportedRecipe(recipe)){
                 Utils.changeScene(actionEvent,"HomeModerator.fxml");
-            }else System.out.println("Error: Not Approve Recipe didn't work");
+            }else System.out.println("Error: Reject Recipe didn't work");
         };
         notApproveRecipe.setOnAction(eventHandlerNotApprove);
         anchorPane.getChildren().add(notApproveRecipe);
