@@ -11,8 +11,8 @@
    <children>
       <ImageView fx:id="image" fitHeight="150.0" fitWidth="200.0" layoutX="43.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
       <Button layoutX="475.0" layoutY="30.0" mnemonicParsing="false" onAction="#onBackClick" text="Back" />
-      <Button layoutX="246.0" layoutY="168.0" mnemonicParsing="false" onAction="#onNextPageClick" text="Next Page" />
-      <Button layoutX="43.0" layoutY="168.0" mnemonicParsing="false" onAction="#onPreviousPageClick" text="Prevous Page" />
+      <Button layoutX="202.0" layoutY="168.0" mnemonicParsing="false" onAction="#onNextAuthorPageClick" text="&gt;&gt;&gt;" />
+      <Button layoutX="102.0" layoutY="167.0" mnemonicParsing="false" onAction="#onPreviousAuthorPageClick" text="&lt;&lt;&lt;" />
       <Button fx:id="followButton" layoutX="470.0" layoutY="77.0" mnemonicParsing="false" onAction="#onFollowButtonClick" text="Follow&#10;Author" textAlignment="CENTER">
          <font>
             <Font size="17.0" />
@@ -25,6 +25,7 @@
       </Button>
       <Label layoutX="281.0" layoutY="47.0" text="Author Name" />
       <TextField fx:id="name" editable="false" layoutX="281.0" layoutY="64.0" prefHeight="26.0" prefWidth="142.0" />
+      <TextField fx:id="pageAuthorField" editable="false" layoutX="151.0" layoutY="167.0" prefHeight="26.0" prefWidth="41.0" />
 
    </children>
 </AnchorPane>

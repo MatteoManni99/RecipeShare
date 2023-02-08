@@ -30,43 +30,65 @@ public class SuggestionsController implements Initializable {
 
     private List<RecipeReducted> suggestedRecipe;
     private Integer pageRecipe = 0;
+
+    private Integer pageAuthor = 0;
     private String pageBefore = null;
     @FXML
-    private Button nextButton;
-    @FXML
-    private TextField pageRecipeField;
+    private Button nextRecipePageButton;
 
     @FXML
+    private Button nextAuthorPageButton;
+    @FXML
+    private TextField pageRecipeField;
+    @FXML
+    private TextField pageAuthorField;
+    @FXML
     private void onBackClick(ActionEvent actionEvent){
-        DataSingleton.getInstance().setPageBefore("Suggestions.fxml");
-        Utils.changeScene(actionEvent,pageBefore);
+        Utils.changeScene(actionEvent,"HomeAuthor.fxml");
     }
     @FXML
-    private void onNextClick() {
+    private void onNextRecipePageClick() {
         pageRecipe += 1;
         loadInTableView(pageRecipe);
         pageRecipeField.setText(String.valueOf(pageRecipe+1));
     }
     @FXML
-    private void onPreviousClick() {
+    private void onPreviousRecipePageClick() {
         if(pageRecipe>=1){
             pageRecipe -= 1;
             loadInTableView(pageRecipe);
             pageRecipeField.setText(String.valueOf(pageRecipe+1));
-            nextButton.setDisable(false);
+            nextRecipePageButton.setDisable(false);
+        }
+    }
+
+    @FXML
+    private void onNextAuthorPageClick() {
+        pageAuthor += 1;
+        searchInDBAndLoadInTableViewAuthorSugg(new Author(data.getAuthorName(),data.getAvatarIndex()));
+        pageAuthorField.setText(String.valueOf(pageAuthor+1));
+    }
+    @FXML
+    private void onPreviousAuthorPageClick() {
+        if(pageAuthor>=1){
+            pageAuthor -= 1;
+            searchInDBAndLoadInTableViewAuthorSugg(new Author(data.getAuthorName(),data.getAvatarIndex()));
+            pageAuthorField.setText(String.valueOf(pageAuthor+1));
+            nextAuthorPageButton.setDisable(false);
         }
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         pageRecipeField.setText(String.valueOf(pageRecipe+1));
+        pageAuthorField.setText(String.valueOf(pageAuthor+1));
         createTableViewAuthorSugg();
         createTableViewRecipeSugg();
-        pageBefore = DataSingleton.getInstance().getPageBefore();
+        DataSingleton.getInstance().setPageBefore("Suggestions.fxml");
     }
 
     private void createTableViewAuthorSugg(){
         tableViewAuthorSugg.getTable().setLayoutX(560);
-        tableViewAuthorSugg.getTable().setLayoutY(50);
+        tableViewAuthorSugg.getTable().setLayoutY(100);
         tableViewAuthorSugg.getTable().setPrefSize(250,530);
         tableViewAuthorSugg.setEventForTableCells();
         searchInDBAndLoadInTableViewAuthorSugg(new Author(data.getAuthorName(),data.getAvatarIndex()));
@@ -76,7 +98,7 @@ public class SuggestionsController implements Initializable {
 
     private void searchInDBAndLoadInTableViewAuthorSugg(Author currentAuthor){
         tableViewAuthorSugg.resetObservableArrayList();
-        AuthorService.getAuthorSuggested(currentAuthor).forEach(author ->
+        AuthorService.getAuthorSuggested(currentAuthor,pageAuthor*10,10).forEach(author ->
                 tableViewAuthorSugg.addToObservableArrayList(new RowAuthor(author.getName(), 0,
                         new RowImage(new ImageView(Configuration.AVATAR.get(author.getImage() - 1))).getImage())));
         tableViewAuthorSugg.setItems();
@@ -86,7 +108,7 @@ public class SuggestionsController implements Initializable {
         tableViewRecipeSugg.getTable().setLayoutX(20);
         tableViewRecipeSugg.getTable().setLayoutY(120);
         tableViewRecipeSugg.getTable().setPrefSize(465,460);
-        suggestedRecipe = AuthorService.getRecipeSuggested(data.getAuthorName());
+        suggestedRecipe = AuthorService.getRecipeSuggested(data.getAuthorName(),pageRecipe,10);
         if(!suggestedRecipe.isEmpty()) {
             loadInTableView(pageRecipe);
             tableViewRecipeSugg.setEventForTableCells();
@@ -104,7 +126,7 @@ public class SuggestionsController implements Initializable {
             suggestedRecipe.subList(pageRecipe*10, suggestedRecipe.size()).forEach(recipeReducted ->
                 tableViewRecipeSugg.addToObservableArrayList(new RowRecipe(recipeReducted.getName(), recipeReducted.getAuthorName(),
                         new ImageView(recipeReducted.getImage()))));
-            nextButton.setDisable(true);
+            nextRecipePageButton.setDisable(true);
         }
         tableViewRecipeSugg.setItems();
     }

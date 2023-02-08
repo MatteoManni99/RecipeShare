@@ -23,6 +23,7 @@ public class HomeAuthorController implements Initializable{
     private TextField pageNumberField;
     private String nameToSearch = null;
     private Integer pageNumber = 0;
+
     private String pageBefore = "HomeAuthor.fxml";
 
     @FXML

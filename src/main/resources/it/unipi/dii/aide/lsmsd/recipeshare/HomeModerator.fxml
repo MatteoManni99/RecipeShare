@@ -14,14 +14,16 @@
             <Button layoutX="29.0" layoutY="30.0" mnemonicParsing="false" onAction="#onLogoutClick" text="LOGOUT" />
             <Button layoutX="133.0" layoutY="21.0" mnemonicParsing="false" onAction="#onViewAnalyticsClick" text="VIEW &#10;ANALYTICS" textAlignment="CENTER" />
             <Button layoutX="670.0" layoutY="24.0" mnemonicParsing="false" onAction="#onFindAuthorClick" text="Find Author" textAlignment="CENTER" />
-            <Button layoutX="927.0" layoutY="61.0" mnemonicParsing="false" onAction="#onNextPageAuthorClick" text="Next" />
-            <Button layoutX="766.0" layoutY="61.0" mnemonicParsing="false" onAction="#onPromoteAuthorClick" text="PROMOTE AUTHOR" />
-            <Button layoutX="670.0" layoutY="61.0" mnemonicParsing="false" onAction="#onPreviousPageAuthorClick" text="Previous" />
+            <Button layoutX="771.0" layoutY="60.0" mnemonicParsing="false" onAction="#onNextPageAuthorClick" text="&gt;&gt;&gt;" />
+            <Button layoutX="828.0" layoutY="60.0" mnemonicParsing="false" onAction="#onPromoteAuthorClick" text="PROMOTE AUTHOR" />
+            <Button layoutX="670.0" layoutY="61.0" mnemonicParsing="false" onAction="#onPreviousPageAuthorClick" text="&lt;&lt;&lt;" />
             <TextField fx:id="authorToSearchTextField" layoutX="761.0" layoutY="24.0" prefHeight="26.0" prefWidth="208.0" />
-            <Button layoutX="323.0" layoutY="120.0" mnemonicParsing="false" onAction="#onNextPageReportedRecipeClick" text="Next" />
-            <Button layoutX="20.0" layoutY="120.0" mnemonicParsing="false" onAction="#onPreviousReportedRecipePageClick" text="Previous" />
+            <Button layoutX="210.0" layoutY="120.0" mnemonicParsing="false" onAction="#onNextPageReportedRecipeClick" text="&gt;&gt;&gt;" />
+            <Button layoutX="113.0" layoutY="120.0" mnemonicParsing="false" onAction="#onPreviousReportedRecipePageClick" text="&lt;&lt;&lt;" />
             <Button layoutX="20.0" layoutY="87.0" mnemonicParsing="false" onAction="#onFindReportedRecipeClick" text="Find Reported Recipe" textAlignment="CENTER" />
             <TextField fx:id="reportedRecipeToSearchTextField" layoutX="171.0" layoutY="87.0" prefHeight="26.0" prefWidth="193.0" />
+            <TextField fx:id="pageReportedRecipeField" layoutX="161.0" layoutY="119.0" prefHeight="26.0" prefWidth="41.0" />
+            <TextField fx:id="pageAuthorField" layoutX="719.0" layoutY="60.0" prefHeight="26.0" prefWidth="41.0" />
          </children>
       </AnchorPane>
    </children>

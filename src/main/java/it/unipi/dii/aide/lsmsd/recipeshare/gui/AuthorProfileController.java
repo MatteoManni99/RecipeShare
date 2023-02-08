@@ -31,6 +31,7 @@ public class AuthorProfileController implements Initializable {
     public Label avatarLabel = new Label();
     private final DataSingleton data = DataSingleton.getInstance();
     private final TableViewAbstract tableRecipe = new TableViewRecipeWithoutAuthor();
+    public TextField pageRecipeField;
     @FXML
     private TextField authorNameField;
     @FXML
@@ -38,6 +39,7 @@ public class AuthorProfileController implements Initializable {
     @FXML
     private AnchorPane anchorPane;
     public ImageView avatarImage;
+    public Integer pageRecipe = 0;
 
     private String pageBefore = null;
 
@@ -49,16 +51,17 @@ public class AuthorProfileController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         DataSingleton.getInstance().setPageBefore("AuthorProfile.fxml");
+        pageRecipeField.setText(String.valueOf(pageRecipe+1));
         avatarImage.setImage(data.getAvatar().getImage());
         authorNameField.setText(data.getAuthorName());
         passwordField.setText(data.getPassword());
         createTableView();
     }
 
-    public void searchInDBAndLoadInTableView(Integer pageNumber) { //chiamata a DAO
+    public void searchInDBAndLoadInTableView(Integer pageRecipe) { //chiamata a DAO
         tableRecipe.resetObservableArrayList();
         RecipeService.getRecipeFromAuthor(data.getAuthorName(),
-                10 * pageNumber,10).forEach(recipeReducted ->
+                10 * pageRecipe,10).forEach(recipeReducted ->
                 tableRecipe.addToObservableArrayList(new RowRecipe( recipeReducted.getName(),
                         recipeReducted.getAuthorName(), new RowImage(new ImageView(recipeReducted.getImage())).getImage())));
         tableRecipe.setItems();
@@ -131,5 +134,18 @@ public class AuthorProfileController implements Initializable {
         setSelectedImage(8);
     }
 
+    public void onPreviousRecipePageClick(ActionEvent actionEvent) {
+        if(pageRecipe>=1){
+            pageRecipe -= 1;
+            searchInDBAndLoadInTableView(pageRecipe);
+            pageRecipeField.setText(String.valueOf(pageRecipe+1));
+        }
+    }
+
+    public void onNextRecipePageClick(ActionEvent actionEvent) {
+        pageRecipe += 1;
+        searchInDBAndLoadInTableView(pageRecipe);
+        pageRecipeField.setText(String.valueOf(pageRecipe+1));
+    }
 }
 

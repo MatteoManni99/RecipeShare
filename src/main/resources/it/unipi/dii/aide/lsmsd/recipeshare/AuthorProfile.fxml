@@ -66,6 +66,9 @@
                </image>
             </ImageView>
             <Label layoutX="31.0" layoutY="207.0" text="Your Recipe " />
+            <Button onAction="#onPreviousRecipePageClick" layoutX="105.0" layoutY="203.0" mnemonicParsing="false" text="&lt;&lt;&lt;" />
+            <Button onAction="#onNextRecipePageClick" layoutX="206.0" layoutY="203.0" mnemonicParsing="false" text="&gt;&gt;&gt;" />
+            <TextField fx:id="pageRecipeField" layoutX="155.0" layoutY="202.0" prefHeight="26.0" prefWidth="41.0" />
          </children>
       </AnchorPane>
    </children>

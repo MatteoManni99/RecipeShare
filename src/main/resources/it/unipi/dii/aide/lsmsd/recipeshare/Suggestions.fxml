@@ -11,10 +11,13 @@
             <children>
                 <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#onBackClick" text="BACK&#10;HOME" textAlignment="CENTER" />
                 <Label layoutX="20.0" layoutY="91.0" text="RECIPES  SUGGESTED" />
-                <Label layoutX="560.0" layoutY="30.0" text="AUTHOR  SUGGESTED" />
-            <Button layoutX="144.0" layoutY="87.0" mnemonicParsing="false" onAction="#onPreviousClick" text="&lt;&lt;&lt;" />
-            <Button fx:id="nextButton" layoutX="242.0" layoutY="86.0" mnemonicParsing="false" onAction="#onNextClick" text="&gt;&gt;&gt;" />
+                <Label layoutX="645.0" layoutY="32.0" text="AUTHOR  SUGGESTED" />
+            <Button layoutX="144.0" layoutY="87.0" mnemonicParsing="false" onAction="#onPreviousRecipePageClick" text="&lt;&lt;&lt;" />
+            <Button fx:id="nextRecipePageButton" layoutX="242.0" layoutY="86.0" mnemonicParsing="false" onAction="#onNextRecipePageClick" text="&gt;&gt;&gt;" />
             <TextField fx:id="pageRecipeField" alignment="CENTER" editable="false" layoutX="191.0" layoutY="86.0" prefHeight="26.0" prefWidth="43.0" />
+            <Button layoutX="631.0" layoutY="61.0" mnemonicParsing="false" onAction="#onPreviousAuthorPageClick" text="&lt;&lt;&lt;" />
+            <TextField fx:id="pageAuthorField" alignment="CENTER" editable="false" layoutX="682.0" layoutY="61.0" prefHeight="26.0" prefWidth="43.0" />
+            <Button fx:id="nextAuthorPageButton" layoutX="735.0" layoutY="61.0" mnemonicParsing="false" onAction="#onNextAuthorPageClick" text="&gt;&gt;&gt;" />
             </children>
         </AnchorPane>
     </children>

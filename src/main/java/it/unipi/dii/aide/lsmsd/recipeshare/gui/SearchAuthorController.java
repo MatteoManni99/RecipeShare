@@ -21,24 +21,27 @@ public class SearchAuthorController implements Initializable {
     @FXML
     public Button cercaUtenteButton;
     public TextField authorToSearchTextField;
+    public TextField pageAuthorField;
     private String authorNameClicked; //qui ci salvo l'utente della tabella che è stato clickato e che quindi si vuole promuovere
     public AnchorPane anchorPane;
-    private Integer pageNumber = 0;
+    private Integer pageAuthor = 0;
     private String nameToSearch = null;
     private final TableViewAbstract tableViewAuthor = new TableViewAuthor();
 
     private String pageBefore = null;
 
     @FXML
-    public void onNextPageClick(){
-        pageNumber = pageNumber + 1;
-        searchInDBAndLoadInTableView(nameToSearch,pageNumber);
+    public void onNextAuthorPageClick(){
+        pageAuthor = pageAuthor + 1;
+        pageAuthorField.setText(String.valueOf(pageAuthor+1));
+        searchInDBAndLoadInTableView(nameToSearch,pageAuthor);
     }
     @FXML
-    public void onPreviousPageClick(){
-        if(pageNumber>=1){
-            pageNumber = pageNumber - 1;
-            searchInDBAndLoadInTableView(nameToSearch,pageNumber);
+    public void onPreviousAuthorPageClick(){
+        if(pageAuthor>=1){
+            pageAuthor = pageAuthor - 1;
+            pageAuthorField.setText(String.valueOf(pageAuthor+1));
+            searchInDBAndLoadInTableView(nameToSearch,pageAuthor);
         }
     }
 
@@ -49,6 +52,7 @@ public class SearchAuthorController implements Initializable {
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         pageBefore = DataSingleton.getInstance().getPageBefore();
+        pageAuthorField.setText(String.valueOf(pageAuthor+1));
         DataSingleton.getInstance().setPageBefore("SearchAuthor.fxml");
         if (DataSingleton.getInstance().getTypeOfUser().equals("moderator")) {
             Button promoteAuthorButton = new Button("PROMOTE AUTHOR");
@@ -69,14 +73,14 @@ public class SearchAuthorController implements Initializable {
         tableViewAuthor.getTable().setPrefHeight(400);
         tableViewAuthor.getTable().setPrefWidth(250);
         tableViewAuthor.setEventForTableCells();
-        searchInDBAndLoadInTableView(nameToSearch,pageNumber);
+        searchInDBAndLoadInTableView(nameToSearch,pageAuthor);
         tableViewAuthor.setTable();
         anchorPane.getChildren().add(tableViewAuthor.getTable());
     }
 
-    public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber){
+    public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageAuthor){
         tableViewAuthor.resetObservableArrayList();
-        AuthorService.searchAuthors(nameToSearch,pageNumber*10,10).forEach( author ->
+        AuthorService.searchAuthors(nameToSearch,pageAuthor*10,10).forEach( author ->
             tableViewAuthor.addToObservableArrayList(new RowAuthor(author.getName(), author.getPromotion(),
                     new RowImage(new ImageView(Configuration.AVATAR.get(author.getImage() - 1))).getImage())));
         tableViewAuthor.setItems();
@@ -87,8 +91,8 @@ public class SearchAuthorController implements Initializable {
     public void onSearchAuthorClick(ActionEvent actionEvent) {
         nameToSearch = authorToSearchTextField.getText();
         if(nameToSearch.isBlank()) nameToSearch = null;
-        pageNumber = 0;
-        searchInDBAndLoadInTableView(nameToSearch,pageNumber);
+        pageAuthor = 0;
+        searchInDBAndLoadInTableView(nameToSearch,pageAuthor);
     }
 
 }

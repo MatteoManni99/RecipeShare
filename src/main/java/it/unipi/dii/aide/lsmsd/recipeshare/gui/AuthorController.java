@@ -27,12 +27,12 @@ public class AuthorController implements Initializable {
     public TextField name;
     public Button followButton;
     public Button unfollowButton;
-    private Integer pageNumber = 0;
+    public TextField pageAuthorField;
+    private Integer pageAuthor = 0;
     private final DataSingleton data = DataSingleton.getInstance();
     private String authorName;
     private Author author;
     private final TableViewAbstract tableViewAuthor = new TableViewRecipeWithoutAuthor();
-
     private static String pageBefore = null;
     @FXML
     private AnchorPane anchorPane;
@@ -61,6 +61,7 @@ public class AuthorController implements Initializable {
             anchorPane.getChildren().remove(unfollowButton);
         }
 
+        pageAuthorField.setText(String.valueOf(pageAuthor+1));
         if (DataSingleton.getInstance().getPageBefore().equals("Author.fxml")==false) pageBefore = DataSingleton.getInstance().getPageBefore();
         DataSingleton.getInstance().setPageBefore("Author.fxml");
         authorName = data.getOtherAuthorName();
@@ -78,7 +79,7 @@ public class AuthorController implements Initializable {
     }
 
     public void createTableView() {
-        searchInDBAndLoadInTableView(authorName, pageNumber);
+        searchInDBAndLoadInTableView(authorName, pageAuthor);
         tableViewAuthor.setEventForTableCells();
         tableViewAuthor.setTable();
         tableViewAuthor.getTable().setLayoutX(40);
@@ -96,15 +97,17 @@ public class AuthorController implements Initializable {
         tableViewAuthor.setItems();
     }
     @FXML
-    public void onNextPageClick(){
-        pageNumber = pageNumber + 1;
-        searchInDBAndLoadInTableView(authorName,pageNumber);
+    public void onNextAuthorPageClick(){
+        pageAuthor = pageAuthor + 1;
+        searchInDBAndLoadInTableView(authorName,pageAuthor);
+        pageAuthorField.setText(String.valueOf(pageAuthor+1));
     }
     @FXML
-    public void onPreviousPageClick(){
-        if(pageNumber>=1){
-            pageNumber = pageNumber - 1;
-            searchInDBAndLoadInTableView(authorName,pageNumber);
+    public void onPreviousAuthorPageClick(){
+        if(pageAuthor>=1){
+            pageAuthor = pageAuthor - 1;
+            pageAuthorField.setText(String.valueOf(pageAuthor+1));
+            searchInDBAndLoadInTableView(authorName,pageAuthor);
         }
     }
 }

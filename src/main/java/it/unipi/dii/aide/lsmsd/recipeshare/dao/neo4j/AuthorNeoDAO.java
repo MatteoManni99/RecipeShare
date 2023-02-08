@@ -71,9 +71,11 @@ public class AuthorNeoDAO {
         });
     }
 
-    public static List<Author> getFollowers(String authorName) throws Neo4jException {
+    public static List<Author> getFollowers(String authorName,Integer elementsToSkip, Integer elementsToLimit) throws Neo4jException {
         String query = "MATCH (f:Author)-[:FOLLOW]->(a:Author {name: $authorName})" +
-                "RETURN f.name as Name, f.avatar as Avatar";
+                "RETURN f.name as Name, f.avatar as Avatar " +
+                "SKIP " + elementsToSkip +
+                " LIMIT " + elementsToLimit;
         return Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
             Result result = tx.run(query, parameters("authorName", authorName));
             List<Author> follower = new ArrayList<>();
@@ -84,9 +86,11 @@ public class AuthorNeoDAO {
             return follower;
         });
     }
-    public static List<Author> getFollowing(String authorName) throws Neo4jException {
+    public static List<Author> getFollowing(String authorName,Integer elementsToSkip, Integer elementsToLimit) throws Neo4jException {
         String query = "MATCH (a:Author {name: $authorName})-[:FOLLOW]->(f:Author)" +
-                "RETURN f.name as Name, f.avatar as Avatar";
+                "RETURN f.name as Name, f.avatar as Avatar " +
+                "SKIP " + elementsToSkip +
+                " LIMIT " + elementsToLimit;
         return Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
             Result result = tx.run(query, parameters("authorName", authorName));
             List<Author> follower = new ArrayList<>();
@@ -97,10 +101,12 @@ public class AuthorNeoDAO {
             return follower;
         });
     }
-    public static List<Author> getAuthorSuggested(Author author) throws Neo4jException {
+    public static List<Author> getAuthorSuggested(Author author,Integer elementsToSkip, Integer elementsToLimit) throws Neo4jException {
         String query = "MATCH (a:Author {name: $authorName})-[:FOLLOW]->(f1:Author)-[:FOLLOW]->(f2:Author) " +
                 "RETURN f2.name as Name, f2.avatar as Avatar, COUNT(*) as Frequency " +
-                "ORDER BY Frequency DESC";
+                "ORDER BY Frequency DESC " +
+                "SKIP " + elementsToSkip +
+                " LIMIT " + elementsToLimit;
         return Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
             Result result = tx.run(query, parameters("authorName", author.getName()));
             List<Author> authorSuggested = new ArrayList<>();
@@ -139,10 +145,12 @@ public class AuthorNeoDAO {
             return recipeSuggested;
         });
     }
-    public static List<RecipeReducted> getRecipeSuggestedByReview(String authorName) throws Neo4jException {
+    public static List<RecipeReducted> getRecipeSuggestedByReview(String authorName,Integer elementsToSkip, Integer elementsToLimit) throws Neo4jException {
         String query = "MATCH (a:Author {name: $authorName})-[:FOLLOW]->(f:Author)-[r:REVIEW]->(n:Recipe) <-[:WRITE]-(b:Author)" +
                 "WHERE r.rating > 2 " +
-                "RETURN b.name as AuthorName, n.name as Name,  n.image as Image";
+                "RETURN b.name as AuthorName, n.name as Name,  n.image as Image " +
+                "SKIP " + elementsToSkip +
+                " LIMIT " + elementsToLimit;
         return Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
             Result result = tx.run(query, parameters("authorName", authorName));
             List<RecipeReducted> recipeSuggested = new ArrayList<>();
