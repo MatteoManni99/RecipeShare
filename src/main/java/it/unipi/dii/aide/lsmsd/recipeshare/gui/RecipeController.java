@@ -73,6 +73,8 @@ public class RecipeController implements Initializable {
 
     private final ArrayList<String> reviewers = new ArrayList<>();
 
+    private String pageBefore = null;
+
     private void printImages(){
         image.setImage(new Image(images_list.get(indexImages)));
     }
@@ -90,9 +92,10 @@ public class RecipeController implements Initializable {
 
     @FXML
     private void onBackClick(ActionEvent actionEvent) throws IOException {
-        if(data.getTypeOfUser().equals("moderator")){
+        /*if(data.getTypeOfUser().equals("moderator")){
             Utils.changeScene(actionEvent,"HomeModerator.fxml");
-        }else Utils.changeScene(actionEvent,"HomeAuthor.fxml");
+        }else Utils.changeScene(actionEvent,"HomeAuthor.fxml");*/
+        Utils.changeScene(actionEvent,pageBefore);
     }
 
     @FXML
@@ -210,6 +213,7 @@ public class RecipeController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        pageBefore = DataSingleton.getInstance().getPageBefore();
         ratingChoiceBox.setItems(FXCollections.observableArrayList(1,2,3,4,5));
         recipeName = data.getRecipeName();
         initializeTableViewReview();

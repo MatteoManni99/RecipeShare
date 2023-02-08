@@ -32,13 +32,16 @@ public class AuthorController implements Initializable {
     private String authorName;
     private Author author;
     private final TableViewAbstract tableViewAuthor = new TableViewRecipeWithoutAuthor();
+
+    private static String pageBefore = null;
     @FXML
     private AnchorPane anchorPane;
 
     @FXML
     public void onBackClick(ActionEvent actionEvent) throws IOException {
-        if(data.getTypeOfUser().equals("moderator")) Utils.changeScene(actionEvent,"HomeModerator.fxml");
-        else Utils.changeScene(actionEvent,"HomeAuthor.fxml");
+        Utils.changeScene(actionEvent,pageBefore);
+        /*if(data.getTypeOfUser().equals("moderator")) Utils.changeScene(actionEvent,"HomeModerator.fxml");
+        else Utils.changeScene(actionEvent,"HomeAuthor.fxml");*/
     }
 
     public void onFollowButtonClick(ActionEvent actionEvent) {
@@ -58,6 +61,8 @@ public class AuthorController implements Initializable {
             anchorPane.getChildren().remove(unfollowButton);
         }
 
+        if (DataSingleton.getInstance().getPageBefore().equals("Author.fxml")==false) pageBefore = DataSingleton.getInstance().getPageBefore();
+        DataSingleton.getInstance().setPageBefore("Author.fxml");
         authorName = data.getOtherAuthorName();
         author = AuthorService.getAuthor(authorName);
         //TODO forse da togliere

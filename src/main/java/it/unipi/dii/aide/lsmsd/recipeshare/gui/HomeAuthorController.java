@@ -23,6 +23,7 @@ public class HomeAuthorController implements Initializable{
     private TextField pageNumberField;
     private String nameToSearch = null;
     private Integer pageNumber = 0;
+    private String pageBefore = "HomeAuthor.fxml";
 
     @FXML
     public void onLogoutClick(ActionEvent actionEvent){
@@ -79,6 +80,7 @@ public class HomeAuthorController implements Initializable{
         TableViewObject.setTable();
         anchorPane.getChildren().add(TableViewObject.getTable());
         pageNumberField.setText(String.valueOf(pageNumber+1));
+        DataSingleton.getInstance().setPageBefore("HomeAuthor.fxml");
     }
 
     @FXML

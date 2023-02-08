@@ -7,6 +7,7 @@ public class DataSingleton {
     private static final DataSingleton instance = new DataSingleton();
     private String typeOfUser; //per distinguere tra author e moderatore dopo il login, lo uso per dare l'opzione
                                //di promozione o meno nel fxml Ricerca_Utente
+    private String pageBefore;
     private String recipeName;
     private Integer pageNumber;
     private Integer authorPromotion = null;
@@ -48,4 +49,6 @@ public class DataSingleton {
     public String getTypeOfUser() {return this.typeOfUser;}
     public void setAuthorPromotion(int quanto) {authorPromotion = quanto;}
     public int getAuthorPromotion() {return authorPromotion;}
+    public void setPageBefore(String pageBeforeName) {pageBefore = pageBeforeName;}
+    public String getPageBefore() {return pageBefore;}
 }

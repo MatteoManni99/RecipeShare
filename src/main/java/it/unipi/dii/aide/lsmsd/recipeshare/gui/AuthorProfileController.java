@@ -29,7 +29,6 @@ public class AuthorProfileController implements Initializable {
     public ImageView image;
     @FXML
     public Label avatarLabel = new Label();
-
     private final DataSingleton data = DataSingleton.getInstance();
     private final TableViewAbstract tableRecipe = new TableViewRecipeWithoutAuthor();
     @FXML
@@ -40,6 +39,8 @@ public class AuthorProfileController implements Initializable {
     private AnchorPane anchorPane;
     public ImageView avatarImage;
 
+    private String pageBefore = null;
+
     @FXML
     public void onBackClick(ActionEvent actionEvent) throws IOException {
         Utils.changeScene(actionEvent,"HomeAuthor.fxml");
@@ -47,6 +48,7 @@ public class AuthorProfileController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        DataSingleton.getInstance().setPageBefore("AuthorProfile.fxml");
         avatarImage.setImage(data.getAvatar().getImage());
         authorNameField.setText(data.getAuthorName());
         passwordField.setText(data.getPassword());

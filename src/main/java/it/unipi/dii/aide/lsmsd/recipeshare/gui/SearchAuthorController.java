@@ -27,6 +27,8 @@ public class SearchAuthorController implements Initializable {
     private String nameToSearch = null;
     private final TableViewAbstract tableViewAuthor = new TableViewAuthor();
 
+    private String pageBefore = null;
+
     @FXML
     public void onNextPageClick(){
         pageNumber = pageNumber + 1;
@@ -46,6 +48,8 @@ public class SearchAuthorController implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        pageBefore = DataSingleton.getInstance().getPageBefore();
+        DataSingleton.getInstance().setPageBefore("SearchAuthor.fxml");
         if (DataSingleton.getInstance().getTypeOfUser().equals("moderator")) {
             Button promoteAuthorButton = new Button("PROMOTE AUTHOR");
             promoteAuthorButton.setLayoutX(164);
@@ -57,9 +61,6 @@ public class SearchAuthorController implements Initializable {
             anchorPane.getChildren().add(promoteAuthorButton);
         }
         createTableView();
-
-        //questa parte sotto è quella che setta il Button per la promozione
-
     }
 
     public void createTableView () {

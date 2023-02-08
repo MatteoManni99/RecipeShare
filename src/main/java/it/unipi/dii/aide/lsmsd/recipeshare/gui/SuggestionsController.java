@@ -24,14 +24,18 @@ public class SuggestionsController implements Initializable {
     private final TableViewAbstract tableViewRecipeSugg = new TableViewRecipe();
     private final DataSingleton data = DataSingleton.getInstance();
 
+    private String pageBefore = null;
+
     @FXML
     public void onBackClick(ActionEvent actionEvent){
-        Utils.changeScene(actionEvent,"HomeAuthor.fxml");
+        DataSingleton.getInstance().setPageBefore("Suggestions.fxml");
+        Utils.changeScene(actionEvent,pageBefore);
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         createTableViewAuthorSugg();
         createTableViewRecipeSugg();
+        pageBefore = DataSingleton.getInstance().getPageBefore();
     }
 
     public void createTableViewAuthorSugg(){

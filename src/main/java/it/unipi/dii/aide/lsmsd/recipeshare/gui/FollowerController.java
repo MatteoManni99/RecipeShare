@@ -21,12 +21,15 @@ public class FollowerController implements Initializable {
     private final TableViewAbstract tableViewAuthorFollowing = new TableViewAuthor();
     private final DataSingleton data = DataSingleton.getInstance();
 
+    private String pageBefore = null;
+
     @FXML
     public void onBackClick(ActionEvent actionEvent){
         Utils.changeScene(actionEvent,"HomeAuthor.fxml");
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        DataSingleton.getInstance().setPageBefore("Follower.fxml");
         createTableViewFollowers();
         createTableViewFollowing();
     }

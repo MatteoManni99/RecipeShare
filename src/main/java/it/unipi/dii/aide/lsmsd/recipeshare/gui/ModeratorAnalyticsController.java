@@ -21,8 +21,8 @@ public class ModeratorAnalyticsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        DataSingleton.getInstance().setPageBefore("ModeratorAnalytics.fxml");
         createTableView();
-
     }
 
     public void createTableView () {

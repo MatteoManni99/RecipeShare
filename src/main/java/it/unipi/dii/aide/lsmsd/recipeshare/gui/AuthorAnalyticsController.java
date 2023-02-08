@@ -8,6 +8,7 @@ import it.unipi.dii.aide.lsmsd.recipeshare.gui.tableview.*;
 import it.unipi.dii.aide.lsmsd.recipeshare.model.Recipe;
 import it.unipi.dii.aide.lsmsd.recipeshare.gui.tableview.*;
 import javafx.css.StyleableObjectProperty;
+import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -21,10 +22,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class AuthorAnalyticsController {
+public class AuthorAnalyticsController implements Initializable {
     @FXML
     private AnchorPane anchorPane;
     private Button nextPage;
@@ -146,4 +149,8 @@ public class AuthorAnalyticsController {
         displayTableView(tableView);
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        DataSingleton.getInstance().setPageBefore("AuthorAnalytics.fxml");
+    }
 }
