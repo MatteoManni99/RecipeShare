@@ -2,7 +2,7 @@ package it.unipi.dii.aide.lsmsd.recipeshare.dao;
 
 import it.unipi.dii.aide.lsmsd.recipeshare.dao.mongo.RecipeMongoDAO;
 import it.unipi.dii.aide.lsmsd.recipeshare.model.Recipe;
-import it.unipi.dii.aide.lsmsd.recipeshare.model.RecipeReducted;
+import it.unipi.dii.aide.lsmsd.recipeshare.model.RecipeReduced;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +19,7 @@ public class RecipeMongoDAOTest {
             null, null, null, null, null, null,
             null, null);
 
-    static List<RecipeReducted> listMyRecipes = new ArrayList<>();
+    static List<RecipeReduced> listMyRecipes = new ArrayList<>();
 
     @Test
     void addRecipeTest(){
@@ -52,7 +52,7 @@ public class RecipeMongoDAOTest {
     @Test
     void getRecipeFromAuthorTest(){
         RecipeMongoDAO.addRecipe(recipe);
-        listMyRecipes.add(new RecipeReducted("Test", "1", null));
+        listMyRecipes.add(new RecipeReduced("Test", "1", null));
         assertEquals(listMyRecipes.get(0).getName(),
                 RecipeMongoDAO.getRecipeFromAuthor("1", 0, 1).get(0).getName());
         RecipeMongoDAO.deleteRecipe(recipe);

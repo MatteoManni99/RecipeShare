@@ -2,7 +2,7 @@ package it.unipi.dii.aide.lsmsd.recipeshare.dao.mongo;
 
 import it.unipi.dii.aide.lsmsd.recipeshare.Configuration;
 import it.unipi.dii.aide.lsmsd.recipeshare.model.Recipe;
-import it.unipi.dii.aide.lsmsd.recipeshare.model.RecipeReducted;
+import it.unipi.dii.aide.lsmsd.recipeshare.model.RecipeReduced;
 import it.unipi.dii.aide.lsmsd.recipeshare.model.Review;
 import it.unipi.dii.aide.lsmsd.recipeshare.persistence.MongoDBDriver;
 import com.mongodb.MongoException;
@@ -80,8 +80,8 @@ public class RecipeMongoDAO {
                 find(new Document("Name",name)).cursor().hasNext();
     }
 
-    public static List<RecipeReducted> getRecipeFromAuthor(String authorName, Integer elementToSkip, Integer elementsToLimit) throws MongoException{
-        List<RecipeReducted> recipeReducted = new ArrayList<>();
+    public static List<RecipeReduced> getRecipeFromAuthor(String authorName, Integer elementToSkip, Integer elementsToLimit) throws MongoException{
+        List<RecipeReduced> recipeReduced = new ArrayList<>();
         MongoCollection<Document> collection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);
         Bson match = match(new Document("AuthorName", authorName));
         Bson project = project(new Document("Name", 1).append("AuthorName", 1)
@@ -89,20 +89,20 @@ public class RecipeMongoDAO {
         MongoCursor<Document> cursor = (authorName == null) ?
                 collection.aggregate(Arrays.asList(skip(elementToSkip),limit(elementsToLimit),project)).iterator() :
                 collection.aggregate(Arrays.asList(match,skip(elementToSkip),limit(elementsToLimit),project)).iterator();
-        cursor.forEachRemaining(recipeDoc -> recipeReducted.add(new RecipeReducted(recipeDoc.getString("Name"),
+        cursor.forEachRemaining(recipeDoc -> recipeReduced.add(new RecipeReduced(recipeDoc.getString("Name"),
                 recipeDoc.getString("AuthorName"), recipeDoc.getString("Images"))));
-        return recipeReducted;
+        return recipeReduced;
     }
 
-    public static List<RecipeReducted> getRecipeFromName(String name, Integer elementToSkip, Integer elementsToLimit) throws MongoException{
-        List<RecipeReducted> recipesList = new ArrayList<>();
+    public static List<RecipeReduced> getRecipeFromName(String name, Integer elementToSkip, Integer elementsToLimit) throws MongoException{
+        List<RecipeReduced> recipesList = new ArrayList<>();
         MongoCollection<Document> collection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);
         Bson match = match(new Document("Name",new Document("$regex",name).append("$options","i")));
         Bson project = project(new Document("Name",1).append("AuthorName",1).append("Images", new Document("$first","$Images")));
         MongoCursor<Document> cursor = (name == null) ?
                 collection.aggregate(Arrays.asList(skip(elementToSkip),limit(elementsToLimit),project)).iterator() :
                 collection.aggregate(Arrays.asList(match,skip(elementToSkip),limit(elementsToLimit),project)).iterator();
-        cursor.forEachRemaining(recipeDoc -> recipesList.add(new RecipeReducted(recipeDoc.getString("Name"),
+        cursor.forEachRemaining(recipeDoc -> recipesList.add(new RecipeReduced(recipeDoc.getString("Name"),
                 recipeDoc.getString("AuthorName"), recipeDoc.getString("Images"))));
         return recipesList;
     }

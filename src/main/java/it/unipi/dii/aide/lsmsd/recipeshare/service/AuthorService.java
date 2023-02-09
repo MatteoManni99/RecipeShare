@@ -1,11 +1,10 @@
 package it.unipi.dii.aide.lsmsd.recipeshare.service;
 
 import it.unipi.dii.aide.lsmsd.recipeshare.dao.mongo.AuthorMongoDAO;
-import it.unipi.dii.aide.lsmsd.recipeshare.dao.mongo.RecipeMongoDAO;
 import it.unipi.dii.aide.lsmsd.recipeshare.dao.neo4j.AuthorNeoDAO;
 import it.unipi.dii.aide.lsmsd.recipeshare.model.Author;
 import com.mongodb.MongoException;
-import it.unipi.dii.aide.lsmsd.recipeshare.model.RecipeReducted;
+import it.unipi.dii.aide.lsmsd.recipeshare.model.RecipeReduced;
 import org.neo4j.driver.exceptions.Neo4jException;
 
 import java.util.List;
@@ -68,8 +67,8 @@ public class AuthorService {
         authorSuggested.remove(author);
         return authorSuggested;
     }
-    public static List<RecipeReducted> getRecipeSuggested(String authorName,Integer elementsToSkip, Integer elementsToLimit){
-        List<RecipeReducted> recipeSuggested = AuthorNeoDAO.getRecipeSuggestedByWrite(authorName);
+    public static List<RecipeReduced> getRecipeSuggested(String authorName, Integer elementsToSkip, Integer elementsToLimit){
+        List<RecipeReduced> recipeSuggested = AuthorNeoDAO.getRecipeSuggestedByWrite(authorName);
         recipeSuggested.addAll(AuthorNeoDAO.getRecipeSuggestedByReview(authorName,elementsToSkip,elementsToLimit));
         recipeSuggested.removeAll(AuthorNeoDAO.getRecipeAdded(authorName));
         return recipeSuggested.stream().distinct().toList();

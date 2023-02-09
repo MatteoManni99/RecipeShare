@@ -61,9 +61,9 @@ public class AuthorProfileController implements Initializable {
     public void searchInDBAndLoadInTableView(Integer pageRecipe) { //chiamata a DAO
         tableRecipe.resetObservableArrayList();
         RecipeService.getRecipeFromAuthor(data.getAuthorName(),
-                10 * pageRecipe,10).forEach(recipeReducted ->
-                tableRecipe.addToObservableArrayList(new RowRecipe( recipeReducted.getName(),
-                        recipeReducted.getAuthorName(), new RowImage(new ImageView(recipeReducted.getImage())).getImage())));
+                10 * pageRecipe,10).forEach(recipeReduced ->
+                tableRecipe.addToObservableArrayList(new RowRecipe( recipeReduced.getName(),
+                        recipeReduced.getAuthorName(), new RowImage(new ImageView(recipeReduced.getImage())).getImage())));
         tableRecipe.setItems();
     }
 

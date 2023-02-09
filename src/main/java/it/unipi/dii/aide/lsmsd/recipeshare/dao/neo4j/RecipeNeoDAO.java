@@ -1,5 +1,5 @@
 package it.unipi.dii.aide.lsmsd.recipeshare.dao.neo4j;
-import it.unipi.dii.aide.lsmsd.recipeshare.model.RecipeReducted;
+import it.unipi.dii.aide.lsmsd.recipeshare.model.RecipeReduced;
 import it.unipi.dii.aide.lsmsd.recipeshare.persistence.Neo4jDriver;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.exceptions.Neo4jException;
@@ -13,7 +13,7 @@ public class RecipeNeoDAO {
             return result.next().get("COUNT(n)").asInt() == 0;
         });
     }
-    public static void addRecipe(RecipeReducted recipe){
+    public static void addRecipe(RecipeReduced recipe){
         Neo4jDriver.getNeoDriver().getSession().executeWriteWithoutResult(tx -> {
             tx.run("CREATE (n:Recipe {name: $name, image: $image})",
                     parameters("name", recipe.getName(), "image", recipe.getImage()));

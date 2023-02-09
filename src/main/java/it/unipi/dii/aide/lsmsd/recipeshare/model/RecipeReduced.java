@@ -2,15 +2,12 @@ package it.unipi.dii.aide.lsmsd.recipeshare.model;
 
 import java.util.Objects;
 
-public class RecipeReducted {
-
+public class RecipeReduced {
     private String name;
-
     private String authorName;
-
     private String image;
 
-    public RecipeReducted(String name, String authorName, String image){
+    public RecipeReduced(String name, String authorName, String image){
         this.name = name;
         this.authorName = authorName;
         this.image = image;
@@ -44,7 +41,7 @@ public class RecipeReducted {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RecipeReducted recipe = (RecipeReducted) o;
+        RecipeReduced recipe = (RecipeReduced) o;
         return Objects.equals(image, recipe.image) &&
                 Objects.equals(authorName, recipe.authorName) &&
                 Objects.equals(name, recipe.name);
