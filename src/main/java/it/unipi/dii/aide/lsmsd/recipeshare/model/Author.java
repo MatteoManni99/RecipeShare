@@ -8,18 +8,17 @@ public class Author extends User{
     private Double score;
 
     public Author(String name, String password, Integer image, Integer promotion){
-        this.setName(name);
-        this.setPassword(password);
+        super(name,password);
         this.image = image;
         this.promotion = promotion;
     }
     public Author(String name,Double score, Integer image){
-        this.setName(name);
+        super(name);
         this.score = score;
         this.image = image;
     }
     public Author(String name,Integer image){
-        this.setName(name);
+        super(name);
         this.image = image;
     }
     @Override

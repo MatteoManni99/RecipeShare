@@ -175,6 +175,8 @@ public class AuthorNeoDAO {
                         //}
                         //"SKIP $elementsToSkip " +
                         //"LIMIT $elementsToLimit";
+        Integer elementsToLimit_ = elementsToLimit;
+        Integer elementsToSkip_ = elementsToSkip;
         return Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
             Result result = tx.run(query, parameters("authorName", authorName));
                   //  ,"elementsToSkip", elementsToSkip, "elementsToLimit", elementsToLimit));
@@ -184,14 +186,20 @@ public class AuthorNeoDAO {
                 recipeSuggested.add(new RecipeReduced(r.get("Name").asString(),r.get("AuthorName").asString(),
                         r.get("Image").asString()));
             }
-            Integer elementsToLimit_ = elementsToLimit;
-            if(recipeSuggested.size() > elementsToSkip){
+
+            if(recipeSuggested.size() > elementsToSkip + elementsToLimit)
+            {
                 System.out.println("prova");
-                if(recipeSuggested.size() < elementsToLimit){
-                    System.out.println("prova2");
-                    elementsToLimit_ = recipeSuggested.size();}
-                return recipeSuggested.subList(elementsToSkip, elementsToLimit_ + elementsToSkip);
-            }else return new ArrayList<>();
+                return recipeSuggested.subList(elementsToSkip, elementsToLimit + elementsToSkip);
+            }
+            else
+            {
+                if (elementsToSkip > elementsToSkip + (recipeSuggested.size() - elementsToSkip)) return new ArrayList<RecipeReduced>();
+                System.out.println("prova2");
+                System.out.println(elementsToSkip);
+                System.out.println(elementsToSkip + (recipeSuggested.size() - elementsToSkip));
+                return recipeSuggested.subList(elementsToSkip, elementsToSkip + (recipeSuggested.size() - elementsToSkip));
+            }
         });
     }
 }
