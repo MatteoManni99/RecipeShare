@@ -103,6 +103,7 @@ public class AuthorNeoDAO {
     }
     public static List<Author> getAuthorSuggested(Author author,Integer elementsToSkip, Integer elementsToLimit) throws Neo4jException {
         String query = "MATCH (a:Author {name: $authorName})-[:FOLLOW]->(f1:Author)-[:FOLLOW]->(f2:Author) " +
+                "WHERE NOT (a)-[:FOLLOW]->(f2) AND f2.name <> $authorName " +
                 "RETURN f2.name as Name, f2.avatar as Avatar, COUNT(*) as Frequency " +
                 "ORDER BY Frequency DESC " +
                 "SKIP " + elementsToSkip +
@@ -153,6 +154,28 @@ public class AuthorNeoDAO {
                 " LIMIT " + elementsToLimit;
         return Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
             Result result = tx.run(query, parameters("authorName", authorName));
+            List<RecipeReduced> recipeSuggested = new ArrayList<>();
+            while(result.hasNext()) {
+                Record r = result.next();
+                recipeSuggested.add(new RecipeReduced(r.get("Name").asString(),r.get("AuthorName").asString(),
+                        r.get("Image").asString()));
+            }
+            return recipeSuggested;
+        });
+    }
+    public static List<RecipeReduced> getRecipeSuggested(String authorName, Integer elementsToSkip, Integer elementsToLimit) throws Neo4jException {
+        String query = "MATCH (a:Author {name: $authorName})-[:FOLLOW]->(b:Author)-[:WRITE]->(r:Recipe) "+
+                        "WHERE NOT (r)<-[:WRITE]-(a) AND NOT (r)<-[:REVIEW]-(a) "+
+                        "RETURN b.name as AuthorName, r.name as Name,  r.image as Image "+
+                        "UNION "+
+                        "MATCH (a:Author {name:$authorName})-[:FOLLOW]->(b:Author)-[rev:REVIEW]->(r:Recipe) "+
+                        "WHERE NOT (r)<-[:WRITE]-(a) AND NOT (r)<-[:REVIEW]-(a) AND rev.rating>2 "+
+                        "RETURN b.name as AuthorName, r.name as Name,  r.image as Image "+
+                        "SKIP $elementsToSkip " +
+                        "LIMIT $elementsToLimit";
+        return Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
+            Result result = tx.run(query, parameters("authorName", authorName, "elementsToSkip",
+                    elementsToSkip, "elementsToLimit", elementsToLimit));
             List<RecipeReduced> recipeSuggested = new ArrayList<>();
             while(result.hasNext()) {
                 Record r = result.next();

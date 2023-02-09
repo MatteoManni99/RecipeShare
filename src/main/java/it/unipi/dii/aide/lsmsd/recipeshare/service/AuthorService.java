@@ -55,23 +55,25 @@ public class AuthorService {
         }
         return true;
     }
-    public static List<Author> getFollowers(String authorName,Integer elementsToSkip, Integer elementsToLimit){
+    public static List<Author> getFollowers(String authorName, Integer elementsToSkip, Integer elementsToLimit){
         return AuthorNeoDAO.getFollowers(authorName,elementsToSkip,elementsToLimit);
     }
-    public static List<Author> getFollowing(String authorName,Integer elementsToSkip, Integer elementsToLimit){
+    public static List<Author> getFollowing(String authorName, Integer elementsToSkip, Integer elementsToLimit){
         return AuthorNeoDAO.getFollowing(authorName,elementsToSkip,elementsToLimit);
     }
-    public static List<Author> getAuthorSuggested(Author author,Integer elementsToSkip, Integer elementsToLimit){
-        List<Author> authorSuggested = AuthorNeoDAO.getAuthorSuggested(author,elementsToSkip,elementsToLimit);
-        authorSuggested.removeAll(AuthorNeoDAO.getFollowing(author.getName(),elementsToSkip,elementsToLimit));
-        authorSuggested.remove(author);
-        return authorSuggested;
+    public static List<Author> getAuthorSuggested(Author author, Integer elementsToSkip, Integer elementsToLimit){
+        return AuthorNeoDAO.getAuthorSuggested(author, elementsToSkip, elementsToLimit);
+        //List<Author> authorSuggested = AuthorNeoDAO.getAuthorSuggested(author,elementsToSkip,elementsToLimit);
+        //authorSuggested.removeAll(AuthorNeoDAO.getFollowing(author.getName(),elementsToSkip,elementsToLimit));
+        //authorSuggested.remove(author);
+        //return authorSuggested;
     }
     public static List<RecipeReduced> getRecipeSuggested(String authorName, Integer elementsToSkip, Integer elementsToLimit){
-        List<RecipeReduced> recipeSuggested = AuthorNeoDAO.getRecipeSuggestedByWrite(authorName);
-        recipeSuggested.addAll(AuthorNeoDAO.getRecipeSuggestedByReview(authorName,elementsToSkip,elementsToLimit));
-        recipeSuggested.removeAll(AuthorNeoDAO.getRecipeAdded(authorName));
-        return recipeSuggested.stream().distinct().toList();
+        return AuthorNeoDAO.getRecipeSuggested(authorName, elementsToSkip, elementsToLimit);
+        //List<RecipeReduced> recipeSuggested = AuthorNeoDAO.getRecipeSuggestedByWrite(authorName);
+        //recipeSuggested.addAll(AuthorNeoDAO.getRecipeSuggestedByReview(authorName,elementsToSkip,elementsToLimit));
+        //recipeSuggested.removeAll(AuthorNeoDAO.getRecipeAdded(authorName));
+        //return recipeSuggested.stream().distinct().toList();
     }
     public static void updatePromotion(String authorName, Integer newPromotionValue){
         AuthorMongoDAO.updatePromotion(authorName, newPromotionValue);
