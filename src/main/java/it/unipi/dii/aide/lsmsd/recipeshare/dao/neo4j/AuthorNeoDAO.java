@@ -164,25 +164,34 @@ public class AuthorNeoDAO {
         });
     }
     public static List<RecipeReduced> getRecipeSuggested(String authorName, Integer elementsToSkip, Integer elementsToLimit) throws Neo4jException {
-        String query = "MATCH (a:Author {name: $authorName})-[:FOLLOW]->(b:Author)-[:WRITE]->(r:Recipe) "+
+        String query =  //CALL{ call method was implemented only in 4.1+ v. of neo4j
+                        "MATCH (a:Author {name: $authorName})-[:FOLLOW]->(b:Author)-[:WRITE]->(r:Recipe) "+
                         "WHERE NOT (r)<-[:WRITE]-(a) AND NOT (r)<-[:REVIEW]-(a) "+
                         "RETURN b.name as AuthorName, r.name as Name,  r.image as Image "+
                         "UNION "+
                         "MATCH (a:Author {name:$authorName})-[:FOLLOW]->(b:Author)-[rev:REVIEW]->(r:Recipe) "+
                         "WHERE NOT (r)<-[:WRITE]-(a) AND NOT (r)<-[:REVIEW]-(a) AND rev.rating>2 "+
-                        "RETURN b.name as AuthorName, r.name as Name,  r.image as Image "+
-                        "SKIP $elementsToSkip " +
-                        "LIMIT $elementsToLimit";
+                        "RETURN b.name as AuthorName, r.name as Name,  r.image as Image ";
+                        //}
+                        //"SKIP $elementsToSkip " +
+                        //"LIMIT $elementsToLimit";
         return Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
-            Result result = tx.run(query, parameters("authorName", authorName, "elementsToSkip",
-                    elementsToSkip, "elementsToLimit", elementsToLimit));
+            Result result = tx.run(query, parameters("authorName", authorName));
+                  //  ,"elementsToSkip", elementsToSkip, "elementsToLimit", elementsToLimit));
             List<RecipeReduced> recipeSuggested = new ArrayList<>();
             while(result.hasNext()) {
                 Record r = result.next();
                 recipeSuggested.add(new RecipeReduced(r.get("Name").asString(),r.get("AuthorName").asString(),
                         r.get("Image").asString()));
             }
-            return recipeSuggested;
+            Integer elementsToLimit_ = elementsToLimit;
+            if(recipeSuggested.size() > elementsToSkip){
+                System.out.println("prova");
+                if(recipeSuggested.size() < elementsToLimit){
+                    System.out.println("prova2");
+                    elementsToLimit_ = recipeSuggested.size();}
+                return recipeSuggested.subList(elementsToSkip, elementsToLimit_ + elementsToSkip);
+            }else return new ArrayList<>();
         });
     }
 }
