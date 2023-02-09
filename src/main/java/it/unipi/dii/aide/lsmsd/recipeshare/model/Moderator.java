@@ -1,27 +1,10 @@
 package it.unipi.dii.aide.lsmsd.recipeshare.model;
 
-public class Moderator {
-    private String name;
-    private String password;
+public class Moderator extends User{
 
     public Moderator(String name,String password) {
-        this.name = name;
-        this.password = password;
+        this.setName(name);
+        this.setPassword(password);
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

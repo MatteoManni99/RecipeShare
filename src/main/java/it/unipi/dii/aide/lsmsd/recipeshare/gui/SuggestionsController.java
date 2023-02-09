@@ -8,7 +8,7 @@ import it.unipi.dii.aide.lsmsd.recipeshare.gui.tableview.TableViewAbstract;
 import it.unipi.dii.aide.lsmsd.recipeshare.gui.tableview.TableViewAuthor;
 import it.unipi.dii.aide.lsmsd.recipeshare.gui.tableview.TableViewRecipe;
 import it.unipi.dii.aide.lsmsd.recipeshare.model.Author;
-import it.unipi.dii.aide.lsmsd.recipeshare.model.RecipeReducted;
+import it.unipi.dii.aide.lsmsd.recipeshare.model.RecipeReduced;
 import it.unipi.dii.aide.lsmsd.recipeshare.service.AuthorService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,7 +28,7 @@ public class SuggestionsController implements Initializable {
     private final TableViewAbstract tableViewRecipeSugg = new TableViewRecipe();
     private final DataSingleton data = DataSingleton.getInstance();
 
-    private List<RecipeReducted> suggestedRecipe;
+    private List<RecipeReduced> suggestedRecipe;
     private Integer pageRecipe = 0;
 
     private Integer pageAuthor = 0;
@@ -119,13 +119,13 @@ public class SuggestionsController implements Initializable {
     private void loadInTableView(Integer pageRecipe){
         tableViewRecipeSugg.resetObservableArrayList();
         if((suggestedRecipe.size()-pageRecipe*10)>=10) {
-            suggestedRecipe.subList(pageRecipe*10, pageRecipe*10 + 10).forEach(recipeReducted ->
-                    tableViewRecipeSugg.addToObservableArrayList(new RowRecipe(recipeReducted.getName(), recipeReducted.getAuthorName(),
-                            new ImageView(recipeReducted.getImage()))));
+            suggestedRecipe.subList(pageRecipe*10, pageRecipe*10 + 10).forEach(recipeReduced ->
+                    tableViewRecipeSugg.addToObservableArrayList(new RowRecipe(recipeReduced.getName(), recipeReduced.getAuthorName(),
+                            new ImageView(recipeReduced.getImage()))));
         }else {
-            suggestedRecipe.subList(pageRecipe*10, suggestedRecipe.size()).forEach(recipeReducted ->
-                tableViewRecipeSugg.addToObservableArrayList(new RowRecipe(recipeReducted.getName(), recipeReducted.getAuthorName(),
-                        new ImageView(recipeReducted.getImage()))));
+            suggestedRecipe.subList(pageRecipe*10, suggestedRecipe.size()).forEach(recipeReduced ->
+                tableViewRecipeSugg.addToObservableArrayList(new RowRecipe(recipeReduced.getName(), recipeReduced.getAuthorName(),
+                        new ImageView(recipeReduced.getImage()))));
             nextRecipePageButton.setDisable(true);
         }
         tableViewRecipeSugg.setItems();

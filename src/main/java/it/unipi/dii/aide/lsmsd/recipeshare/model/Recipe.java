@@ -3,9 +3,7 @@ package it.unipi.dii.aide.lsmsd.recipeshare.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Recipe {
-    private String name;
-    private String authorName;
+public class Recipe extends RecipeReduced {
     private Integer totalTime;
     private String datePublished;
     private String description;
@@ -22,8 +20,7 @@ public class Recipe {
     public Recipe(String name, String authorName,Integer totalTime, String datePublished, String description, List<String> images,
            String recipeCategory, List<String> keywords, List<String> recipeIngredientParts, Double aggregatedRating,
            Double calories, Double recipeServings, List<String> recipeInstructions, List<Review> reviews){
-        this.name = name;
-        this.authorName = authorName;
+        super(name,authorName,images.get(0));
         this.totalTime = totalTime ;
         this.datePublished = datePublished;
         this.description = description;
@@ -36,22 +33,6 @@ public class Recipe {
         this.recipeServings = recipeServings;
         this.recipeInstructions = recipeInstructions;
         this.reviews = reviews;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAuthorName() {
-        return authorName;
-    }
-
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
     }
 
     public Integer getTotalTime() {
@@ -152,7 +133,7 @@ public class Recipe {
 
     @Override
     public String toString(){
-        return "Name: " + name + "\nAuthorName: " + authorName + "\nTotalTime " + totalTime
+        return "Name: " + getName() + "\nAuthorName: " + getAuthorName() + "\nTotalTime " + totalTime
                 + "\ndatePublished " + datePublished + "\ndescription "+ description + "\nimages"+ images
                 + "\nrecipeCategory " + recipeCategory + "\nkeywords " + keywords + "\nrecipeIngredientParts " + recipeIngredientParts
                 + "\naggregatedRating " + aggregatedRating + "\ncalories " + calories

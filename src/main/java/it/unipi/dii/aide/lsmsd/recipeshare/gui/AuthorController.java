@@ -92,8 +92,8 @@ public class AuthorController implements Initializable {
     public void searchInDBAndLoadInTableView(String nameToSearch, Integer pageNumber) {
         tableViewAuthor.resetObservableArrayList();
         RecipeService.getRecipeFromAuthor(nameToSearch, pageNumber*10, 10)
-                .forEach(recipeReducted -> tableViewAuthor.addToObservableArrayList(
-                        new RowRecipe(recipeReducted.getName(), recipeReducted.getAuthorName(), new ImageView(recipeReducted.getImage()))));
+                .forEach(recipeReduced -> tableViewAuthor.addToObservableArrayList(
+                        new RowRecipe(recipeReduced.getName(), recipeReduced.getAuthorName(), new ImageView(recipeReduced.getImage()))));
         tableViewAuthor.setItems();
     }
     @FXML

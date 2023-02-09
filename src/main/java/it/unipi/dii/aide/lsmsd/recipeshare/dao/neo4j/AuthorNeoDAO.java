@@ -1,7 +1,7 @@
 package it.unipi.dii.aide.lsmsd.recipeshare.dao.neo4j;
 
 import it.unipi.dii.aide.lsmsd.recipeshare.model.Author;
-import it.unipi.dii.aide.lsmsd.recipeshare.model.RecipeReducted;
+import it.unipi.dii.aide.lsmsd.recipeshare.model.RecipeReduced;
 import it.unipi.dii.aide.lsmsd.recipeshare.persistence.Neo4jDriver;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
@@ -117,35 +117,35 @@ public class AuthorNeoDAO {
             return authorSuggested;
         });
     }
-    public static List<RecipeReducted> getRecipeAdded(String authorName) throws Neo4jException {
+    public static List<RecipeReduced> getRecipeAdded(String authorName) throws Neo4jException {
         String query = "MATCH (a:Author {name: $authorName})-[:WRITE]->(r:Recipe)" +
                 "RETURN r.name as Name, r.image as Image";
         return Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
             Result result = tx.run(query, parameters("authorName", authorName));
-            List<RecipeReducted> recipeAdded = new ArrayList<>();
+            List<RecipeReduced> recipeAdded = new ArrayList<>();
             while(result.hasNext()) {
                 Record r = result.next();
-                recipeAdded.add(new RecipeReducted(r.get("Name").asString(),authorName,r.get("Image").asString()));
+                recipeAdded.add(new RecipeReduced(r.get("Name").asString(),authorName,r.get("Image").asString()));
             }
             return recipeAdded;
         });
     }
-    public static List<RecipeReducted> getRecipeSuggestedByWrite(String authorName) throws Neo4jException {
+    public static List<RecipeReduced> getRecipeSuggestedByWrite(String authorName) throws Neo4jException {
         String query = "MATCH (a:Author {name: $authorName})-[:FOLLOW]->(f:Author)-[:WRITE]->(n:Recipe) " +
                 "RETURN f.name as AuthorName, n.name as Name,  n.image as Image";
 
         return Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
             Result result = tx.run(query, parameters("authorName", authorName));
-            List<RecipeReducted> recipeSuggested = new ArrayList<>();
+            List<RecipeReduced> recipeSuggested = new ArrayList<>();
             while(result.hasNext()) {
                 Record r = result.next();
-                recipeSuggested.add(new RecipeReducted(r.get("Name").asString(),r.get("AuthorName").asString(),
+                recipeSuggested.add(new RecipeReduced(r.get("Name").asString(),r.get("AuthorName").asString(),
                         r.get("Image").asString()));
             }
             return recipeSuggested;
         });
     }
-    public static List<RecipeReducted> getRecipeSuggestedByReview(String authorName,Integer elementsToSkip, Integer elementsToLimit) throws Neo4jException {
+    public static List<RecipeReduced> getRecipeSuggestedByReview(String authorName, Integer elementsToSkip, Integer elementsToLimit) throws Neo4jException {
         String query = "MATCH (a:Author {name: $authorName})-[:FOLLOW]->(f:Author)-[r:REVIEW]->(n:Recipe) <-[:WRITE]-(b:Author)" +
                 "WHERE r.rating > 2 " +
                 "RETURN b.name as AuthorName, n.name as Name,  n.image as Image " +
@@ -153,10 +153,10 @@ public class AuthorNeoDAO {
                 " LIMIT " + elementsToLimit;
         return Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
             Result result = tx.run(query, parameters("authorName", authorName));
-            List<RecipeReducted> recipeSuggested = new ArrayList<>();
+            List<RecipeReduced> recipeSuggested = new ArrayList<>();
             while(result.hasNext()) {
                 Record r = result.next();
-                recipeSuggested.add(new RecipeReducted(r.get("Name").asString(),r.get("AuthorName").asString(),
+                recipeSuggested.add(new RecipeReduced(r.get("Name").asString(),r.get("AuthorName").asString(),
                         r.get("Image").asString()));
             }
             return recipeSuggested;
