@@ -131,6 +131,7 @@ public class AuthorNeoDAO {
             return recipeAdded;
         });
     }
+    @Deprecated
     public static List<RecipeReduced> getRecipeSuggestedByWrite(String authorName) throws Neo4jException {
         String query = "MATCH (a:Author {name: $authorName})-[:FOLLOW]->(f:Author)-[:WRITE]->(n:Recipe) " +
                 "RETURN f.name as AuthorName, n.name as Name,  n.image as Image";
@@ -146,6 +147,7 @@ public class AuthorNeoDAO {
             return recipeSuggested;
         });
     }
+    @Deprecated
     public static List<RecipeReduced> getRecipeSuggestedByReview(String authorName, Integer elementsToSkip, Integer elementsToLimit) throws Neo4jException {
         String query = "MATCH (a:Author {name: $authorName})-[:FOLLOW]->(f:Author)-[r:REVIEW]->(n:Recipe) <-[:WRITE]-(b:Author)" +
                 "WHERE r.rating > 2 " +
@@ -175,8 +177,6 @@ public class AuthorNeoDAO {
                         //}
                         //"SKIP $elementsToSkip " +
                         //"LIMIT $elementsToLimit";
-        Integer elementsToLimit_ = elementsToLimit;
-        Integer elementsToSkip_ = elementsToSkip;
         return Neo4jDriver.getNeoDriver().getSession().executeRead(tx -> {
             Result result = tx.run(query, parameters("authorName", authorName));
                   //  ,"elementsToSkip", elementsToSkip, "elementsToLimit", elementsToLimit));
