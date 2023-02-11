@@ -62,12 +62,11 @@ public class AuthorController implements Initializable {
         }
 
         pageAuthorField.setText(String.valueOf(pageAuthor+1));
-        if (DataSingleton.getInstance().getPageBefore().equals("Author.fxml")==false) pageBefore = DataSingleton.getInstance().getPageBefore();
+        if (!DataSingleton.getInstance().getPageBefore().equals("Author.fxml")) pageBefore = DataSingleton.getInstance().getPageBefore();
         DataSingleton.getInstance().setPageBefore("Author.fxml");
         authorName = data.getOtherAuthorName();
         author = AuthorService.getAuthor(authorName);
-        //TODO forse da togliere
-        if (author == null) System.out.println("NON ESISTE NELLA COLLECTION AUTHOR"); //problema: authorName c'è in Recipe ma non in Author
+        //if (author == null) System.out.println("NON ESISTE NELLA COLLECTION AUTHOR"); //problema: authorName c'è in Recipe ma non in Author
 
         if(AuthorService.checkIfFollowIsAvailable(data.getAuthorName(),author.getName()))
             unfollowButton.setDisable(true);

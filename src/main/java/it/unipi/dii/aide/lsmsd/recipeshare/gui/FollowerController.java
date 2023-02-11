@@ -76,8 +76,8 @@ public class FollowerController implements Initializable {
     }
 
     public void createTableViewFollowers(){
-        tableViewAuthorFollowers.getTable().setLayoutX(20);
-        tableViewAuthorFollowers.getTable().setLayoutY(140);
+        tableViewAuthorFollowers.getTable().setLayoutX(119);
+        tableViewAuthorFollowers.getTable().setLayoutY(150);
         tableViewAuthorFollowers.getTable().setPrefSize(250,400);
         tableViewAuthorFollowers.setEventForTableCells();
         searchInDBAndLoadInTableViewFollowers(data.getAuthorName());
@@ -93,8 +93,8 @@ public class FollowerController implements Initializable {
         tableViewAuthorFollowers.setItems();
     }
     public void createTableViewFollowing(){
-        tableViewAuthorFollowing.getTable().setLayoutX(420);
-        tableViewAuthorFollowing.getTable().setLayoutY(140);
+        tableViewAuthorFollowing.getTable().setLayoutX(431);
+        tableViewAuthorFollowing.getTable().setLayoutY(150);
         tableViewAuthorFollowing.getTable().setPrefSize(250,400);
         tableViewAuthorFollowing.setEventForTableCells();
         searchInDBAndLoadInTableViewFollowing(data.getAuthorName());

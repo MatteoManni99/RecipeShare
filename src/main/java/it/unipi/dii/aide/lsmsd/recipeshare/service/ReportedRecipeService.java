@@ -23,16 +23,15 @@ public class ReportedRecipeService {
         try{
             ReportedRecipeMongoDAO.removeReportedRecipe(recipe.getName());
             return true;
-        }catch (Exception e){return false;} //TODO rollback (in teoria non c'è bisogno del rollback)
+        }catch (Exception e){return false;}
     }
     public static boolean notApproveReportedRecipe(Recipe recipe) {
-        if(!RecipeService.deleteRecipe(recipe)){
+        if(RecipeService.deleteRecipe(recipe)){
             try{
                 ReportedRecipeMongoDAO.removeReportedRecipe(recipe.getName());
                 return true;
             }catch (MongoException e){ return false; }
-        }
-        return true;
+        }else return false;
     }
 
     public static List<ReportedRecipe> getListReportedRecipes(String nameToSearch, Integer elementToSkip, Integer elementsToLimit) {

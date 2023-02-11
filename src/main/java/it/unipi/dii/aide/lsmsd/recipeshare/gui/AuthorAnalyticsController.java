@@ -82,7 +82,6 @@ public class AuthorAnalyticsController implements Initializable {
                 tableView.addToObservableArrayList( new RowRecipeIngredients(s, integer)));
         displayTableView(tableView);
     }
-    //TODO implementare la paginazione
     public void onRecipesWithHighestratingClick(ActionEvent actionEvent) {
         removeButton();
         TableViewAbstract tableView = new TableViewRecipeRating();

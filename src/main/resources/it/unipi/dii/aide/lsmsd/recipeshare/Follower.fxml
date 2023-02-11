@@ -11,18 +11,18 @@
         <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0">
             <children>
                 <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#onBackClick" text="BACK&#10;HOME" textAlignment="CENTER" />
-            <Label layoutX="79.0" layoutY="87.0" text="FOLLOWERS" />
-            <Label layoutX="478.0" layoutY="91.0" text="FOLLOWING" />
-            <Button layoutX="39.0" layoutY="109.0" mnemonicParsing="false" onAction="#onPreviousFollowersPageClick" text="&lt;&lt;&lt;" />
-            <Button layoutX="146.0" layoutY="110.0" mnemonicParsing="false" onAction="#onNextFollowersPageClick" text="&gt;&gt;&gt;" />
-            <TextField fx:id="pageFollowersField" layoutX="92.0" layoutY="109.0" prefHeight="26.0" prefWidth="41.0" />
-            <Button layoutX="549.0" layoutY="118.0" mnemonicParsing="false" onAction="#onNextFollowingPageClick" text="&gt;&gt;&gt;" />
-            <TextField fx:id="pageFollowingField" layoutX="491.0" layoutY="117.0" prefHeight="26.0" prefWidth="41.0" />
-            <Button layoutX="432.0" layoutY="118.0" mnemonicParsing="false" onAction="#onPreviousFollowingPageClick" text="&lt;&lt;&lt;" />
-            <Label layoutX="38.0" layoutY="146.0" text="Numero di Followers" />
-            <TextField layoutX="156.0" layoutY="143.0" prefHeight="26.0" prefWidth="42.0" />
-            <Label layoutX="405.0" layoutY="155.0" text="Numero di Author seguiti" />
-            <TextField layoutX="545.0" layoutY="150.0" prefHeight="26.0" prefWidth="41.0" />
+            <Label layoutX="119.0" layoutY="82.0" text="FOLLOWERS" />
+            <Label layoutX="431.0" layoutY="83.0" text="FOLLOWING" />
+            <Button layoutX="119.0" layoutY="115.0" mnemonicParsing="false" onAction="#onPreviousFollowersPageClick" text="&lt;&lt;&lt;" />
+            <Button layoutX="243.0" layoutY="115.0" mnemonicParsing="false" onAction="#onNextFollowersPageClick" text="&gt;&gt;&gt;" />
+            <TextField fx:id="pageFollowersField" alignment="CENTER" editable="false" layoutX="180.0" layoutY="115.0" prefHeight="26.0" prefWidth="41.0" />
+            <Button layoutX="554.0" layoutY="115.0" mnemonicParsing="false" onAction="#onNextFollowingPageClick" text="&gt;&gt;&gt;" />
+            <TextField fx:id="pageFollowingField" alignment="CENTER" editable="false" layoutX="490.0" layoutY="115.0" prefHeight="26.0" prefWidth="41.0" />
+            <Button layoutX="431.0" layoutY="115.0" mnemonicParsing="false" onAction="#onPreviousFollowingPageClick" text="&lt;&lt;&lt;" />
+            <TextField alignment="CENTER" editable="false" layoutX="243.0" layoutY="78.0" prefHeight="26.0" prefWidth="42.0" />
+            <TextField alignment="CENTER" layoutX="554.0" layoutY="78.0" prefHeight="26.0" prefWidth="41.0" />
+            <Label layoutX="531.0" layoutY="83.0" text="n°" />
+            <Label layoutX="221.0" layoutY="82.0" text="n°" />
             </children>
         </AnchorPane>
     </children>
