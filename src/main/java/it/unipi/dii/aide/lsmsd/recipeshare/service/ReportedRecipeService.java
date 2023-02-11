@@ -38,8 +38,8 @@ public class ReportedRecipeService {
         return ReportedRecipeMongoDAO.getListReportedRecipes(nameToSearch, elementToSkip, elementsToLimit);
     }
 
-    public static List<Author> onHighestRatioQueryClick(){
-        return ReportedRecipeMongoDAO.onHighestRatioQueryClick();
+    public static List<Author> onLowestAuthorScoreQueryClick(){
+        return ReportedRecipeMongoDAO.onLowestAuthorScoreQueryClick();
     }
 
 }

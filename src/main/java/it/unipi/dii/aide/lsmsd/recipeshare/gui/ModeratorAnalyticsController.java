@@ -37,7 +37,7 @@ public class ModeratorAnalyticsController implements Initializable {
 
     public void searchInDBAndLoadInTableView(Integer pageNumber){
         tableViewAuthorScore.resetObservableArrayList();
-        ReportedRecipeService.onHighestRatioQueryClick().forEach(author ->
+        ReportedRecipeService.onLowestAuthorScoreQueryClick().forEach(author ->
                 tableViewAuthorScore.addToObservableArrayList(new RowAuthorScore(author.getName(),author.getScore(),
                         new ImageView(Configuration.AVATAR.get(author.getImage() - 1)))));
         tableViewAuthorScore.setItems();

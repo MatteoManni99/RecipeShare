@@ -55,7 +55,7 @@ public class ReportedRecipeMongoDAO {
         return reportedRecipesList;
     }
 
-    public static List<Author> onHighestRatioQueryClick() throws MongoException{
+    public static List<Author> onLowestAuthorScoreQueryClick() throws MongoException{
         Map<String, Double> map = new TreeMap<>();
         List<Author> authorList = new ArrayList<>();
         List<String> reportedAuthor = new ArrayList<>();
