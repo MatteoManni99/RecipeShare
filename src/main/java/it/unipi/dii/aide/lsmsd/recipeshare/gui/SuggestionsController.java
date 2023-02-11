@@ -89,7 +89,7 @@ public class SuggestionsController implements Initializable {
     private void createTableViewAuthorSugg(){
         tableViewAuthorSugg.getTable().setLayoutX(560);
         tableViewAuthorSugg.getTable().setLayoutY(100);
-        tableViewAuthorSugg.getTable().setPrefSize(250,530);
+        tableViewAuthorSugg.getTable().setPrefSize(250,480);
         tableViewAuthorSugg.setEventForTableCells();
         searchInDBAndLoadInTableViewAuthorSugg(new Author(data.getAuthorName(),data.getAvatarIndex()));
         tableViewAuthorSugg.setTable();

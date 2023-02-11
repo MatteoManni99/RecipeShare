@@ -23,8 +23,10 @@ public class FollowerController implements Initializable {
     private final DataSingleton data = DataSingleton.getInstance();
     public Integer pageFollowers = 0;
     public Integer pageFollowing = 0;
-    public TextField pageFollowersField;
-    public TextField pageFollowingField;
+    @FXML
+    private TextField pageFollowersField;
+    @FXML
+    private TextField pageFollowingField;
 
     private String pageBefore = null;
 
