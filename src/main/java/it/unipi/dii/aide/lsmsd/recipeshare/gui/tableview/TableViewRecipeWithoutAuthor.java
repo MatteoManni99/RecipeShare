@@ -25,6 +25,6 @@ public class TableViewRecipeWithoutAuthor extends TableViewAbstract{
         }
 
     @Override
-    public void setTable() {setColumns(imageCol, nameCol);} // NON CI DOVREBBE ESSERE QUESTO METODO
+    public void setTable() {setColumns(imageCol, nameCol);}
 
 }

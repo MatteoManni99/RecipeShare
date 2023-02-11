@@ -14,24 +14,18 @@ public class RecipeNeoDAO {
         });
     }
     public static void addRecipe(RecipeReduced recipe){
-        Neo4jDriver.getNeoDriver().getSession().executeWriteWithoutResult(tx -> {
-            tx.run("CREATE (n:Recipe {name: $name, image: $image})",
-                    parameters("name", recipe.getName(), "image", recipe.getImage()));
-        });
+        Neo4jDriver.getNeoDriver().getSession().executeWriteWithoutResult(tx -> tx.run("CREATE (n:Recipe {name: $name, image: $image})",
+                parameters("name", recipe.getName(), "image", recipe.getImage())));
     }
     public static void deleteRecipe(String recipeName){
-        Neo4jDriver.getNeoDriver().getSession().executeWriteWithoutResult(tx -> {
-            tx.run("MATCH (n:Recipe {name: $name})"+
-                    "DETACH DELETE n",
-                    parameters("name", recipeName));
-        });
+        Neo4jDriver.getNeoDriver().getSession().executeWriteWithoutResult(tx ->
+                tx.run("MATCH (n:Recipe {name: $name}) DETACH DELETE n", parameters("name", recipeName)));
     }
 
     public static void addRelationWrite(String authorName, String recipeName){
         String query = "MATCH (a:Author {name: $authorName}), (b:Recipe {name: $recipeName})" +
                 "CREATE (a)-[r:WRITE]->(b)";
-        Neo4jDriver.getNeoDriver().getSession().executeWriteWithoutResult(tx -> {
-            tx.run(query, parameters("authorName", authorName, "recipeName", recipeName));
-        });
+        Neo4jDriver.getNeoDriver().getSession().executeWriteWithoutResult(tx ->
+                tx.run(query, parameters("authorName", authorName, "recipeName", recipeName)));
     }
 }
