@@ -59,7 +59,6 @@ public class HomeAuthorController implements Initializable{
     public void onFindRecipeByNameClick(){
         nameToSearch = nameToSearchTextField.getText();
         if(nameToSearch.isBlank()) nameToSearch = null;
-        System.out.println(nameToSearch); //solo per debug sarà da togliere
         pageNumber = 0;
         searchInDBAndLoadInTableView(nameToSearch,pageNumber);
     }

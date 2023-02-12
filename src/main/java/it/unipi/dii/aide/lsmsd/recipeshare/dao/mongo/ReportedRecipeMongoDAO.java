@@ -80,7 +80,6 @@ public class ReportedRecipeMongoDAO {
 
         authorList.sort(Comparator.comparingDouble(Author::getScore));
 
-        System.out.println(authorList.get(0).getName());
         return authorList;
     }
 

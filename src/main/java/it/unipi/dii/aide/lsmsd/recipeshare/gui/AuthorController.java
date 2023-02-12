@@ -66,7 +66,6 @@ public class AuthorController implements Initializable {
         DataSingleton.getInstance().setPageBefore("Author.fxml");
         authorName = data.getOtherAuthorName();
         author = AuthorService.getAuthor(authorName);
-        //if (author == null) System.out.println("NON ESISTE NELLA COLLECTION AUTHOR"); //problema: authorName c'è in Recipe ma non in Author
 
         if(AuthorService.checkIfFollowIsAvailable(data.getAuthorName(),author.getName()))
             unfollowButton.setDisable(true);

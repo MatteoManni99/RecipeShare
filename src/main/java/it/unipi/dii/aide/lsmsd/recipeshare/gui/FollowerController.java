@@ -64,7 +64,7 @@ public class FollowerController implements Initializable {
             pageFollowing -= 1;
             searchInDBAndLoadInTableViewFollowing(data.getAuthorName());
             pageFollowingField.setText(String.valueOf(pageFollowing+1));
-            //nextFollowersPageButton.setDisable(false);
+
         }
     }
 
