@@ -25,10 +25,11 @@ public class RegisterController implements Initializable {
     public ImageView image7;
     public ImageView image8;
     public ImageView selectedImage;
+
     public TextField password;
+
     public TextField name;
     public Label warningLabel;
-
     private Integer selectedImageNumber;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

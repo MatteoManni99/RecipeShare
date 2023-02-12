@@ -6,10 +6,12 @@ import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -33,5 +35,19 @@ public class Utils {
             node = node.getParent();
         }
         return node instanceof TableCell ? (TableCell<RowTableView, ?>) node : null;
+    }
+
+    public static void errorPopup(String title, String popupDescription, Integer X, Integer Y, AnchorPane anchorPane) {
+        Label popupTitle = new Label(title);
+        TextField popupWindow = new TextField();
+        popupWindow.setText(popupDescription);
+        popupWindow.setPrefWidth(200);
+        popupWindow.setPrefHeight(50);
+        popupWindow.setEditable(false);
+        popupTitle.setLayoutX(X + 10);
+        popupTitle.setLayoutY(Y - 20);
+        popupWindow.setLayoutX(X);
+        popupWindow.setLayoutY(Y);
+        anchorPane.getChildren().addAll(popupTitle,popupWindow);
     }
 }

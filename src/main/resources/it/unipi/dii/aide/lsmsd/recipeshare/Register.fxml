@@ -60,7 +60,7 @@
             <Image url="@../../../../../../avatarImages/avatar8.png" />
          </image>
       </ImageView>
-      <Label fx:id="warningLabel" layoutX="90.0" layoutY="222.0" prefHeight="18.0" prefWidth="343.0" text="Warning Label" />
       <Button layoutX="46.0" layoutY="25.0" mnemonicParsing="false" onAction="#onBackToLoginClick" text="BACK TO LOGIN" />
+      <Label fx:id="warningLabel" layoutX="427.0" layoutY="171.0" prefHeight="18.0" prefWidth="303.0" />
    </children>
 </AnchorPane>

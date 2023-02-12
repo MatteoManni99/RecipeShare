@@ -19,6 +19,7 @@ public class RegisterAsModeratorController implements Initializable {
     public AnchorPane anchorPane;
 
     public TextField password;
+
     public TextField name;
     public Label warningLabel;
 

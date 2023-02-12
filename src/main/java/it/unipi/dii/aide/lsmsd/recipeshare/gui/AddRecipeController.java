@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddRecipeController implements Initializable {
+    public Label warningLabel;
     DataSingleton data = DataSingleton.getInstance();
     public TextField nameField;
     public TextField categoryField;
@@ -54,21 +56,21 @@ public class AddRecipeController implements Initializable {
         try {servings = Double.valueOf(servingsField.getText());} catch (NumberFormatException e) {servings = null;}
 
         if(name.isBlank() || name.isEmpty()){
-            System.out.println("Insert a Name in the corresponding TextField");
+            warningLabel.setText("Insert a Name in the corresponding TextField");
         }else if(imageArrayList.isEmpty()){
-            System.out.println("Insert at least one Image");
+            warningLabel.setText("Insert at least one Image");
         }else if(RecipeService.checkIfNameIsAvailable(name)) {
-            System.out.println("Name is available");
+            warningLabel.setText("Name is available");
             data = DataSingleton.getInstance();
             if(RecipeService.addRecipe( new Recipe(name, data.getAuthorName(), time, LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),
                     setNullIfEmpty(descriptionField.getText()), imageArrayList, setNullIfEmpty(categoryField.getText()),
                     keywordArrayList, ingredientArrayList, null, calories, servings, instructionsArrayList,
                     new ArrayList<>()))) {
                 clearFields();
-                System.out.println("Recipe was added");
-            }else System.out.println("Error in adding recipe");
+                warningLabel.setText("Recipe was added");
+            }else warningLabel.setText("Error in adding recipe");
         }else{
-            System.out.println("Name isn't available");
+            warningLabel.setText("Name isn't available");
         }
     }
 

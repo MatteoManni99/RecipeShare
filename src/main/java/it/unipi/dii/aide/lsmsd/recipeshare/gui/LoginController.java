@@ -5,16 +5,22 @@ import it.unipi.dii.aide.lsmsd.recipeshare.service.AuthorService;
 import it.unipi.dii.aide.lsmsd.recipeshare.service.ModeratorService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
 public class LoginController {
+    public AnchorPane anchorPane;
+    @FXML
+    private Label warningLabel;
     @FXML
     private TextField insertedName;
     @FXML
     private PasswordField insertedPassword;
+
 
     @FXML
     public void onRegisterClick(ActionEvent actionEvent) throws IOException {
@@ -45,9 +51,12 @@ public class LoginController {
             DataSingleton data = DataSingleton.getInstance();
             data.setAuthorName(name);
             data.setPassword(password);
+            warningLabel.setText("Login was successful!");
             if (nomePagina.equals("HomeAuthor.fxml") && DataSingleton.getInstance().getAuthorPromotion() == 1)
                 Utils.changeScene(actionEvent,"PromotionOffer.fxml");
             else Utils.changeScene(actionEvent,nomePagina);
         }
+        else //Utils.errorPopup("Errore nel login","Inserisci di nuovo le credenziali",700,400,anchorPane);
+        warningLabel.setText("Login error: Username not valid!");
     }
 }
