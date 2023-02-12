@@ -26,7 +26,7 @@ public class MongoDBDriver {
 
         MongoClientSettings settingCP = MongoClientSettings.builder()
                 .applyConnectionString(new ConnectionString(Configuration.MONGODB_URL))
-                .readPreference(ReadPreference.primary())
+                .readPreference(ReadPreference.nearest())
                 .retryWrites(true)
                 .writeConcern(WriteConcern.W3).build();
 

@@ -28,24 +28,16 @@ public class AuthorMongoDAO {
                 getCollection(Configuration.MONGODB_AUTHOR).find(eq("authorName", name)).iterator();
         if (cursorAuthor.hasNext()) {
             Document currentAuthor = cursorAuthor.next();
-            if (currentAuthor.get("password").equals(password)) {
-                System.out.println("TROVATO AUTHOR");
-                return true;
-            }
-        }
-        else{
-            System.out.println("NON TROVATO AUTHOR");
+            return currentAuthor.get("password").equals(password);
         }
         return false;
     }
 
     public static boolean registration(String authorName, String password, Integer image, Integer standardPromotionValue) throws MongoException {
-        //MongoCollection<Document> authorCollection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
         MongoCollection<Document> authorCollection = MongoDBDriver.getDriver().getCollectionCP(Configuration.MONGODB_AUTHOR);
         if (!checkIfUsernameIsAvailable(authorName)){
             return false;
         } else {
-            System.out.println("NICKNAME VALIDO");
             authorCollection.insertOne(new Document().append("_id", new ObjectId()).append("authorName", authorName)
                     .append("password", password).append("promotion", standardPromotionValue).append("image", image));
             return true;
@@ -101,9 +93,9 @@ public class AuthorMongoDAO {
         } else return null;
     }
 
-    public static boolean checkIfUsernameIsAvailable(String authorName)  throws MongoException{ //uso CP
+    public static boolean checkIfUsernameIsAvailable(String authorName)  throws MongoException{
         MongoCursor<Document> cursor = MongoDBDriver.getDriver().
-                getCollectionCP(Configuration.MONGODB_AUTHOR).find(eq("authorName", authorName)).iterator();
+                getCollection(Configuration.MONGODB_AUTHOR).find(eq("authorName", authorName)).iterator();
         return !cursor.hasNext();
     }
 

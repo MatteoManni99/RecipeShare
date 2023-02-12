@@ -188,12 +188,15 @@ public class RecipeController implements Initializable {
         images_list = recipe.getImages();
         printImages();
 
-        recipe.getReviews().forEach(review -> {
-            String reviewer = review.getAuthorName();
-            reviewers.add(reviewer);
-            RowReview reviewT = new RowReview(reviewer, review.getRating(), review.getReview());
-            tableViewReview.addToObservableArrayList(reviewT);
-        });
+        if(recipe.getReviews()==null){
+            tableViewReview.addToObservableArrayList(null);
+        }else
+            recipe.getReviews().forEach(review -> {
+                String reviewer = review.getAuthorName();
+                reviewers.add(reviewer);
+                RowReview reviewT = new RowReview(reviewer, review.getRating(), review.getReview());
+                tableViewReview.addToObservableArrayList(reviewT);
+            });
         tableViewReview.setItems();
     }
     private void initializeTableViewReview(){
