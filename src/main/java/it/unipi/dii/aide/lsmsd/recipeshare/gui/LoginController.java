@@ -57,6 +57,6 @@ public class LoginController {
             else Utils.changeScene(actionEvent,nomePagina);
         }
         else //Utils.errorPopup("Errore nel login","Inserisci di nuovo le credenziali",700,400,anchorPane);
-        warningLabel.setText("Login error: Username not valid!");
+        warningLabel.setText("Login error: Credentials not valid!");
     }
 }
