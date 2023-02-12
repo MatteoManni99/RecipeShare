@@ -13,8 +13,10 @@ import org.bson.conversions.Bson;
 import java.util.*;
 
 import static com.mongodb.client.model.Aggregates.*;
+import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Indexes.descending;
 import static com.mongodb.client.model.Projections.include;
+import static com.mongodb.client.model.Updates.set;
 
 public class RecipeMongoDAO {
 
@@ -50,6 +52,11 @@ public class RecipeMongoDAO {
 
     public static void addReview(String recipeName, String reviewer, Integer rating, String review) throws MongoException {
         MongoCollection<Document> collection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE);
+        Document document = collection.find(eq("Name", recipeName)).first();
+        //create the array field Reviews if it doesn't exist
+        if (!document.containsKey("Reviews")) {
+            collection.updateOne(eq("Name", recipeName), set("Reviews", new ArrayList<>()));
+        }
         //entra solo quando reviews è piano e toglie la prima
         if(checkIfReviewSpaceIsFull(recipeName,500)){
             collection.updateOne(new Document("Name", recipeName), new Document("$pop", new Document("Reviews", -1)));

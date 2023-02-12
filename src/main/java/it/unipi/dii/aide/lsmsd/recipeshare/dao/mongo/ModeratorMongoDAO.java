@@ -24,12 +24,7 @@ public class ModeratorMongoDAO {
                 getCollection(Configuration.MONGODB_MODERATOR).find(eq("moderatorName", name)).iterator();
         if (cursorModerator.hasNext()) {
             Document currentModerator = cursorModerator.next();
-            if (currentModerator.get("password").equals(password)) {
-                System.out.println("TROVATO MOD");
-                return true;
-            }
-        } else {
-            System.out.println("NON TROVATO MOD");
+            return currentModerator.get("password").equals(password);
         }
         return false;
     }
@@ -40,11 +35,9 @@ public class ModeratorMongoDAO {
         MongoCursor<Document> cursorAuthor = MongoDBDriver.getDriver().
                 getCollectionCP(Configuration.MONGODB_AUTHOR).find(eq("authorName", name)).iterator();
         if (cursorModerator.hasNext() || cursorAuthor.hasNext()) {
-            System.out.println("NICKNAME GIA USATO");
             return false;
         }
         else {
-            System.out.println("NICKNAME VALIDO");
             MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_MODERATOR)
                     .insertOne(new Document("_id", new ObjectId()).append("moderatorName", name)
                     .append("password",password));

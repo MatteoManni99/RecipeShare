@@ -17,7 +17,7 @@
             <Label layoutX="370.0" layoutY="437.0" text="Password" />
             <Button layoutX="469.0" layoutY="470.0" mnemonicParsing="false" onAction="#onLoginClick" text="LOGIN" />
             <Button layoutX="549.0" layoutY="508.0" mnemonicParsing="false" onAction="#onRegisterClick" text="REGISTER" />
-            <Label layoutX="321.0" layoutY="512.0" text="You dont't have an account? Register here" />
+            <Label layoutX="321.0" layoutY="512.0" text="You don't have an account? Register here" />
             <TextField fx:id="insertedName" layoutX="433.0" layoutY="393.0" />
             <PasswordField fx:id="insertedPassword" layoutX="433.0" layoutY="433.0" />
             <ImageView fitHeight="181.0" fitWidth="669.0" layoutX="208.0" layoutY="104.0" pickOnBounds="true" preserveRatio="true">

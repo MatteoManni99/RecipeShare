@@ -18,7 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
-import java.io.IOException;
+
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -79,22 +79,19 @@ public class RecipeController implements Initializable {
         image.setImage(new Image(images_list.get(indexImages)));
     }
     @FXML
-    private void onPreviousClick(ActionEvent actionEvent){
+    private void onPreviousClick(){
         indexImages -= indexImages>0 ? 1 : 0;
         printImages();
     }
 
     @FXML
-    private void onNextClick(ActionEvent actionEvent){
+    private void onNextClick(){
         indexImages += indexImages < images_list.size()-1 ? 1 : 0;
         printImages();
     }
 
     @FXML
-    private void onBackClick(ActionEvent actionEvent) throws IOException {
-        /*if(data.getTypeOfUser().equals("moderator")){
-            Utils.changeScene(actionEvent,"HomeModerator.fxml");
-        }else Utils.changeScene(actionEvent,"HomeAuthor.fxml");*/
+    private void onBackClick(ActionEvent actionEvent){
         Utils.changeScene(actionEvent,pageBefore);
     }
 
@@ -115,9 +112,9 @@ public class RecipeController implements Initializable {
     private void onLeaveAReviewClick(ActionEvent actionEvent){
         String reviewer = data.getAuthorName();
         if(reviewers.contains(reviewer)){
-            reviewTextArea.setText("Avevi già recensito questa ricetta");
+            reviewTextArea.setText("You have already reviewed this recipe");
         } else if (reviewer.equals(authorName.getText())) {
-            reviewTextArea.setText("Questa ricetta è tua non puoi recensirla");
+            reviewTextArea.setText("This recipe is yours, you can't review it");
         } else if (ratingChoiceBox.getValue() == null){
             reviewTextArea.setText("Select a rating");
         }else{
