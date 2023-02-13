@@ -39,7 +39,6 @@ public class ModeratorMongoDAO {
             MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_MODERATOR)
                     .insertOne(new Document("_id", new ObjectId()).append("moderatorName", name)
                     .append("password",password));
-
             return true;
         }
     }

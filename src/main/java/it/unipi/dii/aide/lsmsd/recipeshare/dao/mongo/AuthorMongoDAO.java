@@ -94,8 +94,8 @@ public class AuthorMongoDAO {
     }
 
     public static boolean checkIfUsernameIsAvailable(String authorName)  throws MongoException{
-        return ! MongoDBDriver.getDriver().
-                getCollection(Configuration.MONGODB_AUTHOR).find(eq("authorName", authorName)).iterator().hasNext();
+        return ! MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR)
+                .find(eq("authorName", authorName)).iterator().hasNext();
     }
 
     public static ArrayList<Author> searchAuthors(String nameToSearch, Integer elementsToSkip, Integer elementsToLimit) throws MongoException{

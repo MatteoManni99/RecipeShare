@@ -163,8 +163,6 @@ public class AuthorNeoDAO {
             else
             {
                 if (elementsToSkip > elementsToSkip + (recipeSuggested.size() - elementsToSkip)) return new ArrayList<>();
-                System.out.println(elementsToSkip);
-                System.out.println(elementsToSkip + (recipeSuggested.size() - elementsToSkip));
                 return recipeSuggested.subList(elementsToSkip, elementsToSkip + (recipeSuggested.size() - elementsToSkip));
             }
         });

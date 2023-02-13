@@ -1,6 +1,5 @@
-package it.unipi.dii.aide.lsmsd.recipeshare.dao;
+package it.unipi.dii.aide.lsmsd.recipeshare.dao.mongo;
 
-import it.unipi.dii.aide.lsmsd.recipeshare.dao.mongo.RecipeMongoDAO;
 import it.unipi.dii.aide.lsmsd.recipeshare.model.Recipe;
 import it.unipi.dii.aide.lsmsd.recipeshare.model.RecipeReduced;
 import org.junit.jupiter.api.Assertions;
@@ -15,9 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class RecipeMongoDAOTest {
 
-    static Recipe recipe = new Recipe("Test", "1", null, null, null , null,
-            null, null, null, null, null, null,
-            null, null);
+    static Recipe recipe = new Recipe("Test", "1", null, null, null , new ArrayList<>(),
+            null, null, null, null, null, null, null, null);
 
     static List<RecipeReduced> listMyRecipes = new ArrayList<>();
 
@@ -35,9 +33,6 @@ public class RecipeMongoDAOTest {
         RecipeMongoDAO.deleteRecipe(recipe);
     }
 
-    @Test
-    void getRecipeFromName(){
-    }
 
     @Test
     void checkIfNameIsAvailableTest(){
@@ -64,9 +59,4 @@ public class RecipeMongoDAOTest {
         RecipeMongoDAO.deleteRecipe(recipe);
         assertTrue(RecipeMongoDAO.checkIfNameIsAvailable("Test"));
     }
-
-
-
-
-
 }
