@@ -28,6 +28,10 @@ public class AuthorProfileController implements Initializable {
     @FXML
     public ImageView image;
     @FXML
+    private Label label;
+    @FXML
+    private Label labelAvatar;
+    @FXML
     public Label avatarLabel = new Label();
     private final DataSingleton data = DataSingleton.getInstance();
     private final TableViewAbstract tableRecipe = new TableViewRecipeWithoutAuthor();
@@ -80,20 +84,18 @@ public class AuthorProfileController implements Initializable {
 
     public void changePassword(ActionEvent actionEvent) {
         String newPassword = passwordField.getText();
-        System.out.println(newPassword);
         Author currentAuthor = new Author(data.getAuthorName(),data.getPassword(),
                 data.getAvatarIndex(), data.getAuthorPromotion());
         if(AuthorService.changePassword(newPassword,currentAuthor)){
             data.setPassword(newPassword);
             passwordField.setText(newPassword);
             Utils.changeScene(actionEvent,"AuthorProfile.fxml");
-        }else {System.out.println("Error: Password wasn't changed");}
+        }else {label.setText("Error: Password wasn't changed");}
     }
 
     @Deprecated
     public void changeAuthorName(ActionEvent actionEvent) {
         String newAuthorName = authorNameField.getText();
-        System.out.println(newAuthorName);
         Author currentAuthor = new Author(data.getAuthorName(), data.getPassword(),
                 data.getAvatarIndex(), data.getAuthorPromotion());
         if (AuthorService.changeAuthorName(newAuthorName, currentAuthor)) {
@@ -106,7 +108,7 @@ public class AuthorProfileController implements Initializable {
     private void setSelectedImage(Integer imageNumber){
         avatarImage.setImage(Configuration.AVATAR.get(imageNumber-1));
         if(!AuthorService.changeAvatar(data.getAuthorName(),imageNumber, data.getAvatarIndex()))
-            System.out.println("Avatar non cambiato per un errore");
+            labelAvatar.setText("Error: Avatar wasn't changed");;
         data.setAvatar(imageNumber);
     }
     public void onMouseClickImage1(MouseEvent mouseEvent) {

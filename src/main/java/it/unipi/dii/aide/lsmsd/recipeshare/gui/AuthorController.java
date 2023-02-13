@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Label;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,23 +37,23 @@ public class AuthorController implements Initializable {
     private static String pageBefore = null;
     @FXML
     private AnchorPane anchorPane;
+    @FXML
+    private Label label;
 
     @FXML
     public void onBackClick(ActionEvent actionEvent) throws IOException {
         Utils.changeScene(actionEvent,pageBefore);
-        /*if(data.getTypeOfUser().equals("moderator")) Utils.changeScene(actionEvent,"HomeModerator.fxml");
-        else Utils.changeScene(actionEvent,"HomeAuthor.fxml");*/
     }
 
     public void onFollowButtonClick(ActionEvent actionEvent) {
         if(AuthorService.followAnOtherAuthor(data.getAuthorName(), author.getName())){
             Utils.changeScene(actionEvent,"Author.fxml");
-        }else System.out.println("Follow non riuscito");
+        }else label.setText("Follow failed");
     }
     public void onUnfollowButtonClick(ActionEvent actionEvent) {
         if(AuthorService.unfollowAuthor(data.getAuthorName(), author.getName())){
             Utils.changeScene(actionEvent,"Author.fxml");
-        }else System.out.println("Unfollow non riuscito");
+        }else label.setText("Unfollow failed");
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

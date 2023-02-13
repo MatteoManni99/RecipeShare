@@ -13,8 +13,6 @@ import static com.mongodb.client.model.Filters.eq;
 public class ModeratorMongoDAO {
 
     public static boolean checkModeratorName(String name) throws MongoException{
-        /*return MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_MODERATOR)
-                .find(eq("moderatorName", name)).iterator().hasNext();*/
         return MongoDBDriver.getDriver().getCollectionCP(Configuration.MONGODB_MODERATOR)
                 .find(eq("moderatorName", name)).iterator().hasNext();
     }

@@ -26,6 +26,7 @@
       <Label layoutX="281.0" layoutY="47.0" text="Author Name" />
       <TextField fx:id="name" editable="false" layoutX="281.0" layoutY="64.0" prefHeight="26.0" prefWidth="142.0" />
       <TextField fx:id="pageAuthorField" alignment="CENTER" editable="false" layoutX="151.0" layoutY="177.0" prefHeight="26.0" prefWidth="41.0" />
+      <Label fx:id="label" layoutX="468.0" layoutY="147.0" prefHeight="17.0" prefWidth="148.0" />
 
    </children>
 </AnchorPane>
