@@ -2,7 +2,7 @@
 Project for the course in Large Scale and Multi-Structured Databases @University of Pisa.
 
 ## Overview
-Recipe Share is a social networking application that gives you the opportunity to share your recipes with other people.
+RecipeShare is a social networking application that gives you the opportunity to share your recipes with other people.
 
 Users who register to the service will become an Author and he’ll be able to interact with the recipes already published 
 by other people, giving them ratings as well as report them among other things.

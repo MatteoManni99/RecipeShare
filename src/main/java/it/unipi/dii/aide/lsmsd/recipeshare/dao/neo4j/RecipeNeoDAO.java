@@ -1,4 +1,5 @@
 package it.unipi.dii.aide.lsmsd.recipeshare.dao.neo4j;
+
 import it.unipi.dii.aide.lsmsd.recipeshare.model.RecipeReduced;
 import it.unipi.dii.aide.lsmsd.recipeshare.persistence.Neo4jDriver;
 import org.neo4j.driver.Result;
