@@ -63,7 +63,14 @@ public class RecipeController implements Initializable {
     private ListView<String> keywords;
     @FXML
     private ListView<String> instructions;
-
+    @FXML
+    private Label labelReported;
+    @FXML
+    private Label labelReview;
+    @FXML
+    private Label labelDelete;
+    @FXML
+    private Label labelReject;
     private final DataSingleton data = DataSingleton.getInstance();
     private Integer indexImages=0;
     private List<String> images_list;
@@ -102,11 +109,11 @@ public class RecipeController implements Initializable {
 
         if(!ReportedRecipeService.checkIfRecipeAlreadyReported(reportedRecipe)){
             if(ReportedRecipeService.addReportedRecipe(reportedRecipe)){
-                System.out.println("Recipe correctly reported");
+                labelReported.setText("Recipe correctly reported");
             }else{
-                System.out.println("Error: Recipe not reported");
+                labelReported.setText("Error: Recipe not reported");
             }
-        }else System.out.println("You have already reported this recipe");
+        }else labelReported.setText("You have already reported this recipe");
     }
     @FXML
     private void onLeaveAReviewClick(ActionEvent actionEvent){
@@ -120,7 +127,7 @@ public class RecipeController implements Initializable {
         }else{
             if(RecipeService.addReview(recipeName, reviewer, ratingChoiceBox.getValue(), reviewTextArea.getText())){
                 Utils.changeScene(actionEvent, "Recipe.fxml");
-            }else System.out.println("Error: Review not added");
+            }else labelReview.setText("Error: Review not added");
         }
     }
 
@@ -133,7 +140,7 @@ public class RecipeController implements Initializable {
         EventHandler<ActionEvent> eventHandler = actionEvent -> {
             if(RecipeService.deleteRecipe(recipe)){
                 Utils.changeScene(actionEvent,"HomeAuthor.fxml");
-            }else System.out.println("Errore nella cancellazione della recipe");
+            }else labelDelete.setText("Error deleting the recipe");
         };
         deleteRecipe.setOnAction(eventHandler);
         anchorPane.getChildren().add(deleteRecipe);
@@ -159,7 +166,7 @@ public class RecipeController implements Initializable {
         EventHandler<ActionEvent> eventHandlerNotApprove = actionEvent -> {
             if(ReportedRecipeService.notApproveReportedRecipe(recipe)){
                 Utils.changeScene(actionEvent,"HomeModerator.fxml");
-            }else System.out.println("Error: Reject Recipe didn't work");
+            }else labelReject.setText("Error: Reject Recipe didn't work");
         };
         notApproveRecipe.setOnAction(eventHandlerNotApprove);
         anchorPane.getChildren().add(notApproveRecipe);

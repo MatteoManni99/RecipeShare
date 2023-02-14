@@ -81,8 +81,6 @@ public class RecipeMongoDAO {
     }
 
     public static boolean checkIfNameIsAvailable(String name) throws MongoException{
-        /*return !MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE).
-                find(new Document("Name",name)).cursor().hasNext();*/
         return !MongoDBDriver.getDriver().getCollectionCP(Configuration.MONGODB_RECIPE).
                 find(new Document("Name",name)).cursor().hasNext();
     }
@@ -120,7 +118,7 @@ public class RecipeMongoDAO {
 
     private static Recipe transformDocToRec(Document doc) throws MongoException{
         return new Recipe(doc.getString("Name"), doc.getString("AuthorName"), safeExecutionInteger(doc, "TotalTime"),
-                safeExecutionString(doc, "DatePublished"), safeExecutionString(doc, "Description"), safeExecutionList(doc, "Images"),
+                safeExecutionString(doc, "DatePublished"), safeExecutionString(doc, "Description"), Objects.requireNonNull(safeExecutionList(doc, "Images")),
                 safeExecutionString(doc, "RecipeCategory"), safeExecutionList(doc,"Keywords"), safeExecutionList(doc, "RecipeIngredientParts"),
                 safeExecutionDouble(doc, "AggregatedRating"), safeExecutionDouble(doc, "Calories"),
                 safeExecutionDouble(doc, "RecipeServings"), safeExecutionList(doc, "RecipeInstructions"),
@@ -215,12 +213,10 @@ public class RecipeMongoDAO {
                 .append("AggregatedRating", new Document("$first", "$AggregatedRating"))
                 .append("Images", new Document("$first", "$Images")));
         MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_RECIPE)
-                .aggregate(Arrays.asList(match, sort, group)).forEach(doc ->{
-                        listRecipe.add(new Recipe(doc.getString("Name"), null, null,
-                        null, null, new ArrayList<>(Collections.singleton(doc.getList("Images", String.class).get(0))),
-                        doc.getString("_id"), null, null, Double.valueOf(String.valueOf(doc.get("AggregatedRating"))),
-                        null, null, null, null));}
-                );
+                .aggregate(Arrays.asList(match, sort, group)).forEach(doc -> listRecipe.add(new Recipe(doc.getString("Name"), null, null,
+                null, null, new ArrayList<>(Collections.singleton(doc.getList("Images", String.class).get(0))),
+                doc.getString("_id"), null, null, Double.valueOf(String.valueOf(doc.get("AggregatedRating"))),
+                null, null, null, null)));
         return listRecipe;
     }
 }

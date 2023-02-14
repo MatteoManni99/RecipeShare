@@ -3,6 +3,7 @@ package it.unipi.dii.aide.lsmsd.recipeshare.gui;
 import it.unipi.dii.aide.lsmsd.recipeshare.Configuration;
 import it.unipi.dii.aide.lsmsd.recipeshare.gui.row.RowAuthor;
 import it.unipi.dii.aide.lsmsd.recipeshare.gui.row.RowReportedRecipe;
+import it.unipi.dii.aide.lsmsd.recipeshare.gui.row.RowTableView;
 import it.unipi.dii.aide.lsmsd.recipeshare.gui.tableview.TableViewAbstract;
 import it.unipi.dii.aide.lsmsd.recipeshare.gui.tableview.TableViewAuthor;
 import it.unipi.dii.aide.lsmsd.recipeshare.gui.tableview.TableViewReportedRecipe;
@@ -74,10 +75,10 @@ public class HomeModeratorController implements Initializable {
 
     public void setEventPromotion() {
         tableAuthor.getTable().addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> { //evento per il mouse clickato
-                    TableCell cell = Utils.findCell(evt,tableAuthor.getTable());
+                    TableCell<RowTableView, ?> cell = Utils.findCell(evt,tableAuthor.getTable());
                     if (cell != null && !cell.isEmpty()) {
                         if(cell.getTableColumn().getText().equals("Promotion")){
-                            if (cell.getText().equals("0") == false) return;
+                            if (!cell.getText().equals("0")) return;
                             authorNameClicked = (String) tableAuthor.getTable().getColumns().get(1).getCellData(cell.getIndex());
                             cellAuthorPromotion = cell;
                         }
@@ -87,7 +88,6 @@ public class HomeModeratorController implements Initializable {
         );
     }
     public void onPromoteAuthorClick(ActionEvent actionEvent) {
-        System.out.println("promozione a " + authorNameClicked);
         AuthorService.updatePromotion(authorNameClicked,1);
         authorNameClicked = null;
         searchInDBAndLoadInTableViewAuthor(authorName, pageAuthor);

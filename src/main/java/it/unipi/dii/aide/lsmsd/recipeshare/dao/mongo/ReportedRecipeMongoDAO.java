@@ -42,10 +42,6 @@ public class ReportedRecipeMongoDAO {
 
     public static List<ReportedRecipe> getListReportedRecipes(String name, Integer elementToSkip, Integer elementsToLimit) throws MongoException{
         List<ReportedRecipe> reportedRecipesList = new ArrayList<>();
-        /*
-        MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_REPORTED_RECIPE).find()
-                .forEach(document -> reportedRecipesList.add(fromDocToReportedRecipe(document)));*/
-
         MongoCollection<Document> collection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_REPORTED_RECIPE);
         Bson match = match(new Document("name",new Document("$regex",name).append("$options","i")));
         MongoCursor<Document> cursor = (name == null) ?

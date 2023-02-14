@@ -94,13 +94,12 @@ public class AuthorMongoDAO {
     }
 
     public static boolean checkIfUsernameIsAvailable(String authorName)  throws MongoException{
-        MongoCursor<Document> cursor = MongoDBDriver.getDriver().
-                getCollection(Configuration.MONGODB_AUTHOR).find(eq("authorName", authorName)).iterator();
-        return !cursor.hasNext();
+        return ! MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR)
+                .find(eq("authorName", authorName)).iterator().hasNext();
     }
 
     public static ArrayList<Author> searchAuthors(String nameToSearch, Integer elementsToSkip, Integer elementsToLimit) throws MongoException{
-        ArrayList<Author> authors = new ArrayList<Author>();
+        ArrayList<Author> authors = new ArrayList<>();
         MongoCollection<Document> collection = MongoDBDriver.getDriver().getCollection(Configuration.MONGODB_AUTHOR);
         Bson filter = new Document("authorName",new Document("$regex",nameToSearch).append("$options","i"));
         Bson match = match(filter);

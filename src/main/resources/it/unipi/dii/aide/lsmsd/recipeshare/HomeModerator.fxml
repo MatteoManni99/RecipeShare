@@ -10,7 +10,7 @@
       <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0">
          <children>
             <Button layoutX="29.0" layoutY="30.0" mnemonicParsing="false" onAction="#onLogoutClick" text="LOGOUT" />
-            <Button layoutX="133.0" layoutY="21.0" mnemonicParsing="false" onAction="#onViewAnalyticsClick" text="VIEW &#10;ANALYTICS" textAlignment="CENTER" />
+            <Button layoutX="134.0" layoutY="30.0" mnemonicParsing="false" onAction="#onViewAnalyticsClick" text="VIEW MALICIOUS AUTHORS" textAlignment="CENTER" />
             <Button layoutX="670.0" layoutY="24.0" mnemonicParsing="false" onAction="#onFindAuthorClick" text="Find Author" textAlignment="CENTER" />
             <Button layoutX="771.0" layoutY="60.0" mnemonicParsing="false" onAction="#onNextPageAuthorClick" text="&gt;&gt;&gt;" />
             <Button layoutX="828.0" layoutY="60.0" mnemonicParsing="false" onAction="#onPromoteAuthorClick" text="PROMOTE AUTHOR" />

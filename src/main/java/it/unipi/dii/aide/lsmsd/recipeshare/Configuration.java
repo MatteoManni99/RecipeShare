@@ -19,38 +19,22 @@ public class Configuration {
     public static final String NEO4J_URL = load("NEO4J_URL");
     public static final String NEO4J_USERNAME = load("NEO4J_USERNAME");
     public static final String NEO4J_PASSWORD = load("NEO4J_PASSWORD");
+    public static final Image LOGO = loadImage("LOGO");
 
-    public static final Image LOGO;
-    static {
-        try {
-            LOGO = new Image(new FileInputStream(load("LOGO")));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static final List<Image> AVATAR;
-    static {
-        try {
-            AVATAR = Arrays.asList(new Image(new FileInputStream(load("AVATAR_1"))), new Image(new FileInputStream(load("AVATAR_2"))),
-                    new Image(new FileInputStream(load("AVATAR_3"))), new Image(new FileInputStream(load("AVATAR_4"))),
-                    new Image(new FileInputStream(load("AVATAR_5"))), new Image(new FileInputStream(load("AVATAR_6"))),
-                    new Image(new FileInputStream(load("AVATAR_7"))), new Image(new FileInputStream(load("AVATAR_8"))));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    public static final List<Image> AVATAR = Arrays.asList(loadImage("AVATAR_1"), loadImage("AVATAR_2"),
+            loadImage("AVATAR_3"), loadImage("AVATAR_4"), loadImage("AVATAR_5"),
+            loadImage("AVATAR_6"),loadImage("AVATAR_7"), loadImage("AVATAR_8"));
 
     private static String load(String key) {
         Properties prop = new Properties();
-        try {
-            String configFilePath = "src/main/resources/config.properties";
-            FileInputStream propsInput = new FileInputStream(configFilePath);
-            prop.load(propsInput);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        try {prop.load(new FileInputStream("src/main/resources/config.properties"));}
+        catch (IOException e) {e.printStackTrace();}
         return prop.getProperty(key);
+    }
+
+    private static Image loadImage(String string) {
+        try {return new Image(new FileInputStream(load(string)));}
+        catch (FileNotFoundException e) {throw new RuntimeException(e);}
     }
 
 }

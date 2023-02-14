@@ -12,7 +12,6 @@ public class TableViewAuthor extends TableViewAbstract{
     private final TableColumn<RowTableView, String> authorNameCol;
     private final TableColumn<RowTableView, ImageView> imageCol;
 
-
     public TableViewAuthor() {
         table = new TableView<>();
 
