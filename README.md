@@ -12,7 +12,7 @@ recipe instructions, adding images and so on.
 The service also includes moderators in order to keep track of the recipes that contains out of place information, 
 such as bad language or inappropriate images and so on.
 
-Refer to the [documentation](documentation.pdf) for the full project description.
+Refer to the [documentation](RecipeShareDocumentation.pdf) for the full project description.
 
 ## Authors
 - Matteo Manni [@MatteoManni99](https://github.com/MatteoManni99)
